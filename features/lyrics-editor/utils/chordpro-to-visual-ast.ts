@@ -1,10 +1,21 @@
-import type { ChordToken, LyricLine, SongBlock, SongBlockType, VisualSongAST } from "../types/visual-song-ast"
+import type {
+  ChordToken,
+  LyricLine,
+  SongBlock,
+  SongBlockType,
+  SongLine,
+  VoltaGroup,
+  VisualSongAST
+} from "../types/visual-song-ast"
 
 const SECTION_START_RE =
   /^\{(start_of_chorus|soc|start_of_verse|sov|start_of_bridge|sob|start_of_tab|sot|start_of_intro|soi|start_of_outro|soo|start_of_pre_chorus|sopc|start_of_grid|sog)(?::\s*([^}]*))?\}/i
 
 const SECTION_END_RE =
   /^\{(?:end_of_chorus|eoc|end_of_verse|eov|end_of_bridge|eob|end_of_tab|eot|end_of_intro|eoi|end_of_outro|eoo|end_of_pre_chorus|eopc|end_of_grid|eog)\}/i
+
+const VOLTA_START_RE = /^\{(?:start_of_volta|sovt)(?::\s*([^}]*))?\}/i
+const VOLTA_END_RE = /^\{(?:end_of_volta|eovt)\}/i
 
 const DIRECTIVE_RE = /^\{[^}]*\}/
 
@@ -59,19 +70,33 @@ function makeLine(raw: string): LyricLine {
   return { id: crypto.randomUUID(), text, chords }
 }
 
+function isNonEmpty(line: LyricLine): boolean {
+  return line.text.trim().length > 0 || line.chords.length > 0
+}
+
 /**
  * Parse ChordPro text into a VisualSongAST.
  *
- * Lines outside named sections are grouped into implicit "verse" blocks.
- * Directives other than section markers are silently dropped from the visual AST
- * (they are preserved in the code editor's underlying text).
+ * Section blocks can contain lyric lines and/or volta groups.
+ * Lines outside named sections are grouped into an implicit verse block.
+ * Directives other than section/volta markers are silently dropped.
  */
 export function chordProToVisualAST(chordpro: string): VisualSongAST {
   const rawLines = chordpro.split("\n")
   const blocks: SongBlock[] = []
 
   let currentBlock: SongBlock | null = null
+  let currentVolta: VoltaGroup | null = null
   let pendingLines: string[] = []
+
+  function flushCurrentVolta() {
+    if (!currentVolta || !currentBlock) return
+    const nonEmpty = currentVolta.lines.filter(isNonEmpty)
+    if (nonEmpty.length > 0 || currentVolta.label) {
+      currentBlock.lines.push({ ...currentVolta, lines: nonEmpty })
+    }
+    currentVolta = null
+  }
 
   function flushPending() {
     if (pendingLines.length === 0) return
@@ -83,7 +108,7 @@ export function chordProToVisualAST(chordpro: string): VisualSongAST {
     blocks.push({
       id: crypto.randomUUID(),
       type: "verse",
-      lines: nonEmpty.map(makeLine)
+      lines: nonEmpty.map(makeLine) as SongLine[]
     })
     pendingLines = []
   }
@@ -91,9 +116,14 @@ export function chordProToVisualAST(chordpro: string): VisualSongAST {
   for (const rawLine of rawLines) {
     const line = rawLine.trimEnd()
 
+    // Section end
     if (SECTION_END_RE.test(line)) {
+      flushCurrentVolta()
       if (currentBlock) {
-        const nonEmpty = currentBlock.lines.filter((l) => l.text.trim().length > 0 || l.chords.length > 0)
+        const nonEmpty = currentBlock.lines.filter((sl) => {
+          if (Array.isArray((sl as VoltaGroup).lines)) return true
+          return isNonEmpty(sl as LyricLine)
+        })
         if (nonEmpty.length > 0) {
           blocks.push({ ...currentBlock, lines: nonEmpty })
         }
@@ -102,8 +132,28 @@ export function chordProToVisualAST(chordpro: string): VisualSongAST {
       continue
     }
 
+    // Volta end
+    if (VOLTA_END_RE.test(line)) {
+      flushCurrentVolta()
+      continue
+    }
+
+    // Volta start (must be inside a section)
+    const voltaMatch = line.match(VOLTA_START_RE)
+    if (voltaMatch) {
+      flushCurrentVolta()
+      currentVolta = {
+        id: crypto.randomUUID(),
+        label: voltaMatch[1]?.trim() || undefined,
+        lines: []
+      }
+      continue
+    }
+
+    // Section start
     const startMatch = line.match(SECTION_START_RE)
     if (startMatch) {
+      flushCurrentVolta()
       flushPending()
       const directive = startMatch[1].toLowerCase()
       const label = startMatch[2]?.trim()
@@ -120,13 +170,18 @@ export function chordProToVisualAST(chordpro: string): VisualSongAST {
     // Skip other directives
     if (DIRECTIVE_RE.test(line)) continue
 
-    if (currentBlock) {
-      currentBlock.lines.push(makeLine(line))
+    // Append lyric line
+    const lyricLine = makeLine(line)
+    if (currentVolta) {
+      currentVolta.lines.push(lyricLine)
+    } else if (currentBlock) {
+      currentBlock.lines.push(lyricLine)
     } else {
       pendingLines.push(line)
     }
   }
 
+  flushCurrentVolta()
   flushPending()
 
   return { blocks }

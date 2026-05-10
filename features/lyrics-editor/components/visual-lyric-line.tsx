@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useCallback } from "react"
 import { X, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useTranslation } from "@/hooks/use-translation"
@@ -20,16 +20,20 @@ export function VisualLyricLine({ line, songKey, onChange, onDelete, isLast }: V
   const { t } = useTranslation()
   const [pickerOpen, setPickerOpen] = useState(false)
   const [editingChordId, setEditingChordId] = useState<string | null>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   const sortedChords = [...line.chords].sort((a, b) => a.offset - b.offset)
+
+  const autoResize = useCallback((el: HTMLTextAreaElement) => {
+    el.style.height = "auto"
+    el.style.height = `${el.scrollHeight}px`
+  }, [])
 
   function updateChords(chords: ChordToken[]) {
     onChange({ ...line, chords })
   }
 
   function handleTextChange(text: string) {
-    // Clamp existing chord offsets to new text length
     const chords = line.chords.map((c) => ({
       ...c,
       offset: Math.min(c.offset, text.length)
@@ -38,11 +42,8 @@ export function VisualLyricLine({ line, songKey, onChange, onDelete, isLast }: V
   }
 
   function handleAddChord(chord: string) {
-    const offset = inputRef.current
-      ? Math.min(
-          inputRef.current.selectionStart ?? line.text.length,
-          line.text.length
-        )
+    const offset = textareaRef.current
+      ? Math.min(textareaRef.current.selectionStart ?? line.text.length, line.text.length)
       : line.text.length
     const newChord: ChordToken = { id: crypto.randomUUID(), chord, offset }
     updateChords([...line.chords, newChord])
@@ -144,16 +145,21 @@ export function VisualLyricLine({ line, songKey, onChange, onDelete, isLast }: V
         />
       </div>
 
-      {/* Lyric row */}
-      <div className="flex items-center gap-1">
-        <input
-          ref={inputRef}
-          type="text"
+      {/* Lyric row — textarea grows with content */}
+      <div className="flex items-start gap-1">
+        <textarea
+          ref={textareaRef}
+          rows={1}
           value={line.text}
-          onChange={(e) => handleTextChange(e.target.value)}
+          onChange={(e) => {
+            handleTextChange(e.target.value)
+            autoResize(e.target)
+          }}
+          onInput={(e) => autoResize(e.target as HTMLTextAreaElement)}
           className={cn(
-            "flex-1 bg-transparent text-sm outline-none border-b border-transparent",
+            "flex-1 min-w-0 bg-transparent text-sm outline-none border-b border-transparent",
             "hover:border-border focus:border-primary transition-colors py-0.5",
+            "resize-none overflow-hidden leading-relaxed",
             "placeholder:text-muted-foreground/40"
           )}
           placeholder={t.songs.lyrics.visual.linePlaceholder}
@@ -162,7 +168,7 @@ export function VisualLyricLine({ line, songKey, onChange, onDelete, isLast }: V
           variant="ghost"
           size="icon"
           className={cn(
-            "h-6 w-6 shrink-0 text-muted-foreground/40 hover:text-destructive",
+            "h-6 w-6 shrink-0 text-muted-foreground/40 hover:text-destructive mt-0.5",
             "opacity-0 group-hover/line:opacity-100 transition-opacity"
           )}
           onClick={onDelete}

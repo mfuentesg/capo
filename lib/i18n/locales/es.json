@@ -196,6 +196,7 @@
         "deleteLine": "Eliminar línea",
         "deleteSection": "Eliminar sección",
         "duplicateSection": "Duplicar sección",
+        "insertSection": "Insertar sección",
         "addChord": "Añadir acorde",
         "removeChord": "Eliminar acorde",
         "editChord": "Editar acorde",
@@ -203,6 +204,10 @@
         "moveChordRight": "Mover acorde a la derecha",
         "dragToReorder": "Arrastrar para reordenar",
         "clickToEditLabel": "Clic para editar etiqueta",
+        "addVolta": "Añadir final alternativo",
+        "deleteVolta": "Eliminar final alternativo",
+        "volta": "Final",
+        "voltaLabel": "Final:",
         "chordPlaceholder": "Ej. Am7",
         "linePlaceholder": "Letra…",
         "emptyState": "Sin secciones. Usa 'Añadir sección' para empezar."

@@ -11,6 +11,20 @@ export interface LyricLine {
   chords: ChordToken[]
 }
 
+export interface VoltaGroup {
+  id: string
+  /** Free text label, e.g. "1st time", "2nd time", "D.C." */
+  label?: string
+  lines: LyricLine[]
+}
+
+/** A line item inside a section block — either a lyric line or a volta group. */
+export type SongLine = LyricLine | VoltaGroup
+
+export function isVoltaGroup(line: SongLine): line is VoltaGroup {
+  return Array.isArray((line as VoltaGroup).lines)
+}
+
 export type SongBlockType =
   | "verse"
   | "chorus"
@@ -26,7 +40,7 @@ export interface SongBlock {
   type: SongBlockType
   /** Optional display label, e.g. "Verse 1". Falls back to derived label if absent. */
   label?: string
-  lines: LyricLine[]
+  lines: SongLine[]
 }
 
 export interface VisualSongAST {

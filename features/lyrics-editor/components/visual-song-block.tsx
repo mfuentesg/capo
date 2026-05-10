@@ -7,8 +7,10 @@ import { CSS } from "@dnd-kit/utilities"
 import { Button } from "@/components/ui/button"
 import { useTranslation } from "@/hooks/use-translation"
 import { cn } from "@/lib/utils"
-import type { LyricLine, SongBlock, SongBlockType } from "../types/visual-song-ast"
+import type { LyricLine, SongBlock, SongBlockType, SongLine, VoltaGroup } from "../types/visual-song-ast"
+import { isVoltaGroup } from "../types/visual-song-ast"
 import { VisualLyricLine } from "./visual-lyric-line"
+import { VisualVoltaGroup } from "./visual-volta-group"
 
 const BLOCK_TYPE_COLORS: Record<SongBlockType, string> = {
   verse: "bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/20",
@@ -49,38 +51,45 @@ export function VisualSongBlock({
     transition
   }
 
-  const blockTypeLabel =
-    t.songs.lyrics.visual.sectionTypes[block.type] ?? block.type
-
+  const blockTypeLabel = t.songs.lyrics.visual.sectionTypes[block.type] ?? block.type
   const displayLabel = block.label || blockTypeLabel
   const colorClass = BLOCK_TYPE_COLORS[block.type]
 
-  function updateLines(lines: LyricLine[]) {
+  function updateLines(lines: SongLine[]) {
     onChange({ ...block, lines })
   }
 
-  function handleLineChange(index: number, updated: LyricLine) {
+  function handleSongLineChange(index: number, updated: SongLine) {
     const lines = [...block.lines]
     lines[index] = updated
     updateLines(lines)
   }
 
-  function handleLineDelete(index: number) {
+  function handleSongLineDelete(index: number) {
     if (block.lines.length <= 1) return
     updateLines(block.lines.filter((_, i) => i !== index))
   }
 
   function handleAddLine() {
-    updateLines([
-      ...block.lines,
-      { id: crypto.randomUUID(), text: "", chords: [] }
-    ])
+    const newLine: LyricLine = { id: crypto.randomUUID(), text: "", chords: [] }
+    updateLines([...block.lines, newLine])
+  }
+
+  function handleAddVolta() {
+    const newVolta: VoltaGroup = {
+      id: crypto.randomUUID(),
+      lines: [{ id: crypto.randomUUID(), text: "", chords: [] }]
+    }
+    updateLines([...block.lines, newVolta])
   }
 
   function handleLabelSubmit() {
     onChange({ ...block, label: labelDraft.trim() || undefined })
     setIsEditingLabel(false)
   }
+
+  // Count only non-volta lines for minimum enforcement
+  const lyricLineCount = block.lines.filter((l) => !isVoltaGroup(l)).length
 
   return (
     <div
@@ -152,26 +161,47 @@ export function VisualSongBlock({
       </div>
 
       {/* Lines */}
-      <div className="p-3 space-y-0" data-vaul-no-drag>
-        {block.lines.map((line, index) => (
-          <VisualLyricLine
-            key={line.id}
-            line={line}
-            songKey={songKey}
-            onChange={(updated) => handleLineChange(index, updated)}
-            onDelete={() => handleLineDelete(index)}
-            isLast={index === block.lines.length - 1}
-          />
-        ))}
+      <div className="p-3 space-y-2" data-vaul-no-drag>
+        {block.lines.map((songLine, index) =>
+          isVoltaGroup(songLine) ? (
+            <VisualVoltaGroup
+              key={songLine.id}
+              group={songLine}
+              songKey={songKey}
+              onChange={(updated) => handleSongLineChange(index, updated)}
+              onDelete={() => handleSongLineDelete(index)}
+            />
+          ) : (
+            <VisualLyricLine
+              key={songLine.id}
+              line={songLine}
+              songKey={songKey}
+              onChange={(updated) => handleSongLineChange(index, updated)}
+              onDelete={() => {
+                if (lyricLineCount > 1) handleSongLineDelete(index)
+              }}
+              isLast={index === block.lines.length - 1}
+            />
+          )
+        )}
 
-        {/* Add line */}
-        <button
-          className="mt-2 flex items-center gap-1 text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"
-          onClick={handleAddLine}
-        >
-          <Plus className="h-3 w-3" />
-          {t.songs.lyrics.visual.addLine}
-        </button>
+        {/* Footer actions */}
+        <div className="flex items-center gap-3 pt-1">
+          <button
+            className="flex items-center gap-1 text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+            onClick={handleAddLine}
+          >
+            <Plus className="h-3 w-3" />
+            {t.songs.lyrics.visual.addLine}
+          </button>
+          <button
+            className="flex items-center gap-1 text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+            onClick={handleAddVolta}
+          >
+            <Plus className="h-3 w-3" />
+            {t.songs.lyrics.visual.addVolta}
+          </button>
+        </div>
       </div>
     </div>
   )

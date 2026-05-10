@@ -550,11 +550,19 @@ function buildSegments(
         }
       }
     } else if (/^c(omment(_italic|_box)?)?$/.test(directive)) {
-      // Render as a comment box at every level — same style as inside section blocks.
-      // Content after the directive is not consumed; it flows as normal lyrics.
+      // Emit as a section segment so it participates in hasComplexSegments and
+      // gets proper space-y-6 spacing. Content after the directive is not consumed
+      // — it flows as normal lyrics in subsequent segments.
       if (value) {
-        const boxHtml = `<div class="lyrics-comment"><div class="lyrics-comment-label">${escapeHtml(commentLabel)}</div><div class="lyrics-comment-body">${escapeHtml(value)}</div></div>`
-        segments.push({ type: "normal", html: boxHtml })
+        segments.push({
+          type: "section",
+          name: value,
+          sectionType: "comment",
+          html: "",
+          count: 1,
+          flags: [],
+          inline: false
+        })
       }
     } else {
       // start_of_X — find the matching end_of_X
@@ -814,6 +822,15 @@ export function RenderedSong({
                 className="chordsheet-content"
                 dangerouslySetInnerHTML={{ __html: segment.html }}
               />
+            )
+          }
+
+          if (segment.type === "section" && segment.sectionType === "comment") {
+            return (
+              <div key={index} className="lyrics-comment">
+                <div className="lyrics-comment-label">{t.songSections.comment}</div>
+                <div className="lyrics-comment-body">{segment.name}</div>
+              </div>
             )
           }
 

@@ -34,6 +34,11 @@ import { useLyricsSettings } from "@/features/lyrics-editor"
 import { RenderedSong } from "./rendered-song"
 import { LazyChordProReference } from "./chordpro-reference-lazy"
 import { LazySongEditor, preloadSongEditor } from "./song-editor"
+import { EditorToolbar, type EditorMode } from "./editor-toolbar"
+import { VisualSongEditor } from "./visual-song-editor"
+import { chordProToVisualAST } from "../utils/chordpro-to-visual-ast"
+import { visualASTToChordPro } from "../utils/visual-ast-to-chordpro"
+import type { SongBlock, SongBlockType, VisualSongAST } from "../types/visual-song-ast"
 import { useTranslation } from "@/hooks/use-translation"
 import { useAutoSave } from "@/hooks/use-auto-save"
 import { useAutoScroll } from "@/hooks/use-auto-scroll"
@@ -133,6 +138,8 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
   const [editedLyrics, setEditedLyrics] = useState(song.lyrics || "")
   const [savedLyrics, setSavedLyrics] = useState(song.lyrics || "")
   const [editorResetKey, setEditorResetKey] = useState(0)
+  const [editorMode, setEditorMode] = useState<EditorMode>("code")
+  const [visualAST, setVisualAST] = useState<VisualSongAST | null>(null)
   const [lyricsColumns, setLyricsColumnsState] = useState<1 | 2>(initialLyricsColumns)
   const [showChords, setShowChords] = useState(true)
   const [showLyrics, setShowLyrics] = useState(true)
@@ -204,6 +211,8 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
   const handleCancel = useCallback(() => {
     setIsEditing(false)
     setIsPreviewing(false)
+    setEditorMode("code")
+    setVisualAST(null)
     setEditedLyrics(savedLyrics)
     setEditorResetKey((k) => k + 1)
   }, [savedLyrics])
@@ -218,6 +227,36 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
   const handleLyricsChange = (value: string) => {
     if (!canEdit) return
     setEditedLyrics(value)
+  }
+
+  const handleModeSwitch = (mode: EditorMode) => {
+    if (mode === "visual" && editorMode === "code") {
+      setVisualAST(chordProToVisualAST(editedLyrics))
+    } else if (mode === "code" && editorMode === "visual" && visualAST) {
+      const compiled = visualASTToChordPro(visualAST)
+      setEditedLyrics(compiled)
+      setEditorResetKey((k) => k + 1)
+    }
+    setEditorMode(mode)
+  }
+
+  const handleVisualASTChange = (ast: VisualSongAST) => {
+    setVisualAST(ast)
+    setEditedLyrics(visualASTToChordPro(ast))
+  }
+
+  const handleAddSection = (type: SongBlockType) => {
+    const currentAST = visualAST ?? chordProToVisualAST(editedLyrics)
+    const countOfType = currentAST.blocks.filter((b) => b.type === type).length
+    const newBlock: SongBlock = {
+      id: crypto.randomUUID(),
+      type,
+      label: countOfType > 0 ? `${type} ${countOfType + 1}` : undefined,
+      lines: [{ id: crypto.randomUUID(), text: "", chords: [] }]
+    }
+    const newAST = { blocks: [...currentAST.blocks, newBlock] }
+    handleVisualASTChange(newAST)
+    setVisualAST(newAST)
   }
 
   const togglePreview = () => {
@@ -574,15 +613,6 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
                   >
                     <Save className="h-4 w-4" />
                   </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-9 w-9"
-                    onClick={() => setIsReferenceOpen(true)}
-                    aria-label={t.songs.lyrics.chordproReference}
-                  >
-                    <BookOpen className="h-4 w-4" />
-                  </Button>
                 </>
               ) : (
                 <>
@@ -639,6 +669,16 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
         </div>
       </div>
 
+      {/* Editor toolbar — only visible while editing */}
+      {isEditing && (
+        <EditorToolbar
+          mode={editorMode}
+          onModeChange={handleModeSwitch}
+          onAddSection={editorMode === "visual" ? handleAddSection : undefined}
+          onOpenReference={editorMode === "code" ? () => setIsReferenceOpen(true) : undefined}
+        />
+      )}
+
       {/* Lyrics Content */}
       <div
         className={cn("px-4 py-8", !isPanel && "container mx-auto")}
@@ -647,10 +687,10 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
       >
         <div className="w-full">
           <div className="max-w-5xl mx-auto">
-            {isEditing && (
+            {isEditing && !isPreviewing && editorMode === "code" && (
               <div className="mb-4">
                 <h3 className="text-sm font-medium text-muted-foreground mb-2">
-                  {isPreviewing ? t.songs.preview : t.songs.lyricsFormatInfo}
+                  {t.songs.lyricsFormatInfo}
                 </h3>
               </div>
             )}
@@ -675,7 +715,8 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
               </div>
             )}
 
-            {canEdit && hasInitializedEditor && (
+            {/* Code editor */}
+            {canEdit && hasInitializedEditor && editorMode === "code" && (
               <div
                 className={cn(
                   "rounded-lg border bg-card",
@@ -684,6 +725,15 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
               >
                 <LazySongEditor key={editorResetKey} content={savedLyrics} onChange={handleLyricsChange} />
               </div>
+            )}
+
+            {/* Visual editor */}
+            {canEdit && hasInitializedEditor && isEditing && !isPreviewing && editorMode === "visual" && (
+              <VisualSongEditor
+                ast={visualAST ?? { blocks: [] }}
+                songKey={song.key}
+                onChange={handleVisualASTChange}
+              />
             )}
           </div>
         </div>

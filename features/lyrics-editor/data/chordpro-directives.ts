@@ -169,6 +169,17 @@ export const CHORDPRO_DIRECTIVES: ChordProDirective[] = [
       "{sopc: Pre-Chorus}\n[Em]Every day I'm getting [C]closer\n{eopc}"
   },
 
+  // Box sections — custom extension
+  {
+    name: "start_of_box",
+    shorthand: "sbox",
+    category: "section",
+    description:
+      "Wraps multi-line content in a labeled box with the same visual style as {comment_box}. The label after the colon is free text and becomes the box header. Pair with {end_of_box} or {ebox}. Supports chords, lyrics, and volta blocks inside. Custom extension.",
+    example:
+      "{sbox: Verse 1}\n[G]Amazing [D]grace, how [Em]sweet the [G]sound\nThat [G]saved a [C]wretch like [G]me\n{ebox}\n\n{sbox: NOTE}\nKey changes to E at the last chorus!\n{ebox}"
+  },
+
   // Volta (iteration) sections — custom extension
   {
     name: "start_of_volta",

@@ -427,6 +427,38 @@
   padding: 5px 10px 7px;
 }
 
+/* ── Box blocks ({start_of_box} / {sbox}) ────────────────────────── */
+.lyrics-box {
+  --box-color: var(--muted-foreground);
+  display: block;
+  border-radius: 6px;
+  border: 1px solid color-mix(in oklch, var(--box-color) 28%, transparent);
+  background: color-mix(in oklch, var(--box-color) 6%, transparent);
+  margin: 6px 0;
+  overflow: hidden;
+}
+
+.section-repeat .lyrics-box {
+  --box-color: var(--section-accent);
+}
+
+.lyrics-box-label {
+  display: block;
+  font-size: 0.68em;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 10px 3px;
+  color: var(--box-color);
+  background: color-mix(in oklch, var(--box-color) 12%, transparent);
+  border-bottom: 1px solid color-mix(in oklch, var(--box-color) 22%, transparent);
+}
+
+.lyrics-box-content {
+  display: block;
+  padding: 5px 10px 7px;
+}
+
 /* ── Performance notes ───────────────────────────────────────────── */
 /* Styled as a musician's pencil annotation — italic, warm tint,     */
 /* with parentheses added via pseudo-elements.                        */

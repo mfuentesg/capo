@@ -55,6 +55,10 @@ const PERF_NOTE_TOKEN = "PERFORMNOTE"
 const VOLTA_SPLIT_RE =
   /\{(?:start_of_volta|sovt)(?::\s*([^}]*))?\}([\s\S]*?)\{(?:end_of_volta|eovt)\}/gi
 
+// Regex that matches {start_of_box: label}...{end_of_box} (and shorthand sbox/ebox).
+const BOX_SPLIT_RE =
+  /\{(?:start_of_box|sbox)(?::\s*([^}]*))?\}([\s\S]*?)\{(?:end_of_box|ebox)\}/gi
+
 function escapeHtml(str: string): string {
   return str
     .replace(/&/g, "&amp;")
@@ -311,6 +315,74 @@ function splitAndProcessVolta(
   return parts.join("\n")
 }
 
+// Splits text at {start_of_box}...{end_of_box} boundaries, processes each piece
+// through splitAndProcessVolta, and wraps box pieces in a labeled card using the
+// same visual style as the comment box.
+function splitAndProcessBox(
+  text: string,
+  transpose: number,
+  capo: number,
+  sectionLabels: Record<string, string>,
+  inline: boolean,
+  commentLabel: string
+): string {
+  const parts: string[] = []
+  let lastIndex = 0
+  let hasBox = false
+
+  const re = new RegExp(BOX_SPLIT_RE.source, "gi")
+  let match: RegExpExecArray | null
+
+  while ((match = re.exec(text)) !== null) {
+    hasBox = true
+    const before = text.slice(lastIndex, match.index)
+    if (before) {
+      parts.push(
+        splitAndProcessVolta(
+          before,
+          transpose,
+          capo,
+          sectionLabels,
+          inline,
+          commentLabel
+        ).trimEnd()
+      )
+    }
+
+    const label = match[1]?.trim() ?? ""
+    const content = match[2] ?? ""
+    const innerHtml = splitAndProcessVolta(
+      content.trim(),
+      transpose,
+      capo,
+      sectionLabels,
+      inline,
+      commentLabel
+    )
+    const labelHtml = label ? `<div class="lyrics-box-label">${escapeHtml(label)}</div>` : ""
+    parts.push(
+      `<div class="lyrics-box">${labelHtml}<div class="lyrics-box-content">${innerHtml}</div></div>`
+    )
+
+    lastIndex = match.index + match[0].length
+  }
+
+  const tail = text.slice(lastIndex)
+  if (tail) {
+    const tailHtml = splitAndProcessVolta(
+      hasBox ? tail.trimStart() : tail,
+      transpose,
+      capo,
+      sectionLabels,
+      inline,
+      commentLabel
+    )
+    if (tailHtml) parts.push(tailHtml)
+  }
+
+  return parts.join("\n")
+}
+
 function formatLyricsToHtml(
   text: string,
   transpose: number,
@@ -318,7 +390,7 @@ function formatLyricsToHtml(
   sectionLabels: Record<string, string>,
   commentLabel: string
 ): string {
-  return splitAndProcessVolta(text, transpose, capo, sectionLabels, false, commentLabel)
+  return splitAndProcessBox(text, transpose, capo, sectionLabels, false, commentLabel)
 }
 
 function formatInlineLyricsToHtml(
@@ -328,7 +400,7 @@ function formatInlineLyricsToHtml(
   sectionLabels: Record<string, string>,
   commentLabel: string
 ): string {
-  return splitAndProcessVolta(text, transpose, capo, sectionLabels, true, commentLabel)
+  return splitAndProcessBox(text, transpose, capo, sectionLabels, true, commentLabel)
 }
 
 // Matches the opening { of any directive that starts a new section or a repeat

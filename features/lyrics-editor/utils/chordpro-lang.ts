@@ -64,8 +64,8 @@ const SUPPORTED_DIRECTIVES = [
   { label: "end_of_pre_chorus", detail: "End pre-chorus section", apply: "end_of_pre_chorus}" },
   { label: "eopc", detail: "End pre-chorus (short)", apply: "eopc}" },
   // Box sections — custom extension
-  { label: "start_of_box", detail: "Begin labeled box — e.g. {sbox: NOTE}", apply: "start_of_box: " },
-  { label: "sbox", detail: "Begin box (short) — e.g. {sbox: NOTE}", apply: "sbox: " },
+  { label: "start_of_box", detail: "Begin labeled box — closing tag optional", apply: "start_of_box: " },
+  { label: "sbox", detail: "Begin box (short) — closing tag optional", apply: "sbox: " },
   { label: "end_of_box", detail: "End box section", apply: "end_of_box}" },
   { label: "ebox", detail: "End box (short)", apply: "ebox}" },
   // Volta (iteration) sections — custom extension

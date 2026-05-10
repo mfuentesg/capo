@@ -55,9 +55,10 @@ const PERF_NOTE_TOKEN = "PERFORMNOTE"
 const VOLTA_SPLIT_RE =
   /\{(?:start_of_volta|sovt)(?::\s*([^}]*))?\}([\s\S]*?)\{(?:end_of_volta|eovt)\}/gi
 
-// Regex that matches {start_of_box: label}...{end_of_box} (and shorthand sbox/ebox).
-const BOX_SPLIT_RE =
-  /\{(?:start_of_box|sbox)(?::\s*([^}]*))?\}([\s\S]*?)\{(?:end_of_box|ebox)\}/gi
+// Matches a {start_of_box} / {sbox} opening tag (closing tag is optional).
+const BOX_OPEN_RE = /\{(?:start_of_box|sbox)(?::\s*([^}]*))?\}/gi
+// Matches a {end_of_box} / {ebox} closing tag.
+const BOX_CLOSE_RE = /\{(?:end_of_box|ebox)\}/i
 
 function escapeHtml(str: string): string {
   return str
@@ -315,9 +316,9 @@ function splitAndProcessVolta(
   return parts.join("\n")
 }
 
-// Splits text at {start_of_box}...{end_of_box} boundaries, processes each piece
-// through splitAndProcessVolta, and wraps box pieces in a labeled card using the
-// same visual style as the comment box.
+// Splits text at {start_of_box} / {sbox} boundaries and wraps each piece in a
+// labeled card. The closing {end_of_box} / {ebox} tag is optional — if omitted
+// the box captures everything through the end of the current text block.
 function splitAndProcessBox(
   text: string,
   transpose: number,
@@ -328,13 +329,11 @@ function splitAndProcessBox(
 ): string {
   const parts: string[] = []
   let lastIndex = 0
-  let hasBox = false
 
-  const re = new RegExp(BOX_SPLIT_RE.source, "gi")
+  const openRe = new RegExp(BOX_OPEN_RE.source, "gi")
   let match: RegExpExecArray | null
 
-  while ((match = re.exec(text)) !== null) {
-    hasBox = true
+  while ((match = openRe.exec(text)) !== null) {
     const before = text.slice(lastIndex, match.index)
     if (before) {
       parts.push(
@@ -350,7 +349,21 @@ function splitAndProcessBox(
     }
 
     const label = match[1]?.trim() ?? ""
-    const content = match[2] ?? ""
+    const afterOpen = match.index + match[0].length
+    const remaining = text.slice(afterOpen)
+    const closeMatch = BOX_CLOSE_RE.exec(remaining)
+
+    let content: string
+    if (closeMatch) {
+      content = remaining.slice(0, closeMatch.index)
+      lastIndex = afterOpen + closeMatch.index + closeMatch[0].length
+    } else {
+      // No closing tag — box runs to end of this text block.
+      content = remaining
+      lastIndex = text.length
+    }
+    openRe.lastIndex = lastIndex
+
     const innerHtml = splitAndProcessVolta(
       content.trim(),
       transpose,
@@ -363,14 +376,12 @@ function splitAndProcessBox(
     parts.push(
       `<div class="lyrics-box">${labelHtml}<div class="lyrics-box-content">${innerHtml}</div></div>`
     )
-
-    lastIndex = match.index + match[0].length
   }
 
   const tail = text.slice(lastIndex)
   if (tail) {
     const tailHtml = splitAndProcessVolta(
-      hasBox ? tail.trimStart() : tail,
+      lastIndex > 0 ? tail.trimStart() : tail,
       transpose,
       capo,
       sectionLabels,

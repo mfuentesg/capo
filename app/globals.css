@@ -283,7 +283,7 @@
   --section-accent: oklch(0.5 0.16 350);
 }
 .section-repeat[data-section-type="comment"] {
-  --section-accent: oklch(0.48 0.14 178);
+  --section-accent: oklch(0.55 0.12 195);
 }
 .section-repeat[data-section-type="repeat"] {
   --section-accent: oklch(0.5 0.16 65);
@@ -303,7 +303,7 @@
   --section-accent: oklch(0.7 0.16 350);
 }
 .dark .section-repeat[data-section-type="comment"] {
-  --section-accent: oklch(0.68 0.14 178);
+  --section-accent: oklch(0.68 0.12 195);
 }
 .dark .section-repeat[data-section-type="repeat"] {
   --section-accent: oklch(0.75 0.16 65);
@@ -346,13 +346,17 @@
 }
 
 .lyrics-comment {
-  --comment-color: var(--muted-foreground);
+  --comment-color: oklch(0.55 0.12 195);
   display: block;
   border-radius: 6px;
   border: 1px solid color-mix(in oklch, var(--comment-color) 28%, transparent);
   background: color-mix(in oklch, var(--comment-color) 6%, transparent);
   margin: 6px 0;
   overflow: hidden;
+}
+
+.dark .lyrics-comment {
+  --comment-color: oklch(0.68 0.12 195);
 }
 
 .lyrics-comment-label {

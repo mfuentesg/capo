@@ -429,13 +429,17 @@
 
 /* ── Box blocks ({start_of_box} / {sbox}) ────────────────────────── */
 .lyrics-box {
-  --box-color: var(--muted-foreground);
+  --box-color: oklch(0.55 0.12 195);
   display: block;
   border-radius: 6px;
   border: 1px solid color-mix(in oklch, var(--box-color) 28%, transparent);
   background: color-mix(in oklch, var(--box-color) 6%, transparent);
   margin: 6px 0;
   overflow: hidden;
+}
+
+.dark .lyrics-box {
+  --box-color: oklch(0.68 0.12 195);
 }
 
 .section-repeat .lyrics-box {

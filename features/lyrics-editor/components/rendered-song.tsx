@@ -28,7 +28,8 @@ const SECTION_FLAGS = [
   "vamp",
   "tag",
   "break",
-  "inline"
+  "inline",
+  "label"
 ] as const
 type SectionFlag = (typeof SECTION_FLAGS)[number]
 
@@ -153,10 +154,12 @@ function processChordProContent(
       // Token: {comment}
       const commentMatch = lineLyrics.match(new RegExp(`${COMMENT_TOKEN}(\\d+)`))
       if (commentMatch) {
-        const label = commentLabels[parseInt(commentMatch[1], 10)]
-        return label
-          ? `<div class="lyrics-comment"><div class="lyrics-comment-label">${escapeHtml(commentLabel)}</div><div class="lyrics-comment-body">${escapeHtml(label)}</div></div>`
-          : ""
+        const raw = commentLabels[parseInt(commentMatch[1], 10)]
+        if (!raw) return ""
+        const { name: text, flags: cflags } = parseSectionValue(raw)
+        return cflags.includes("label")
+          ? `<div class="lyrics-label">${escapeHtml(text)}</div>`
+          : `<div class="lyrics-comment"><div class="lyrics-comment-label">${escapeHtml(commentLabel)}</div><div class="lyrics-comment-body">${escapeHtml(text)}</div></div>`
       }
 
       // Token: {note}
@@ -364,18 +367,26 @@ function splitAndProcessBox(
     }
     openRe.lastIndex = lastIndex
 
-    const innerHtml = splitAndProcessVolta(
-      content.trim(),
-      transpose,
-      capo,
-      sectionLabels,
-      inline,
-      commentLabel
-    )
-    const labelHtml = label ? `<div class="lyrics-box-label">${escapeHtml(label)}</div>` : ""
-    parts.push(
-      `<div class="lyrics-box">${labelHtml}<div class="lyrics-box-content">${innerHtml}</div></div>`
-    )
+    const { name: parsedLabel, flags: boxFlags } = parseSectionValue(label || "x")
+    const boxLabelText = label ? parsedLabel : ""
+    if (boxFlags.includes("label")) {
+      parts.push(`<div class="lyrics-label">${escapeHtml(boxLabelText)}</div>`)
+    } else {
+      const innerHtml = splitAndProcessVolta(
+        content.trim(),
+        transpose,
+        capo,
+        sectionLabels,
+        inline,
+        commentLabel
+      )
+      const labelHtml = boxLabelText
+        ? `<div class="lyrics-box-label">${escapeHtml(boxLabelText)}</div>`
+        : ""
+      parts.push(
+        `<div class="lyrics-box">${labelHtml}<div class="lyrics-box-content">${innerHtml}</div></div>`
+      )
+    }
   }
 
   const tail = text.slice(lastIndex)
@@ -554,10 +565,11 @@ function buildSegments(
       // gets proper space-y-6 spacing. Content after the directive is not consumed
       // — it flows as normal lyrics in subsequent segments.
       if (value) {
+        const { name, flags: cflags } = parseSectionValue(value)
         segments.push({
           type: "section",
-          name: value,
-          sectionType: "comment",
+          name,
+          sectionType: cflags.includes("label") ? "comment-label" : "comment",
           html: "",
           count: 1,
           flags: [],
@@ -624,7 +636,8 @@ const FLAG_CONFIG: Record<SectionFlag, { label: string; className: string }> = {
     className: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400"
   },
   break: { label: "break", className: "bg-muted text-muted-foreground" },
-  inline: { label: "inline", className: "bg-muted text-muted-foreground" }
+  inline: { label: "inline", className: "bg-muted text-muted-foreground" },
+  label: { label: "label", className: "bg-muted text-muted-foreground" }
 }
 
 interface SectionHeaderProps {
@@ -648,10 +661,10 @@ function SectionHeader({ name, isCollapsed, onToggle, icon, flags }: SectionHead
   )
 
   const flagBadges =
-    flags && flags.some((f) => f !== "inline") ? (
+    flags && flags.some((f) => f !== "inline" && f !== "label") ? (
       <span className="flex items-center gap-1 shrink-0">
         {flags
-          .filter((f) => f !== "inline")
+          .filter((f) => f !== "inline" && f !== "label")
           .map((flag) => {
             const cfg = FLAG_CONFIG[flag]
             return (
@@ -832,6 +845,10 @@ export function RenderedSong({
                 <div className="lyrics-comment-body">{segment.name}</div>
               </div>
             )
+          }
+
+          if (segment.type === "section" && segment.sectionType === "comment-label") {
+            return <div key={index} className="lyrics-label">{segment.name}</div>
           }
 
           if (segment.type === "section") {

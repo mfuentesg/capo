@@ -550,21 +550,11 @@ function buildSegments(
         }
       }
     } else if (/^c(omment(_italic|_box)?)?$/.test(directive)) {
-      // Named comment section: runs until the next section boundary.
+      // Render as a comment box at every level — same style as inside section blocks.
+      // Content after the directive is not consumed; it flows as normal lyrics.
       if (value) {
-        const remaining = lyrics.slice(matchEnd)
-        const nextBoundary = SECTION_BOUNDARY_RE.exec(remaining)
-        const content = (nextBoundary ? remaining.slice(0, nextBoundary.index) : remaining).trim()
-        segments.push({
-          type: "section",
-          name: value,
-          sectionType: "comment",
-          html: formatLyricsToHtml(content, transpose, capo, sectionLabels, commentLabel),
-          count: 1,
-          flags: [],
-          inline: false
-        })
-        newPos = matchEnd + (nextBoundary ? nextBoundary.index : remaining.length)
+        const boxHtml = `<div class="lyrics-comment"><div class="lyrics-comment-label">${escapeHtml(commentLabel)}</div><div class="lyrics-comment-body">${escapeHtml(value)}</div></div>`
+        segments.push({ type: "normal", html: boxHtml })
       }
     } else {
       // start_of_X — find the matching end_of_X

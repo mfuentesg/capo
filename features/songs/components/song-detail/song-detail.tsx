@@ -4,7 +4,6 @@ import {
   X,
   Clock,
   Trash2,
-  ListPlus,
   Check,
   Pencil,
   Music2,
@@ -36,7 +35,6 @@ import {
   useEffectiveSongSettings,
   useUpsertUserSongSettings
 } from "@/features/songs/hooks/use-user-song-settings"
-import { usePlaylistDraft } from "@/features/playlist-draft"
 import { useTeams } from "@/features/teams"
 import { useAppContext } from "@/features/app-context"
 import { transposeKey, calculateCapoKey } from "@/lib/music-theory"
@@ -129,8 +127,6 @@ interface SongDetailProps {
 
 export function SongDetail({ song, onClose, onUpdate, onDelete, onTransferSuccess }: SongDetailProps) {
   const { t } = useTranslation()
-  const { isSongInDraft, toggleSongInDraft } = usePlaylistDraft()
-  const isInCart = isSongInDraft(song.id)
   const { transpose, capo: capoPosition } = useEffectiveSongSettings(song)
   const { mutate: upsertSettings } = useUpsertUserSongSettings(song)
   const deleteDialogIds = createOverlayIds(`song-detail-delete-${song.id}`)
@@ -383,23 +379,6 @@ export function SongDetail({ song, onClose, onUpdate, onDelete, onTransferSucces
                 <ExternalLink className="h-4 w-4" />
                 {t.songs.viewLyrics}
               </Link>
-            </Button>
-            <Button
-              variant={isInCart ? "default" : "outline"}
-              className="gap-2 transition active:scale-[0.98]"
-              onClick={() => toggleSongInDraft(song)}
-            >
-              {isInCart ? (
-                <>
-                  <Check className="h-4 w-4" />
-                  {t.songs.addedToSelection}
-                </>
-              ) : (
-                <>
-                  <ListPlus className="h-4 w-4" />
-                  {t.songs.addToPlaylist}
-                </>
-              )}
             </Button>
             {canTransfer && (
               <Button

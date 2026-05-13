@@ -209,12 +209,6 @@ export function SongDetail({ song, onClose, onUpdate, onDelete, onTransferSucces
           </div>
         </div>
         <div className="flex items-center gap-1 shrink-0">
-          <Button variant="outline" size="sm" className="gap-1.5" aria-label={t.songs.openSong} asChild>
-            <Link href={`/dashboard/songs/${song.id}`}>
-              <ExternalLink className="h-4 w-4" />
-              <span className="hidden sm:inline">{t.songs.openSong}</span>
-            </Link>
-          </Button>
           <Button variant="ghost" size="icon" onClick={onClose} aria-label={t.common.close}>
             <X className="h-4 w-4" />
           </Button>
@@ -384,6 +378,12 @@ export function SongDetail({ song, onClose, onUpdate, onDelete, onTransferSucces
           </div>
 
           <div className="flex flex-wrap gap-2 pt-2">
+            <Button variant="outline" className="gap-2 transition active:scale-[0.98]" asChild>
+              <Link href={`/dashboard/songs/${song.id}`}>
+                <ExternalLink className="h-4 w-4" />
+                {t.songs.viewLyrics}
+              </Link>
+            </Button>
             <Button
               variant={isInCart ? "default" : "outline"}
               className="gap-2 transition active:scale-[0.98]"

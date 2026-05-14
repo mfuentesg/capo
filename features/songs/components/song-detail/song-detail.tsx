@@ -4,7 +4,6 @@ import {
   X,
   Clock,
   Trash2,
-  ListPlus,
   Check,
   Pencil,
   Music2,
@@ -36,7 +35,6 @@ import {
   useEffectiveSongSettings,
   useUpsertUserSongSettings
 } from "@/features/songs/hooks/use-user-song-settings"
-import { usePlaylistDraft } from "@/features/playlist-draft"
 import { useTeams } from "@/features/teams"
 import { useAppContext } from "@/features/app-context"
 import { transposeKey, calculateCapoKey } from "@/lib/music-theory"
@@ -129,8 +127,6 @@ interface SongDetailProps {
 
 export function SongDetail({ song, onClose, onUpdate, onDelete, onTransferSuccess }: SongDetailProps) {
   const { t } = useTranslation()
-  const { isSongInDraft, toggleSongInDraft } = usePlaylistDraft()
-  const isInCart = isSongInDraft(song.id)
   const { transpose, capo: capoPosition } = useEffectiveSongSettings(song)
   const { mutate: upsertSettings } = useUpsertUserSongSettings(song)
   const deleteDialogIds = createOverlayIds(`song-detail-delete-${song.id}`)
@@ -209,12 +205,6 @@ export function SongDetail({ song, onClose, onUpdate, onDelete, onTransferSucces
           </div>
         </div>
         <div className="flex items-center gap-1 shrink-0">
-          <Button variant="outline" size="sm" className="gap-1.5" aria-label={t.songs.openSong} asChild>
-            <Link href={`/dashboard/songs/${song.id}`}>
-              <ExternalLink className="h-4 w-4" />
-              <span className="hidden sm:inline">{t.songs.openSong}</span>
-            </Link>
-          </Button>
           <Button variant="ghost" size="icon" onClick={onClose} aria-label={t.common.close}>
             <X className="h-4 w-4" />
           </Button>
@@ -384,22 +374,11 @@ export function SongDetail({ song, onClose, onUpdate, onDelete, onTransferSucces
           </div>
 
           <div className="flex flex-wrap gap-2 pt-2">
-            <Button
-              variant={isInCart ? "default" : "outline"}
-              className="gap-2 transition active:scale-[0.98]"
-              onClick={() => toggleSongInDraft(song)}
-            >
-              {isInCart ? (
-                <>
-                  <Check className="h-4 w-4" />
-                  {t.songs.addedToSelection}
-                </>
-              ) : (
-                <>
-                  <ListPlus className="h-4 w-4" />
-                  {t.songs.addToPlaylist}
-                </>
-              )}
+            <Button variant="outline" className="gap-2 transition active:scale-[0.98]" asChild>
+              <Link href={`/dashboard/songs/${song.id}`}>
+                <ExternalLink className="h-4 w-4" />
+                {t.songs.viewLyrics}
+              </Link>
             </Button>
             {canTransfer && (
               <Button

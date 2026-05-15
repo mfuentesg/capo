@@ -408,6 +408,26 @@
   padding: 5px 10px 7px;
 }
 
+/* ── Label-only chip ({comment: text, label} / {sbox: TEXT, label}) ─ */
+.lyrics-label {
+  --label-color: oklch(0.55 0.12 195);
+  display: block;
+  font-size: 0.68em;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  color: var(--label-color);
+  background: color-mix(in oklch, var(--label-color) 12%, transparent);
+  border: 1px solid color-mix(in oklch, var(--label-color) 22%, transparent);
+  border-radius: 6px;
+  margin: 6px 0;
+}
+
+.dark .lyrics-label {
+  --label-color: oklch(0.68 0.12 195);
+}
+
 /* ── Box blocks ({start_of_box} / {sbox}) ────────────────────────── */
 .lyrics-box {
   --box-color: oklch(0.55 0.12 195);

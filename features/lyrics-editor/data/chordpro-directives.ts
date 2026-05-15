@@ -175,9 +175,9 @@ export const CHORDPRO_DIRECTIVES: ChordProDirective[] = [
     shorthand: "sbox",
     category: "section",
     description:
-      "Wraps multi-line content in a labeled box with the same visual style as {comment_box}. The label after the colon is free text and becomes the box header. The closing {end_of_box} / {ebox} is optional — if omitted the box captures everything to the end of the section. Supports chords, lyrics, and volta blocks inside. Custom extension.",
+      "Wraps multi-line content in a labeled teal box. The closing {end_of_box} / {ebox} is optional — if omitted the box captures everything to the end of the section. Add ', label' to render as a compact title chip instead of a full box (useful for headings with no body content). Custom extension.",
     example:
-      "{sbox: Verse 1}\n[G]Amazing [D]grace, how [Em]sweet the [G]sound\nThat [G]saved a [C]wretch like [G]me\n{ebox}\n\n{sbox: NOTE}\nKey changes to E at the last chorus!"
+      "{sbox: Verse 1}\n[G]Amazing [D]grace, how [Em]sweet the [G]sound\n{ebox}\n\n{sbox: NOTE}\nKey changes to E at the last chorus!\n\n{sbox: SECTION TITLE, label}    ← compact chip, no body"
   },
 
   // Volta (iteration) sections — custom extension
@@ -197,9 +197,9 @@ export const CHORDPRO_DIRECTIVES: ChordProDirective[] = [
     shorthand: "c",
     category: "comment",
     description:
-      "Adds an annotation to the rendered output. At the top level it creates a named section (collapsible, colored header) that can also be referenced by {repeat}. Inside a {start_of_*} block it renders as an inline code-comment (// text).",
+      "Renders a teal comment box with the annotation text. Add ', label' to switch to a compact title chip instead of the full box — useful when no body content is needed. At the top level the section name is also indexed for {repeat} references.",
     example:
-      "Top-level named section:\n{c: Intro}\n[Am][G] x4\n\nInside a section block (renders as // comment):\n{start_of_bridge: Bridge}\n{c: sing softly here}\n[Em]Lyrics...\n{end_of_bridge}"
+      "Full comment box:\n{c: Key changes to E here}\n\nCompact title chip (label flag):\n{c: VERSE 1, label}\n[G]Amazing grace...\n\nInside a section block:\n{start_of_bridge: Bridge}\n{c: sing softly here}\n[Em]Lyrics...\n{end_of_bridge}"
   },
   {
     name: "comment_italic",
@@ -286,6 +286,13 @@ export const CHORDPRO_DIRECTIVES: ChordProDirective[] = [
 ]
 
 export const SECTION_FLAG_DOCS: { flag: string; description: string; example: string }[] = [
+  {
+    flag: "label",
+    description:
+      "Render as a compact title chip instead of a full box. Applies to {comment} and {start_of_box} / {sbox} directives. Useful when you want a styled heading with no body content — just the label text in a small rounded teal chip.",
+    example:
+      "{c: VERSE 1, label}    ← compact chip heading\n[G]Amazing grace...\n\n{sbox: NOTE, label}    ← chip, body content between tags is ignored"
+  },
   {
     flag: "inline",
     description:

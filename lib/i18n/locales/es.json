@@ -305,7 +305,8 @@
     "roleChangeOwnerNotAllowed": "No se puede cambiar el propietario del equipo",
     "roleChangePermissionDenied": "No tienes permiso para cambiar roles",
     "roleChangeAdminLimit": "Los administradores solo pueden asignar Miembro o Espectador",
-    "lyricsCopied": "Letra copiada al portapapeles"
+    "lyricsCopied": "Letra copiada al portapapeles",
+    "lyricsConvertedToChordPro": "Texto pegado convertido a ChordPro"
   },
   "errors": {
     "unexpectedError": "Ocurrió un error inesperado. Por favor, inténtelo de nuevo.",

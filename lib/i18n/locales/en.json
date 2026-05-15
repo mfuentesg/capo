@@ -305,7 +305,8 @@
     "roleChangeOwnerNotAllowed": "Cannot change the team owner",
     "roleChangePermissionDenied": "You do not have permission to change roles",
     "roleChangeAdminLimit": "Admins can only assign Member or Viewer",
-    "lyricsCopied": "Lyrics copied to clipboard"
+    "lyricsCopied": "Lyrics copied to clipboard",
+    "lyricsConvertedToChordPro": "Pasted text converted to ChordPro"
   },
   "errors": {
     "unexpectedError": "An unexpected error occurred. Please try again.",

@@ -226,14 +226,10 @@
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
-  position: relative;
 }
 
-/* Chord floats above the lyric without contributing to column width */
+/* Chord in normal flow — .clp width = max(chord-width, lyric-width), prevents overlap */
 .clp > :first-child {
-  position: absolute;
-  top: 0;
-  left: 0;
   white-space: nowrap;
   min-height: 1.6em;
 }
@@ -241,35 +237,16 @@
 .clp-lyric {
   white-space: pre;
   line-height: inherit;
-  padding-top: 1.6em; /* reserve space for the chord row above */
-}
-
-/* When no lyric text is present the chord must be in normal flow so the .clp
-   container is sized by the chord width — prevents chords overlapping each other. */
-.clp--chord-only > :first-child {
-  position: static;
-}
-
-.clp--chord-only .clp-lyric {
-  padding-top: 0; /* chord is in-flow, no need to reserve space */
 }
 
 /* ── Chord / lyric visibility toggles ───────────────────────────── */
-/* Hide chords: remove chord spans and collapse the space they reserved */
 .hide-chords .chord,
 .hide-chords .clp-chord-empty {
   display: none;
 }
-.hide-chords .clp-lyric {
-  padding-top: 0;
-}
 
-/* Hide lyrics: collapse lyric spans, let chords flow in normal document flow */
 .hide-lyrics .clp-lyric {
   display: none;
-}
-.hide-lyrics .clp > :first-child {
-  position: static;
 }
 
 /* ── Section accent colours by type ─────────────────────────────── */

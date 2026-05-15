@@ -199,10 +199,7 @@ function processChordProContent(
             const chordSpan = chord
               ? `<span class="chord">${chord}</span>`
               : `<span class="clp-chord-empty"></span>`
-            // When there is no lyric text the chord must stay in normal flow so it
-            // sizes the .clp container — otherwise all zero-width .clp columns collapse
-            // and their absolute-positioned chords overlap each other.
-            const clpClass = chord && !lyrics ? "clp clp--chord-only" : "clp"
+            const clpClass = "clp"
             clpParts.push(
               `<span class="${clpClass}">${chordSpan}<span class="clp-lyric">${lyrics}</span></span>`
             )

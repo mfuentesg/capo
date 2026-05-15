@@ -63,6 +63,11 @@ const SUPPORTED_DIRECTIVES = [
   { label: "sopc", detail: "Begin pre-chorus (short)", apply: "sopc: " },
   { label: "end_of_pre_chorus", detail: "End pre-chorus section", apply: "end_of_pre_chorus}" },
   { label: "eopc", detail: "End pre-chorus (short)", apply: "eopc}" },
+  // Box sections — custom extension
+  { label: "start_of_box", detail: "Begin labeled box — closing tag optional", apply: "start_of_box: " },
+  { label: "sbox", detail: "Begin box (short) — closing tag optional", apply: "sbox: " },
+  { label: "end_of_box", detail: "End box section", apply: "end_of_box}" },
+  { label: "ebox", detail: "End box (short)", apply: "ebox}" },
   // Volta (iteration) sections — custom extension
   { label: "start_of_volta", detail: "Begin volta/iteration — e.g. {sovt: 1st time}", apply: "start_of_volta: " },
   { label: "sovt", detail: "Begin volta (short) — e.g. {sovt: 1st time}", apply: "sovt: " },
@@ -99,10 +104,13 @@ const FLAG_DIRECTIVES = new Set([
   "start_of_intro", "soi",
   "start_of_outro", "soo",
   "start_of_pre_chorus", "sopc",
+  "start_of_box", "sbox",
+  "comment", "c", "comment_italic", "comment_box",
   "repeat",
 ])
 
 const FLAG_COMPLETIONS = [
+  { label: "label", detail: "compact title chip — no body content" },
   { label: "inline", detail: "render chords inline with text" },
   { label: "attention", detail: "! — mark for special attention" },
   { label: "forte", detail: "f — forte (loud)" },

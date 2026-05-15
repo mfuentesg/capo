@@ -28,7 +28,8 @@ const SECTION_FLAGS = [
   "vamp",
   "tag",
   "break",
-  "inline"
+  "inline",
+  "label"
 ] as const
 type SectionFlag = (typeof SECTION_FLAGS)[number]
 
@@ -43,7 +44,7 @@ type LyricsSegment =
       flags: SectionFlag[]
       inline: boolean
     }
-  | { type: "repeat"; name: string; count: number; html: string; found: boolean }
+  | { type: "repeat"; name: string; count: number; html: string; found: boolean; sectionType: string }
 
 // Unique tokens that survive ChordProParser unchanged (no [A-G] at word start).
 const COMMENT_TOKEN = "SECTIONLBL"
@@ -54,6 +55,11 @@ const PERF_NOTE_TOKEN = "PERFORMNOTE"
 // Lazy [\s\S]*? prevents over-matching across multiple volta blocks.
 const VOLTA_SPLIT_RE =
   /\{(?:start_of_volta|sovt)(?::\s*([^}]*))?\}([\s\S]*?)\{(?:end_of_volta|eovt)\}/gi
+
+// Matches a {start_of_box} / {sbox} opening tag (closing tag is optional).
+const BOX_OPEN_RE = /\{(?:start_of_box|sbox)(?::\s*([^}]*))?\}/gi
+// Matches a {end_of_box} / {ebox} closing tag.
+const BOX_CLOSE_RE = /\{(?:end_of_box|ebox)\}/i
 
 function escapeHtml(str: string): string {
   return str
@@ -148,10 +154,12 @@ function processChordProContent(
       // Token: {comment}
       const commentMatch = lineLyrics.match(new RegExp(`${COMMENT_TOKEN}(\\d+)`))
       if (commentMatch) {
-        const label = commentLabels[parseInt(commentMatch[1], 10)]
-        return label
-          ? `<div class="lyrics-comment"><div class="lyrics-comment-label">${escapeHtml(commentLabel)}</div><div class="lyrics-comment-body">${escapeHtml(label)}</div></div>`
-          : ""
+        const raw = commentLabels[parseInt(commentMatch[1], 10)]
+        if (!raw) return ""
+        const { name: text, flags: cflags } = parseSectionValue(raw)
+        return cflags.includes("label")
+          ? `<div class="lyrics-label">${escapeHtml(text)}</div>`
+          : `<div class="lyrics-comment"><div class="lyrics-comment-label">${escapeHtml(commentLabel)}</div><div class="lyrics-comment-body">${escapeHtml(text)}</div></div>`
       }
 
       // Token: {note}
@@ -171,7 +179,8 @@ function processChordProContent(
       let hasChords = false
       let lyricsLine = ""
       const inlineParts: string[] = []
-      const clpParts: string[] = []
+      const chordColParts: string[] = []
+      let lyricsAccum = ""
       let hasContentItems = false
 
       line.items.forEach((item) => {
@@ -190,17 +199,15 @@ function processChordProContent(
             if (lyrics) inlineParts.push(lyrics)
             if (chord) inlineParts.push(`<span class="chord">${chord}</span> `)
           } else {
-            // Flex chord-lyric pair: chord stacked above its lyrics, no space-based positioning
-            const chordSpan = chord
-              ? `<span class="chord">${chord}</span>`
-              : `<span class="clp-chord-empty"></span>`
-            // When there is no lyric text the chord must stay in normal flow so it
-            // sizes the .clp container — otherwise all zero-width .clp columns collapse
-            // and their absolute-positioned chords overlap each other.
-            const clpClass = chord && !lyrics ? "clp clp--chord-only" : "clp"
-            clpParts.push(
-              `<span class="${clpClass}">${chordSpan}<span class="clp-lyric">${lyrics}</span></span>`
+            // Two-row layout: chord row + lyric row rendered separately.
+            // Column width = max(chord chars, lyric chars) so chord badges don't overlap,
+            // while the lyric row is a single natural text block with no inter-syllable gaps.
+            const colWidth = Math.max(chord.length, lyrics.length)
+            const chordSpan = chord ? `<span class="chord">${chord}</span>` : ``
+            chordColParts.push(
+              `<span class="clp-col" style="min-width:${colWidth}ch">${chordSpan}</span>`
             )
+            lyricsAccum += lyrics
           }
 
           lyricsLine += lyrics
@@ -233,7 +240,7 @@ function processChordProContent(
           .trim()
       }
       if (hasChords) {
-        return `<span class="chord-line">${clpParts.join("")}</span>`
+        return `<span class="clp-pair"><span class="clp-chords">${chordColParts.join("")}</span><span class="clp-lyric-text">${lyricsAccum}</span></span>`
       }
       return lyricsLine
     })
@@ -311,6 +318,92 @@ function splitAndProcessVolta(
   return parts.join("\n")
 }
 
+// Splits text at {start_of_box} / {sbox} boundaries and wraps each piece in a
+// labeled card. The closing {end_of_box} / {ebox} tag is optional — if omitted
+// the box captures everything through the end of the current text block.
+function splitAndProcessBox(
+  text: string,
+  transpose: number,
+  capo: number,
+  sectionLabels: Record<string, string>,
+  inline: boolean,
+  commentLabel: string
+): string {
+  const parts: string[] = []
+  let lastIndex = 0
+
+  const openRe = new RegExp(BOX_OPEN_RE.source, "gi")
+  let match: RegExpExecArray | null
+
+  while ((match = openRe.exec(text)) !== null) {
+    const before = text.slice(lastIndex, match.index)
+    if (before) {
+      parts.push(
+        splitAndProcessVolta(
+          before,
+          transpose,
+          capo,
+          sectionLabels,
+          inline,
+          commentLabel
+        ).trimEnd()
+      )
+    }
+
+    const label = match[1]?.trim() ?? ""
+    const afterOpen = match.index + match[0].length
+    const remaining = text.slice(afterOpen)
+    const closeMatch = BOX_CLOSE_RE.exec(remaining)
+
+    let content: string
+    if (closeMatch) {
+      content = remaining.slice(0, closeMatch.index)
+      lastIndex = afterOpen + closeMatch.index + closeMatch[0].length
+    } else {
+      // No closing tag — box runs to end of this text block.
+      content = remaining
+      lastIndex = text.length
+    }
+    openRe.lastIndex = lastIndex
+
+    const { name: parsedLabel, flags: boxFlags } = parseSectionValue(label || "x")
+    const boxLabelText = label ? parsedLabel : ""
+    if (boxFlags.includes("label")) {
+      parts.push(`<div class="lyrics-label">${escapeHtml(boxLabelText)}</div>`)
+    } else {
+      const innerHtml = splitAndProcessVolta(
+        content.trim(),
+        transpose,
+        capo,
+        sectionLabels,
+        inline,
+        commentLabel
+      )
+      const labelHtml = boxLabelText
+        ? `<div class="lyrics-box-label">${escapeHtml(boxLabelText)}</div>`
+        : ""
+      parts.push(
+        `<div class="lyrics-box">${labelHtml}<div class="lyrics-box-content">${innerHtml}</div></div>`
+      )
+    }
+  }
+
+  const tail = text.slice(lastIndex)
+  if (tail) {
+    const tailHtml = splitAndProcessVolta(
+      lastIndex > 0 ? tail.trimStart() : tail,
+      transpose,
+      capo,
+      sectionLabels,
+      inline,
+      commentLabel
+    )
+    if (tailHtml) parts.push(tailHtml)
+  }
+
+  return parts.join("\n")
+}
+
 function formatLyricsToHtml(
   text: string,
   transpose: number,
@@ -318,7 +411,7 @@ function formatLyricsToHtml(
   sectionLabels: Record<string, string>,
   commentLabel: string
 ): string {
-  return splitAndProcessVolta(text, transpose, capo, sectionLabels, false, commentLabel)
+  return splitAndProcessBox(text, transpose, capo, sectionLabels, false, commentLabel)
 }
 
 function formatInlineLyricsToHtml(
@@ -328,7 +421,7 @@ function formatInlineLyricsToHtml(
   sectionLabels: Record<string, string>,
   commentLabel: string
 ): string {
-  return splitAndProcessVolta(text, transpose, capo, sectionLabels, true, commentLabel)
+  return splitAndProcessBox(text, transpose, capo, sectionLabels, true, commentLabel)
 }
 
 // Matches the opening { of any directive that starts a new section or a repeat
@@ -342,18 +435,26 @@ const SECTION_BOUNDARY_RE =
 const SEGMENT_SCAN_RE =
   /\{(start_of_chorus|soc|start_of_verse|sov|start_of_bridge|sob|start_of_tab|sot|start_of_grid|sog|start_of_intro|soi|start_of_outro|soo|start_of_pre_chorus|sopc|c(?:omment(?:_italic|_box)?)?|repeat)(?::\s*([^}]*))?\}/gi
 
-function buildSectionMap(lyrics: string): Map<string, string> {
-  const map = new Map<string, string>()
+interface SectionEntry {
+  content: string
+  sectionType: string
+}
+
+function buildSectionMap(lyrics: string): Map<string, SectionEntry> {
+  const map = new Map<string, SectionEntry>()
 
   // 1. Named explicit blocks: {soc/sov/sob/soi/soo/sopc/sot/sog: Name}...{end}
+  // Capture group 1 = directive name, group 2 = label, group 3 = content.
   const blockRe =
-    /\{(?:start_of_chorus|soc|start_of_verse|sov|start_of_bridge|sob|start_of_intro|soi|start_of_outro|soo|start_of_pre_chorus|sopc|start_of_tab|sot|start_of_grid|sog)(?::\s*([^}]+))?\}([\s\S]*?)\{(?:end_of_chorus|eoc|end_of_verse|eov|end_of_bridge|eob|end_of_intro|eoi|end_of_outro|eoo|end_of_pre_chorus|eopc|end_of_tab|eot|end_of_grid|eog)\}/gi
+    /\{(start_of_chorus|soc|start_of_verse|sov|start_of_bridge|sob|start_of_intro|soi|start_of_outro|soo|start_of_pre_chorus|sopc|start_of_tab|sot|start_of_grid|sog)(?::\s*([^}]+))?\}([\s\S]*?)\{(?:end_of_chorus|eoc|end_of_verse|eov|end_of_bridge|eob|end_of_intro|eoi|end_of_outro|eoo|end_of_pre_chorus|eopc|end_of_tab|eot|end_of_grid|eog)\}/gi
   let match: RegExpExecArray | null
   while ((match = blockRe.exec(lyrics)) !== null) {
-    const name = match[1]?.trim()
+    const directive = match[1].toLowerCase()
+    const sectionType = SECTION_DIRECTIVE_MAP[directive] ?? "section"
+    const name = match[2]?.trim()
     if (name) {
       const { name: cleanName } = parseSectionValue(name)
-      map.set(cleanName.toLowerCase(), match[2].trim())
+      map.set(cleanName.toLowerCase(), { content: match[3].trim(), sectionType })
     }
   }
 
@@ -370,7 +471,7 @@ function buildSectionMap(lyrics: string): Map<string, string> {
     const nextBoundary = SECTION_BOUNDARY_RE.exec(remaining)
     const content = (nextBoundary ? remaining.slice(0, nextBoundary.index) : remaining).trim()
 
-    if (content) map.set(name.toLowerCase(), content)
+    if (content) map.set(name.toLowerCase(), { content, sectionType: "comment" })
   }
 
   return map
@@ -403,7 +504,7 @@ function parseSectionValue(raw: string): { name: string; count: number; flags: S
 
 function buildSegments(
   lyrics: string,
-  sectionMap: Map<string, string>,
+  sectionMap: Map<string, SectionEntry>,
   transpose: number,
   capo: number,
   sectionLabels: Record<string, string>,
@@ -444,35 +545,35 @@ function buildSegments(
     if (directive === "repeat") {
       if (value) {
         const { name, count } = parseSectionValue(value)
-        const content = sectionMap.get(name.toLowerCase())
-        if (content) {
+        const entry = sectionMap.get(name.toLowerCase())
+        if (entry) {
           segments.push({
             type: "repeat",
             name,
             count,
-            html: formatLyricsToHtml(content, transpose, capo, sectionLabels, commentLabel),
-            found: true
+            html: formatLyricsToHtml(entry.content, transpose, capo, sectionLabels, commentLabel),
+            found: true,
+            sectionType: entry.sectionType
           })
         } else {
-          segments.push({ type: "repeat", name, count, html: "", found: false })
+          segments.push({ type: "repeat", name, count, html: "", found: false, sectionType: "repeat" })
         }
       }
     } else if (/^c(omment(_italic|_box)?)?$/.test(directive)) {
-      // Named comment section: runs until the next section boundary.
+      // Emit as a section segment so it participates in hasComplexSegments and
+      // gets proper space-y-6 spacing. Content after the directive is not consumed
+      // — it flows as normal lyrics in subsequent segments.
       if (value) {
-        const remaining = lyrics.slice(matchEnd)
-        const nextBoundary = SECTION_BOUNDARY_RE.exec(remaining)
-        const content = (nextBoundary ? remaining.slice(0, nextBoundary.index) : remaining).trim()
+        const { name, flags: cflags } = parseSectionValue(value)
         segments.push({
           type: "section",
-          name: value,
-          sectionType: "comment",
-          html: formatLyricsToHtml(content, transpose, capo, sectionLabels, commentLabel),
+          name,
+          sectionType: cflags.includes("label") ? "comment-label" : "comment",
+          html: "",
           count: 1,
           flags: [],
           inline: false
         })
-        newPos = matchEnd + (nextBoundary ? nextBoundary.index : remaining.length)
       }
     } else {
       // start_of_X — find the matching end_of_X
@@ -534,7 +635,8 @@ const FLAG_CONFIG: Record<SectionFlag, { label: string; className: string }> = {
     className: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400"
   },
   break: { label: "break", className: "bg-muted text-muted-foreground" },
-  inline: { label: "inline", className: "bg-muted text-muted-foreground" }
+  inline: { label: "inline", className: "bg-muted text-muted-foreground" },
+  label: { label: "label", className: "bg-muted text-muted-foreground" }
 }
 
 interface SectionHeaderProps {
@@ -558,10 +660,10 @@ function SectionHeader({ name, isCollapsed, onToggle, icon, flags }: SectionHead
   )
 
   const flagBadges =
-    flags && flags.some((f) => f !== "inline") ? (
+    flags && flags.some((f) => f !== "inline" && f !== "label") ? (
       <span className="flex items-center gap-1 shrink-0">
         {flags
-          .filter((f) => f !== "inline")
+          .filter((f) => f !== "inline" && f !== "label")
           .map((flag) => {
             const cfg = FLAG_CONFIG[flag]
             return (
@@ -735,6 +837,19 @@ export function RenderedSong({
             )
           }
 
+          if (segment.type === "section" && segment.sectionType === "comment") {
+            return (
+              <div key={index} className="lyrics-comment">
+                <div className="lyrics-comment-label">{t.songSections.comment}</div>
+                <div className="lyrics-comment-body">{segment.name}</div>
+              </div>
+            )
+          }
+
+          if (segment.type === "section" && segment.sectionType === "comment-label") {
+            return <div key={index} className="lyrics-label">{segment.name}</div>
+          }
+
           if (segment.type === "section") {
             const isCollapsed = collapsedSet.has(index)
             const sectionLabel =
@@ -777,7 +892,7 @@ export function RenderedSong({
 
           const isCollapsed = collapsedSet.has(index)
           return (
-            <div key={index} className="section-repeat" data-section-type="repeat">
+            <div key={index} className="section-repeat" data-section-type={segment.sectionType}>
               <SectionHeader
                 name={repeatLabel}
                 isCollapsed={isCollapsed}

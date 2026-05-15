@@ -104,10 +104,13 @@ const FLAG_DIRECTIVES = new Set([
   "start_of_intro", "soi",
   "start_of_outro", "soo",
   "start_of_pre_chorus", "sopc",
+  "start_of_box", "sbox",
+  "comment", "c", "comment_italic", "comment_box",
   "repeat",
 ])
 
 const FLAG_COMPLETIONS = [
+  { label: "label", detail: "compact title chip — no body content" },
   { label: "inline", detail: "render chords inline with text" },
   { label: "attention", detail: "! — mark for special attention" },
   { label: "forte", detail: "f — forte (loud)" },

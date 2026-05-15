@@ -193,13 +193,14 @@
   @apply font-bold cursor-pointer;
 }
 
-/* Styling only on stacked chords (above lyrics in chord-line layout) */
-.clp .chord {
+/* Stacked chord badge styling */
+.clp-col .chord {
   color: var(--chord);
   background: color-mix(in oklch, var(--chord) 12%, transparent);
   border-radius: 3px;
   padding: 0 3px;
   margin: 0 1px;
+  white-space: nowrap;
 }
 
 .section-repeat-content .chord {
@@ -211,41 +212,46 @@
   @apply underline;
 }
 
-.clp .chord:hover {
+.clp-col .chord:hover {
   background: color-mix(in oklch, var(--chord) 22%, transparent);
 }
 
-/* Flex chord-lyric layout — avoids space-based alignment that breaks with proportional fonts */
-.chord-line {
-  display: inline-flex;
-  flex-wrap: wrap;
+/* Two-row chord-lyric layout: chord row above, lyric as a single natural text block below.
+   Column width = max(chord chars, lyric chars) keeps chord badges from overlapping each other.
+   The lyric row is independent of column widths so syllables have no inter-word gaps. */
+.clp-pair {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.clp-chords {
+  display: flex;
+  flex-wrap: nowrap;
   align-items: flex-start;
 }
 
-.clp {
+.clp-col {
   display: inline-flex;
-  flex-direction: column;
   align-items: flex-start;
+  flex-shrink: 0;
 }
 
-/* Chord in normal flow — .clp width = max(chord-width, lyric-width), prevents overlap */
-.clp > :first-child {
-  white-space: nowrap;
-  min-height: 1.6em;
-}
-
-.clp-lyric {
+.clp-lyric-text {
+  display: block;
   white-space: pre;
   line-height: inherit;
 }
 
 /* ── Chord / lyric visibility toggles ───────────────────────────── */
-.hide-chords .chord,
-.hide-chords .clp-chord-empty {
+.hide-chords .chord {
   display: none;
 }
 
-.hide-lyrics .clp-lyric {
+.hide-chords .clp-chords {
+  display: none;
+}
+
+.hide-lyrics .clp-lyric-text {
   display: none;
 }
 

@@ -179,7 +179,8 @@ function processChordProContent(
       let hasChords = false
       let lyricsLine = ""
       const inlineParts: string[] = []
-      const clpParts: string[] = []
+      const chordColParts: string[] = []
+      let lyricsAccum = ""
       let hasContentItems = false
 
       line.items.forEach((item) => {
@@ -198,17 +199,15 @@ function processChordProContent(
             if (lyrics) inlineParts.push(lyrics)
             if (chord) inlineParts.push(`<span class="chord">${chord}</span> `)
           } else {
-            // Flex chord-lyric pair: chord stacked above its lyrics, no space-based positioning
-            const chordSpan = chord
-              ? `<span class="chord">${chord}</span>`
-              : `<span class="clp-chord-empty"></span>`
-            // When there is no lyric text the chord must stay in normal flow so it
-            // sizes the .clp container — otherwise all zero-width .clp columns collapse
-            // and their absolute-positioned chords overlap each other.
-            const clpClass = chord && !lyrics ? "clp clp--chord-only" : "clp"
-            clpParts.push(
-              `<span class="${clpClass}">${chordSpan}<span class="clp-lyric">${lyrics}</span></span>`
+            // Two-row layout: chord row + lyric row rendered separately.
+            // Column width = max(chord chars, lyric chars) so chord badges don't overlap,
+            // while the lyric row is a single natural text block with no inter-syllable gaps.
+            const colWidth = Math.max(chord.length, lyrics.length)
+            const chordSpan = chord ? `<span class="chord">${chord}</span>` : ``
+            chordColParts.push(
+              `<span class="clp-col" style="min-width:${colWidth}ch">${chordSpan}</span>`
             )
+            lyricsAccum += lyrics
           }
 
           lyricsLine += lyrics
@@ -241,7 +240,7 @@ function processChordProContent(
           .trim()
       }
       if (hasChords) {
-        return `<span class="chord-line">${clpParts.join("")}</span>`
+        return `<span class="clp-pair"><span class="clp-chords">${chordColParts.join("")}</span><span class="clp-lyric-text">${lyricsAccum}</span></span>`
       }
       return lyricsLine
     })

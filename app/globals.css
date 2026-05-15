@@ -193,13 +193,14 @@
   @apply font-bold cursor-pointer;
 }
 
-/* Styling only on stacked chords (above lyrics in chord-line layout) */
-.clp .chord {
+/* Stacked chord badge styling */
+.clp-col .chord {
   color: var(--chord);
   background: color-mix(in oklch, var(--chord) 12%, transparent);
   border-radius: 3px;
   padding: 0 3px;
   margin: 0 1px;
+  white-space: nowrap;
 }
 
 .section-repeat-content .chord {
@@ -211,65 +212,47 @@
   @apply underline;
 }
 
-.clp .chord:hover {
+.clp-col .chord:hover {
   background: color-mix(in oklch, var(--chord) 22%, transparent);
 }
 
-/* Flex chord-lyric layout — avoids space-based alignment that breaks with proportional fonts */
-.chord-line {
-  display: inline-flex;
-  flex-wrap: wrap;
+/* Two-row chord-lyric layout: chord row above, lyric as a single natural text block below.
+   Column width = max(chord chars, lyric chars) keeps chord badges from overlapping each other.
+   The lyric row is independent of column widths so syllables have no inter-word gaps. */
+.clp-pair {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.clp-chords {
+  display: flex;
+  flex-wrap: nowrap;
   align-items: flex-start;
 }
 
-.clp {
+.clp-col {
   display: inline-flex;
-  flex-direction: column;
   align-items: flex-start;
-  position: relative;
+  flex-shrink: 0;
 }
 
-/* Chord floats above the lyric without contributing to column width */
-.clp > :first-child {
-  position: absolute;
-  top: 0;
-  left: 0;
-  white-space: nowrap;
-  min-height: 1.6em;
-}
-
-.clp-lyric {
+.clp-lyric-text {
+  display: block;
   white-space: pre;
   line-height: inherit;
-  padding-top: 1.6em; /* reserve space for the chord row above */
-}
-
-/* When no lyric text is present the chord must be in normal flow so the .clp
-   container is sized by the chord width — prevents chords overlapping each other. */
-.clp--chord-only > :first-child {
-  position: static;
-}
-
-.clp--chord-only .clp-lyric {
-  padding-top: 0; /* chord is in-flow, no need to reserve space */
 }
 
 /* ── Chord / lyric visibility toggles ───────────────────────────── */
-/* Hide chords: remove chord spans and collapse the space they reserved */
-.hide-chords .chord,
-.hide-chords .clp-chord-empty {
+.hide-chords .chord {
   display: none;
-}
-.hide-chords .clp-lyric {
-  padding-top: 0;
 }
 
-/* Hide lyrics: collapse lyric spans, let chords flow in normal document flow */
-.hide-lyrics .clp-lyric {
+.hide-chords .clp-chords {
   display: none;
 }
-.hide-lyrics .clp > :first-child {
-  position: static;
+
+.hide-lyrics .clp-lyric-text {
+  display: none;
 }
 
 /* ── Section accent colours by type ─────────────────────────────── */

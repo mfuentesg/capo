@@ -324,15 +324,7 @@
 }
 
 .section-repeat-header {
-  border-left: 2px solid var(--section-accent);
-  padding-left: 0.625rem;
-}
-
-@media (max-width: 767px) {
-  .section-repeat-header {
-    border-left: none;
-    padding-left: 0;
-  }
+  @apply md:border-l-2 md:pl-[0.625rem] md:[border-color:var(--section-accent)];
 }
 
 .section-repeat-content {

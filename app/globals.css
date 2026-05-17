@@ -187,6 +187,7 @@
 
 .chordsheet-content {
   @apply whitespace-pre-wrap break-words leading-[1.6] overflow-x-visible m-0 max-w-full;
+  padding-right: 0.5rem;
 }
 
 .chordsheet-content .chord {

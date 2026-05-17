@@ -186,8 +186,10 @@
 }
 
 .chordsheet-content {
-  @apply whitespace-pre-wrap break-words leading-[1.6] overflow-x-visible m-0 max-w-full;
+  @apply whitespace-pre-wrap leading-[1.6] m-0 max-w-full;
+  overflow-x: auto;
   padding-right: 0.5rem;
+  overscroll-behavior-x: contain;
 }
 
 .chordsheet-content .chord {
@@ -324,6 +326,13 @@
 .section-repeat-header {
   border-left: 2px solid var(--section-accent);
   padding-left: 0.625rem;
+}
+
+@media (max-width: 767px) {
+  .section-repeat-header {
+    border-left: none;
+    padding-left: 0;
+  }
 }
 
 .section-repeat-content {

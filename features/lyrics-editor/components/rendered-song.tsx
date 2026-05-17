@@ -700,7 +700,7 @@ function SectionHeader({ name, isCollapsed, onToggle, icon, flags }: SectionHead
 
   if (!onToggle) {
     return (
-      <div className="flex items-center gap-2.5 mb-3 select-none">
+      <div className="section-repeat-header flex items-center gap-2.5 mb-3 select-none">
         {icon ?? dot}
         {label}
       </div>
@@ -709,7 +709,7 @@ function SectionHeader({ name, isCollapsed, onToggle, icon, flags }: SectionHead
 
   return (
     <button
-      className="flex items-center gap-2.5 mb-3 group cursor-pointer select-none w-full text-left bg-transparent border-0 p-0"
+      className="section-repeat-header flex items-center gap-2.5 mb-3 group cursor-pointer select-none w-full text-left bg-transparent border-0 p-0"
       onClick={onToggle}
       aria-expanded={!isCollapsed}
     >

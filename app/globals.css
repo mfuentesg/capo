@@ -319,8 +319,11 @@
 .section-repeat {
   --section-accent: var(--muted-foreground);
   @apply break-inside-avoid;
-  border-top: 2px solid var(--section-accent);
-  padding-top: 0.75rem;
+}
+
+.section-repeat-header {
+  border-left: 2px solid var(--section-accent);
+  padding-left: 0.625rem;
 }
 
 .section-repeat-content {

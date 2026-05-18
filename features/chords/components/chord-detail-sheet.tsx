@@ -6,7 +6,7 @@ import {
   ChordPositionDiagram,
   type ChordPosition,
 } from "@/components/chord-position-diagram"
-import { type ChordEntry } from "../utils/chord-db-helpers"
+import { type ChordEntry, isValidChordPosition } from "../utils/chord-db-helpers"
 import { cn } from "@/lib/utils"
 import { useLocale } from "@/features/settings"
 import { useChordOrientation } from "@/hooks/use-chord-orientation"
@@ -31,8 +31,9 @@ export function ChordDetailSheet({ chord, onClose }: ChordDetailSheetProps) {
   if (!chord) return null
 
   const displayName = chord.name
-  const total = chord.positions.length
-  const current = chord.positions[positionIndex] as ChordPosition
+  const validPositions = chord.positions.filter(isValidChordPosition) as ChordPosition[]
+  const total = validPositions.length
+  const current = validPositions[positionIndex]
 
   const navigate = (dir: "left" | "right", next: number) => {
     setSlideDir(dir)
@@ -99,7 +100,7 @@ export function ChordDetailSheet({ chord, onClose }: ChordDetailSheetProps) {
 
           {total > 1 && (
             <div className="flex gap-2">
-              {chord.positions.map((_, i) => (
+              {validPositions.map((_, i) => (
                 <button
                   key={i}
                   type="button"

@@ -4,7 +4,7 @@ export { ChordsPage } from "./components/chords-page"
 export { ChordGlossary } from "./components/chord-glossary"
 export { ChordAnalyzer } from "./components/chord-analyzer"
 
-export { getAllChords, searchChords, getChordsByKey, getAvailableKeys, keyLabel, toDbKey } from "./utils/chord-db-helpers"
+export { getAllChords, searchChords, getChordsByKey, getAvailableKeys, keyLabel, toDbKey, isValidChordPosition } from "./utils/chord-db-helpers"
 export type { ChordEntry, ChordPosition } from "./utils/chord-db-helpers"
 
 export { identifyChord, getNotesFromFrets, NOTE_NAMES } from "./utils/chord-identifier"

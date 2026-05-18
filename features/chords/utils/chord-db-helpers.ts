@@ -90,3 +90,24 @@ export function keyLabel(key: string): string {
 export function toDbKey(key: string): string {
   return key.replace("#", "sharp")
 }
+
+/**
+ * Returns false for positions that are physically impossible to play:
+ * a barre finger lies flat across every string in its span, so any string
+ * within that span that has a note at a LOWER fret than the barre is blocked
+ * and cannot sound — the position is invalid.
+ */
+export function isValidChordPosition(pos: ChordPosition): boolean {
+  for (const barreFret of pos.barres) {
+    const barredSi = pos.frets
+      .map((f, si) => (f === barreFret ? si : -1))
+      .filter((si) => si >= 0)
+    if (barredSi.length < 2) continue
+    const overallMin = Math.min(...barredSi)
+    const overallMax = Math.max(...barredSi)
+    for (let si = overallMin; si <= overallMax; si++) {
+      if (pos.frets[si] > 0 && pos.frets[si] < barreFret) return false
+    }
+  }
+  return true
+}

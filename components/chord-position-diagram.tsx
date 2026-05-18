@@ -86,46 +86,83 @@ export function ChordPositionDiagram({
   const nutBarY = flipVertical ? DIAGRAM_H - PT : PT - (isNut ? 5 : 1.5)
 
   // ── Barre metadata ─────────────────────────────────────────────────────────
-  const barreData = barres
-    .map((barreFret) => {
-      const barredSi = frets
-        .map((f, si) => (f === barreFret ? si : -1))
-        .filter((si) => si >= 0)
-      if (barredSi.length < 2) return null
+  type BarreDatum = { barreFret: number; minSi: number; maxSi: number; fingerNum: number }
 
-      // Find the barre finger: the finger covering the most strings at this fret.
-      // Strings with a lower-numbered finger are individually pressed, not barred
-      // (e.g. B9: A-string uses finger 2 while G/B/E are barred with finger 3).
-      const fingerGroups = new Map<number, number[]>()
-      barredSi.forEach((si) => {
-        const f = fingers[si]
-        if (f > 0) {
-          if (!fingerGroups.has(f)) fingerGroups.set(f, [])
-          fingerGroups.get(f)!.push(si)
+  // Explicit barres: split into contiguous segments so a gap (string at a
+  // different fret inside the range) doesn't get a bar drawn over it.
+  const explicitBarreData: BarreDatum[] = barres.flatMap((barreFret) => {
+    const barredSi = frets
+      .map((f, si) => (f === barreFret ? si : -1))
+      .filter((si) => si >= 0)
+    if (barredSi.length < 2) return []
+
+    const fingerNum =
+      Math.min(...barredSi.map((si) => fingers[si]).filter((f) => f > 0)) || 1
+
+    const segments: BarreDatum[] = []
+    let segStart = barredSi[0]
+    for (let i = 1; i <= barredSi.length; i++) {
+      if (i === barredSi.length || barredSi[i] !== barredSi[i - 1] + 1) {
+        if (barredSi[i - 1] - segStart >= 1) {
+          segments.push({ barreFret, minSi: segStart, maxSi: barredSi[i - 1], fingerNum })
         }
-      })
+        if (i < barredSi.length) segStart = barredSi[i]
+      }
+    }
+    return segments
+  })
 
-      let barreFingerNum = 1
-      let maxCount = 0
-      fingerGroups.forEach((sis, f) => {
-        if (sis.length > maxCount) { maxCount = sis.length; barreFingerNum = f }
-      })
+  // Inferred barres: same finger on 2+ strings at the same fret → bar from
+  // outermost to outermost (standard notation; other fingers press on top).
+  const inferredBarreData: BarreDatum[] = []
+  const fingerFretGroups = new Map<string, number[]>()
+  frets.forEach((fret, si) => {
+    if (fret <= 0) return
+    const fn = fingers[si]
+    if (fn <= 0) return
+    const key = `${fn}-${fret}`
+    const group = fingerFretGroups.get(key)
+    if (group) group.push(si)
+    else fingerFretGroups.set(key, [si])
+  })
+  fingerFretGroups.forEach((siList, key) => {
+    if (siList.length < 2) return
+    const [fnStr, fretStr] = key.split("-")
+    const barreFret = parseInt(fretStr)
+    const fingerNum = parseInt(fnStr)
+    const minSi = Math.min(...siList)
+    const maxSi = Math.max(...siList)
+    // Skip if already covered by an explicit barre segment
+    if (explicitBarreData.some((b) => b.barreFret === barreFret && b.minSi <= minSi && b.maxSi >= maxSi))
+      return
+    inferredBarreData.push({ barreFret, minSi, maxSi, fingerNum })
+  })
 
-      // Strings with finger >= barreFingerNum (or unassigned) belong to the barre.
-      // Strings with a lower finger show as individual dots instead.
-      const barreSis = barredSi.filter((si) => fingers[si] === 0 || fingers[si] >= barreFingerNum)
-      const effectiveSis = barreSis.length >= 2 ? barreSis : barredSi
+  const barreData = [...explicitBarreData, ...inferredBarreData]
 
-      const minSi = Math.min(...effectiveSis)
-      const maxSi = Math.max(...effectiveSis)
-      return { barreFret, minSi, maxSi, fingerNum: barreFingerNum, barreSis: effectiveSis }
-    })
-    .filter((b): b is NonNullable<typeof b> => b !== null)
-
-  // Strings whose dot is already covered by a barre bar
+  // Strings whose dot is already covered by a barre bar segment
   const barreCovered = new Set<string>()
   barreData.forEach((b) => {
-    b.barreSis.forEach((si) => barreCovered.add(`${si}-${b.barreFret}`))
+    for (let si = b.minSi; si <= b.maxSi; si++) {
+      barreCovered.add(`${si}-${b.barreFret}`)
+    }
+  })
+
+  // Strings physically blocked by a barre: fret < barreFret on a string within
+  // the barre's full span (min..max of all barred strings). A barre finger lies
+  // flat across the neck — it covers every string in that range, making any
+  // lower-fret note on those strings impossible to sound.
+  const barreBlocked = new Set<number>()
+  barres.forEach((barreFret) => {
+    const barredSi = frets
+      .map((f, si) => (f === barreFret ? si : -1))
+      .filter((si) => si >= 0)
+    if (barredSi.length < 2) return
+    const overallMin = Math.min(...barredSi)
+    const overallMax = Math.max(...barredSi)
+    for (let si = overallMin; si <= overallMax; si++) {
+      if (frets[si] > 0 && frets[si] < barreFret) barreBlocked.add(si)
+    }
   })
 
   return (
@@ -159,14 +196,25 @@ export function ChordPositionDiagram({
       {barreData.map((b) => {
         const barreLeft = Math.min(sx(b.minSi), sx(b.maxSi))
         const barreRight = Math.max(sx(b.minSi), sx(b.maxSi))
+        const barreCx = (barreLeft + barreRight) / 2
         return (
-          <rect
-            key={b.barreFret}
-            x={barreLeft - 9} y={dotY(b.barreFret) - 10}
-            width={barreRight - barreLeft + 18} height={20}
-            rx={10}
-            fill="currentColor" opacity="0.85"
-          />
+          <g key={`${b.barreFret}-${b.minSi}`}>
+            <rect
+              x={barreLeft - 9} y={dotY(b.barreFret) - 10}
+              width={barreRight - barreLeft + 18} height={20}
+              rx={10}
+              fill="currentColor" opacity="0.85"
+            />
+            {b.fingerNum > 0 && (
+              <text
+                x={barreCx} y={dotY(b.barreFret) + 4}
+                textAnchor="middle" fontSize="11" fontWeight="bold"
+                className="fill-white dark:fill-zinc-950"
+              >
+                {b.fingerNum}
+              </text>
+            )}
+          </g>
         )
       })}
 
@@ -183,10 +231,11 @@ export function ChordPositionDiagram({
         </text>
       )}
 
-      {/* Individual dots (skip barre-covered positions) */}
+      {/* Individual dots (skip barre-covered and barre-blocked positions) */}
       {frets.map((fret, si) => {
         if (fret <= 0) return null
         if (barreCovered.has(`${si}-${fret}`)) return null
+        if (barreBlocked.has(si)) return null
         const fingerNum = fingers[si]
         return (
           <g key={si}>

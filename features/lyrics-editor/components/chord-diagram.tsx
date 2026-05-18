@@ -3,7 +3,7 @@
 import * as React from "react"
 import { Chord as ChordJS } from "chordsheetjs"
 import guitarDataRaw from "@tombatossals/chords-db/lib/guitar.json"
-import { keyLabel, toDbKey } from "@/features/chords"
+import { keyLabel, toDbKey, isValidChordPosition } from "@/features/chords"
 import {
   Dialog,
   DialogContent,
@@ -289,6 +289,7 @@ export function ChordDiagram({ chordName, onClose }: ChordDiagramProps) {
       }
     }
 
+    foundPositions = foundPositions.filter(isValidChordPosition)
     return { positions: foundPositions, totalPositions: foundPositions.length, isAlgorithmic: false }
   }, [chordName])
 

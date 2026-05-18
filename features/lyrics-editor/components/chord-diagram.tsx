@@ -19,6 +19,7 @@ import { useChordOrientation } from "@/hooks/use-chord-orientation"
 import { findGuitarChord as findGuitarChordRaw } from "chord-fingering"
 import { cn } from "@/lib/utils"
 import { ChordPositionDiagram } from "@/components/chord-position-diagram"
+import { ChordPlayButton } from "@/features/chord-audio"
 
 interface ChordPosition {
   frets: number[]
@@ -346,9 +347,12 @@ export function ChordDiagram({ chordName, onClose }: ChordDiagramProps) {
       >
         <div className="p-5 sm:p-8 flex-1 sm:flex-initial flex flex-col justify-center sm:block">
           <DialogHeader className="mb-8 sm:mb-6">
-            <DialogTitle className="text-4xl sm:text-4xl font-black tracking-tight">
-              {chordName}
-            </DialogTitle>
+            <div className="flex items-center gap-2">
+              <DialogTitle className="text-4xl sm:text-4xl font-black tracking-tight">
+                {chordName}
+              </DialogTitle>
+              <ChordPlayButton midiNotes={currentChord.midi} />
+            </div>
             <div className="mt-1 font-medium text-muted-foreground uppercase tracking-widest text-[12px] sm:text-[10px]">
               {isAlgorithmic ? "Generated Diagram" : "Verified Shape"}
             </div>

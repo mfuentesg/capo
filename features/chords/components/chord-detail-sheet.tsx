@@ -10,7 +10,7 @@ import { type ChordEntry } from "../utils/chord-db-helpers"
 import { cn } from "@/lib/utils"
 import { useLocale } from "@/features/settings"
 import { useChordOrientation } from "@/hooks/use-chord-orientation"
-import { ChordPlayButton } from "@/features/chord-audio"
+import { ChordPlayButton, useChordAudio } from "@/features/chord-audio"
 
 interface ChordDetailSheetProps {
   chord: ChordEntry | null
@@ -24,10 +24,13 @@ export function ChordDetailSheet({ chord, onClose }: ChordDetailSheetProps) {
   const { t } = useLocale()
   const { mirror } = useChordOrientation()
   const touchStartX = React.useRef(0)
+  const { stop } = useChordAudio()
 
   React.useEffect(() => {
     setPositionIndex(0)
-  }, [chord])
+    if (!chord) stop()
+  }, [chord, stop])
+
 
   if (!chord) return null
 

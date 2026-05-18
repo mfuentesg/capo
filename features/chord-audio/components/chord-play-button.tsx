@@ -26,7 +26,7 @@ export function ChordPlayButton({ midiNotes, className }: ChordPlayButtonProps) 
         className
       )}
       onClick={() => play(midiNotes)}
-      disabled={isLoading}
+      disabled={isLoading || isPlaying}
       aria-label="Play chord"
     >
       {isLoading ? (

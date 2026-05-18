@@ -8,6 +8,11 @@ let samplerReady = false
 let samplerLoading: Promise<void> | null = null
 let sampler: import("tone").Sampler | null = null
 
+// Duration each note rings before release (seconds)
+const NOTE_DURATION = 1.5
+// How long isPlaying stays true (ms) — matches stagger + duration
+const PLAYING_INDICATOR_MS = 1500
+
 async function loadSampler(): Promise<void> {
   if (samplerReady) return
   if (samplerLoading) return samplerLoading
@@ -79,17 +84,30 @@ export function useChordAudio() {
     if (!sampler) return
 
     const Tone = await import("tone")
-    await Tone.start()
 
-    setIsPlaying(true)
-    const now = Tone.now()
-    midiNotes.forEach((midi, i) => {
-      sampler!.triggerAttack(midiToNote(midi), now + i * 0.025)
-    })
-
-    if (playingTimerRef.current) clearTimeout(playingTimerRef.current)
-    playingTimerRef.current = setTimeout(() => setIsPlaying(false), 800)
+    try {
+      await Tone.start()
+      setIsPlaying(true)
+      const now = Tone.now()
+      midiNotes.forEach((midi, i) => {
+        sampler!.triggerAttackRelease(midiToNote(midi), NOTE_DURATION, now + i * 0.025)
+      })
+      if (playingTimerRef.current) clearTimeout(playingTimerRef.current)
+      playingTimerRef.current = setTimeout(() => setIsPlaying(false), PLAYING_INDICATOR_MS)
+    } catch {
+      setIsPlaying(false)
+    }
   }, [])
 
-  return { play, isLoading, isPlaying }
+  const stop = useCallback(() => {
+    if (sampler) {
+      try {
+        sampler.releaseAll()
+      } catch {}
+    }
+    if (playingTimerRef.current) clearTimeout(playingTimerRef.current)
+    setIsPlaying(false)
+  }, [])
+
+  return { play, stop, isLoading, isPlaying }
 }

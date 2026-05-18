@@ -19,7 +19,7 @@ import { useChordOrientation } from "@/hooks/use-chord-orientation"
 import { findGuitarChord as findGuitarChordRaw } from "chord-fingering"
 import { cn } from "@/lib/utils"
 import { ChordPositionDiagram } from "@/components/chord-position-diagram"
-import { ChordPlayButton } from "@/features/chord-audio"
+import { ChordPlayButton, useChordAudio } from "@/features/chord-audio"
 
 interface ChordPosition {
   frets: number[]
@@ -243,10 +243,12 @@ export function ChordDiagram({ chordName, onClose }: ChordDiagramProps) {
   const touchStartX = React.useRef(0)
   const { t } = useLocale()
   const { mirror } = useChordOrientation()
+  const { stop } = useChordAudio()
 
   React.useEffect(() => {
     setPositionIndex(0)
-  }, [chordName])
+    if (!chordName) stop()
+  }, [chordName, stop])
 
   const { positions, totalPositions, isAlgorithmic } = React.useMemo(() => {
     if (!chordName) return { positions: [], totalPositions: 0, isAlgorithmic: false }

@@ -92,20 +92,40 @@ export function ChordPositionDiagram({
         .map((f, si) => (f === barreFret ? si : -1))
         .filter((si) => si >= 0)
       if (barredSi.length < 2) return null
-      const minSi = Math.min(...barredSi)
-      const maxSi = Math.max(...barredSi)
-      const fingerNum =
-        Math.min(...barredSi.map((si) => fingers[si]).filter((f) => f > 0)) || 1
-      return { barreFret, minSi, maxSi, fingerNum }
+
+      // Find the barre finger: the finger covering the most strings at this fret.
+      // Strings with a lower-numbered finger are individually pressed, not barred
+      // (e.g. B9: A-string uses finger 2 while G/B/E are barred with finger 3).
+      const fingerGroups = new Map<number, number[]>()
+      barredSi.forEach((si) => {
+        const f = fingers[si]
+        if (f > 0) {
+          if (!fingerGroups.has(f)) fingerGroups.set(f, [])
+          fingerGroups.get(f)!.push(si)
+        }
+      })
+
+      let barreFingerNum = 1
+      let maxCount = 0
+      fingerGroups.forEach((sis, f) => {
+        if (sis.length > maxCount) { maxCount = sis.length; barreFingerNum = f }
+      })
+
+      // Strings with finger >= barreFingerNum (or unassigned) belong to the barre.
+      // Strings with a lower finger show as individual dots instead.
+      const barreSis = barredSi.filter((si) => fingers[si] === 0 || fingers[si] >= barreFingerNum)
+      const effectiveSis = barreSis.length >= 2 ? barreSis : barredSi
+
+      const minSi = Math.min(...effectiveSis)
+      const maxSi = Math.max(...effectiveSis)
+      return { barreFret, minSi, maxSi, fingerNum: barreFingerNum, barreSis: effectiveSis }
     })
     .filter((b): b is NonNullable<typeof b> => b !== null)
 
   // Strings whose dot is already covered by a barre bar
   const barreCovered = new Set<string>()
   barreData.forEach((b) => {
-    for (let si = b.minSi; si <= b.maxSi; si++) {
-      barreCovered.add(`${si}-${b.barreFret}`)
-    }
+    b.barreSis.forEach((si) => barreCovered.add(`${si}-${b.barreFret}`))
   })
 
   return (

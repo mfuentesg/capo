@@ -37,6 +37,7 @@ async function loadSampler(): Promise<void> {
             },
             onerror: (err: Error) => {
               samplerLoading = null
+              sampler = null
               reject(err)
             },
           }

@@ -74,6 +74,9 @@ interface GeneratedChord {
 
 const findGuitarChord = findGuitarChordRaw as (chordName: string) => GeneratedChord
 
+// Standard guitar tuning: E2, A2, D3, G3, B3, E4
+const OPEN_STRING_MIDI = [40, 45, 50, 55, 59, 64]
+
 // Transform chord-fingering output to react-chords format
 function transformGeneratedChord(generated: GeneratedChord): ChordPosition[] {
   if (!generated || !generated.fingerings) return []
@@ -106,12 +109,21 @@ function transformGeneratedChord(generated: GeneratedChord): ChordPosition[] {
       barres.push(f.barre.fret - baseFret + 1)
     }
 
+    const midi = relativeFrets
+      .map((fr, i) => {
+        if (fr === -1) return null
+        const actualFret = fr === 0 ? 0 : fr + baseFret - 1
+        return OPEN_STRING_MIDI[i] + actualFret
+      })
+      .filter((n): n is number => n !== null)
+
     return {
       frets: relativeFrets,
       fingers: [0, 0, 0, 0, 0, 0],
       baseFret: baseFret,
       barres: barres,
       capo: false,
+      midi,
     }
   })
 }

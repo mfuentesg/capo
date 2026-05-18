@@ -10,6 +10,7 @@ import { type ChordEntry, isValidChordPosition } from "../utils/chord-db-helpers
 import { cn } from "@/lib/utils"
 import { useLocale } from "@/features/settings"
 import { useChordOrientation } from "@/hooks/use-chord-orientation"
+import { ChordPlayButton, useChordAudio } from "@/features/chord-audio"
 
 interface ChordDetailSheetProps {
   chord: ChordEntry | null
@@ -23,10 +24,13 @@ export function ChordDetailSheet({ chord, onClose }: ChordDetailSheetProps) {
   const { t } = useLocale()
   const { mirror } = useChordOrientation()
   const touchStartX = React.useRef(0)
+  const { stop } = useChordAudio()
 
   React.useEffect(() => {
     setPositionIndex(0)
-  }, [chord])
+    if (!chord) stop()
+  }, [chord, stop])
+
 
   if (!chord) return null
 
@@ -65,7 +69,10 @@ export function ChordDetailSheet({ chord, onClose }: ChordDetailSheetProps) {
 
         <SheetHeader className="mb-4">
           <div>
-            <SheetTitle className="text-3xl font-black tracking-tighter">{displayName}</SheetTitle>
+            <div className="flex items-center gap-2">
+              <SheetTitle className="text-3xl font-black tracking-tighter">{displayName}</SheetTitle>
+              <ChordPlayButton midiNotes={chord.positions[positionIndex].midi} />
+            </div>
             {total > 1 && (
               <p className="text-xs text-muted-foreground uppercase tracking-widest mt-0.5">
                 {t.chords.positionOf

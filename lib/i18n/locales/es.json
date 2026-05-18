@@ -489,6 +489,7 @@
     "noDiagram": "No hay diagrama disponible para este acorde.",
     "positionOf": "Posición {current} de {total}",
     "variation": "Variación {count}",
+    "playChord": "Reproducir acorde",
     "notFound": "no encontrado",
     "orientation": {
       "flipVertical": "Girar (cejilla abajo)",

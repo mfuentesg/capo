@@ -3,6 +3,7 @@
 import { Volume2, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { useLocale } from "@/features/settings"
 import { useChordAudio } from "../hooks/use-chord-audio"
 
 interface ChordPlayButtonProps {
@@ -12,6 +13,7 @@ interface ChordPlayButtonProps {
 
 export function ChordPlayButton({ midiNotes, className }: ChordPlayButtonProps) {
   const { play, isLoading, isPlaying } = useChordAudio()
+  const { t } = useLocale()
 
   if (!midiNotes || midiNotes.length === 0) return null
 
@@ -27,7 +29,7 @@ export function ChordPlayButton({ midiNotes, className }: ChordPlayButtonProps) 
       )}
       onClick={() => play(midiNotes)}
       disabled={isLoading || isPlaying}
-      aria-label="Play chord"
+      aria-label={t.chords.playChord}
     >
       {isLoading ? (
         <Loader2 className="h-4 w-4 animate-spin" />

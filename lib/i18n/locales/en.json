@@ -489,6 +489,7 @@
     "noDiagram": "No diagram available for this chord.",
     "positionOf": "Position {current} of {total}",
     "variation": "Variation {count}",
+    "playChord": "Play chord",
     "notFound": "not found",
     "orientation": {
       "flipVertical": "Flip (nut at bottom)",

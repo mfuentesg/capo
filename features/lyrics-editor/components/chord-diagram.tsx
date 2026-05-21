@@ -3,7 +3,7 @@
 import * as React from "react"
 import { Chord as ChordJS } from "chordsheetjs"
 import guitarDataRaw from "@tombatossals/chords-db/lib/guitar.json"
-import { keyLabel, toDbKey } from "@/features/chords"
+import { keyLabel, toDbKey, isValidChordPosition } from "@/features/chords"
 import {
   Dialog,
   DialogContent,
@@ -19,6 +19,7 @@ import { useChordOrientation } from "@/hooks/use-chord-orientation"
 import { findGuitarChord as findGuitarChordRaw } from "chord-fingering"
 import { cn } from "@/lib/utils"
 import { ChordPositionDiagram } from "@/components/chord-position-diagram"
+import { ChordPlayButton, useChordAudio } from "@/features/chord-audio"
 
 interface ChordPosition {
   frets: number[]
@@ -73,6 +74,9 @@ interface GeneratedChord {
 
 const findGuitarChord = findGuitarChordRaw as (chordName: string) => GeneratedChord
 
+// Standard guitar tuning: E2, A2, D3, G3, B3, E4
+const OPEN_STRING_MIDI = [40, 45, 50, 55, 59, 64]
+
 // Transform chord-fingering output to react-chords format
 function transformGeneratedChord(generated: GeneratedChord): ChordPosition[] {
   if (!generated || !generated.fingerings) return []
@@ -105,12 +109,21 @@ function transformGeneratedChord(generated: GeneratedChord): ChordPosition[] {
       barres.push(f.barre.fret - baseFret + 1)
     }
 
+    const midi = relativeFrets
+      .map((fr, i) => {
+        if (fr === -1) return null
+        const actualFret = fr === 0 ? 0 : fr + baseFret - 1
+        return OPEN_STRING_MIDI[i] + actualFret
+      })
+      .filter((n): n is number => n !== null)
+
     return {
       frets: relativeFrets,
       fingers: [0, 0, 0, 0, 0, 0],
       baseFret: baseFret,
       barres: barres,
       capo: false,
+      midi,
     }
   })
 }
@@ -242,10 +255,12 @@ export function ChordDiagram({ chordName, onClose }: ChordDiagramProps) {
   const touchStartX = React.useRef(0)
   const { t } = useLocale()
   const { mirror } = useChordOrientation()
+  const { stop } = useChordAudio()
 
   React.useEffect(() => {
     setPositionIndex(0)
-  }, [chordName])
+    if (!chordName) stop()
+  }, [chordName, stop])
 
   const { positions, totalPositions, isAlgorithmic } = React.useMemo(() => {
     if (!chordName) return { positions: [], totalPositions: 0, isAlgorithmic: false }
@@ -286,6 +301,7 @@ export function ChordDiagram({ chordName, onClose }: ChordDiagramProps) {
       }
     }
 
+    foundPositions = foundPositions.filter(isValidChordPosition)
     return { positions: foundPositions, totalPositions: foundPositions.length, isAlgorithmic: false }
   }, [chordName])
 
@@ -346,9 +362,12 @@ export function ChordDiagram({ chordName, onClose }: ChordDiagramProps) {
       >
         <div className="p-5 sm:p-8 flex-1 sm:flex-initial flex flex-col justify-center sm:block">
           <DialogHeader className="mb-8 sm:mb-6">
-            <DialogTitle className="text-4xl sm:text-4xl font-black tracking-tight">
-              {chordName}
-            </DialogTitle>
+            <div className="flex items-center gap-2">
+              <DialogTitle className="text-4xl sm:text-4xl font-black tracking-tight">
+                {chordName}
+              </DialogTitle>
+              <ChordPlayButton midiNotes={currentChord.midi} />
+            </div>
             <div className="mt-1 font-medium text-muted-foreground uppercase tracking-widest text-[12px] sm:text-[10px]">
               {isAlgorithmic ? "Generated Diagram" : "Verified Shape"}
             </div>

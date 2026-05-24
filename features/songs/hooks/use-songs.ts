@@ -35,17 +35,20 @@ function restoreSongQueries(
 }
 
 /**
- * Internal hook for fetching songs from all accessible buckets
+ * Hook for fetching songs from all accessible buckets (personal + all teams).
+ * Always fetches the full set with ownership info, regardless of the current view filter.
+ * Use this when you need to see songs across all contexts (e.g. the add-to-playlist sheet).
  */
-function useAllSongs(searchQuery?: string) {
+export function useAllSongs(searchQuery?: string) {
   const { context, teams } = useAppContext()
   const { data: user } = useUser()
+  // Sort for a stable cache key — team order in the array must not matter
+  const teamIds = teams.map((t) => t.id).sort()
 
   return useQuery({
-    queryKey: user?.id ? songsKeys.listAll(user.id, searchQuery) : songsKeys.lists(),
+    queryKey: user?.id ? songsKeys.listAll(user.id, teamIds, searchQuery) : songsKeys.lists(),
     queryFn: async () => {
       if (!user?.id) return []
-      const teamIds = teams.map((t) => t.id)
       const teamsMeta = teams.map((t) => ({ id: t.id, name: t.name, icon: t.icon ?? null }))
       return getSongsAllBucketsAction(user.id, teamIds, teamsMeta, searchQuery)
     },

@@ -15,12 +15,23 @@ describe("songsKeys", () => {
     expect(songsKeys.list(context, "grace")).toEqual(["songs", "list", context, "grace"])
   })
 
-  it("listAll returns key scoped to userId", () => {
-    expect(songsKeys.listAll("u1")).toEqual(["songs", "list", "all", "u1", ""])
+  it("listAll returns key scoped to userId and teamIds", () => {
+    expect(songsKeys.listAll("u1", [])).toEqual(["songs", "list", "all", "u1", [], ""])
+  })
+
+  it("listAll includes teamIds in the key", () => {
+    expect(songsKeys.listAll("u1", ["t1", "t2"])).toEqual([
+      "songs",
+      "list",
+      "all",
+      "u1",
+      ["t1", "t2"],
+      ""
+    ])
   })
 
   it("listAll includes searchQuery when provided", () => {
-    expect(songsKeys.listAll("u1", "grace")).toEqual(["songs", "list", "all", "u1", "grace"])
+    expect(songsKeys.listAll("u1", [], "grace")).toEqual(["songs", "list", "all", "u1", [], "grace"])
   })
 
   it("details returns base detail key", () => {

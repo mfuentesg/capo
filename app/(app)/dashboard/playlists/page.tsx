@@ -2,10 +2,10 @@ import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { cookies } from "next/headers"
 import { createClient } from "@/lib/supabase/server"
-import { getTeamsWithClient } from "@/features/teams"
 import { PlaylistsClient, rawApi as playlistsApi } from "@/features/playlists"
 import { getTranslations } from "@/lib/i18n/translations"
 import { defaultLocale, isValidLocale } from "@/lib/i18n/config"
+import { getInitialAppContextData } from "@/features/app-context/server"
 
 export const metadata: Metadata = {
   title: "Playlists",
@@ -13,32 +13,34 @@ export const metadata: Metadata = {
 }
 
 export default async function PlaylistsPage() {
-  const supabase = await createClient()
-  const cookieStore = await cookies()
+  // getInitialAppContextData is React.cache()'d — returns the same result already
+  // computed by the app layout, so no extra auth or DB round-trips happen here.
+  const [cookieStore, appContextData] = await Promise.all([cookies(), getInitialAppContextData()])
 
-  // 1. Get user first (verified, secure)
-  const {
-    data: { user: authUser }
-  } = await supabase.auth.getUser()
-
-  if (!authUser) {
+  if (!appContextData.user) {
     redirect("/")
   }
 
-  const userId = authUser.id
+  const { user, teams, preferences } = appContextData
+
+  // Locale: DB value takes priority over the cookie (consistent with the layout)
+  const dbLocale = preferences?.locale
   const localeCookie = cookieStore.get("NEXT_LOCALE")
   const locale =
-    localeCookie && isValidLocale(localeCookie.value) ? localeCookie.value : defaultLocale
+    dbLocale && isValidLocale(dbLocale)
+      ? dbLocale
+      : localeCookie && isValidLocale(localeCookie.value)
+        ? localeCookie.value
+        : defaultLocale
 
-  // 2. Fetch everything else in parallel
-  const [teams, t] = await Promise.all([
-    getTeamsWithClient(supabase, userId),
+  const teamIds = teams.map((t) => t.id)
+  const supabase = await createClient()
+
+  // Fetch playlists + translations in parallel now that teams are already available
+  const [initialPlaylists, t] = await Promise.all([
+    playlistsApi.getPlaylistsAllBuckets(supabase, user.id, teamIds).catch(() => []),
     getTranslations(locale)
   ])
-
-  // 3. Fetch playlists from all buckets (matches client default viewFilter: "all")
-  const teamIds = teams.map((t) => t.id)
-  const initialPlaylists = await playlistsApi.getPlaylistsAllBuckets(supabase, userId, teamIds).catch(() => [])
 
   return <PlaylistsClient initialPlaylists={initialPlaylists} t={t} />
 }

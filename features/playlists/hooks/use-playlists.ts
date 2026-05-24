@@ -53,7 +53,10 @@ function useAllPlaylists(initialData?: Playlist[]) {
     enabled: !!context && !!user?.id,
     staleTime: 30 * 1000,
     placeholderData: (previousData) => previousData,
-    initialData
+    initialData,
+    // Treat the SSR snapshot as freshly fetched so React Query does not
+    // fire a redundant background request immediately on mount.
+    initialDataUpdatedAt: initialData ? Date.now() : undefined
   })
 }
 

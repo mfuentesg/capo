@@ -147,7 +147,7 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
   const resizeHandleIds = createOverlayIds("songs-layout-resize")
   const mobileDrawerIds = createOverlayIds("songs-mobile-drawer")
 
-  const { data: songs = initialSongs, isLoading } = useSongs(debouncedQuery || undefined)
+  const { data: songs = initialSongs, isLoading } = useSongs(debouncedQuery || undefined, initialSongs)
   const createSongMutation = useCreateSong()
   const updateSongMutation = useUpdateSong()
   const deleteSongMutation = useDeleteSong()

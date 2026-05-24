@@ -18,7 +18,7 @@ import {
   SheetFooter,
   SheetDescription
 } from "@/components/ui/sheet"
-import { useSongs } from "@/features/songs"
+import { useAllSongs } from "@/features/songs"
 import { addSongsToPlaylistAction } from "../../api/actions"
 import { playlistsKeys } from "../../hooks/query-keys"
 import { useTranslation } from "@/hooks/use-translation"
@@ -44,7 +44,7 @@ export function AddSongsSheet({
 }: AddSongsSheetProps) {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { data: allSongs = [], isLoading } = useSongs()
+  const { data: allSongs = [], isLoading } = useAllSongs()
   const [search, setSearch] = useState("")
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [filterKey, setFilterKey] = useState<string>("all")

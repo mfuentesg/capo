@@ -3,7 +3,7 @@ export * from "./components"
 export { NewSongsProvider, useNewSongs } from "./contexts"
 export type { NewSongsContextType } from "./contexts"
 
-export { useSongs, useUpdateSong, useTransferSongToTeam } from "./hooks/use-songs"
+export { useSongs, useAllSongs, useUpdateSong, useTransferSongToTeam } from "./hooks/use-songs"
 export { useSongRealtime } from "./hooks/use-song-realtime"
 export {
   useUserSongSettings,

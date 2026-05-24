@@ -34,10 +34,25 @@ export function usePublicPlaylistRealtime(
     callbacksRef.current = callbacks
   })
 
+  // Sequence counter to discard stale fetch results when multiple realtime events fire
+  // concurrently (e.g. the two-phase reorder sends 2N events for N songs). Only the result
+  // from the latest-initiated fetch is applied; any earlier fetch that resolves out-of-order
+  // is ignored to prevent it from overwriting the correct final state.
+  const fetchSeqRef = useRef(0)
+
   useEffect(() => {
     if (!playlistId || !shareCode) return
 
     const supabase = createClient()
+
+    const fetchSongs = async () => {
+      const seq = ++fetchSeqRef.current
+      const updated = await api.getPublicPlaylistByShareCode(shareCode)
+      if (seq === fetchSeqRef.current && updated) {
+        callbacksRef.current.onSongsChange(updated.songs)
+      }
+    }
+
     const channel = supabase
       .channel(`share-view:${playlistId}`)
       .on(
@@ -64,10 +79,7 @@ export function usePublicPlaylistRealtime(
           table: "playlist_songs",
           filter: `playlist_id=eq.${playlistId}`
         },
-        async () => {
-          const updated = await api.getPublicPlaylistByShareCode(shareCode)
-          if (updated) callbacksRef.current.onSongsChange(updated.songs)
-        }
+        fetchSongs
       )
       .on(
         "postgres_changes",
@@ -79,10 +91,7 @@ export function usePublicPlaylistRealtime(
           // playlist_songs). Any song edit triggers a refetch via the public share-code
           // API, which naturally scopes the result to this playlist.
         },
-        async () => {
-          const updated = await api.getPublicPlaylistByShareCode(shareCode)
-          if (updated) callbacksRef.current.onSongsChange(updated.songs)
-        }
+        fetchSongs
       )
       .subscribe()
 

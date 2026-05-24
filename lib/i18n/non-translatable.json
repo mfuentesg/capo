@@ -5,7 +5,7 @@
     "technical_terms": ["Next.js", "Google", "TypeScript", "JavaScript"],
     "abbreviations": ["HTML", "CSS", "JSON", "XML", "API", "UUID", "URL"],
     "html_entities": ["&amp;", "&lt;", "&gt;", "&quot;", "&#39;"],
-    "proper_nouns": [],
+    "proper_nouns": ["Catppuccin", "Aura", "Nord", "Rosé Pine", "Geist", "Inter", "DM Sans"],
     "chordpro_directives": [
       "start_of_chorus",
       "end_of_chorus",
@@ -135,6 +135,13 @@
     "[E]",
     "[F#m]",
     "F#m",
-    "capo.app/shared/"
+    "capo.app/shared/",
+    "Catppuccin",
+    "Aura",
+    "Nord",
+    "Rosé Pine",
+    "Geist",
+    "Inter",
+    "DM Sans"
   ]
 }

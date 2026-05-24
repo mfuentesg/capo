@@ -56,7 +56,8 @@ function useAllPlaylists(initialData?: Playlist[]) {
     initialData,
     // Treat the SSR snapshot as freshly fetched so React Query does not
     // fire a redundant background request immediately on mount.
-    initialDataUpdatedAt: initialData ? Date.now() : undefined
+    // Passed as a function reference so it is not called during render.
+    initialDataUpdatedAt: initialData ? Date.now : undefined
   })
 }
 

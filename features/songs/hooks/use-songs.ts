@@ -63,7 +63,8 @@ export function useAllSongs(searchQuery?: string, initialData?: Song[]) {
     initialData: effectiveInitialData,
     // Treat the SSR snapshot as freshly fetched so React Query does not
     // fire a redundant background request immediately on mount.
-    initialDataUpdatedAt: effectiveInitialData ? Date.now() : undefined
+    // Passed as a function reference so it is not called during render.
+    initialDataUpdatedAt: effectiveInitialData ? Date.now : undefined
   })
 }
 

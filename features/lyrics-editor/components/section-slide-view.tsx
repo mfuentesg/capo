@@ -4,7 +4,6 @@ import { useMemo, useState, useRef, useCallback } from "react"
 import dynamic from "next/dynamic"
 import { ChevronLeft, ChevronRight, Music2, Repeat2 } from "lucide-react"
 import { useLocale } from "@/features/settings"
-import { Button } from "@/components/ui/button"
 import { buildSectionMap, buildSegments } from "../utils/lyrics-parser"
 import type { LyricsSegment } from "../utils/lyrics-parser"
 import { cn } from "@/lib/utils"
@@ -22,14 +21,10 @@ interface SectionSlideViewProps {
   showLyrics?: boolean
 }
 
-function slideTitle(segment: LyricsSegment, t: { songSections: Record<string, string> }): string {
-  if (segment.type === "normal") return ""
-  if (segment.type === "section" || segment.type === "repeat") {
-    const label =
-      segment.count > 1 ? `${segment.name} × ${segment.count}` : segment.name
-    return label
-  }
-  return ""
+function segmentLabel(segment: LyricsSegment): string {
+  if (segment.type === "normal") return "…"
+  const name = segment.type === "section" || segment.type === "repeat" ? segment.name : ""
+  return segment.count > 1 ? `${name} × ${segment.count}` : name
 }
 
 export function SectionSlideView({
@@ -43,7 +38,6 @@ export function SectionSlideView({
   const { t } = useLocale()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selectedChord, setSelectedChord] = useState<string | null>(null)
-  const touchStartRef = useRef<{ x: number; y: number } | null>(null)
 
   const sectionLabels = useMemo(
     () => ({
@@ -71,7 +65,6 @@ export function SectionSlideView({
         sectionLabels,
         t.songSections.comment
       )
-      // Keep sections/repeats always; keep normals only if they have content
       return segments.filter((s) => s.type !== "normal" || s.html.trim().length > 0)
     } catch {
       return []
@@ -95,31 +88,14 @@ export function SectionSlideView({
 
   const safeIndex = Math.min(currentIndex, Math.max(0, slides.length - 1))
   const currentSlide = slides[safeIndex]
+  const prevSlide = safeIndex > 0 ? slides[safeIndex - 1] : undefined
+  const nextSlide = safeIndex < slides.length - 1 ? slides[safeIndex + 1] : undefined
 
   const goNext = useCallback(
     () => setCurrentIndex((i) => Math.min(i + 1, slides.length - 1)),
     [slides.length]
   )
   const goPrev = useCallback(() => setCurrentIndex((i) => Math.max(i - 1, 0)), [])
-
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    const touch = e.touches[0]
-    touchStartRef.current = { x: touch.clientX, y: touch.clientY }
-  }, [])
-
-  const handleTouchEnd = useCallback(
-    (e: React.TouchEvent) => {
-      if (!touchStartRef.current) return
-      const touch = e.changedTouches[0]
-      const dx = touch.clientX - touchStartRef.current.x
-      const dy = touch.clientY - touchStartRef.current.y
-      touchStartRef.current = null
-      if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return
-      if (dx < 0) goNext()
-      else goPrev()
-    },
-    [goNext, goPrev]
-  )
 
   const handleChordClick = useCallback((e: React.MouseEvent) => {
     const target = e.target as HTMLElement
@@ -143,19 +119,15 @@ export function SectionSlideView({
     .filter(Boolean)
     .join(" ")
 
-  const title = currentSlide ? slideTitle(currentSlide, t) : ""
+  const title = currentSlide ? segmentLabel(currentSlide) : ""
   const sectionType =
     currentSlide && currentSlide.type !== "normal" ? currentSlide.sectionType : undefined
   const isRepeat = currentSlide?.type === "repeat"
-  const showDots = slides.length <= 10
+  const showDots = slides.length <= 8
 
   return (
-    <div
-      className="flex flex-col"
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
-      {/* Section header bar */}
+    <div className="flex flex-col">
+      {/* Section header */}
       <div
         className={cn(
           "flex items-center gap-2 px-4 py-3 border-b min-h-[3rem]",
@@ -164,7 +136,7 @@ export function SectionSlideView({
         {...(sectionType ? { "data-section-type": sectionType } : {})}
       >
         <div className="flex items-center gap-2 flex-1 min-w-0">
-          {title ? (
+          {title && title !== "…" ? (
             <>
               {isRepeat ? (
                 <Repeat2 className="w-3.5 h-3.5 shrink-0" style={{ color: "var(--section-accent)" }} />
@@ -194,7 +166,7 @@ export function SectionSlideView({
         </span>
       </div>
 
-      {/* Slide content — scrollable */}
+      {/* Slide content */}
       <div
         className="flex-1 overflow-y-auto px-4 py-6"
         onClick={handleChordClick}
@@ -211,63 +183,54 @@ export function SectionSlideView({
         )}
       </div>
 
-      {/* Navigation bar */}
-      <div className="flex items-center justify-between gap-2 px-2 py-2 border-t">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-9 w-9 shrink-0"
+      {/* Navigation — large tap targets with adjacent section names */}
+      <div className="flex items-stretch border-t min-h-[3.5rem]">
+        <button
           onClick={goPrev}
-          disabled={safeIndex === 0}
+          disabled={!prevSlide}
           aria-label={t.common.previous}
+          className="flex flex-1 items-center gap-1.5 px-3 py-3 text-left disabled:opacity-25 active:bg-muted"
         >
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
+          <ChevronLeft className="h-4 w-4 shrink-0 text-muted-foreground" />
+          <span className="text-xs text-muted-foreground truncate">
+            {prevSlide ? segmentLabel(prevSlide) : ""}
+          </span>
+        </button>
 
-        {/* Dots or segment list */}
-        <div className="flex items-center gap-1.5 min-w-0 flex-wrap justify-center">
-          {showDots
-            ? slides.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentIndex(i)}
-                  aria-label={`${t.songs.lyrics.sectionView} ${i + 1}`}
-                  className="w-2 h-2 rounded-full shrink-0"
-                  style={{
-                    background: i === safeIndex ? "var(--foreground)" : "var(--muted-foreground)",
-                    opacity: i === safeIndex ? 1 : 0.3
-                  }}
-                />
-              ))
-            : slides.map((slide, i) => {
-                const label =
-                  slide.type === "normal" ? "…" : slide.name.slice(0, 4)
-                return (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentIndex(i)}
-                    className={`text-[10px] font-medium px-1.5 py-0.5 rounded shrink-0 ${
-                      i === safeIndex
-                        ? "bg-foreground text-background"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {label}
-                  </button>
-                )
-              })}
-        </div>
+        {/* Dots / position indicator */}
+        {showDots ? (
+          <div className="flex items-center gap-1.5 px-2 shrink-0">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentIndex(i)}
+                className="w-1.5 h-1.5 rounded-full shrink-0"
+                style={{
+                  background: i === safeIndex ? "var(--foreground)" : "var(--muted-foreground)",
+                  opacity: i === safeIndex ? 1 : 0.3
+                }}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="flex items-center px-2 shrink-0">
+            <span className="text-xs tabular-nums text-muted-foreground">
+              {safeIndex + 1} / {slides.length}
+            </span>
+          </div>
+        )}
 
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-9 w-9 shrink-0"
+        <button
           onClick={goNext}
-          disabled={safeIndex === slides.length - 1}
+          disabled={!nextSlide}
           aria-label={t.common.next}
+          className="flex flex-1 items-center justify-end gap-1.5 px-3 py-3 text-right disabled:opacity-25 active:bg-muted"
         >
-          <ChevronRight className="h-4 w-4" />
-        </Button>
+          <span className="text-xs text-muted-foreground truncate">
+            {nextSlide ? segmentLabel(nextSlide) : ""}
+          </span>
+          <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+        </button>
       </div>
 
       <ChordDiagram chordName={selectedChord} onClose={() => setSelectedChord(null)} />

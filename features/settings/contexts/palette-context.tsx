@@ -10,12 +10,8 @@ import {
   useEffect,
   type ReactNode
 } from "react"
-import {
-  setPaletteAction,
-  isValidPalette,
-  DEFAULT_PALETTE,
-  type Palette
-} from "@/lib/actions/palette"
+import { setPaletteAction } from "@/lib/actions/palette"
+import { isValidPalette, DEFAULT_PALETTE, type Palette } from "@/lib/palette"
 
 interface PaletteContextType {
   palette: Palette

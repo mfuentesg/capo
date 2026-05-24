@@ -8,8 +8,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import NextTopLoader from "nextjs-toploader"
-import { isValidPalette, DEFAULT_PALETTE } from "@/lib/actions/palette"
-import { isValidUIFont, DEFAULT_UI_FONT } from "@/lib/actions/font"
+import { isValidPalette, DEFAULT_PALETTE } from "@/lib/palette"
+import { isValidUIFont, DEFAULT_UI_FONT } from "@/lib/font"
 
 import "./globals.css"
 

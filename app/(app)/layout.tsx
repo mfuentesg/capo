@@ -8,8 +8,8 @@ import type { ChordHand } from "@/lib/actions/chord-hand"
 import { getInitialAppContextData } from "@/features/app-context/server"
 import { defaultLocale, isValidLocale } from "@/lib/i18n/config"
 import type { Locale } from "@/lib/i18n/config"
-import { isValidPalette, DEFAULT_PALETTE } from "@/lib/actions/palette"
-import { isValidUIFont, DEFAULT_UI_FONT } from "@/lib/actions/font"
+import { isValidPalette, DEFAULT_PALETTE } from "@/lib/palette"
+import { isValidUIFont, DEFAULT_UI_FONT } from "@/lib/font"
 
 export default async function AppLayout({
   children

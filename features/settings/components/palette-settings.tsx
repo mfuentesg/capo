@@ -4,8 +4,8 @@ import { cn } from "@/lib/utils"
 import { useLocale } from "@/features/settings"
 import { usePalette } from "@/features/settings/contexts/palette-context"
 import { useFont } from "@/features/settings/contexts/font-context"
-import type { Palette } from "@/lib/actions/palette"
-import type { UIFont } from "@/lib/actions/font"
+import type { Palette } from "@/lib/palette"
+import type { UIFont } from "@/lib/font"
 
 interface PalettePreviewColors {
   bg: string

@@ -10,7 +10,8 @@ import {
   useEffect,
   type ReactNode
 } from "react"
-import { setFontAction, isValidUIFont, DEFAULT_UI_FONT, type UIFont } from "@/lib/actions/font"
+import { setFontAction } from "@/lib/actions/font"
+import { isValidUIFont, DEFAULT_UI_FONT, type UIFont } from "@/lib/font"
 
 interface FontContextType {
   font: UIFont

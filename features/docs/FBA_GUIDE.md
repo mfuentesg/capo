@@ -1,6 +1,6 @@
 # Feature-Based Architecture (FBA) Guide
 
-**Last Updated:** March 22, 2026
+**Last Updated:** May 24, 2026
 **Status:** ✅ Production Ready
 
 ---
@@ -68,17 +68,19 @@ features/
 │   ├── __tests__/
 │   └── index.ts             # PUBLIC API ⚠️
 │
-├── activity/                # Feature: User activity tracking
+├── activity/                # Feature: Real-time activity tracking
 ├── app-context/             # Feature: Global app context (team/bucket switching)
 ├── auth/                    # Feature: Authentication (Google OAuth)
+├── chord-audio/             # Feature: Chord audio playback via Tone.js
 ├── chords/                  # Feature: Chord glossary and analyzer
 ├── dashboard/               # Feature: Dashboard stats and recent songs
-├── feedback/                # Feature: In-app feedback submission
+├── feedback/                # Feature: In-app feedback and newsletter opt-in
 ├── lyrics-editor/           # Feature: ChordPro editor and live preview
 ├── playlist-draft/          # Feature: Quick add-to-playlist cart
 ├── playlist-sharing/        # Feature: Public playlist sharing via share codes
-├── settings/                # Feature: Theme, language, chord hand preferences
+├── settings/                # Feature: Theme, language, chord hand, account
 ├── song-draft/              # Feature: Song creation and editing
+├── songs/                   # Feature: Song library management
 ├── teams/                   # Feature: Team management and invitations
 │
 └── docs/                    # Documentation
@@ -89,20 +91,21 @@ features/
 
 | Feature              | Purpose                                                          | Status      |
 | -------------------- | ---------------------------------------------------------------- | ----------- |
-| **activity**         | User activity tracking across the app                            | ✅ Complete |
+| **activity**         | Real-time activity tracking across the app                       | ✅ Complete |
 | **app-context**      | Global context for team/bucket switching and view filters        | ✅ Complete |
 | **auth**             | Google OAuth authentication via Supabase Auth                    | ✅ Complete |
+| **chord-audio**      | Chord audio playback via Tone.js singleton MIDI sampler          | ✅ Complete |
 | **chords**           | Chord glossary, search, and guitar chord analyzer                | ✅ Complete |
 | **dashboard**        | Overview stats (songs, playlists, teams) and recent songs        | ✅ Complete |
-| **feedback**         | In-app feedback submission form                                  | ✅ Complete |
+| **feedback**         | In-app feedback and newsletter opt-in form                       | ✅ Complete |
 | **lyrics-editor**    | CodeMirror ChordPro editor with live preview and auto-scroll     | ✅ Complete |
 | **playlist-draft**   | Quick-add-to-playlist cart for building setlists on the fly      | ✅ Complete |
-| **playlist-sharing** | Share playlists publicly via unique share codes                  | ✅ Complete |
+| **playlist-sharing** | Share playlists publicly via unique share codes (real-time sync) | ✅ Complete |
 | **playlists**        | Create, manage, reorder, and share playlists                     | ✅ Complete |
-| **settings**         | Theme (light/dark), language, and chord hand preferences         | ✅ Complete |
+| **settings**         | Theme (light/dark), language, chord hand, and account management | ✅ Complete |
 | **song-draft**       | Create and edit songs in ChordPro format                         | ✅ Complete |
-| **songs**            | Song library management with search, filtering, and editing      | ✅ Complete |
-| **teams**            | Team creation, member management, and email invitations          | ✅ Complete |
+| **songs**            | Song library with full-text search, filtering, and editing       | ✅ Complete |
+| **teams**            | Team creation, role-based access, and email invitations          | ✅ Complete |
 
 ---
 
@@ -656,6 +659,6 @@ For questions or issues with FBA:
 
 ---
 
-**Last Updated:** March 22, 2026
+**Last Updated:** May 24, 2026
 **Maintained By:** Development Team
 **Status:** ✅ Production Ready

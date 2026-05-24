@@ -2,7 +2,7 @@
 
 ## Overview
 
-The playlists feature manages playlists, allowing users to create, edit, organize, and share playlists of songs.
+The playlists feature manages playlists, allowing users to create, edit, organize, and share playlists of songs. Playlists support drag-and-drop reordering, public sharing via unique share codes, optional guest edit access, and real-time sync for shared views.
 
 ## Public API
 
@@ -25,10 +25,16 @@ The playlists feature manages playlists, allowing users to create, edit, organiz
 
 ### Types
 
-- `Playlist` - Playlist type definition
+- `Playlist` - Playlist type definition (includes `share_code`, `allow_guest_edit`)
 - `PlaylistWithSongs` - Playlist with songs populated
 - `PlaylistDetailProps` - Props for PlaylistDetail component
 - `PlaylistListProps` - Props for PlaylistList component
+
+## Sharing
+
+Each playlist has a `share_code` (unique, URL-safe). Sharing is opt-in — the code is generated on demand. The `allow_guest_edit` flag controls whether unauthenticated viewers can reorder songs in the shared view.
+
+Shared playlists are accessible at `/shared/[shareCode]` and stay in sync via Supabase Realtime — song reorders by the owner are reflected immediately for all viewers.
 
 ## Usage
 
@@ -65,8 +71,9 @@ function MyComponent() {
 features/playlists/
 ├── components/       # UI components
 ├── contexts/         # React contexts
+├── hooks/            # Custom hooks
 ├── types/            # TypeScript types
 ├── utils/            # Utility functions (draggable playlist)
-├── api/              # API functions
+├── api/              # Server actions
 └── __tests__/        # Tests
 ```

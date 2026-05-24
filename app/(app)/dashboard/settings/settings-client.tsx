@@ -7,6 +7,7 @@ import {
   LanguageSettings,
   AccountDangerZone,
   ChordHandSettings,
+  PaletteSettings,
   useLocale
 } from "@/features/settings"
 import { Separator } from "@/components/ui/separator"
@@ -80,6 +81,8 @@ export function SettingsClient() {
 
           {active === "appearance" && (
             <div className="rounded-2xl border bg-card p-6 shadow-sm space-y-6">
+              <PaletteSettings />
+              <Separator />
               <ThemeSettings />
               <Separator />
               <LanguageSettings />

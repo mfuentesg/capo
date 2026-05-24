@@ -3,11 +3,13 @@ import { cookies } from "next/headers"
 import { QueryProvider } from "@/components/providers/query-provider"
 import { AuthStateProvider } from "@/features/auth"
 import { AppContextProvider } from "@/features/app-context"
-import { LocaleProvider, ChordHandProvider } from "@/features/settings"
+import { LocaleProvider, ChordHandProvider, PaletteProvider, FontProvider } from "@/features/settings"
 import type { ChordHand } from "@/lib/actions/chord-hand"
 import { getInitialAppContextData } from "@/features/app-context/server"
 import { defaultLocale, isValidLocale } from "@/lib/i18n/config"
 import type { Locale } from "@/lib/i18n/config"
+import { isValidPalette, DEFAULT_PALETTE } from "@/lib/actions/palette"
+import { isValidUIFont, DEFAULT_UI_FONT } from "@/lib/actions/font"
 
 export default async function AppLayout({
   children
@@ -37,6 +39,14 @@ export default async function AppLayout({
     initialChordHand = chordHandCookie?.value === "right" ? "right" : "left"
   }
 
+  // Palette: cookie (DB sync is write-only via action)
+  const paletteCookie = cookieStore.get("NEXT_PALETTE")
+  const initialPalette = isValidPalette(paletteCookie?.value) ? paletteCookie.value : DEFAULT_PALETTE
+
+  // Font: cookie (DB sync is write-only via action)
+  const fontCookie = cookieStore.get("NEXT_UI_FONT")
+  const initialFont = isValidUIFont(fontCookie?.value) ? fontCookie.value : DEFAULT_UI_FONT
+
   return (
     <QueryProvider initialUser={appContextData.user}>
       <AuthStateProvider>
@@ -47,8 +57,12 @@ export default async function AppLayout({
           initialViewFilter={appContextData.initialViewFilter}
         >
           <LocaleProvider initialLocale={initialLocale}>
-          <ChordHandProvider initialChordHand={initialChordHand}>{children}</ChordHandProvider>
-        </LocaleProvider>
+            <ChordHandProvider initialChordHand={initialChordHand}>
+              <PaletteProvider initialPalette={initialPalette}>
+                <FontProvider initialFont={initialFont}>{children}</FontProvider>
+              </PaletteProvider>
+            </ChordHandProvider>
+          </LocaleProvider>
         </AppContextProvider>
       </AuthStateProvider>
     </QueryProvider>

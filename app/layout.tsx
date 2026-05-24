@@ -1,12 +1,15 @@
 import type React from "react"
 import type { Metadata } from "next"
 import localFont from "next/font/local"
+import { Inter, DM_Sans } from "next/font/google"
 import { cookies } from "next/headers"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import NextTopLoader from "nextjs-toploader"
+import { isValidPalette, DEFAULT_PALETTE } from "@/lib/actions/palette"
+import { isValidUIFont, DEFAULT_UI_FONT } from "@/lib/actions/font"
 
 import "./globals.css"
 
@@ -21,6 +24,18 @@ const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff2",
   variable: "--font-geist-mono",
   weight: "100 900",
+  display: "swap"
+})
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap"
+})
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
   display: "swap"
 })
 
@@ -82,16 +97,36 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   const cookieStore = await cookies()
+
   const themeCookie = cookieStore.get("NEXT_THEME")
   const defaultTheme: Theme =
     themeCookie && (VALID_THEMES as readonly string[]).includes(themeCookie.value)
       ? (themeCookie.value as Theme)
       : "system"
 
+  const paletteCookie = cookieStore.get("NEXT_PALETTE")
+  const defaultPalette = isValidPalette(paletteCookie?.value) ? paletteCookie.value : DEFAULT_PALETTE
+
+  const fontCookie = cookieStore.get("NEXT_UI_FONT")
+  const defaultFont = isValidUIFont(fontCookie?.value) ? fontCookie.value : DEFAULT_UI_FONT
+
+  const fontClasses = [
+    geistSans.variable,
+    geistMono.variable,
+    inter.variable,
+    dmSans.variable
+  ].join(" ")
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      data-palette={defaultPalette}
+      data-font={defaultFont}
+      className={fontClasses}
+    >
       <head />
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className="antialiased">
         <NextTopLoader color="#f97316" showSpinner={false} />
         <ThemeProvider
           attribute="class"

@@ -39,11 +39,16 @@ function restoreSongQueries(
  * Always fetches the full set with ownership info, regardless of the current view filter.
  * Use this when you need to see songs across all contexts (e.g. the add-to-playlist sheet).
  */
-export function useAllSongs(searchQuery?: string) {
+export function useAllSongs(searchQuery?: string, initialData?: Song[]) {
   const { context, teams } = useAppContext()
   const { data: user } = useUser()
   // Sort for a stable cache key — team order in the array must not matter
   const teamIds = teams.map((t) => t.id).sort()
+
+  // Only seed the cache from SSR data when there is no active search query.
+  // A search query produces a different key, so the unfiltered SSR snapshot
+  // must not be used as its initial value.
+  const effectiveInitialData = !searchQuery ? initialData : undefined
 
   return useQuery({
     queryKey: user?.id ? songsKeys.listAll(user.id, teamIds, searchQuery) : songsKeys.lists(),
@@ -54,7 +59,12 @@ export function useAllSongs(searchQuery?: string) {
     },
     enabled: !!context && !!user?.id,
     staleTime: 30 * 1000,
-    placeholderData: (previousData) => previousData
+    placeholderData: (previousData) => previousData,
+    initialData: effectiveInitialData,
+    // Treat the SSR snapshot as freshly fetched so React Query does not
+    // fire a redundant background request immediately on mount.
+    // Passed as a function reference so it is not called during render.
+    initialDataUpdatedAt: effectiveInitialData ? Date.now : undefined
   })
 }
 
@@ -62,11 +72,11 @@ export function useAllSongs(searchQuery?: string) {
  * Hook to fetch songs, routing between all-buckets and per-context queries
  * based on the current viewFilter.
  */
-export function useSongs(searchQuery?: string) {
+export function useSongs(searchQuery?: string, initialData?: Song[]) {
   const { viewFilter } = useViewFilter()
   const { data: user } = useUser()
 
-  const allSongs = useAllSongs(searchQuery)
+  const allSongs = useAllSongs(searchQuery, initialData)
 
   // Derive the effective context from viewFilter when not "all"
   const filteredContext: AppContext | null =

@@ -38,6 +38,26 @@ const PALETTES: Array<{
     id: "rose-pine",
     light: { bg: "#faf4ed", primary: "#b4637a", accent1: "#56949f", accent2: "#907aa9" },
     dark: { bg: "#191724", primary: "#eb6f92", accent1: "#9ccfd8", accent2: "#c4a7e7" }
+  },
+  {
+    id: "dracula",
+    light: { bg: "#f8f8f2", primary: "#6d4cbf", accent1: "#2a91a0", accent2: "#3a8e55" },
+    dark: { bg: "#282a36", primary: "#bd93f9", accent1: "#8be9fd", accent2: "#50fa7b" }
+  },
+  {
+    id: "one-dark-pro",
+    light: { bg: "#fafafa", primary: "#4078f2", accent1: "#56b6c2", accent2: "#98c379" },
+    dark: { bg: "#282c34", primary: "#61afef", accent1: "#c678dd", accent2: "#98c379" }
+  },
+  {
+    id: "tokyo-night",
+    light: { bg: "#d5d6db", primary: "#2959aa", accent1: "#7dcfff", accent2: "#9ece6a" },
+    dark: { bg: "#1a1b26", primary: "#7aa2f7", accent1: "#bb9af7", accent2: "#9ece6a" }
+  },
+  {
+    id: "gruvbox",
+    light: { bg: "#f9f5d7", primary: "#af3a03", accent1: "#427b58", accent2: "#79740e" },
+    dark: { bg: "#282828", primary: "#fe8019", accent1: "#83a598", accent2: "#b8bb26" }
   }
 ]
 
@@ -45,7 +65,11 @@ const PALETTE_LABELS: Record<Palette, { name: string; desc: string }> = {
   catppuccin: { name: "Catppuccin", desc: "Warm pastel tones" },
   aura: { name: "Aura", desc: "Deep purple, vivid" },
   nord: { name: "Nord", desc: "Arctic blue-grey" },
-  "rose-pine": { name: "Rosé Pine", desc: "Warm rose & pine" }
+  "rose-pine": { name: "Rosé Pine", desc: "Warm rose & pine" },
+  dracula: { name: "Dracula", desc: "Neon on midnight" },
+  "one-dark-pro": { name: "One Dark Pro", desc: "Dark navy, cool tones" },
+  "tokyo-night": { name: "Tokyo Night", desc: "Deep blue Tokyo" },
+  gruvbox: { name: "Gruvbox", desc: "Warm retro earth" }
 }
 
 interface FontEntry {

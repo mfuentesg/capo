@@ -1,4 +1,13 @@
-export const VALID_PALETTES = ["catppuccin", "aura", "nord", "rose-pine"] as const
+export const VALID_PALETTES = [
+  "catppuccin",
+  "aura",
+  "nord",
+  "rose-pine",
+  "dracula",
+  "one-dark-pro",
+  "tokyo-night",
+  "gruvbox"
+] as const
 export type Palette = (typeof VALID_PALETTES)[number]
 
 export function isValidPalette(v: unknown): v is Palette {

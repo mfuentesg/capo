@@ -5,7 +5,11 @@
     "technical_terms": ["Next.js", "Google", "TypeScript", "JavaScript"],
     "abbreviations": ["HTML", "CSS", "JSON", "XML", "API", "UUID", "URL"],
     "html_entities": ["&amp;", "&lt;", "&gt;", "&quot;", "&#39;"],
-    "proper_nouns": ["Catppuccin", "Aura", "Nord", "Rosé Pine", "Geist", "Inter", "DM Sans"],
+    "proper_nouns": [
+      "Catppuccin", "Aura", "Nord", "Rosé Pine",
+      "Dracula", "One Dark Pro", "Tokyo Night", "Gruvbox",
+      "Geist", "Inter", "DM Sans"
+    ],
     "chordpro_directives": [
       "start_of_chorus",
       "end_of_chorus",
@@ -142,6 +146,10 @@
     "Rosé Pine",
     "Geist",
     "Inter",
-    "DM Sans"
+    "DM Sans",
+    "Dracula",
+    "One Dark Pro",
+    "Tokyo Night",
+    "Gruvbox"
   ]
 }

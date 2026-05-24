@@ -170,6 +170,7 @@
       "fontSize": "Font Size",
       "minimalistView": "Minimalist view",
       "standardView": "Standard view",
+      "sectionView": "Section view",
       "columnLayout": "Layout",
       "oneColumn": "1 column",
       "twoColumns": "2 columns",

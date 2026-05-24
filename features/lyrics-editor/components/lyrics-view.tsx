@@ -24,7 +24,9 @@ import {
   Turtle,
   Rabbit,
   Zap,
-  Share2
+  Share2,
+  LayoutList,
+  AlignJustify
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import type { Song } from "@/types"
@@ -32,6 +34,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Separator } from "@/components/ui/separator"
 import { useLyricsSettings } from "@/features/lyrics-editor"
 import { RenderedSong } from "./rendered-song"
+import { SectionSlideView } from "./section-slide-view"
 import { LazyChordProReference } from "./chordpro-reference-lazy"
 import { LazySongEditor, preloadSongEditor } from "./song-editor"
 import { useTranslation } from "@/hooks/use-translation"
@@ -136,6 +139,7 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
   const [lyricsColumns, setLyricsColumnsState] = useState<1 | 2>(initialLyricsColumns)
   const [showChords, setShowChords] = useState(true)
   const [showLyrics, setShowLyrics] = useState(true)
+  const [isSectionView, setIsSectionView] = useState(false)
   const { mutate: upsertPreferences } = useUpsertUserPreferences()
 
   const [scrollSpeed, setScrollSpeed] = useState(() =>
@@ -253,13 +257,13 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
   }, [savedLyrics, showChords, showLyrics, song.title, song.artist, t.toasts])
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    if (isEditing || (!onPrevSong && !onNextSong)) return
+    if (isEditing || isSectionView || (!onPrevSong && !onNextSong)) return
     const touch = e.touches[0]
     touchStartRef.current = { x: touch.clientX, y: touch.clientY }
-  }, [isEditing, onPrevSong, onNextSong])
+  }, [isEditing, isSectionView, onPrevSong, onNextSong])
 
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    if (isEditing || !touchStartRef.current || (!onPrevSong && !onNextSong)) return
+    if (isEditing || isSectionView || !touchStartRef.current || (!onPrevSong && !onNextSong)) return
     const touch = e.changedTouches[0]
     const dx = touch.clientX - touchStartRef.current.x
     const dy = touch.clientY - touchStartRef.current.y
@@ -268,7 +272,7 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
     if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy)) return
     if (dx < 0 && hasNextSong) onNextSong?.()
     else if (dx > 0 && hasPrevSong) onPrevSong?.()
-  }, [isEditing, onPrevSong, onNextSong, hasPrevSong, hasNextSong])
+  }, [isEditing, isSectionView, onPrevSong, onNextSong, hasPrevSong, hasNextSong])
 
   // Reset scroll position and stop auto-scroll when song changes
   useEffect(() => {
@@ -640,54 +644,71 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
       </div>
 
       {/* Lyrics Content */}
-      <div
-        className={cn("px-4 py-8", !isPanel && "container mx-auto")}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-      >
-        <div className="w-full">
-          <div className="max-w-5xl mx-auto">
-            {isEditing && (
-              <div className="mb-4">
-                <h3 className="text-sm font-medium text-muted-foreground mb-2">
-                  {isPreviewing ? t.songs.preview : t.songs.lyricsFormatInfo}
-                </h3>
-              </div>
-            )}
+      {isSectionView && !isEditing ? (
+        <div
+          className={cn("px-0", !isPanel && "container mx-auto")}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <SectionSlideView
+            lyrics={savedLyrics}
+            transpose={transpose.value}
+            capo={capo.value}
+            fontSize={font.value}
+            showChords={showChords}
+            showLyrics={showLyrics}
+          />
+        </div>
+      ) : (
+        <div
+          className={cn("px-4 py-8", !isPanel && "container mx-auto")}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div className="w-full">
+            <div className="max-w-5xl mx-auto">
+              {isEditing && (
+                <div className="mb-4">
+                  <h3 className="text-sm font-medium text-muted-foreground mb-2">
+                    {isPreviewing ? t.songs.preview : t.songs.lyricsFormatInfo}
+                  </h3>
+                </div>
+              )}
 
-            {(isPreviewing || !isEditing) && (
-              <div
-                className={cn(
-                  isEditing && isPreviewing
-                    ? "rounded-lg border bg-card p-4 md:p-6 overflow-hidden"
-                    : "block"
-                )}
-              >
-                <RenderedSong
-                  lyrics={isEditing && isPreviewing ? editedLyrics : savedLyrics}
-                  transpose={transpose.value}
-                  capo={capo.value}
-                  fontSize={font.value}
-                  columns={lyricsColumns}
-                  showChords={showChords}
-                  showLyrics={showLyrics}
-                />
-              </div>
-            )}
+              {(isPreviewing || !isEditing) && (
+                <div
+                  className={cn(
+                    isEditing && isPreviewing
+                      ? "rounded-lg border bg-card p-4 md:p-6 overflow-hidden"
+                      : "block"
+                  )}
+                >
+                  <RenderedSong
+                    lyrics={isEditing && isPreviewing ? editedLyrics : savedLyrics}
+                    transpose={transpose.value}
+                    capo={capo.value}
+                    fontSize={font.value}
+                    columns={lyricsColumns}
+                    showChords={showChords}
+                    showLyrics={showLyrics}
+                  />
+                </div>
+              )}
 
-            {canEdit && hasInitializedEditor && (
-              <div
-                className={cn(
-                  "rounded-lg border bg-card",
-                  isEditing && !isPreviewing ? "block" : "hidden"
-                )}
-              >
-                <LazySongEditor key={editorResetKey} content={savedLyrics} onChange={handleLyricsChange} />
-              </div>
-            )}
+              {canEdit && hasInitializedEditor && (
+                <div
+                  className={cn(
+                    "rounded-lg border bg-card",
+                    isEditing && !isPreviewing ? "block" : "hidden"
+                  )}
+                >
+                  <LazySongEditor key={editorResetKey} content={savedLyrics} onChange={handleLyricsChange} />
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
       {/* Floating controls — song navigation (left) + auto-scroll/settings (right) */}
       {!isEditing && (
         <>
@@ -724,6 +745,21 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
 
           {/* Auto-scroll + display settings — bottom-right */}
           <div className="fixed bottom-6 right-4 z-20 flex items-center gap-1 rounded-2xl border bg-background px-2 py-1.5 shadow-lg">
+          <Button
+            variant={isSectionView ? "secondary" : "ghost"}
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => setIsSectionView((v) => !v)}
+            aria-label={isSectionView ? t.songs.lyrics.standardView : t.songs.lyrics.sectionView}
+            title={isSectionView ? t.songs.lyrics.standardView : t.songs.lyrics.sectionView}
+          >
+            {isSectionView ? (
+              <AlignJustify className="h-3.5 w-3.5" />
+            ) : (
+              <LayoutList className="h-3.5 w-3.5" />
+            )}
+          </Button>
+          <Separator orientation="vertical" className="mx-0.5 h-4" />
           <AutoScrollControls
             isScrolling={isScrolling}
             onToggle={toggleAutoScroll}

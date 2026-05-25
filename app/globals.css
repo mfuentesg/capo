@@ -1006,6 +1006,13 @@ html[data-font="plus-jakarta-sans"] {
   }
 }
 
+/* Slightly larger base font on tablet/desktop for better arm's-length readability */
+@media (min-width: 768px) {
+  html {
+    font-size: 17px;
+  }
+}
+
 /* ── Resizable panel groups — mobile full-width list fix ────────── */
 /*
  * react-resizable-panels sets `flex: 0 0 <size>%` via inline styles on each

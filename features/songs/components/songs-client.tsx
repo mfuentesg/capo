@@ -535,6 +535,7 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
               />
             ) : selectedSong ? (
               <SongLyricsPanelLazy
+                key={selectedSong.id}
                 song={selectedSong}
                 onClose={handleCloseSongDetail}
                 onDelete={handleDeleteSong}
@@ -590,6 +591,7 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
                 />
               ) : selectedSong ? (
                 <SongLyricsPanelLazy
+                  key={selectedSong.id}
                   song={selectedSong}
                   onClose={handleCloseSongDetail}
                   onDelete={handleDeleteSong}

@@ -176,7 +176,7 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
     return () => clearTimeout(timer)
   }, [searchQuery])
 
-  const handleDeleteSong = useCallback((_: string) => {
+  const handleDeleteSong = useCallback(() => {
     setSelectedSong(null)
     setIsMobileDrawerOpen(false)
   }, [])

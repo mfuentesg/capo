@@ -601,9 +601,8 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
                   )}
                   {isPanel && (
                     <Button
-                      variant="ghost"
-                      size="icon"
-                      className="hidden sm:flex h-9 w-9"
+                      variant="outline"
+                      className="hidden sm:flex h-9 gap-1.5 px-3"
                       asChild
                       title={t.songs.viewLyrics}
                     >
@@ -613,6 +612,7 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
                         rel="noopener noreferrer"
                       >
                         <ExternalLink className="h-4 w-4" />
+                        <span className="text-sm">{t.songs.viewLyrics}</span>
                       </a>
                     </Button>
                   )}
@@ -691,6 +691,27 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
           </div>
         </div>
       </div>
+
+      {/* Full-view overlay — panel + desktop only, not while editing */}
+      {isPanel && !isEditing && (
+        <div className="hidden sm:flex sticky bottom-0 h-36 items-end justify-center pb-6 bg-gradient-to-t from-background via-background/70 to-transparent pointer-events-none">
+          <Button
+            asChild
+            variant="secondary"
+            className="pointer-events-auto shadow-lg gap-2"
+          >
+            <a
+              href={`/dashboard/songs/${song.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <ExternalLink className="h-4 w-4" />
+              {t.songs.viewLyrics}
+            </a>
+          </Button>
+        </div>
+      )}
+
       {/* Floating controls — song navigation (left) + auto-scroll/settings (right) */}
       {!isEditing && (
         <>

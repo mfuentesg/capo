@@ -21,7 +21,6 @@ import {
   AlertDialogTitle
 } from "@/components/ui/alert-dialog"
 import { useTranslation } from "@/hooks/use-translation"
-import { useAppContext } from "@/features/app-context"
 import { useTeams } from "@/features/teams"
 import { useDeleteSong } from "@/features/songs"
 import { SongEditDialog } from "../song-edit-dialog"
@@ -37,10 +36,9 @@ interface SongActionsMenuProps {
 
 export function SongActionsMenu({ song, onUpdate, onDelete, onTransferSuccess }: SongActionsMenuProps) {
   const { t } = useTranslation()
-  const { context } = useAppContext()
   const { data: teams = [] } = useTeams()
   const deleteSongMutation = useDeleteSong()
-  const canTransfer = context?.type === "personal" && teams.length > 0
+  const canTransfer = song.ownership?.type === "personal" && teams.length > 0
 
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [isTransferOpen, setIsTransferOpen] = useState(false)

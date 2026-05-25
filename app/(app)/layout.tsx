@@ -39,13 +39,25 @@ export default async function AppLayout({
     initialChordHand = chordHandCookie?.value === "right" ? "right" : "left"
   }
 
-  // Palette: cookie (DB sync is write-only via action)
-  const paletteCookie = cookieStore.get("NEXT_PALETTE")
-  const initialPalette = isValidPalette(paletteCookie?.value) ? paletteCookie.value : DEFAULT_PALETTE
+  // Palette: DB takes priority, then cookie, then default
+  const dbPalette = appContextData.preferences?.palette
+  let initialPalette
+  if (isValidPalette(dbPalette)) {
+    initialPalette = dbPalette
+  } else {
+    const paletteCookie = cookieStore.get("NEXT_PALETTE")
+    initialPalette = isValidPalette(paletteCookie?.value) ? paletteCookie.value : DEFAULT_PALETTE
+  }
 
-  // Font: cookie (DB sync is write-only via action)
-  const fontCookie = cookieStore.get("NEXT_UI_FONT")
-  const initialFont = isValidUIFont(fontCookie?.value) ? fontCookie.value : DEFAULT_UI_FONT
+  // Font: DB takes priority, then cookie, then default
+  const dbFont = appContextData.preferences?.uiFont
+  let initialFont
+  if (isValidUIFont(dbFont)) {
+    initialFont = dbFont
+  } else {
+    const fontCookie = cookieStore.get("NEXT_UI_FONT")
+    initialFont = isValidUIFont(fontCookie?.value) ? fontCookie.value : DEFAULT_UI_FONT
+  }
 
   return (
     <QueryProvider initialUser={appContextData.user}>

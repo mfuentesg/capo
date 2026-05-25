@@ -202,7 +202,7 @@ export function PaletteSettings() {
     <>
       <section className="space-y-4">
         <div>
-          <h2 className="text-base font-black tracking-tighter">{t.settings.palette}</h2>
+          <h2 className="text-base font-semibold tracking-tight">{t.settings.palette}</h2>
           <p className="text-sm text-muted-foreground mt-0.5">{t.settings.paletteDescription}</p>
         </div>
         <div
@@ -223,7 +223,7 @@ export function PaletteSettings() {
 
       <section className="space-y-4">
         <div>
-          <h2 className="text-base font-black tracking-tighter">{t.settings.font}</h2>
+          <h2 className="text-base font-semibold tracking-tight">{t.settings.font}</h2>
           <p className="text-sm text-muted-foreground mt-0.5">{t.settings.fontDescription}</p>
         </div>
         <div

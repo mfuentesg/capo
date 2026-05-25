@@ -28,7 +28,7 @@ export function SettingsClient() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="text-3xl font-black tracking-tighter leading-none mb-8">{t.settings.title}</h1>
+      <h1 className="text-3xl font-bold tracking-tight leading-none mb-8">{t.settings.title}</h1>
 
       <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
         {/* Nav — horizontal scrollable tabs on mobile, vertical sidebar on sm+ */}

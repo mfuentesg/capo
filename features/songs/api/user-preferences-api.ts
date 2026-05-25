@@ -1,6 +1,8 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 import type { Database } from "@/lib/supabase/database.types"
 import type { UserPreferences, UserSongSettings } from "../types"
+import { isValidPalette } from "@/lib/palette"
+import { isValidUIFont } from "@/lib/font"
 
 type PreferencesJson = Database["public"]["Tables"]["profiles"]["Row"]["preferences"]
 
@@ -19,7 +21,9 @@ function mapJsonToPreferences(json: PreferencesJson): UserPreferences {
     lyricsColumns: json["lyricsColumns"] === 1 ? 1 : 2,
     locale: typeof json["locale"] === "string" ? json["locale"] : undefined,
     theme: isValidTheme(json["theme"]) ? json["theme"] : undefined,
-    chordHand: json["chordHand"] === "right" ? "right" : json["chordHand"] === "left" ? "left" : undefined
+    chordHand: json["chordHand"] === "right" ? "right" : json["chordHand"] === "left" ? "left" : undefined,
+    palette: isValidPalette(json["palette"]) ? json["palette"] : undefined,
+    uiFont: isValidUIFont(json["uiFont"]) ? json["uiFont"] : undefined
   }
 }
 

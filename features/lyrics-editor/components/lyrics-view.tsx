@@ -591,12 +591,12 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
                   {canEdit && (
                     <Button
                       variant="ghost"
-                      className="h-9 gap-1.5 px-2.5"
+                      size="icon"
+                      className="h-9 w-9"
                       onClick={handleEdit}
                       aria-label={t.songs.editLyrics}
                     >
                       <Pencil className="h-4 w-4" />
-                      <span className="hidden sm:inline text-sm">{t.common.edit}</span>
                     </Button>
                   )}
                   {isPanel && (
@@ -627,12 +627,12 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
                   </Button>
                   <Button
                     variant="ghost"
-                    className="h-9 gap-1.5 px-2.5"
+                    size="icon"
+                    className="h-9 w-9"
                     onClick={() => setIsReferenceOpen(true)}
                     aria-label={t.songs.lyrics.chordproReference}
                   >
                     <BookOpen className="h-4 w-4" />
-                    <span className="hidden sm:inline text-sm">{t.songs.lyrics.docs}</span>
                   </Button>
                   {actionsSlot}
                 </>

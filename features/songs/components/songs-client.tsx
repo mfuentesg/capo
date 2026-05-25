@@ -518,41 +518,43 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
           minSize={40}
           className="hidden md:flex"
         >
-          {isCreatingNewSong ? (
-            <SongDraftFormLazy
-              song={previewSong || undefined}
-              onClose={() => {
-                setIsCreatingNewSong(false)
-                setPreviewSong(null)
-                setSelectedSong(null)
-              }}
-              onSave={handleSaveSong}
-              onChange={handleUpdatePreview}
-              selectedBucket={creationBucket}
-              onBucketChange={setCreationBucket}
-              autoFocus
-            />
-          ) : selectedSong ? (
-            <SongLyricsPanelLazy
-              song={selectedSong}
-              onClose={handleCloseSongDetail}
-              onDelete={handleDeleteSong}
-              onTransferSuccess={handleTransferSuccess}
-            />
-          ) : (
-            <div className="flex flex-1 flex-col justify-end bg-muted/30 relative overflow-hidden p-8 lg:p-12">
-              <div className="pointer-events-none select-none absolute inset-0 flex items-center justify-center" aria-hidden>
-                <Music style={{ width: "45%", height: "45%" }} className="text-foreground/[0.04]" />
+          <div className="flex-1 overflow-y-auto min-h-0">
+            {isCreatingNewSong ? (
+              <SongDraftFormLazy
+                song={previewSong || undefined}
+                onClose={() => {
+                  setIsCreatingNewSong(false)
+                  setPreviewSong(null)
+                  setSelectedSong(null)
+                }}
+                onSave={handleSaveSong}
+                onChange={handleUpdatePreview}
+                selectedBucket={creationBucket}
+                onBucketChange={setCreationBucket}
+                autoFocus
+              />
+            ) : selectedSong ? (
+              <SongLyricsPanelLazy
+                song={selectedSong}
+                onClose={handleCloseSongDetail}
+                onDelete={handleDeleteSong}
+                onTransferSuccess={handleTransferSuccess}
+              />
+            ) : (
+              <div className="flex flex-1 flex-col justify-end bg-muted/30 relative overflow-hidden p-8 lg:p-12">
+                <div className="pointer-events-none select-none absolute inset-0 flex items-center justify-center" aria-hidden>
+                  <Music style={{ width: "45%", height: "45%" }} className="text-foreground/[0.04]" />
+                </div>
+                <div className="relative">
+                  <div className="h-0.5 w-8 rounded-full mb-4" style={{ background: "var(--accent-songs)" }} />
+                  <h3 className="text-lg font-bold tracking-tight leading-none">{t.songs.selectSong}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground max-w-xs leading-relaxed">
+                    {t.songs.selectSongDescription}
+                  </p>
+                </div>
               </div>
-              <div className="relative">
-                <div className="h-0.5 w-8 rounded-full mb-4" style={{ background: "var(--accent-songs)" }} />
-                <h3 className="text-lg font-bold tracking-tight leading-none">{t.songs.selectSong}</h3>
-                <p className="mt-2 text-sm text-muted-foreground max-w-xs leading-relaxed">
-                  {t.songs.selectSongDescription}
-                </p>
-              </div>
-            </div>
-          )}
+            )}
+          </div>
         </ResizablePanel>
       </ResizablePanelGroup>
 

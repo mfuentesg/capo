@@ -102,6 +102,7 @@ interface LyricsViewProps {
   songPosition?: { current: number; total: number }
   slideDirection?: "next" | "prev"
   actionsSlot?: React.ReactNode
+  initialEditing?: boolean
 }
 
 export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function LyricsView(
@@ -121,7 +122,8 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
     hasNextSong = false,
     songPosition,
     slideDirection,
-    actionsSlot
+    actionsSlot,
+    initialEditing = false
   }: LyricsViewProps,
   ref
 ) {
@@ -129,7 +131,7 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
   const router = useRouter()
   const containerRef = useRef<HTMLDivElement>(null)
   const touchStartRef = useRef<{ x: number; y: number } | null>(null)
-  const [isEditing, setIsEditing] = useState(false)
+  const [isEditing, setIsEditing] = useState(initialEditing)
   const [isPreviewing, setIsPreviewing] = useState(false)
   const [isReferenceOpen, setIsReferenceOpen] = useState(false)
   const [hasInitializedEditor, setHasInitializedEditor] = useState(false)

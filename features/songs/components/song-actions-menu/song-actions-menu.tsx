@@ -1,7 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { MoreVertical, Pencil, ArrowRightFromLine, Trash2 } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { MoreVertical, Pencil, FileEdit, ArrowRightFromLine, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -36,6 +37,7 @@ interface SongActionsMenuProps {
 
 export function SongActionsMenu({ song, onUpdate, onDelete, onTransferSuccess }: SongActionsMenuProps) {
   const { t } = useTranslation()
+  const router = useRouter()
   const { data: teams = [] } = useTeams()
   const deleteSongMutation = useDeleteSong()
   const canTransfer = song.ownership?.type === "personal" && teams.length > 0
@@ -62,6 +64,10 @@ export function SongActionsMenu({ song, onUpdate, onDelete, onTransferSuccess }:
           <DropdownMenuItem onClick={() => setIsEditOpen(true)}>
             <Pencil className="mr-2 h-4 w-4" />
             {t.songs.editDetails}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => router.push(`/dashboard/songs/${song.id}?edit=true`)}>
+            <FileEdit className="mr-2 h-4 w-4" />
+            {t.songs.editLyrics}
           </DropdownMenuItem>
           {canTransfer && (
             <DropdownMenuItem onClick={() => setIsTransferOpen(true)}>

@@ -493,7 +493,7 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
       ref={containerRef}
       className={cn(
         "bg-background",
-        isPanel ? "h-full" : "min-h-screen",
+        isPanel ? "min-h-full" : "min-h-screen",
         slideDirection === "next" && "animate-in slide-in-from-right-4 fade-in-0 duration-200",
         slideDirection === "prev" && "animate-in slide-in-from-left-4 fade-in-0 duration-200"
       )}
@@ -603,7 +603,7 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-9 w-9"
+                      className="hidden sm:flex h-9 w-9"
                       asChild
                       title={t.songs.viewLyrics}
                     >

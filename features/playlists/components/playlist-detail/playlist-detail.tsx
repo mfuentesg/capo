@@ -345,7 +345,7 @@ export function PlaylistDetail({ playlist, onClose, onUpdate, onDelete }: Playli
             <EditableField
               value={playlist.name}
               onSave={(value) => onUpdate(playlist.id, { name: value })}
-              className="text-lg font-black tracking-tighter"
+              className="text-lg font-bold tracking-tight"
               label={t.common.clickToAdd}
             />
           </div>
@@ -540,7 +540,7 @@ export function PlaylistDetail({ playlist, onClose, onUpdate, onDelete }: Playli
 
         {/* Danger Zone */}
         <div className="rounded-2xl border border-destructive/30 bg-destructive/[0.02] p-4">
-          <h3 className="text-sm font-black text-destructive mb-3">
+          <h3 className="text-sm font-bold text-destructive mb-3">
             {t.playlistDetail.dangerZone}
           </h3>
           <div className="flex items-center justify-between gap-4">

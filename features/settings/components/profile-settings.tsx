@@ -30,14 +30,14 @@ export function ProfileSettings() {
         <div className="relative shrink-0">
           <Avatar className="h-16 w-16">
             <AvatarImage src={user?.avatarUrl} alt={displayName} />
-            <AvatarFallback className="bg-primary/10 text-xl font-black text-primary">
+            <AvatarFallback className="bg-primary/10 text-xl font-bold text-primary">
               {initials || <CircleUserRound className="h-8 w-8 text-muted-foreground" />}
             </AvatarFallback>
           </Avatar>
         </div>
 
         <div className="min-w-0 flex-1 space-y-1">
-          <p className="truncate font-black tracking-tighter">{displayName}</p>
+          <p className="truncate font-bold tracking-tight">{displayName}</p>
           {user?.email && (
             <p className="truncate text-sm text-muted-foreground">{user.email}</p>
           )}

@@ -12,7 +12,7 @@ export function ChordsPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-black tracking-tighter sm:text-3xl leading-none">{t.chords.page.title}</h1>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl leading-none">{t.chords.page.title}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{t.chords.page.subtitle}</p>
       </div>
 

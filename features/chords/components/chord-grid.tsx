@@ -23,7 +23,7 @@ export function ChordGrid({ chords }: ChordGridProps) {
     return (
       <div className="py-10 px-2">
         <div className="h-0.5 w-8 rounded-full mb-4 bg-muted-foreground/30" />
-        <p className="font-black tracking-tighter text-base leading-none mb-1">{t.chords.glossary.noResults}</p>
+        <p className="font-bold tracking-tight text-base leading-none mb-1">{t.chords.glossary.noResults}</p>
         <p className="text-xs text-muted-foreground">{t.common.tryDifferentSearch}</p>
       </div>
     )

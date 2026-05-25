@@ -10,7 +10,7 @@ export function TeamsHeader() {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div className="min-w-0">
-        <h1 className="text-2xl font-black tracking-tighter sm:text-4xl leading-none">{t.teams.title}</h1>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-4xl leading-none">{t.teams.title}</h1>
         <p className="text-sm text-muted-foreground sm:text-base pt-1">{t.teams.manageTeams}</p>
       </div>
       <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto">

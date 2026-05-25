@@ -29,7 +29,7 @@ import {
   Zap
 } from "lucide-react"
 import { SongList } from "@/features/songs"
-import { useSongs, useCreateSong, useUpdateSong, useDeleteSong } from "../hooks/use-songs"
+import { useSongs, useCreateSong, useUpdateSong } from "../hooks/use-songs"
 import { useUser } from "@/features/auth"
 import { useAppContext, type AppContext } from "@/features/app-context"
 import type { Song, GroupBy, BPMRange, SongFilterStatus } from "../types"
@@ -118,10 +118,10 @@ function SongDraftFormSkeleton() {
   )
 }
 
-const SongDetailLazy = dynamic(() => import("@/features/songs").then((mod) => mod.SongDetail), {
-  ssr: false,
-  loading: () => <SongDetailSkeleton />
-})
+const SongLyricsPanelLazy = dynamic(
+  () => import("@/features/songs").then((mod) => mod.SongLyricsPanel),
+  { ssr: false, loading: () => <SongDetailSkeleton /> }
+)
 
 const SongDraftFormLazy = dynamic(
   () => import("@/features/song-draft").then((mod) => mod.SongDraftForm),
@@ -150,7 +150,6 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
   const { data: songs = initialSongs, isLoading } = useSongs(debouncedQuery || undefined, initialSongs)
   const createSongMutation = useCreateSong()
   const updateSongMutation = useUpdateSong()
-  const deleteSongMutation = useDeleteSong()
 
   // Track viewport to render Sheet only after mount and on mobile
   useEffect(() => {
@@ -186,14 +185,10 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
     [updateSongMutation]
   )
 
-  const handleDeleteSong = useCallback(
-    (songId: string) => {
-      deleteSongMutation.mutate(songId)
-      setSelectedSong(null)
-      setIsMobileDrawerOpen(false)
-    },
-    [deleteSongMutation]
-  )
+  const handleDeleteSong = useCallback((_songId: string) => {
+    setSelectedSong(null)
+    setIsMobileDrawerOpen(false)
+  }, [])
 
   const handleTransferSuccess = useCallback(() => {
     setSelectedSong(null)
@@ -547,10 +542,9 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
               autoFocus
             />
           ) : selectedSong ? (
-            <SongDetailLazy
+            <SongLyricsPanelLazy
               song={selectedSong}
               onClose={handleCloseSongDetail}
-              onUpdate={updateSong}
               onDelete={handleDeleteSong}
               onTransferSuccess={handleTransferSuccess}
             />
@@ -602,10 +596,9 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
                   onBucketChange={setCreationBucket}
                 />
               ) : selectedSong ? (
-                <SongDetailLazy
+                <SongLyricsPanelLazy
                   song={selectedSong}
                   onClose={handleCloseSongDetail}
-                  onUpdate={updateSong}
                   onDelete={handleDeleteSong}
                   onTransferSuccess={handleTransferSuccess}
                 />

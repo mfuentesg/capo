@@ -18,7 +18,6 @@ import {
   Pencil,
   Save,
   Columns2,
-  ExternalLink,
   ChevronUp,
   ChevronDown,
   Turtle,
@@ -607,11 +606,11 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
                       variant="outline"
                       className="hidden sm:flex h-9 gap-1.5 px-3"
                       asChild
-                      title={t.songs.viewLyrics}
+                      title={t.songs.editLyrics}
                     >
-                      <Link href={`/dashboard/songs/${song.id}`}>
-                        <ExternalLink className="h-4 w-4" />
-                        <span className="text-sm">{t.songs.viewLyrics}</span>
+                      <Link href={`/dashboard/songs/${song.id}?edit=true`}>
+                        <Pencil className="h-4 w-4" />
+                        <span className="text-sm">{t.songs.editLyrics}</span>
                       </Link>
                     </Button>
                   )}

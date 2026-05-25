@@ -100,6 +100,7 @@ interface LyricsViewProps {
   hasNextSong?: boolean
   songPosition?: { current: number; total: number }
   slideDirection?: "next" | "prev"
+  actionsSlot?: React.ReactNode
 }
 
 export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function LyricsView(
@@ -118,7 +119,8 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
     hasPrevSong = false,
     hasNextSong = false,
     songPosition,
-    slideDirection
+    slideDirection,
+    actionsSlot
   }: LyricsViewProps,
   ref
 ) {
@@ -632,6 +634,7 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
                     <BookOpen className="h-4 w-4" />
                     <span className="hidden sm:inline text-sm">{t.songs.lyrics.docs}</span>
                   </Button>
+                  {actionsSlot}
                 </>
               )}
             </div>

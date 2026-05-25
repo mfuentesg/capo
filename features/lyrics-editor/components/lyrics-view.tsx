@@ -622,15 +622,17 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
                   >
                     <Share2 className="h-4 w-4" />
                   </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-9 w-9"
-                    onClick={() => setIsReferenceOpen(true)}
-                    aria-label={t.songs.lyrics.chordproReference}
-                  >
-                    <BookOpen className="h-4 w-4" />
-                  </Button>
+                  {!isPanel && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-9 w-9"
+                      onClick={() => setIsReferenceOpen(true)}
+                      aria-label={t.songs.lyrics.chordproReference}
+                    >
+                      <BookOpen className="h-4 w-4" />
+                    </Button>
+                  )}
                   {actionsSlot}
                 </>
               )}
@@ -725,20 +727,24 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
 
           {/* Auto-scroll + display settings — bottom-right */}
           <div className="fixed bottom-6 right-4 z-20 flex items-center gap-1 rounded-2xl border bg-background px-2 py-1.5 shadow-lg">
-          <AutoScrollControls
-            isScrolling={isScrolling}
-            onToggle={toggleAutoScroll}
-            speed={scrollSpeed}
-            onIncrease={() =>
-              setScrollSpeed((s) => Math.min(s + SCROLL_SPEED_STEP, MAX_SCROLL_SPEED))
-            }
-            onDecrease={() =>
-              setScrollSpeed((s) => Math.max(s - SCROLL_SPEED_STEP, MIN_SCROLL_SPEED))
-            }
-            isAtMin={scrollSpeed <= MIN_SCROLL_SPEED}
-            isAtMax={scrollSpeed >= MAX_SCROLL_SPEED}
-          />
-          <Separator orientation="vertical" className="mx-0.5 h-4" />
+          {!isPanel && (
+            <>
+              <AutoScrollControls
+                isScrolling={isScrolling}
+                onToggle={toggleAutoScroll}
+                speed={scrollSpeed}
+                onIncrease={() =>
+                  setScrollSpeed((s) => Math.min(s + SCROLL_SPEED_STEP, MAX_SCROLL_SPEED))
+                }
+                onDecrease={() =>
+                  setScrollSpeed((s) => Math.max(s - SCROLL_SPEED_STEP, MIN_SCROLL_SPEED))
+                }
+                isAtMin={scrollSpeed <= MIN_SCROLL_SPEED}
+                isAtMax={scrollSpeed >= MAX_SCROLL_SPEED}
+              />
+              <Separator orientation="vertical" className="mx-0.5 h-4" />
+            </>
+          )}
           <Popover>
             <PopoverTrigger asChild>
               <Button

@@ -18,7 +18,6 @@ import {
   Pencil,
   Save,
   Columns2,
-  ExternalLink,
   ChevronUp,
   ChevronDown,
   Turtle,
@@ -27,6 +26,7 @@ import {
   Share2
 } from "lucide-react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 import type { Song } from "@/types"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
@@ -100,6 +100,8 @@ interface LyricsViewProps {
   hasNextSong?: boolean
   songPosition?: { current: number; total: number }
   slideDirection?: "next" | "prev"
+  actionsSlot?: React.ReactNode
+  initialEditing?: boolean
 }
 
 export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function LyricsView(
@@ -118,7 +120,9 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
     hasPrevSong = false,
     hasNextSong = false,
     songPosition,
-    slideDirection
+    slideDirection,
+    actionsSlot,
+    initialEditing = false
   }: LyricsViewProps,
   ref
 ) {
@@ -126,10 +130,10 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
   const router = useRouter()
   const containerRef = useRef<HTMLDivElement>(null)
   const touchStartRef = useRef<{ x: number; y: number } | null>(null)
-  const [isEditing, setIsEditing] = useState(false)
+  const [isEditing, setIsEditing] = useState(initialEditing)
   const [isPreviewing, setIsPreviewing] = useState(false)
   const [isReferenceOpen, setIsReferenceOpen] = useState(false)
-  const [hasInitializedEditor, setHasInitializedEditor] = useState(false)
+  const [hasInitializedEditor, setHasInitializedEditor] = useState(initialEditing)
   const [editedLyrics, setEditedLyrics] = useState(song.lyrics || "")
   const [savedLyrics, setSavedLyrics] = useState(song.lyrics || "")
   const [editorResetKey, setEditorResetKey] = useState(0)
@@ -491,7 +495,7 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
       ref={containerRef}
       className={cn(
         "bg-background",
-        isPanel ? "h-full" : "min-h-screen",
+        isPanel ? "min-h-full" : "min-h-screen",
         slideDirection === "next" && "animate-in slide-in-from-right-4 fade-in-0 duration-200",
         slideDirection === "prev" && "animate-in slide-in-from-left-4 fade-in-0 duration-200"
       )}
@@ -589,29 +593,25 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
                   {canEdit && (
                     <Button
                       variant="ghost"
-                      className="h-9 gap-1.5 px-2.5"
+                      size="icon"
+                      className="h-9 w-9"
                       onClick={handleEdit}
                       aria-label={t.songs.editLyrics}
                     >
                       <Pencil className="h-4 w-4" />
-                      <span className="hidden sm:inline text-sm">{t.common.edit}</span>
                     </Button>
                   )}
                   {isPanel && (
                     <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-9 w-9"
+                      variant="outline"
+                      className="hidden sm:flex h-9 gap-1.5 px-3"
                       asChild
-                      title={t.songs.viewLyrics}
+                      title={t.songs.editLyrics}
                     >
-                      <a
-                        href={`/dashboard/songs/${song.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <ExternalLink className="h-4 w-4" />
-                      </a>
+                      <Link href={`/dashboard/songs/${song.id}?edit=true`}>
+                        <Pencil className="h-4 w-4" />
+                        <span className="text-sm">{t.songs.editLyrics}</span>
+                      </Link>
                     </Button>
                   )}
                   <Button
@@ -623,15 +623,18 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
                   >
                     <Share2 className="h-4 w-4" />
                   </Button>
-                  <Button
-                    variant="ghost"
-                    className="h-9 gap-1.5 px-2.5"
-                    onClick={() => setIsReferenceOpen(true)}
-                    aria-label={t.songs.lyrics.chordproReference}
-                  >
-                    <BookOpen className="h-4 w-4" />
-                    <span className="hidden sm:inline text-sm">{t.songs.lyrics.docs}</span>
-                  </Button>
+                  {!isPanel && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-9 w-9"
+                      onClick={() => setIsReferenceOpen(true)}
+                      aria-label={t.songs.lyrics.chordproReference}
+                    >
+                      <BookOpen className="h-4 w-4" />
+                    </Button>
+                  )}
+                  {actionsSlot}
                 </>
               )}
             </div>
@@ -688,6 +691,7 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
           </div>
         </div>
       </div>
+
       {/* Floating controls — song navigation (left) + auto-scroll/settings (right) */}
       {!isEditing && (
         <>
@@ -724,20 +728,24 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
 
           {/* Auto-scroll + display settings — bottom-right */}
           <div className="fixed bottom-6 right-4 z-20 flex items-center gap-1 rounded-2xl border bg-background px-2 py-1.5 shadow-lg">
-          <AutoScrollControls
-            isScrolling={isScrolling}
-            onToggle={toggleAutoScroll}
-            speed={scrollSpeed}
-            onIncrease={() =>
-              setScrollSpeed((s) => Math.min(s + SCROLL_SPEED_STEP, MAX_SCROLL_SPEED))
-            }
-            onDecrease={() =>
-              setScrollSpeed((s) => Math.max(s - SCROLL_SPEED_STEP, MIN_SCROLL_SPEED))
-            }
-            isAtMin={scrollSpeed <= MIN_SCROLL_SPEED}
-            isAtMax={scrollSpeed >= MAX_SCROLL_SPEED}
-          />
-          <Separator orientation="vertical" className="mx-0.5 h-4" />
+          {!isPanel && (
+            <>
+              <AutoScrollControls
+                isScrolling={isScrolling}
+                onToggle={toggleAutoScroll}
+                speed={scrollSpeed}
+                onIncrease={() =>
+                  setScrollSpeed((s) => Math.min(s + SCROLL_SPEED_STEP, MAX_SCROLL_SPEED))
+                }
+                onDecrease={() =>
+                  setScrollSpeed((s) => Math.max(s - SCROLL_SPEED_STEP, MIN_SCROLL_SPEED))
+                }
+                isAtMin={scrollSpeed <= MIN_SCROLL_SPEED}
+                isAtMax={scrollSpeed >= MAX_SCROLL_SPEED}
+              />
+              <Separator orientation="vertical" className="mx-0.5 h-4" />
+            </>
+          )}
           <Popover>
             <PopoverTrigger asChild>
               <Button

@@ -36,7 +36,8 @@
     "comingSoon": "Pronto",
     "saving": "Guardando…",
     "saved": "Guardado",
-    "saveFailed": "Error al guardar"
+    "saveFailed": "Error al guardar",
+    "more": "Más"
   },
   "metadata": {
     "title": "Capo",
@@ -118,6 +119,7 @@
     "addedToSelection": "Agregada a la selección",
     "addToPlaylist": "Agregar al playlist",
     "viewLyrics": "Ver letra",
+    "editDetails": "Editar Detalles",
     "bpm": "PPM",
     "searchPlaceholder": "Buscar canciones, artistas, letras…",
     "all": "Todas",

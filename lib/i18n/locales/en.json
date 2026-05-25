@@ -36,7 +36,8 @@
     "comingSoon": "Soon",
     "saving": "Saving…",
     "saved": "Saved",
-    "saveFailed": "Save failed"
+    "saveFailed": "Save failed",
+    "more": "More"
   },
   "metadata": {
     "title": "Capo",
@@ -118,6 +119,7 @@
     "addedToSelection": "Added to selection",
     "addToPlaylist": "Add to Playlist",
     "viewLyrics": "View Lyrics",
+    "editDetails": "Edit Details",
     "bpm": "BPM",
     "searchPlaceholder": "Search songs, artists, lyrics…",
     "all": "All",

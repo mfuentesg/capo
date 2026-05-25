@@ -40,7 +40,7 @@ export function ThemeSettings() {
   return (
     <section className="space-y-4">
       <div>
-        <h2 className="text-base font-black tracking-tighter">{t.settings.appearance}</h2>
+        <h2 className="text-base font-semibold tracking-tight">{t.settings.appearance}</h2>
         <p className="text-sm text-muted-foreground mt-0.5">{t.settings.themeDescription}</p>
       </div>
       <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label={t.settings.theme}>

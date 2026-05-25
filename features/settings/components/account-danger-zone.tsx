@@ -19,7 +19,7 @@ export function AccountDangerZone() {
   return (
     <section className="space-y-4">
       <div>
-        <h2 className="text-base font-black text-destructive">{t.settings.dangerZone}</h2>
+        <h2 className="text-base font-semibold text-destructive">{t.settings.dangerZone}</h2>
         <p className="text-sm text-muted-foreground mt-0.5">{t.settings.dangerZoneDescription}</p>
       </div>
       {!confirming ? (

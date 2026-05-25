@@ -22,7 +22,7 @@ export function ProfileSettings() {
   return (
     <section className="space-y-5">
       <div>
-        <h2 className="text-base font-black tracking-tighter">{t.settings.profile}</h2>
+        <h2 className="text-base font-semibold tracking-tight">{t.settings.profile}</h2>
         <p className="text-sm text-muted-foreground mt-0.5">{t.settings.profileDescription}</p>
       </div>
 

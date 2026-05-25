@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import {
   Dialog,
   DialogContent,
@@ -28,15 +28,6 @@ export function SongEditDialog({ song, open, onOpenChange, onUpdate }: SongEditD
   const [artist, setArtist] = useState(song.artist)
   const [key, setKey] = useState(song.key)
   const [bpmDraft, setBpmDraft] = useState(String(song.bpm ?? 0))
-
-  useEffect(() => {
-    if (open) {
-      setTitle(song.title)
-      setArtist(song.artist)
-      setKey(song.key)
-      setBpmDraft(String(song.bpm ?? 0))
-    }
-  }, [open, song])
 
   const handleSave = () => {
     const parsedBpm = Number.parseInt(bpmDraft, 10)

@@ -29,7 +29,7 @@ import {
   Zap
 } from "lucide-react"
 import { SongList } from "@/features/songs"
-import { useSongs, useCreateSong, useUpdateSong } from "../hooks/use-songs"
+import { useSongs, useCreateSong } from "../hooks/use-songs"
 import { useUser } from "@/features/auth"
 import { useAppContext, type AppContext } from "@/features/app-context"
 import type { Song, GroupBy, BPMRange, SongFilterStatus } from "../types"
@@ -149,7 +149,6 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
 
   const { data: songs = initialSongs, isLoading } = useSongs(debouncedQuery || undefined, initialSongs)
   const createSongMutation = useCreateSong()
-  const updateSongMutation = useUpdateSong()
 
   // Track viewport to render Sheet only after mount and on mobile
   useEffect(() => {
@@ -177,15 +176,7 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
     return () => clearTimeout(timer)
   }, [searchQuery])
 
-  const updateSong = useCallback(
-    (songId: string, updates: Partial<Song>) => {
-      setSelectedSong((prev) => (prev?.id === songId ? { ...prev, ...updates } : prev))
-      updateSongMutation.mutate({ songId, updates })
-    },
-    [updateSongMutation]
-  )
-
-  const handleDeleteSong = useCallback((_songId: string) => {
+  const handleDeleteSong = useCallback((_: string) => {
     setSelectedSong(null)
     setIsMobileDrawerOpen(false)
   }, [])

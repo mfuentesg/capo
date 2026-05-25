@@ -1,6 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
 import {
   Dialog,
   DialogContent,
@@ -8,12 +11,26 @@ import {
   DialogTitle,
   DialogFooter
 } from "@/components/ui/dialog"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { KeySelect } from "@/features/songs/components/key-select"
 import { useTranslation } from "@/hooks/use-translation"
 import type { Song } from "@/features/songs/types"
+
+type SongEditFormValues = {
+  title: string
+  artist: string
+  key: string
+  bpm: number
+}
 
 interface SongEditDialogProps {
   song: Song
@@ -24,20 +41,44 @@ interface SongEditDialogProps {
 
 export function SongEditDialog({ song, open, onOpenChange, onUpdate }: SongEditDialogProps) {
   const { t } = useTranslation()
-  const [title, setTitle] = useState(song.title)
-  const [artist, setArtist] = useState(song.artist)
-  const [key, setKey] = useState(song.key)
-  const [bpmDraft, setBpmDraft] = useState(String(song.bpm ?? 0))
 
-  const handleSave = () => {
-    const parsedBpm = Number.parseInt(bpmDraft, 10)
-    const bpm = Number.isNaN(parsedBpm) ? song.bpm : Math.max(20, Math.min(parsedBpm, 500))
-    onUpdate(song.id, {
-      title: title.trim() || song.title,
-      artist: artist.trim(),
-      key,
-      bpm
-    })
+  const schema = z.object({
+    title: z
+      .string()
+      .min(1, t.validation.required.replace("{field}", t.validation.songTitle))
+      .trim(),
+    artist: z.string().trim(),
+    key: z.string().min(1, t.validation.required.replace("{field}", t.validation.key)),
+    bpm: z
+      .number()
+      .int()
+      .min(40, t.validation.minBpm.replace("{min}", "40"))
+      .max(300, t.validation.maxBpm.replace("{max}", "300"))
+  })
+
+  const form = useForm<SongEditFormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      title: song.title,
+      artist: song.artist,
+      key: song.key,
+      bpm: song.bpm ?? 120
+    }
+  })
+
+  useEffect(() => {
+    if (open) {
+      form.reset({
+        title: song.title,
+        artist: song.artist,
+        key: song.key,
+        bpm: song.bpm ?? 120
+      })
+    }
+  }, [open, song, form])
+
+  const onSubmit = (values: SongEditFormValues) => {
+    onUpdate(song.id, values)
     onOpenChange(false)
   }
 
@@ -47,51 +88,87 @@ export function SongEditDialog({ song, open, onOpenChange, onUpdate }: SongEditD
         <DialogHeader>
           <DialogTitle>{t.songs.editDetails}</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4 py-2">
-          <div className="space-y-1.5">
-            <Label htmlFor="song-edit-title">{t.songs.songTitle}</Label>
-            <Input
-              id="song-edit-title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder={t.songs.songTitlePlaceholder}
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="song-edit-artist">{t.songs.artist}</Label>
-            <Input
-              id="song-edit-artist"
-              value={artist}
-              onChange={(e) => setArtist(e.target.value)}
-              placeholder={t.songs.artistPlaceholder}
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1.5">
-              <Label>{t.songs.key}</Label>
-              <KeySelect value={key} onValueChange={setKey} className="w-full" />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="song-edit-bpm">{t.songs.bpm}</Label>
-              <Input
-                id="song-edit-bpm"
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                value={bpmDraft}
-                onChange={(e) => {
-                  if (/^\d*$/.test(e.target.value)) setBpmDraft(e.target.value)
-                }}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="space-y-4 py-2">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t.songs.songTitle}</FormLabel>
+                    <FormControl>
+                      <Input placeholder={t.songs.songTitlePlaceholder} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
+              <FormField
+                control={form.control}
+                name="artist"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t.songs.artist}</FormLabel>
+                    <FormControl>
+                      <Input placeholder={t.songs.artistPlaceholder} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="grid grid-cols-2 gap-3">
+                <FormField
+                  control={form.control}
+                  name="key"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t.songs.key}</FormLabel>
+                      <FormControl>
+                        <KeySelect value={field.value} onValueChange={field.onChange} className="w-full" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="bpm"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t.songs.bpm}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          inputMode="numeric"
+                          min="40"
+                          max="300"
+                          value={field.value || ""}
+                          onChange={(e) => {
+                            const num = parseInt(e.target.value, 10)
+                            field.onChange(isNaN(num) ? 0 : num)
+                          }}
+                          onBlur={field.onBlur}
+                          name={field.name}
+                          ref={field.ref}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
-          </div>
-        </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            {t.common.cancel}
-          </Button>
-          <Button onClick={handleSave}>{t.common.save}</Button>
-        </DialogFooter>
+            <DialogFooter className="mt-4">
+              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+                {t.common.cancel}
+              </Button>
+              <Button type="submit" disabled={form.formState.isSubmitting}>
+                {t.common.save}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   )

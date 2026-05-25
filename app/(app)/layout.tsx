@@ -3,11 +3,13 @@ import { cookies } from "next/headers"
 import { QueryProvider } from "@/components/providers/query-provider"
 import { AuthStateProvider } from "@/features/auth"
 import { AppContextProvider } from "@/features/app-context"
-import { LocaleProvider, ChordHandProvider } from "@/features/settings"
+import { LocaleProvider, ChordHandProvider, PaletteProvider, FontProvider } from "@/features/settings"
 import type { ChordHand } from "@/lib/actions/chord-hand"
 import { getInitialAppContextData } from "@/features/app-context/server"
 import { defaultLocale, isValidLocale } from "@/lib/i18n/config"
 import type { Locale } from "@/lib/i18n/config"
+import { isValidPalette, DEFAULT_PALETTE } from "@/lib/palette"
+import { isValidUIFont, DEFAULT_UI_FONT } from "@/lib/font"
 
 export default async function AppLayout({
   children
@@ -37,6 +39,26 @@ export default async function AppLayout({
     initialChordHand = chordHandCookie?.value === "right" ? "right" : "left"
   }
 
+  // Palette: DB takes priority, then cookie, then default
+  const dbPalette = appContextData.preferences?.palette
+  let initialPalette
+  if (isValidPalette(dbPalette)) {
+    initialPalette = dbPalette
+  } else {
+    const paletteCookie = cookieStore.get("NEXT_PALETTE")
+    initialPalette = isValidPalette(paletteCookie?.value) ? paletteCookie.value : DEFAULT_PALETTE
+  }
+
+  // Font: DB takes priority, then cookie, then default
+  const dbFont = appContextData.preferences?.uiFont
+  let initialFont
+  if (isValidUIFont(dbFont)) {
+    initialFont = dbFont
+  } else {
+    const fontCookie = cookieStore.get("NEXT_UI_FONT")
+    initialFont = isValidUIFont(fontCookie?.value) ? fontCookie.value : DEFAULT_UI_FONT
+  }
+
   return (
     <QueryProvider initialUser={appContextData.user}>
       <AuthStateProvider>
@@ -47,8 +69,12 @@ export default async function AppLayout({
           initialViewFilter={appContextData.initialViewFilter}
         >
           <LocaleProvider initialLocale={initialLocale}>
-          <ChordHandProvider initialChordHand={initialChordHand}>{children}</ChordHandProvider>
-        </LocaleProvider>
+            <ChordHandProvider initialChordHand={initialChordHand}>
+              <PaletteProvider initialPalette={initialPalette}>
+                <FontProvider initialFont={initialFont}>{children}</FontProvider>
+              </PaletteProvider>
+            </ChordHandProvider>
+          </LocaleProvider>
         </AppContextProvider>
       </AuthStateProvider>
     </QueryProvider>

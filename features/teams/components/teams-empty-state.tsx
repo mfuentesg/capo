@@ -16,7 +16,7 @@ export function TeamsEmptyState({ searchQuery }: TeamsEmptyStateProps) {
     <Card>
       <CardContent className="p-8">
         <div className="h-0.5 w-8 rounded-full mb-4 bg-muted-foreground/30" />
-        <h3 className="font-black tracking-tighter text-lg leading-none mb-2">{t.teams.noTeamsFound}</h3>
+        <h3 className="font-bold tracking-tight text-lg leading-none mb-2">{t.teams.noTeamsFound}</h3>
         <p className="text-sm text-muted-foreground mb-4 max-w-sm">
           {searchQuery ? t.common.tryDifferentSearch : t.teams.createNewTeamDescription}
         </p>

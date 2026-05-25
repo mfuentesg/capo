@@ -363,7 +363,7 @@ export function ChordDiagram({ chordName, onClose }: ChordDiagramProps) {
         <div className="p-5 sm:p-8 flex-1 sm:flex-initial flex flex-col justify-center sm:block">
           <DialogHeader className="mb-8 sm:mb-6">
             <div className="flex items-center gap-2">
-              <DialogTitle className="text-4xl sm:text-4xl font-black tracking-tight">
+              <DialogTitle className="text-4xl sm:text-4xl font-bold tracking-tight">
                 {chordName}
               </DialogTitle>
               <ChordPlayButton midiNotes={currentChord.midi} />

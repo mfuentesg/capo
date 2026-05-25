@@ -15,7 +15,7 @@ export function LanguageSettings() {
   return (
     <section className="space-y-4">
       <div>
-        <h2 className="text-base font-black tracking-tighter">{t.settings.language}</h2>
+        <h2 className="text-base font-semibold tracking-tight">{t.settings.language}</h2>
         <p className="text-sm text-muted-foreground mt-0.5">{t.settings.languageDescription}</p>
       </div>
       <div className="flex flex-wrap gap-2" role="radiogroup" aria-label={t.settings.language}>

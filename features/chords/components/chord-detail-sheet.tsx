@@ -70,7 +70,7 @@ export function ChordDetailSheet({ chord, onClose }: ChordDetailSheetProps) {
         <SheetHeader className="mb-4">
           <div>
             <div className="flex items-center gap-2">
-              <SheetTitle className="text-3xl font-black tracking-tighter">{displayName}</SheetTitle>
+              <SheetTitle className="text-3xl font-bold tracking-tight">{displayName}</SheetTitle>
               <ChordPlayButton midiNotes={chord.positions[positionIndex].midi} />
             </div>
             {total > 1 && (

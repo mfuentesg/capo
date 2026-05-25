@@ -195,7 +195,7 @@ export function PlaylistsClient({ initialPlaylists = [], t }: PlaylistsClientPro
           <div className="border-b border-r p-4 lg:p-6">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-2">
-                <h1 className="text-xl font-black tracking-tighter lg:text-2xl">
+                <h1 className="text-xl font-bold tracking-tight lg:text-2xl">
                   {t.playlists.title}
                 </h1>
                 <span
@@ -394,7 +394,7 @@ export function PlaylistsClient({ initialPlaylists = [], t }: PlaylistsClientPro
               </div>
               <div className="relative">
                 <div className="h-0.5 w-8 rounded-full mb-4" style={{ background: "var(--accent-playlists)" }} />
-                <h3 className="text-lg font-black tracking-tighter leading-none">{t.playlists.selectPlaylist}</h3>
+                <h3 className="text-lg font-bold tracking-tight leading-none">{t.playlists.selectPlaylist}</h3>
                 <p className="mt-2 text-sm text-muted-foreground max-w-xs leading-relaxed">
                   {t.playlists.selectPlaylistDescription}
                 </p>

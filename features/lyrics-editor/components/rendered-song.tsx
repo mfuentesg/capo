@@ -801,7 +801,7 @@ export function RenderedSong({
 
   if (segments) {
     const columnStyle = columns === 2 ? { columnCount: 2 as const } : { columnCount: 1 as const }
-    const fontStyle = { fontSize: `${fontSize * 14}px`, ...columnStyle }
+    const fontStyle = { fontSize: `${fontSize * 16}px`, ...columnStyle }
     const hasComplexSegments = segments.some((s) => s.type === "repeat" || s.type === "section")
     const visibilityClass = [!showChords && "hide-chords", !showLyrics && "hide-lyrics"]
       .filter(Boolean)
@@ -923,7 +923,7 @@ export function RenderedSong({
   return (
     <div
       className="whitespace-pre-wrap leading-relaxed multi-column-lyrics"
-      style={{ fontSize: `${fontSize * 14}px`, lineHeight: 1.4, columnCount: columns }}
+      style={{ fontSize: `${fontSize * 16}px`, lineHeight: 1.4, columnCount: columns }}
     >
       {lyrics}
     </div>

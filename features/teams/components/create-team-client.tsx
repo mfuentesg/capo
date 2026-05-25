@@ -18,7 +18,7 @@ export function CreateTeamClient() {
             </Link>
           </Button>
           <div>
-            <h1 className="text-2xl font-black tracking-tighter sm:text-3xl">
+            <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
               {t.teams.createNewTeam}
             </h1>
             <p className="text-muted-foreground">{t.teams.createNewTeamDescription}</p>

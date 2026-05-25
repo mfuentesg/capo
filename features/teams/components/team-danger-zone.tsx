@@ -382,7 +382,7 @@ export function TeamDangerZone({
 
   return (
     <div className="rounded-2xl border border-destructive/30 bg-destructive/[0.02] p-6">
-      <h2 className="text-base font-black text-destructive mb-4">{t.account.dangerZone}</h2>
+      <h2 className="text-base font-bold text-destructive mb-4">{t.account.dangerZone}</h2>
       <ItemGroup className="gap-4">
         {isOwner ? (
           <OwnerDangerActions

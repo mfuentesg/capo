@@ -172,7 +172,7 @@ export function LandingPage({ t }: { t: ReturnType<typeof getTranslations> }) {
                 {l.badge}
               </p>
 
-              <h1 className="text-6xl font-black tracking-tighter leading-[0.92] sm:text-7xl lg:text-7xl xl:text-8xl">
+              <h1 className="text-6xl font-bold tracking-tighter leading-[0.92] sm:text-7xl lg:text-7xl xl:text-8xl">
                 {l.hero.headline1}
                 <br />
                 <span className="text-primary">{l.hero.headline2}</span>
@@ -336,7 +336,7 @@ export function LandingPage({ t }: { t: ReturnType<typeof getTranslations> }) {
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
               {l.features.sectionBadge}
             </div>
-            <h2 className="text-4xl font-black tracking-tighter sm:text-5xl md:text-6xl">
+            <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
               {l.features.sectionTitle}
             </h2>
             <p className="mt-4 max-w-lg text-lg text-muted-foreground">
@@ -481,7 +481,7 @@ export function LandingPage({ t }: { t: ReturnType<typeof getTranslations> }) {
 
       {/* ── Spotlight: Song Library ─────────────────────────────────────── */}
       <section className="relative px-6 py-24 sm:py-32 overflow-hidden">
-        <span aria-hidden className="pointer-events-none select-none absolute right-8 top-10 hidden text-[12rem] font-black leading-none text-foreground/[0.04] lg:block">01</span>
+        <span aria-hidden className="pointer-events-none select-none absolute right-8 top-10 hidden text-[12rem] font-bold leading-none text-foreground/[0.04] lg:block">01</span>
         <div aria-hidden className="pointer-events-none absolute top-1/2 -translate-y-1/2 -left-20 h-[500px] w-[500px] rounded-full" style={{ background: "radial-gradient(circle, oklch(0.742 0.139 257 / 8%) 0%, transparent 70%)" }} />
         <div className="mx-auto max-w-7xl">
           <div className="grid items-center gap-12 lg:grid-cols-2">
@@ -490,7 +490,7 @@ export function LandingPage({ t }: { t: ReturnType<typeof getTranslations> }) {
                 <Music className="h-3.5 w-3.5" />
                 {l.songLibrarySection.badge}
               </div>
-              <h2 className="text-3xl font-black tracking-tighter sm:text-4xl leading-tight">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl leading-tight">
                 {l.songLibrarySection.headline1}
                 <br />
                 {l.songLibrarySection.headline2}
@@ -553,7 +553,7 @@ export function LandingPage({ t }: { t: ReturnType<typeof getTranslations> }) {
 
       {/* ── Spotlight: Teams ───────────────────────────────────────────── */}
       <section className="relative px-6 py-24 sm:py-32 overflow-hidden">
-        <span aria-hidden className="pointer-events-none select-none absolute left-8 top-10 hidden text-[12rem] font-black leading-none text-foreground/[0.04] lg:block">02</span>
+        <span aria-hidden className="pointer-events-none select-none absolute left-8 top-10 hidden text-[12rem] font-bold leading-none text-foreground/[0.04] lg:block">02</span>
         <div aria-hidden className="pointer-events-none absolute top-1/2 -translate-y-1/2 -right-20 h-[500px] w-[500px] rounded-full" style={{ background: "radial-gradient(circle, oklch(0.862 0.121 152 / 8%) 0%, transparent 70%)" }} />
         <div className="mx-auto max-w-7xl">
           <div className="grid items-center gap-12 lg:grid-cols-2">
@@ -595,7 +595,7 @@ export function LandingPage({ t }: { t: ReturnType<typeof getTranslations> }) {
                 <Users className="h-3.5 w-3.5" />
                 {l.teamsSection.badge}
               </div>
-              <h2 className="text-3xl font-black tracking-tighter sm:text-4xl leading-tight">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl leading-tight">
                 {l.teamsSection.headline1}
                 <br />
                 {l.teamsSection.headline2}
@@ -618,7 +618,7 @@ export function LandingPage({ t }: { t: ReturnType<typeof getTranslations> }) {
 
       {/* ── Spotlight: Sharing ─────────────────────────────────────────── */}
       <section className="relative px-6 py-24 sm:py-32 overflow-hidden">
-        <span aria-hidden className="pointer-events-none select-none absolute right-8 top-10 hidden text-[12rem] font-black leading-none text-foreground/[0.04] lg:block">03</span>
+        <span aria-hidden className="pointer-events-none select-none absolute right-8 top-10 hidden text-[12rem] font-bold leading-none text-foreground/[0.04] lg:block">03</span>
         <div aria-hidden className="pointer-events-none absolute top-1/2 -translate-y-1/2 left-1/4 h-[400px] w-[600px] rounded-full" style={{ background: "radial-gradient(ellipse, oklch(0.648 0.195 340 / 8%) 0%, transparent 70%)" }} />
         <div className="mx-auto max-w-7xl">
           <div className="grid items-center gap-12 lg:grid-cols-2">
@@ -627,7 +627,7 @@ export function LandingPage({ t }: { t: ReturnType<typeof getTranslations> }) {
                 <Share2 className="h-3.5 w-3.5" />
                 {l.sharingSection.badge}
               </div>
-              <h2 className="text-3xl font-black tracking-tighter sm:text-4xl leading-tight">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl leading-tight">
                 {l.sharingSection.headline1}
                 <br />
                 {l.sharingSection.headline2}
@@ -699,7 +699,7 @@ export function LandingPage({ t }: { t: ReturnType<typeof getTranslations> }) {
           <div className="mb-6 flex justify-center">
             <OptimizedLogo name="capo" alt={t.common.capoLogo} width={72} height={72} className="opacity-90 dark:invert" />
           </div>
-          <h2 className="text-4xl font-black tracking-tighter sm:text-5xl">{l.cta.headline}</h2>
+          <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl">{l.cta.headline}</h2>
           <p className="mt-4 text-lg text-muted-foreground">{l.cta.description}</p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Button asChild size="lg" className="h-12 px-10 text-base font-semibold active:scale-[0.98]">

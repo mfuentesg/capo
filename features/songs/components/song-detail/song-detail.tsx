@@ -187,8 +187,8 @@ export function SongDetail({ song, onClose, onUpdate, onDelete, onTransferSucces
               <EditableField
                 value={song.title}
                 onSave={(value) => onUpdate(song.id, { title: value })}
-                className="text-lg font-black tracking-tighter"
-                inputClassName="text-lg font-black"
+                className="text-lg font-bold tracking-tight"
+                inputClassName="text-lg font-bold"
               />
               {song.isDraft && (
                 <Badge variant="secondary" className="text-xs">
@@ -402,7 +402,7 @@ export function SongDetail({ song, onClose, onUpdate, onDelete, onTransferSucces
 
           {/* Danger Zone */}
           <div className="rounded-2xl border border-destructive/30 bg-destructive/[0.02] p-4">
-            <h3 className="text-sm font-black text-destructive mb-3">{t.songs.dangerZone}</h3>
+            <h3 className="text-sm font-bold text-destructive mb-3">{t.songs.dangerZone}</h3>
             <div className="flex items-center justify-between gap-4">
               <div className="space-y-0.5">
                 <p className="text-sm font-medium">{t.songs.deleteSong}</p>

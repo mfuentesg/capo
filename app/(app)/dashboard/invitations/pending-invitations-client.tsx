@@ -111,7 +111,7 @@ export function PendingInvitationsClient({
         {/* Header */}
         <div>
           <div className="flex items-baseline gap-2">
-            <h1 className="text-3xl font-black tracking-tighter leading-none">
+            <h1 className="text-3xl font-bold tracking-tight leading-none">
               {t.invitations.pendingTitle}
             </h1>
             {invitations.length > 0 && (
@@ -138,7 +138,7 @@ export function PendingInvitationsClient({
             <div className="relative p-8 space-y-4">
               <div className="h-0.5 w-8 rounded-full" style={{ background: "var(--accent-activity)" }} />
               <div className="space-y-1">
-                <p className="font-black text-lg tracking-tighter leading-none">{t.invitations.emptyTitle}</p>
+                <p className="font-bold text-lg tracking-tight leading-none">{t.invitations.emptyTitle}</p>
                 <p className="text-sm text-muted-foreground">{t.invitations.emptyDescription}</p>
               </div>
               <Button onClick={() => router.push("/dashboard/teams")} className="transition active:scale-[0.98]">
@@ -156,7 +156,7 @@ export function PendingInvitationsClient({
                     <div className="p-6 pb-4">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
-                          <h3 className="text-2xl font-black tracking-tighter leading-tight truncate">
+                          <h3 className="text-2xl font-bold tracking-tight leading-tight truncate">
                             {invitation.teamName}
                           </h3>
                           <p className="text-sm text-muted-foreground mt-0.5">

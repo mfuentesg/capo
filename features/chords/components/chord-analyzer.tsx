@@ -123,7 +123,7 @@ export function ChordAnalyzer() {
                     )}
                   >
                     <div className="flex w-full items-start justify-between">
-                      <span className="text-base font-black tracking-tighter leading-none">
+                      <span className="text-base font-bold tracking-tight leading-none">
                         {result.name}
                       </span>
                       {result.confidence === "exact" && (

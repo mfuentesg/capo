@@ -180,7 +180,7 @@ export function TeamMembersSection({
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <UsersIcon className="h-5 w-5" />
-            <h2 className="text-base font-black tracking-tighter">{t.teams.members}</h2>
+            <h2 className="text-base font-bold tracking-tight">{t.teams.members}</h2>
             <Badge variant="secondary">{totalCount}</Badge>
           </div>
           {canManageTeamMembers() && (
@@ -426,7 +426,7 @@ export function TeamMembersSection({
         ) : (
           <div className="py-8 px-2">
             <div className="h-0.5 w-8 rounded-full mb-4 bg-muted-foreground/30" />
-            <p className="font-black tracking-tighter text-lg leading-none text-muted-foreground">{t.teams.noMembersYet}</p>
+            <p className="font-bold tracking-tight text-lg leading-none text-muted-foreground">{t.teams.noMembersYet}</p>
           </div>
         )}
       </div>

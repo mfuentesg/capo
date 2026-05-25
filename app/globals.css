@@ -659,6 +659,26 @@ html[data-font="dm-sans"] {
   font-family: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
+html[data-font="roboto"] {
+  font-family: var(--font-roboto), ui-sans-serif, system-ui, sans-serif;
+}
+
+html[data-font="poppins"] {
+  font-family: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+}
+
+html[data-font="nunito"] {
+  font-family: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
+}
+
+html[data-font="outfit"] {
+  font-family: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+}
+
+html[data-font="plus-jakarta-sans"] {
+  font-family: var(--font-plus-jakarta-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

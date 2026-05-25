@@ -1,4 +1,13 @@
-export const VALID_UI_FONTS = ["geist", "inter", "dm-sans"] as const
+export const VALID_UI_FONTS = [
+  "geist",
+  "inter",
+  "dm-sans",
+  "roboto",
+  "poppins",
+  "nunito",
+  "outfit",
+  "plus-jakarta-sans"
+] as const
 export type UIFont = (typeof VALID_UI_FONTS)[number]
 
 export function isValidUIFont(v: unknown): v is UIFont {

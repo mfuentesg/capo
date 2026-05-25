@@ -81,8 +81,18 @@ interface FontEntry {
 
 const FONTS: FontEntry[] = [
   { id: "geist", name: "Geist", cssVar: "var(--font-geist-sans)", desc: "Clean & modern" },
-  { id: "inter", name: "Inter", cssVar: "var(--font-inter)", desc: "Versatile sans-serif" },
-  { id: "dm-sans", name: "DM Sans", cssVar: "var(--font-dm-sans)", desc: "Soft & friendly" }
+  { id: "inter", name: "Inter", cssVar: "var(--font-inter)", desc: "Versatile & readable" },
+  { id: "roboto", name: "Roboto", cssVar: "var(--font-roboto)", desc: "Material Design" },
+  { id: "poppins", name: "Poppins", cssVar: "var(--font-poppins)", desc: "Geometric & bold" },
+  { id: "nunito", name: "Nunito", cssVar: "var(--font-nunito)", desc: "Rounded & warm" },
+  { id: "outfit", name: "Outfit", cssVar: "var(--font-outfit)", desc: "Sharp & minimal" },
+  { id: "dm-sans", name: "DM Sans", cssVar: "var(--font-dm-sans)", desc: "Soft & friendly" },
+  {
+    id: "plus-jakarta-sans",
+    name: "Plus Jakarta Sans",
+    cssVar: "var(--font-plus-jakarta-sans)",
+    desc: "Fresh & modern"
+  }
 ]
 
 function PaletteCard({
@@ -217,7 +227,7 @@ export function PaletteSettings() {
           <p className="text-sm text-muted-foreground mt-0.5">{t.settings.fontDescription}</p>
         </div>
         <div
-          className="grid grid-cols-3 gap-2"
+          className="grid grid-cols-2 sm:grid-cols-4 gap-2"
           role="radiogroup"
           aria-label={t.settings.font}
         >

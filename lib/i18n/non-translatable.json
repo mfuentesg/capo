@@ -8,7 +8,8 @@
     "proper_nouns": [
       "Catppuccin", "Aura", "Nord", "Rosé Pine",
       "Dracula", "One Dark Pro", "Tokyo Night", "Gruvbox",
-      "Geist", "Inter", "DM Sans"
+      "Geist", "Inter", "DM Sans", "Roboto", "Poppins",
+      "Nunito", "Outfit", "Plus Jakarta Sans"
     ],
     "chordpro_directives": [
       "start_of_chorus",
@@ -147,6 +148,11 @@
     "Geist",
     "Inter",
     "DM Sans",
+    "Roboto",
+    "Poppins",
+    "Nunito",
+    "Outfit",
+    "Plus Jakarta Sans",
     "Dracula",
     "One Dark Pro",
     "Tokyo Night",

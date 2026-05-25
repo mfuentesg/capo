@@ -17,15 +17,14 @@ export function SongLyricsPanel({ song, onClose, onDelete, onTransferSuccess }: 
   useUserSongSettings(song, undefined)
   const effectiveSettings = useEffectiveSongSettings(song)
   const { mutate: upsertSettings } = useUpsertUserSongSettings(song)
-  const { mutate: updateSong, isPending: isSaving } = useUpdateSong()
+  const { mutate: updateSong } = useUpdateSong()
 
   return (
     <LyricsView
       song={song}
       mode="panel"
+      readOnly
       onClose={onClose}
-      onSaveLyrics={(lyrics) => updateSong({ songId: song.id, updates: { lyrics } })}
-      isSaving={isSaving}
       initialSettings={effectiveSettings}
       onSettingsChange={upsertSettings}
       actionsSlot={

@@ -162,7 +162,40 @@ export default async function RootLayout({
       data-font={defaultFont}
       className={fontClasses}
     >
-      <head />
+      <head>
+        {/*
+         * Blocking script — runs synchronously in <head>, before CSS is evaluated
+         * and before any paint, to guarantee data-palette, data-font, and
+         * class="dark" are set on <html> from the very first frame.
+         *
+         * next-themes injects its own script inside <body>, which is too late when
+         * the browser streams/paints the page shell before reaching it. By
+         * duplicating the logic here we eliminate the flash from the default dark
+         * palette (catppuccin) to the user's chosen palette.
+         *
+         * Reading order: localStorage → NEXT_THEME cookie (for dark/light),
+         * NEXT_PALETTE cookie (for palette), NEXT_UI_FONT cookie (for font).
+         */}
+        <script
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{
+var d=document.documentElement,c=document.cookie;
+var p=/(?:^|;\\s*)NEXT_PALETTE=([^;]+)/.exec(c);
+var vp=["catppuccin","aura","nord","rose-pine","dracula","one-dark-pro","tokyo-night","gruvbox"];
+if(p&&vp.indexOf(p[1])!==-1)d.setAttribute("data-palette",p[1]);
+var f=/(?:^|;\\s*)NEXT_UI_FONT=([^;]+)/.exec(c);
+var vf=["geist","inter","dm-sans","roboto","poppins","nunito","outfit","plus-jakarta-sans"];
+if(f&&vf.indexOf(f[1])!==-1)d.setAttribute("data-font",f[1]);
+var t=null;try{t=localStorage.getItem("theme")}catch(e){}
+if(!t){var tm=/(?:^|;\\s*)NEXT_THEME=([^;]+)/.exec(c);t=tm?tm[1]:null;}
+if(t==="dark")d.classList.add("dark");
+else if(t==="light")d.classList.remove("dark");
+else if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)d.classList.add("dark");
+}catch(e){}})();`
+          }}
+        />
+      </head>
       <body className="antialiased">
         <NextTopLoader color="#f97316" showSpinner={false} />
         <ThemeProvider

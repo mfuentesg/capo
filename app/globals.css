@@ -312,9 +312,9 @@ html[data-palette="nord"].dark {
 
 /* ── Rosé Pine palette (https://rosepinetheme.com) ───────────────── */
 html[data-palette="rose-pine"] {
-  --background: oklch(0.966 0.024 65);            /* #faf4ed */
+  --background: oklch(0.952 0.026 65);            /* slightly deeper than #faf4ed */
   --foreground: oklch(0.388 0.072 285);           /* #575279 */
-  --card: oklch(0.985 0.018 75);                  /* #fffaf3 */
+  --card: oklch(0.982 0.014 75);                  /* near-white warm surface */
   --card-foreground: oklch(0.388 0.072 285);
   --popover: oklch(0.985 0.018 75);
   --popover-foreground: oklch(0.388 0.072 285);
@@ -376,6 +376,25 @@ html[data-palette="rose-pine"].dark {
   --accent-playlists: oklch(0.760 0.120 295);     /* #c4a7e7 iris */
   --accent-activity: oklch(0.845 0.155 70);       /* #f6c177 gold */
 }
+
+/* ── Rosé Pine section accents — palette-harmonized ─────────────── */
+html[data-palette="rose-pine"] .section-repeat[data-section-type="verse"]      { --section-accent: oklch(0.545 0.082 218); } /* foam   */
+html[data-palette="rose-pine"] .section-repeat[data-section-type="chorus"]     { --section-accent: oklch(0.525 0.092 295); } /* iris   */
+html[data-palette="rose-pine"] .section-repeat[data-section-type="bridge"]     { --section-accent: oklch(0.505 0.115 350); } /* love   */
+html[data-palette="rose-pine"] .section-repeat[data-section-type="intro"]      { --section-accent: oklch(0.430 0.095 225); } /* pine   */
+html[data-palette="rose-pine"] .section-repeat[data-section-type="outro"]      { --section-accent: oklch(0.490 0.078 210); } /* pine+  */
+html[data-palette="rose-pine"] .section-repeat[data-section-type="pre_chorus"] { --section-accent: oklch(0.560 0.098 30);  } /* rose   */
+html[data-palette="rose-pine"] .section-repeat[data-section-type="comment"]    { --section-accent: oklch(0.545 0.082 218); } /* foam   */
+html[data-palette="rose-pine"] .section-repeat[data-section-type="repeat"]     { --section-accent: oklch(0.570 0.095 65);  } /* gold   */
+
+html[data-palette="rose-pine"].dark .section-repeat[data-section-type="verse"]      { --section-accent: oklch(0.825 0.075 215); } /* #9ccfd8 */
+html[data-palette="rose-pine"].dark .section-repeat[data-section-type="chorus"]     { --section-accent: oklch(0.760 0.120 295); } /* #c4a7e7 */
+html[data-palette="rose-pine"].dark .section-repeat[data-section-type="bridge"]     { --section-accent: oklch(0.680 0.160 355); } /* #eb6f92 */
+html[data-palette="rose-pine"].dark .section-repeat[data-section-type="intro"]      { --section-accent: oklch(0.790 0.095 215); }
+html[data-palette="rose-pine"].dark .section-repeat[data-section-type="outro"]      { --section-accent: oklch(0.770 0.085 210); }
+html[data-palette="rose-pine"].dark .section-repeat[data-section-type="pre_chorus"] { --section-accent: oklch(0.845 0.155 70);  } /* gold   */
+html[data-palette="rose-pine"].dark .section-repeat[data-section-type="comment"]    { --section-accent: oklch(0.825 0.075 215); }
+html[data-palette="rose-pine"].dark .section-repeat[data-section-type="repeat"]     { --section-accent: oklch(0.845 0.155 70);  }
 
 /* ── Dracula palette (https://draculatheme.com) ──────────────────── */
 html[data-palette="dracula"] {

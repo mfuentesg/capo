@@ -825,6 +825,15 @@ html[data-font="plus-jakarta-sans"] {
 
 .section-repeat-content {
   @apply border-l-2 pl-4 [border-color:var(--section-accent)];
+  background: color-mix(in oklch, var(--section-accent) 6%, transparent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding-top: 8px;
+  padding-bottom: 10px;
+  padding-right: 16px;
+}
+
+.dark .section-repeat-content {
+  background: color-mix(in oklch, var(--section-accent) 12%, transparent);
 }
 
 .section-label {

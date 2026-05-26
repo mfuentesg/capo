@@ -542,7 +542,7 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
                 onTransferSuccess={handleTransferSuccess}
               />
             ) : (
-              <div className="flex flex-1 flex-col justify-end bg-muted/30 relative overflow-hidden p-8 lg:p-12">
+              <div className="flex flex-1 flex-col justify-end bg-card relative overflow-hidden p-8 lg:p-12">
                 <div className="pointer-events-none select-none absolute inset-0 flex items-center justify-center" aria-hidden>
                   <Music style={{ width: "45%", height: "45%" }} className="text-foreground/[0.04]" />
                 </div>

@@ -654,7 +654,7 @@ function SectionHeader({ name, isCollapsed, onToggle, icon, flags }: SectionHead
       style={{
         background: "var(--section-accent)",
         boxShadow:
-          "0 0 0 2px var(--background), 0 0 0 4px color-mix(in oklch, var(--section-accent) 25%, transparent)"
+          "0 0 0 2px var(--card), 0 0 0 4px color-mix(in oklch, var(--section-accent) 25%, transparent)"
       }}
     />
   )

@@ -732,19 +732,23 @@ export function RenderedSong({
   const [collapsedSet, setCollapsedSet] = useState<Set<number>>(new Set())
   const [selectedChord, setSelectedChord] = useState<string | null>(null)
   const [fontScale, setFontScale] = useState(1)
+  const [trackedFontSize, setTrackedFontSize] = useState(fontSize)
   const wrapperRef = useRef<HTMLDivElement>(null)
-  const prevFontSizeRef = useRef(fontSize)
+
+  // Reset auto-scale when the user adjusts font size (derived state during render,
+  // not inside an effect, to avoid the set-state-in-effect lint rule).
+  if (trackedFontSize !== fontSize) {
+    setTrackedFontSize(fontSize)
+    setFontScale(1)
+  }
 
   // Shrink font until no chord/lyric row overflows its block, then recover on resize.
+  // No deps: must run after every render so content changes are caught immediately.
+  // The setFontScale guard (|next-prev| > 0.005) prevents infinite update loops.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
     const wrapper = wrapperRef.current
     if (!wrapper) return
-
-    if (prevFontSizeRef.current !== fontSize) {
-      prevFontSizeRef.current = fontSize
-      setFontScale(1)
-      return
-    }
 
     const nodes = wrapper.querySelectorAll<HTMLElement>(".clp-lyric-text, .clp-chords")
     if (!nodes.length) return

@@ -5,7 +5,17 @@ export {
   LanguageSettings,
   AccountDangerZone,
   ProfileSettings,
-  ChordHandSettings
+  ChordHandSettings,
+  PaletteSettings
 } from "./components"
 
-export { LocaleProvider, useLocale, ChordHandProvider, useChordHand } from "./contexts"
+export {
+  LocaleProvider,
+  useLocale,
+  ChordHandProvider,
+  useChordHand,
+  PaletteProvider,
+  usePalette,
+  FontProvider,
+  useFont
+} from "./contexts"

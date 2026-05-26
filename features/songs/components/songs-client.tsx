@@ -29,7 +29,7 @@ import {
   Zap
 } from "lucide-react"
 import { SongList } from "@/features/songs"
-import { useSongs, useCreateSong, useUpdateSong, useDeleteSong } from "../hooks/use-songs"
+import { useSongs, useCreateSong } from "../hooks/use-songs"
 import { useUser } from "@/features/auth"
 import { useAppContext, type AppContext } from "@/features/app-context"
 import type { Song, GroupBy, BPMRange, SongFilterStatus } from "../types"
@@ -118,10 +118,10 @@ function SongDraftFormSkeleton() {
   )
 }
 
-const SongDetailLazy = dynamic(() => import("@/features/songs").then((mod) => mod.SongDetail), {
-  ssr: false,
-  loading: () => <SongDetailSkeleton />
-})
+const SongLyricsPanelLazy = dynamic(
+  () => import("@/features/songs").then((mod) => mod.SongLyricsPanel),
+  { ssr: false, loading: () => <SongDetailSkeleton /> }
+)
 
 const SongDraftFormLazy = dynamic(
   () => import("@/features/song-draft").then((mod) => mod.SongDraftForm),
@@ -147,10 +147,8 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
   const resizeHandleIds = createOverlayIds("songs-layout-resize")
   const mobileDrawerIds = createOverlayIds("songs-mobile-drawer")
 
-  const { data: songs = initialSongs, isLoading } = useSongs(debouncedQuery || undefined)
+  const { data: songs = initialSongs, isLoading } = useSongs(debouncedQuery || undefined, initialSongs)
   const createSongMutation = useCreateSong()
-  const updateSongMutation = useUpdateSong()
-  const deleteSongMutation = useDeleteSong()
 
   // Track viewport to render Sheet only after mount and on mobile
   useEffect(() => {
@@ -178,22 +176,10 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
     return () => clearTimeout(timer)
   }, [searchQuery])
 
-  const updateSong = useCallback(
-    (songId: string, updates: Partial<Song>) => {
-      setSelectedSong((prev) => (prev?.id === songId ? { ...prev, ...updates } : prev))
-      updateSongMutation.mutate({ songId, updates })
-    },
-    [updateSongMutation]
-  )
-
-  const handleDeleteSong = useCallback(
-    (songId: string) => {
-      deleteSongMutation.mutate(songId)
-      setSelectedSong(null)
-      setIsMobileDrawerOpen(false)
-    },
-    [deleteSongMutation]
-  )
+  const handleDeleteSong = useCallback(() => {
+    setSelectedSong(null)
+    setIsMobileDrawerOpen(false)
+  }, [])
 
   const handleTransferSuccess = useCallback(() => {
     setSelectedSong(null)
@@ -295,7 +281,7 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
           <div className="border-b border-r p-4 lg:p-6">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-2">
-                <h1 className="text-xl font-black tracking-tighter lg:text-2xl">
+                <h1 className="text-xl font-bold tracking-tight lg:text-2xl">
                   {t.songs.title}
                 </h1>
                 <span className="text-sm text-muted-foreground tabular-nums">· {songs.length}</span>
@@ -532,42 +518,44 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
           minSize={40}
           className="hidden md:flex"
         >
-          {isCreatingNewSong ? (
-            <SongDraftFormLazy
-              song={previewSong || undefined}
-              onClose={() => {
-                setIsCreatingNewSong(false)
-                setPreviewSong(null)
-                setSelectedSong(null)
-              }}
-              onSave={handleSaveSong}
-              onChange={handleUpdatePreview}
-              selectedBucket={creationBucket}
-              onBucketChange={setCreationBucket}
-              autoFocus
-            />
-          ) : selectedSong ? (
-            <SongDetailLazy
-              song={selectedSong}
-              onClose={handleCloseSongDetail}
-              onUpdate={updateSong}
-              onDelete={handleDeleteSong}
-              onTransferSuccess={handleTransferSuccess}
-            />
-          ) : (
-            <div className="flex flex-1 flex-col justify-end bg-muted/30 relative overflow-hidden p-8 lg:p-12">
-              <div className="pointer-events-none select-none absolute inset-0 flex items-center justify-center" aria-hidden>
-                <Music style={{ width: "45%", height: "45%" }} className="text-foreground/[0.04]" />
+          <div className="flex-1 overflow-y-auto min-h-0">
+            {isCreatingNewSong ? (
+              <SongDraftFormLazy
+                song={previewSong || undefined}
+                onClose={() => {
+                  setIsCreatingNewSong(false)
+                  setPreviewSong(null)
+                  setSelectedSong(null)
+                }}
+                onSave={handleSaveSong}
+                onChange={handleUpdatePreview}
+                selectedBucket={creationBucket}
+                onBucketChange={setCreationBucket}
+                autoFocus
+              />
+            ) : selectedSong ? (
+              <SongLyricsPanelLazy
+                key={selectedSong.id}
+                song={selectedSong}
+                onClose={handleCloseSongDetail}
+                onDelete={handleDeleteSong}
+                onTransferSuccess={handleTransferSuccess}
+              />
+            ) : (
+              <div className="flex flex-1 flex-col justify-end bg-muted/30 relative overflow-hidden p-8 lg:p-12">
+                <div className="pointer-events-none select-none absolute inset-0 flex items-center justify-center" aria-hidden>
+                  <Music style={{ width: "45%", height: "45%" }} className="text-foreground/[0.04]" />
+                </div>
+                <div className="relative">
+                  <div className="h-0.5 w-8 rounded-full mb-4" style={{ background: "var(--accent-songs)" }} />
+                  <h3 className="text-lg font-bold tracking-tight leading-none">{t.songs.selectSong}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground max-w-xs leading-relaxed">
+                    {t.songs.selectSongDescription}
+                  </p>
+                </div>
               </div>
-              <div className="relative">
-                <div className="h-0.5 w-8 rounded-full mb-4" style={{ background: "var(--accent-songs)" }} />
-                <h3 className="text-lg font-black tracking-tighter leading-none">{t.songs.selectSong}</h3>
-                <p className="mt-2 text-sm text-muted-foreground max-w-xs leading-relaxed">
-                  {t.songs.selectSongDescription}
-                </p>
-              </div>
-            </div>
-          )}
+            )}
+          </div>
         </ResizablePanel>
       </ResizablePanelGroup>
 
@@ -602,10 +590,10 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
                   onBucketChange={setCreationBucket}
                 />
               ) : selectedSong ? (
-                <SongDetailLazy
+                <SongLyricsPanelLazy
+                  key={selectedSong.id}
                   song={selectedSong}
                   onClose={handleCloseSongDetail}
-                  onUpdate={updateSong}
                   onDelete={handleDeleteSong}
                   onTransferSuccess={handleTransferSuccess}
                 />

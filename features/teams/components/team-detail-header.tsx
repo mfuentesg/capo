@@ -191,10 +191,10 @@ export function TeamDetailHeader({
                 <EditableField
                   value={team.name}
                   onSave={(value) => onUpdate({ name: value })}
-                  className="max-w-full text-2xl font-black tracking-tighter leading-none"
+                  className="max-w-full text-2xl font-bold tracking-tight leading-none"
                 />
               ) : (
-                <h1 className="truncate text-2xl font-black tracking-tighter leading-none">{team.name}</h1>
+                <h1 className="truncate text-2xl font-bold tracking-tight leading-none">{team.name}</h1>
               )}
             </div>
             {/* Active badge — desktop only */}

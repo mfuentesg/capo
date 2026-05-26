@@ -128,7 +128,7 @@ export function TeamCard({ team, memberCount = 1 }: TeamCardProps) {
               )}
               <div className="flex-1 min-w-0">
                 <Link href={`/dashboard/teams/${team.id}`}>
-                  <CardTitle className="text-base font-black tracking-tighter truncate hover:underline cursor-pointer">
+                  <CardTitle className="text-base font-bold tracking-tight truncate hover:underline cursor-pointer">
                     {team.name}
                   </CardTitle>
                 </Link>

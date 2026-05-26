@@ -36,7 +36,8 @@
     "comingSoon": "Soon",
     "saving": "Saving…",
     "saved": "Saved",
-    "saveFailed": "Save failed"
+    "saveFailed": "Save failed",
+    "more": "More"
   },
   "metadata": {
     "title": "Capo",
@@ -83,6 +84,10 @@
     "chordHandDescription": "Choose how chord diagrams are oriented for your playing style.",
     "rightHand": "Right hand",
     "leftHand": "Left hand",
+    "palette": "Color Palette",
+    "paletteDescription": "Choose your preferred color palette",
+    "font": "Font",
+    "fontDescription": "Choose the UI typeface",
     "dangerZone": "Danger Zone",
     "dangerZoneDescription": "Permanently delete your account and all associated data. This cannot be undone.",
     "deleteAccount": "Delete account",
@@ -114,6 +119,7 @@
     "addedToSelection": "Added to selection",
     "addToPlaylist": "Add to Playlist",
     "viewLyrics": "View Lyrics",
+    "editDetails": "Edit Details",
     "bpm": "BPM",
     "searchPlaceholder": "Search songs, artists, lyrics…",
     "all": "All",

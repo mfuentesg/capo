@@ -219,7 +219,7 @@ export function PlaylistDraft({
         aria-controls={drawerIds.contentId}
       >
         {/* Count bubble */}
-        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-foreground/20 text-xs font-black tabular-nums">
+        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-foreground/20 text-xs font-bold tabular-nums">
           {songs.length}
         </span>
         <ListMusic className="h-4 w-4" />
@@ -266,7 +266,7 @@ export function PlaylistDraft({
         <DialogTrigger asChild>{trigger}</DialogTrigger>
         <DialogContent className="sm:max-w-md flex flex-col max-h-[80vh]">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 font-black tracking-tight">
+            <DialogTitle className="flex items-center gap-2 font-bold tracking-tight">
               <ListMusic className="h-5 w-5 text-primary" />
               {t.playlistDraft.addToPlaylist}
             </DialogTitle>
@@ -291,7 +291,7 @@ export function PlaylistDraft({
         id={drawerIds.contentId}
       >
         <DrawerHeader>
-          <DrawerTitle className="flex items-center gap-2 font-black tracking-tight">
+          <DrawerTitle className="flex items-center gap-2 font-bold tracking-tight">
             <ListMusic className="h-5 w-5 text-primary" />
             {t.playlistDraft.addToPlaylist}
           </DrawerTitle>

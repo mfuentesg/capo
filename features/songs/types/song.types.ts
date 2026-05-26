@@ -31,6 +31,8 @@ export interface UserPreferences {
   locale?: string
   theme?: "light" | "dark" | "system"
   chordHand?: "right" | "left"
+  palette?: string
+  uiFont?: string
 }
 
 export type GroupBy = "none" | "key" | "artist" | "bucket"

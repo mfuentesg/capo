@@ -111,7 +111,7 @@ export function AcceptInvitationClient() {
             <div className="flex flex-col items-center text-center space-y-4">
               <Spinner className="h-8 w-8" />
               <div>
-                <h1 className="text-xl font-black tracking-tight">{t.invitations.title}</h1>
+                <h1 className="text-xl font-bold tracking-tight">{t.invitations.title}</h1>
                 <p className="text-sm text-muted-foreground mt-1">{t.invitations.acceptingDescription}</p>
               </div>
             </div>
@@ -119,7 +119,7 @@ export function AcceptInvitationClient() {
 
           {status === "success" && (
             <div className="text-center space-y-2">
-              <h1 className="text-2xl font-black tracking-tighter">{t.invitations.acceptedTitle}</h1>
+              <h1 className="text-2xl font-bold tracking-tight">{t.invitations.acceptedTitle}</h1>
               <p className="text-muted-foreground">{t.invitations.welcome}</p>
               <p className="text-sm text-muted-foreground">{t.invitations.redirecting}</p>
             </div>
@@ -128,7 +128,7 @@ export function AcceptInvitationClient() {
           {status === "error" && (
             <div className="space-y-4">
               <div className="text-center">
-                <h1 className="text-xl font-black tracking-tight">{t.invitations.unableToAccept}</h1>
+                <h1 className="text-xl font-bold tracking-tight">{t.invitations.unableToAccept}</h1>
                 <p className="text-sm text-muted-foreground mt-1">{error}</p>
               </div>
               <div className="flex flex-col gap-2">
@@ -166,7 +166,7 @@ export function AcceptInvitationClient() {
           {status === "invalid" && (
             <div className="space-y-4">
               <div className="text-center">
-                <h1 className="text-xl font-black tracking-tight">{t.invitations.invalid}</h1>
+                <h1 className="text-xl font-bold tracking-tight">{t.invitations.invalid}</h1>
                 <p className="text-sm text-muted-foreground mt-1">{t.invitations.invalidLinkDescription}</p>
               </div>
               <Alert variant="destructive">

@@ -1,5 +1,6 @@
 "use client"
 
+import { useSearchParams } from "next/navigation"
 import {
   useUpdateSong,
   useUserSongSettings,
@@ -27,6 +28,8 @@ export function LyricsPageClient({
   useUserSongSettings(song, initialUserSettings)
   const effectiveSettings = useEffectiveSongSettings(song)
   const { mutate: upsertSettings } = useUpsertUserSongSettings(song)
+  const searchParams = useSearchParams()
+  const initialEditing = searchParams.get("edit") === "true"
 
   return (
     <LyricsView
@@ -36,6 +39,7 @@ export function LyricsPageClient({
       initialSettings={effectiveSettings}
       onSettingsChange={upsertSettings}
       initialLyricsColumns={initialLyricsColumns}
+      initialEditing={initialEditing}
     />
   )
 }

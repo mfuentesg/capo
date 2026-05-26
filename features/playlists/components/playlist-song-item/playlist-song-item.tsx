@@ -23,7 +23,7 @@ export function PlaylistSongItem({ song, index, className, showDragHandle }: Pla
       )}
     >
       {/* Position number — morphs to a music icon on hover to hint that the item is tappable */}
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-base font-black text-primary">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-base font-bold text-primary">
         {showDragHandle ? (
           <>
             <span className="group-hover:hidden">{index + 1}</span>

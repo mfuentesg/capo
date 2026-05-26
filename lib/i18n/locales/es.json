@@ -36,7 +36,8 @@
     "comingSoon": "Pronto",
     "saving": "Guardando…",
     "saved": "Guardado",
-    "saveFailed": "Error al guardar"
+    "saveFailed": "Error al guardar",
+    "more": "Más"
   },
   "metadata": {
     "title": "Capo",
@@ -79,6 +80,10 @@
     "themeLight": "Claro",
     "themeDark": "Oscuro",
     "themeSystem": "Sistema",
+    "palette": "Paleta de colores",
+    "paletteDescription": "Elige tu paleta de colores preferida",
+    "font": "Fuente",
+    "fontDescription": "Elige la tipografía de la interfaz",
     "chordHand": "Diagramas de acordes",
     "chordHandDescription": "Elige cómo se orientan los diagramas según tu estilo de toque.",
     "rightHand": "Mano derecha",
@@ -114,6 +119,7 @@
     "addedToSelection": "Agregada a la selección",
     "addToPlaylist": "Agregar al playlist",
     "viewLyrics": "Ver letra",
+    "editDetails": "Editar Detalles",
     "bpm": "PPM",
     "searchPlaceholder": "Buscar canciones, artistas, letras…",
     "all": "Todas",

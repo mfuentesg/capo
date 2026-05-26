@@ -77,7 +77,7 @@ export function MobileNavDrawer({ isOpen, onOpenChange }: MobileNavDrawerProps) 
 
         {/* Inline context section — no Popover inside Drawer */}
         <div className="px-3 pb-2" data-vaul-no-drag>
-          <p className="px-1 py-1 text-xs font-black uppercase tracking-widest text-muted-foreground">
+          <p className="px-1 py-1 text-xs font-bold uppercase tracking-widest text-muted-foreground">
             {t.nav.filterContext}
           </p>
 

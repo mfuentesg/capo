@@ -8,8 +8,10 @@
     "proper_nouns": [
       "Catppuccin", "Aura", "Nord", "Rosé Pine",
       "Dracula", "One Dark Pro", "Tokyo Night", "Gruvbox",
+      "Everforest", "Solarized", "GitHub", "Kanagawa",
       "Geist", "Inter", "DM Sans", "Roboto", "Poppins",
-      "Nunito", "Outfit", "Plus Jakarta Sans"
+      "Nunito", "Outfit", "Plus Jakarta Sans",
+      "Montserrat", "Lato", "Space Grotesk", "Manrope"
     ],
     "chordpro_directives": [
       "start_of_chorus",
@@ -156,6 +158,14 @@
     "Dracula",
     "One Dark Pro",
     "Tokyo Night",
-    "Gruvbox"
+    "Gruvbox",
+    "Everforest",
+    "Solarized",
+    "GitHub",
+    "Kanagawa",
+    "Montserrat",
+    "Lato",
+    "Space Grotesk",
+    "Manrope"
   ]
 }

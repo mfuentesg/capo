@@ -248,7 +248,7 @@ export function PaletteSettings() {
             className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/60 px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground active:scale-[0.97]"
           >
             <Sparkles className="h-3.5 w-3.5" />
-            Surprise me
+            {t.settings.surpriseMe}
           </button>
         </div>
         <div

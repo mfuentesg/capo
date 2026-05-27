@@ -1,5 +1,6 @@
 "use client"
 
+import { Sparkles } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useLocale } from "@/features/settings"
 import { usePalette } from "@/features/settings/contexts/palette-context"
@@ -58,6 +59,26 @@ const PALETTES: Array<{
     id: "gruvbox",
     light: { bg: "#f9f5d7", primary: "#af3a03", accent1: "#427b58", accent2: "#79740e" },
     dark: { bg: "#282828", primary: "#fe8019", accent1: "#83a598", accent2: "#b8bb26" }
+  },
+  {
+    id: "monokai",
+    light: { bg: "#fafafa", primary: "#f92672", accent1: "#a6e22e", accent2: "#ae81ff" },
+    dark: { bg: "#272822", primary: "#f92672", accent1: "#a6e22e", accent2: "#e6db74" }
+  },
+  {
+    id: "night-owl",
+    light: { bg: "#fbfbfb", primary: "#4876d6", accent1: "#0c969b", accent2: "#994cc3" },
+    dark: { bg: "#011627", primary: "#addb67", accent1: "#82aaff", accent2: "#c792ea" }
+  },
+  {
+    id: "horizon",
+    light: { bg: "#fdf0ed", primary: "#e95678", accent1: "#fab795", accent2: "#b877db" },
+    dark: { bg: "#1c1e26", primary: "#e95678", accent1: "#fab795", accent2: "#09f7a0" }
+  },
+  {
+    id: "shades-of-purple",
+    light: { bg: "#f2f0ff", primary: "#7c3aed", accent1: "#3ad9b1", accent2: "#ff628c" },
+    dark: { bg: "#2d2b55", primary: "#fad000", accent1: "#b362ff", accent2: "#3ad9b1" }
   }
 ]
 
@@ -69,7 +90,11 @@ const PALETTE_LABELS: Record<Palette, { name: string; desc: string }> = {
   dracula: { name: "Dracula", desc: "Neon on midnight" },
   "one-dark-pro": { name: "One Dark Pro", desc: "Dark navy, cool tones" },
   "tokyo-night": { name: "Tokyo Night", desc: "Deep blue Tokyo" },
-  gruvbox: { name: "Gruvbox", desc: "Warm retro earth" }
+  gruvbox: { name: "Gruvbox", desc: "Warm retro earth" },
+  monokai: { name: "Monokai", desc: "Vivid hacker classic" },
+  "night-owl": { name: "Night Owl", desc: "Deep navy, warm glow" },
+  horizon: { name: "Horizon", desc: "Sunset coral & green" },
+  "shades-of-purple": { name: "Shades of Purple", desc: "Gold on deep purple" }
 }
 
 interface FontEntry {
@@ -92,7 +117,11 @@ const FONTS: FontEntry[] = [
     name: "Plus Jakarta Sans",
     cssVar: "var(--font-plus-jakarta-sans)",
     desc: "Fresh & modern"
-  }
+  },
+  { id: "montserrat", name: "Montserrat", cssVar: "var(--font-montserrat)", desc: "Bold & geometric" },
+  { id: "lato", name: "Lato", cssVar: "var(--font-lato)", desc: "Clean & classic" },
+  { id: "space-grotesk", name: "Space Grotesk", cssVar: "var(--font-space-grotesk)", desc: "Technical & distinct" },
+  { id: "manrope", name: "Manrope", cssVar: "var(--font-manrope)", desc: "Precise & modern" }
 ]
 
 function PaletteCard({
@@ -198,12 +227,29 @@ export function PaletteSettings() {
   const { palette, setPalette } = usePalette()
   const { font, setFont } = useFont()
 
+  const surpriseMe = () => {
+    const otherPalettes = PALETTES.filter((p) => p.id !== palette)
+    const otherFonts = FONTS.filter((f) => f.id !== font)
+    setPalette(otherPalettes[Math.floor(Math.random() * otherPalettes.length)].id)
+    setFont(otherFonts[Math.floor(Math.random() * otherFonts.length)].id)
+  }
+
   return (
     <>
       <section className="space-y-4">
-        <div>
-          <h2 className="text-base font-semibold tracking-tight">{t.settings.palette}</h2>
-          <p className="text-sm text-muted-foreground mt-0.5">{t.settings.paletteDescription}</p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-base font-semibold tracking-tight">{t.settings.palette}</h2>
+            <p className="text-sm text-muted-foreground mt-0.5">{t.settings.paletteDescription}</p>
+          </div>
+          <button
+            type="button"
+            onClick={surpriseMe}
+            className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/60 px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground active:scale-[0.97]"
+          >
+            <Sparkles className="h-3.5 w-3.5" />
+            {t.settings.surpriseMe}
+          </button>
         </div>
         <div
           className="grid grid-cols-2 gap-2"

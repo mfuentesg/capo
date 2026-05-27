@@ -312,9 +312,9 @@ html[data-palette="nord"].dark {
 
 /* ── Rosé Pine palette (https://rosepinetheme.com) ───────────────── */
 html[data-palette="rose-pine"] {
-  --background: oklch(0.966 0.024 65);            /* #faf4ed */
+  --background: oklch(0.952 0.026 65);            /* slightly deeper than #faf4ed */
   --foreground: oklch(0.388 0.072 285);           /* #575279 */
-  --card: oklch(0.985 0.018 75);                  /* #fffaf3 */
+  --card: oklch(0.982 0.014 75);                  /* near-white warm surface */
   --card-foreground: oklch(0.388 0.072 285);
   --popover: oklch(0.985 0.018 75);
   --popover-foreground: oklch(0.388 0.072 285);
@@ -376,6 +376,25 @@ html[data-palette="rose-pine"].dark {
   --accent-playlists: oklch(0.760 0.120 295);     /* #c4a7e7 iris */
   --accent-activity: oklch(0.845 0.155 70);       /* #f6c177 gold */
 }
+
+/* ── Rosé Pine section accents — palette-harmonized ─────────────── */
+html[data-palette="rose-pine"] .section-repeat[data-section-type="verse"]      { --section-accent: oklch(0.545 0.082 218); } /* foam   */
+html[data-palette="rose-pine"] .section-repeat[data-section-type="chorus"]     { --section-accent: oklch(0.525 0.092 295); } /* iris   */
+html[data-palette="rose-pine"] .section-repeat[data-section-type="bridge"]     { --section-accent: oklch(0.505 0.115 350); } /* love   */
+html[data-palette="rose-pine"] .section-repeat[data-section-type="intro"]      { --section-accent: oklch(0.430 0.095 225); } /* pine   */
+html[data-palette="rose-pine"] .section-repeat[data-section-type="outro"]      { --section-accent: oklch(0.490 0.078 210); } /* pine+  */
+html[data-palette="rose-pine"] .section-repeat[data-section-type="pre_chorus"] { --section-accent: oklch(0.560 0.098 30);  } /* rose   */
+html[data-palette="rose-pine"] .section-repeat[data-section-type="comment"]    { --section-accent: oklch(0.545 0.082 218); } /* foam   */
+html[data-palette="rose-pine"] .section-repeat[data-section-type="repeat"]     { --section-accent: oklch(0.570 0.095 65);  } /* gold   */
+
+html[data-palette="rose-pine"].dark .section-repeat[data-section-type="verse"]      { --section-accent: oklch(0.825 0.075 215); } /* #9ccfd8 */
+html[data-palette="rose-pine"].dark .section-repeat[data-section-type="chorus"]     { --section-accent: oklch(0.760 0.120 295); } /* #c4a7e7 */
+html[data-palette="rose-pine"].dark .section-repeat[data-section-type="bridge"]     { --section-accent: oklch(0.680 0.160 355); } /* #eb6f92 */
+html[data-palette="rose-pine"].dark .section-repeat[data-section-type="intro"]      { --section-accent: oklch(0.790 0.095 215); }
+html[data-palette="rose-pine"].dark .section-repeat[data-section-type="outro"]      { --section-accent: oklch(0.770 0.085 210); }
+html[data-palette="rose-pine"].dark .section-repeat[data-section-type="pre_chorus"] { --section-accent: oklch(0.845 0.155 70);  } /* gold   */
+html[data-palette="rose-pine"].dark .section-repeat[data-section-type="comment"]    { --section-accent: oklch(0.825 0.075 215); }
+html[data-palette="rose-pine"].dark .section-repeat[data-section-type="repeat"]     { --section-accent: oklch(0.845 0.155 70);  }
 
 /* ── Dracula palette (https://draculatheme.com) ──────────────────── */
 html[data-palette="dracula"] {
@@ -645,6 +664,274 @@ html[data-palette="gruvbox"].dark {
   --accent-activity: oklch(0.762 0.175 122);      /* #b8bb26 yellow-green */
 }
 
+/* ── Monokai (https://monokai.pro) ───────────────────────────────── */
+html[data-palette="monokai"] {
+  --background: oklch(0.980 0.000 0);              /* #fafafa */
+  --foreground: oklch(0.185 0.008 100);            /* #272822 */
+  --card: oklch(0.945 0.008 100);                  /* #f0f0eb */
+  --card-foreground: oklch(0.185 0.008 100);
+  --popover: oklch(0.945 0.008 100);
+  --popover-foreground: oklch(0.185 0.008 100);
+  --primary: oklch(0.540 0.255 356);               /* deeper pink for light */
+  --primary-foreground: oklch(0.980 0.000 0);
+  --secondary: oklch(0.910 0.008 100);
+  --secondary-foreground: oklch(0.185 0.008 100);
+  --muted: oklch(0.930 0.008 100);
+  --muted-foreground: oklch(0.508 0.038 72);       /* #75715e comment */
+  --accent: oklch(0.910 0.008 100);
+  --accent-foreground: oklch(0.185 0.008 100);
+  --destructive: oklch(0.540 0.255 356);
+  --border: oklch(0.858 0.012 100);
+  --input: oklch(0.858 0.012 100);
+  --ring: oklch(0.540 0.255 356);
+  --sidebar: oklch(0.960 0.008 100);
+  --sidebar-foreground: oklch(0.185 0.008 100);
+  --sidebar-primary: oklch(0.540 0.255 356);
+  --sidebar-primary-foreground: oklch(0.980 0.000 0);
+  --sidebar-accent: oklch(0.910 0.008 100);
+  --sidebar-accent-foreground: oklch(0.185 0.008 100);
+  --sidebar-border: oklch(0.858 0.012 100);
+  --sidebar-ring: oklch(0.540 0.255 356);
+  --chord: oklch(0.528 0.182 298);                 /* darker purple for light */
+  --accent-songs: oklch(0.540 0.255 356);
+  --accent-playlists: oklch(0.528 0.182 298);
+  --accent-activity: oklch(0.658 0.195 130);       /* #a6e22e green */
+}
+
+html[data-palette="monokai"].dark {
+  --background: oklch(0.185 0.008 100);            /* #272822 */
+  --foreground: oklch(0.970 0.005 100);            /* #f8f8f2 */
+  --card: oklch(0.262 0.008 100);                  /* #3e3d32 */
+  --card-foreground: oklch(0.970 0.005 100);
+  --popover: oklch(0.262 0.008 100);
+  --popover-foreground: oklch(0.970 0.005 100);
+  --primary: oklch(0.620 0.280 350);               /* #f92672 pink */
+  --primary-foreground: oklch(0.185 0.008 100);
+  --secondary: oklch(0.310 0.010 100);             /* #49483e selection */
+  --secondary-foreground: oklch(0.970 0.005 100);
+  --muted: oklch(0.262 0.008 100);
+  --muted-foreground: oklch(0.508 0.038 72);       /* #75715e comment */
+  --accent: oklch(0.310 0.010 100);
+  --accent-foreground: oklch(0.970 0.005 100);
+  --destructive: oklch(0.620 0.280 350);
+  --border: oklch(0.310 0.010 100);
+  --input: oklch(0.310 0.010 100);
+  --ring: oklch(0.620 0.280 350);
+  --sidebar: oklch(0.150 0.008 100);
+  --sidebar-foreground: oklch(0.970 0.005 100);
+  --sidebar-primary: oklch(0.620 0.280 350);
+  --sidebar-primary-foreground: oklch(0.185 0.008 100);
+  --sidebar-accent: oklch(0.262 0.008 100);
+  --sidebar-accent-foreground: oklch(0.970 0.005 100);
+  --sidebar-border: oklch(0.262 0.008 100);
+  --sidebar-ring: oklch(0.620 0.280 350);
+  --chord: oklch(0.712 0.195 295);                 /* #ae81ff purple */
+  --accent-songs: oklch(0.855 0.088 215);          /* #66d9ef cyan */
+  --accent-playlists: oklch(0.712 0.195 295);      /* purple */
+  --accent-activity: oklch(0.828 0.222 127);       /* #a6e22e green */
+}
+
+/* ── Night Owl (by Sarah Drasner) ────────────────────────────────── */
+html[data-palette="night-owl"] {
+  --background: oklch(0.982 0.000 0);              /* #fbfbfb */
+  --foreground: oklch(0.318 0.035 292);            /* #403f53 */
+  --card: oklch(0.955 0.005 280);
+  --card-foreground: oklch(0.318 0.035 292);
+  --popover: oklch(0.955 0.005 280);
+  --popover-foreground: oklch(0.318 0.035 292);
+  --primary: oklch(0.552 0.172 258);               /* #4876d6 blue */
+  --primary-foreground: oklch(0.982 0.000 0);
+  --secondary: oklch(0.918 0.008 280);
+  --secondary-foreground: oklch(0.318 0.035 292);
+  --muted: oklch(0.935 0.006 280);
+  --muted-foreground: oklch(0.658 0.022 262);      /* #989fb1 */
+  --accent: oklch(0.918 0.008 280);
+  --accent-foreground: oklch(0.318 0.035 292);
+  --destructive: oklch(0.528 0.188 22);            /* #d3423e */
+  --border: oklch(0.872 0.012 275);
+  --input: oklch(0.872 0.012 275);
+  --ring: oklch(0.552 0.172 258);
+  --sidebar: oklch(0.965 0.005 280);
+  --sidebar-foreground: oklch(0.318 0.035 292);
+  --sidebar-primary: oklch(0.552 0.172 258);
+  --sidebar-primary-foreground: oklch(0.982 0.000 0);
+  --sidebar-accent: oklch(0.918 0.008 280);
+  --sidebar-accent-foreground: oklch(0.318 0.035 292);
+  --sidebar-border: oklch(0.872 0.012 275);
+  --sidebar-ring: oklch(0.552 0.172 258);
+  --chord: oklch(0.488 0.195 302);                 /* #994cc3 purple */
+  --accent-songs: oklch(0.552 0.172 258);
+  --accent-playlists: oklch(0.488 0.195 302);
+  --accent-activity: oklch(0.588 0.095 210);       /* #0c969b teal */
+}
+
+html[data-palette="night-owl"].dark {
+  --background: oklch(0.148 0.042 250);            /* #011627 */
+  --foreground: oklch(0.882 0.018 248);            /* #d6deeb */
+  --card: oklch(0.198 0.055 252);                  /* #0b2942 */
+  --card-foreground: oklch(0.882 0.018 248);
+  --popover: oklch(0.198 0.055 252);
+  --popover-foreground: oklch(0.882 0.018 248);
+  --primary: oklch(0.835 0.175 132);               /* #addb67 yellow-green */
+  --primary-foreground: oklch(0.148 0.042 250);
+  --secondary: oklch(0.248 0.055 252);
+  --secondary-foreground: oklch(0.882 0.018 248);
+  --muted: oklch(0.198 0.055 252);
+  --muted-foreground: oklch(0.508 0.048 218);      /* #637777 */
+  --accent: oklch(0.248 0.055 252);
+  --accent-foreground: oklch(0.882 0.018 248);
+  --destructive: oklch(0.688 0.238 12);            /* #ff5874 */
+  --border: oklch(0.248 0.055 252);
+  --input: oklch(0.248 0.055 252);
+  --ring: oklch(0.835 0.175 132);
+  --sidebar: oklch(0.112 0.035 252);               /* #011221 */
+  --sidebar-foreground: oklch(0.882 0.018 248);
+  --sidebar-primary: oklch(0.835 0.175 132);
+  --sidebar-primary-foreground: oklch(0.148 0.042 250);
+  --sidebar-accent: oklch(0.198 0.055 252);
+  --sidebar-accent-foreground: oklch(0.882 0.018 248);
+  --sidebar-border: oklch(0.198 0.055 252);
+  --sidebar-ring: oklch(0.835 0.175 132);
+  --chord: oklch(0.735 0.178 298);                 /* #c792ea purple */
+  --accent-songs: oklch(0.722 0.158 258);          /* #82aaff blue */
+  --accent-playlists: oklch(0.735 0.178 298);      /* purple */
+  --accent-activity: oklch(0.835 0.175 132);       /* yellow-green */
+}
+
+/* ── Horizon (https://github.com/jolaleye/horizon-theme-vscode) ──── */
+html[data-palette="horizon"] {
+  --background: oklch(0.962 0.028 30);             /* #fdf0ed warm rosy */
+  --foreground: oklch(0.152 0.018 285);            /* #1c1e26 */
+  --card: oklch(0.978 0.018 30);                   /* #fff5f0 */
+  --card-foreground: oklch(0.152 0.018 285);
+  --popover: oklch(0.978 0.018 30);
+  --popover-foreground: oklch(0.152 0.018 285);
+  --primary: oklch(0.578 0.215 358);               /* deeper coral for light */
+  --primary-foreground: oklch(0.978 0.018 30);
+  --secondary: oklch(0.918 0.032 28);              /* #f5e0da */
+  --secondary-foreground: oklch(0.152 0.018 285);
+  --muted: oklch(0.935 0.025 29);
+  --muted-foreground: oklch(0.478 0.048 285);      /* #6c6f93 */
+  --accent: oklch(0.918 0.032 28);
+  --accent-foreground: oklch(0.152 0.018 285);
+  --destructive: oklch(0.578 0.215 358);
+  --border: oklch(0.858 0.022 25);
+  --input: oklch(0.858 0.022 25);
+  --ring: oklch(0.578 0.215 358);
+  --sidebar: oklch(0.948 0.025 30);
+  --sidebar-foreground: oklch(0.152 0.018 285);
+  --sidebar-primary: oklch(0.578 0.215 358);
+  --sidebar-primary-foreground: oklch(0.978 0.018 30);
+  --sidebar-accent: oklch(0.918 0.032 28);
+  --sidebar-accent-foreground: oklch(0.152 0.018 285);
+  --sidebar-border: oklch(0.858 0.022 25);
+  --sidebar-ring: oklch(0.578 0.215 358);
+  --chord: oklch(0.542 0.188 308);                 /* darker purple for light */
+  --accent-songs: oklch(0.578 0.215 358);
+  --accent-playlists: oklch(0.542 0.188 308);
+  --accent-activity: oklch(0.548 0.165 162);       /* darker spring green */
+}
+
+html[data-palette="horizon"].dark {
+  --background: oklch(0.152 0.018 285);            /* #1c1e26 */
+  --foreground: oklch(0.825 0.018 280);            /* #cbced8 */
+  --card: oklch(0.188 0.022 285);                  /* #232530 */
+  --card-foreground: oklch(0.825 0.018 280);
+  --popover: oklch(0.188 0.022 285);
+  --popover-foreground: oklch(0.825 0.018 280);
+  --primary: oklch(0.648 0.215 358);               /* #e95678 coral-pink */
+  --primary-foreground: oklch(0.152 0.018 285);
+  --secondary: oklch(0.228 0.022 285);             /* #2e303e */
+  --secondary-foreground: oklch(0.825 0.018 280);
+  --muted: oklch(0.188 0.022 285);
+  --muted-foreground: oklch(0.478 0.052 285);      /* #6c6f93 */
+  --accent: oklch(0.228 0.022 285);
+  --accent-foreground: oklch(0.825 0.018 280);
+  --destructive: oklch(0.648 0.215 358);
+  --border: oklch(0.228 0.022 285);
+  --input: oklch(0.228 0.022 285);
+  --ring: oklch(0.648 0.215 358);
+  --sidebar: oklch(0.130 0.015 285);               /* #16161e */
+  --sidebar-foreground: oklch(0.825 0.018 280);
+  --sidebar-primary: oklch(0.648 0.215 358);
+  --sidebar-primary-foreground: oklch(0.152 0.018 285);
+  --sidebar-accent: oklch(0.188 0.022 285);
+  --sidebar-accent-foreground: oklch(0.825 0.018 280);
+  --sidebar-border: oklch(0.188 0.022 285);
+  --sidebar-ring: oklch(0.648 0.215 358);
+  --chord: oklch(0.632 0.195 308);                 /* #b877db purple */
+  --accent-songs: oklch(0.648 0.215 358);          /* coral */
+  --accent-playlists: oklch(0.632 0.195 308);      /* purple */
+  --accent-activity: oklch(0.888 0.188 162);       /* #09f7a0 spring green */
+}
+
+/* ── Shades of Purple (by Ahmad Awais) ───────────────────────────── */
+html[data-palette="shades-of-purple"] {
+  --background: oklch(0.962 0.028 290);            /* #f2f0ff soft lavender */
+  --foreground: oklch(0.245 0.092 295);            /* #2d2b55 */
+  --card: oklch(0.940 0.035 290);                  /* #e8e5ff */
+  --card-foreground: oklch(0.245 0.092 295);
+  --popover: oklch(0.940 0.035 290);
+  --popover-foreground: oklch(0.245 0.092 295);
+  --primary: oklch(0.495 0.215 290);               /* #7c3aed vivid purple */
+  --primary-foreground: oklch(0.962 0.028 290);
+  --secondary: oklch(0.905 0.040 289);
+  --secondary-foreground: oklch(0.245 0.092 295);
+  --muted: oklch(0.920 0.038 289);
+  --muted-foreground: oklch(0.478 0.068 290);
+  --accent: oklch(0.905 0.040 289);
+  --accent-foreground: oklch(0.245 0.092 295);
+  --destructive: oklch(0.528 0.235 355);
+  --border: oklch(0.858 0.052 289);
+  --input: oklch(0.858 0.052 289);
+  --ring: oklch(0.495 0.215 290);
+  --sidebar: oklch(0.948 0.032 290);
+  --sidebar-foreground: oklch(0.245 0.092 295);
+  --sidebar-primary: oklch(0.495 0.215 290);
+  --sidebar-primary-foreground: oklch(0.962 0.028 290);
+  --sidebar-accent: oklch(0.905 0.040 289);
+  --sidebar-accent-foreground: oklch(0.245 0.092 295);
+  --sidebar-border: oklch(0.858 0.052 289);
+  --sidebar-ring: oklch(0.495 0.215 290);
+  --chord: oklch(0.495 0.215 290);
+  --accent-songs: oklch(0.495 0.215 290);
+  --accent-playlists: oklch(0.540 0.205 350);      /* pink */
+  --accent-activity: oklch(0.548 0.158 192);       /* teal */
+}
+
+html[data-palette="shades-of-purple"].dark {
+  --background: oklch(0.245 0.092 295);            /* #2d2b55 */
+  --foreground: oklch(0.855 0.055 280);            /* light lavender */
+  --card: oklch(0.182 0.075 293);                  /* #1e1c3a */
+  --card-foreground: oklch(0.855 0.055 280);
+  --popover: oklch(0.182 0.075 293);
+  --popover-foreground: oklch(0.855 0.055 280);
+  --primary: oklch(0.882 0.180 92);                /* #fad000 vivid gold */
+  --primary-foreground: oklch(0.245 0.092 295);
+  --secondary: oklch(0.318 0.095 294);
+  --secondary-foreground: oklch(0.855 0.055 280);
+  --muted: oklch(0.245 0.092 295);
+  --muted-foreground: oklch(0.582 0.085 282);
+  --accent: oklch(0.318 0.095 294);
+  --accent-foreground: oklch(0.855 0.055 280);
+  --destructive: oklch(0.685 0.235 355);           /* #ff628c */
+  --border: oklch(0.318 0.095 294);
+  --input: oklch(0.318 0.095 294);
+  --ring: oklch(0.882 0.180 92);
+  --sidebar: oklch(0.195 0.082 293);
+  --sidebar-foreground: oklch(0.855 0.055 280);
+  --sidebar-primary: oklch(0.882 0.180 92);
+  --sidebar-primary-foreground: oklch(0.245 0.092 295);
+  --sidebar-accent: oklch(0.245 0.092 295);
+  --sidebar-accent-foreground: oklch(0.855 0.055 280);
+  --sidebar-border: oklch(0.245 0.092 295);
+  --sidebar-ring: oklch(0.882 0.180 92);
+  --chord: oklch(0.582 0.215 298);                 /* #b362ff purple */
+  --accent-songs: oklch(0.818 0.115 178);          /* #3ad9b1 teal */
+  --accent-playlists: oklch(0.582 0.215 298);      /* purple */
+  --accent-activity: oklch(0.882 0.180 92);        /* gold */
+}
+
 /* ── Font overrides ──────────────────────────────────────────────── */
 /*
  * @theme inline causes Tailwind to inline the font value directly into
@@ -677,6 +964,22 @@ html[data-font="outfit"] {
 
 html[data-font="plus-jakarta-sans"] {
   font-family: var(--font-plus-jakarta-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+html[data-font="montserrat"] {
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+
+html[data-font="lato"] {
+  font-family: var(--font-lato), ui-sans-serif, system-ui, sans-serif;
+}
+
+html[data-font="space-grotesk"] {
+  font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+}
+
+html[data-font="manrope"] {
+  font-family: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -825,6 +1128,15 @@ html[data-font="plus-jakarta-sans"] {
 
 .section-repeat-content {
   @apply border-l-2 pl-4 [border-color:var(--section-accent)];
+  background: color-mix(in oklch, var(--section-accent) 6%, transparent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding-top: 8px;
+  padding-bottom: 10px;
+  padding-right: 16px;
+}
+
+.dark .section-repeat-content {
+  background: color-mix(in oklch, var(--section-accent) 12%, transparent);
 }
 
 .section-label {

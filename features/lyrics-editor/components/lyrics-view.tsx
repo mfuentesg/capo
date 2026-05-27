@@ -494,14 +494,14 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
     <div
       ref={containerRef}
       className={cn(
-        "bg-background",
+        "bg-card",
         isPanel ? "min-h-full" : "min-h-screen",
         slideDirection === "next" && "animate-in slide-in-from-right-4 fade-in-0 duration-200",
         slideDirection === "prev" && "animate-in slide-in-from-left-4 fade-in-0 duration-200"
       )}
     >
       {/* Header */}
-      <div className="sticky top-0 z-10 border-b bg-background">
+      <div className="sticky top-0 z-10 border-b bg-card">
         <div className={cn("px-4 pt-2 pb-1", !isPanel && "container mx-auto")}>
           {/* Row 1: back button + song title */}
           <div className="flex items-center gap-1.5 min-w-0">

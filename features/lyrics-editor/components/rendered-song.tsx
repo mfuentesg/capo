@@ -1,6 +1,6 @@
 "use client"
 
-import { type ReactNode, useMemo, useState } from "react"
+import { type ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import { ChordProParser } from "chordsheetjs"
 import { ChevronDown, Music2, Repeat2 } from "lucide-react"
@@ -654,7 +654,7 @@ function SectionHeader({ name, isCollapsed, onToggle, icon, flags }: SectionHead
       style={{
         background: "var(--section-accent)",
         boxShadow:
-          "0 0 0 2px var(--background), 0 0 0 4px color-mix(in oklch, var(--section-accent) 25%, transparent)"
+          "0 0 0 2px var(--card), 0 0 0 4px color-mix(in oklch, var(--section-accent) 25%, transparent)"
       }}
     />
   )
@@ -731,6 +731,59 @@ export function RenderedSong({
 }: RenderedSongProps) {
   const [collapsedSet, setCollapsedSet] = useState<Set<number>>(new Set())
   const [selectedChord, setSelectedChord] = useState<string | null>(null)
+  const [fontScale, setFontScale] = useState(1)
+  const [trackedFontSize, setTrackedFontSize] = useState(fontSize)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+
+  // Reset auto-scale when the user adjusts font size (derived state during render,
+  // not inside an effect, to avoid the set-state-in-effect lint rule).
+  if (trackedFontSize !== fontSize) {
+    setTrackedFontSize(fontSize)
+    setFontScale(1)
+  }
+
+  // Shrink font until no chord/lyric row overflows its block, then recover on resize.
+  // No deps: must run after every render so content changes are caught immediately.
+  // The setFontScale guard (|next-prev| > 0.005) prevents infinite update loops.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useLayoutEffect(() => {
+    const wrapper = wrapperRef.current
+    if (!wrapper) return
+
+    const nodes = wrapper.querySelectorAll<HTMLElement>(".clp-lyric-text, .clp-chords")
+    if (!nodes.length) return
+
+    let maxOverflow = 0
+    let refWidth = 0
+
+    nodes.forEach((node) => {
+      const block = node.closest<HTMLElement>(".section-repeat-content") ?? wrapper
+      const blockRect = block.getBoundingClientRect()
+      const nodeRect = node.getBoundingClientRect()
+      const overflow = nodeRect.right - blockRect.right
+      if (overflow > maxOverflow) {
+        maxOverflow = overflow
+        refWidth = blockRect.width
+      }
+    })
+
+    if (maxOverflow > 1 && refWidth > 0) {
+      setFontScale((prev) => {
+        const next = Math.min(1, prev * (refWidth / (refWidth + maxOverflow)))
+        return Math.abs(next - prev) > 0.005 ? next : prev
+      })
+    }
+  })
+
+  useEffect(() => {
+    const wrapper = wrapperRef.current
+    if (!wrapper) return
+    const ro = new ResizeObserver(() => setFontScale(1))
+    ro.observe(wrapper)
+    return () => ro.disconnect()
+  }, [])
+
+  const effectiveFontSize = fontSize * fontScale
 
   const { t } = useLocale()
 
@@ -801,7 +854,7 @@ export function RenderedSong({
 
   if (segments) {
     const columnStyle = columns === 2 ? { columnCount: 2 as const } : { columnCount: 1 as const }
-    const fontStyle = { fontSize: `${fontSize * 16}px`, ...columnStyle }
+    const fontStyle = { fontSize: `${effectiveFontSize * 16}px`, ...columnStyle }
     const hasComplexSegments = segments.some((s) => s.type === "repeat" || s.type === "section")
     const visibilityClass = [!showChords && "hide-chords", !showLyrics && "hide-lyrics"]
       .filter(Boolean)
@@ -809,7 +862,7 @@ export function RenderedSong({
 
     if (!hasComplexSegments) {
       return (
-        <div className={visibilityClass || undefined} onClick={handleChordClick}>
+        <div ref={wrapperRef} className={visibilityClass || undefined} onClick={handleChordClick}>
           <pre
             className="chordsheet-content multi-column-lyrics"
             style={fontStyle}
@@ -822,6 +875,7 @@ export function RenderedSong({
 
     return (
       <div
+        ref={wrapperRef}
         className={`multi-column-lyrics space-y-6${visibilityClass ? ` ${visibilityClass}` : ""}`}
         style={fontStyle}
         onClick={handleChordClick}
@@ -922,8 +976,9 @@ export function RenderedSong({
 
   return (
     <div
+      ref={wrapperRef}
       className="whitespace-pre-wrap leading-relaxed multi-column-lyrics"
-      style={{ fontSize: `${fontSize * 16}px`, lineHeight: 1.4, columnCount: columns }}
+      style={{ fontSize: `${effectiveFontSize * 16}px`, lineHeight: 1.4, columnCount: columns }}
     >
       {lyrics}
     </div>

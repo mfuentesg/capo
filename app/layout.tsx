@@ -1,7 +1,19 @@
 import type React from "react"
 import type { Metadata } from "next"
 import localFont from "next/font/local"
-import { Inter, DM_Sans, Roboto, Poppins, Nunito, Outfit, Plus_Jakarta_Sans } from "next/font/google"
+import {
+  Inter,
+  DM_Sans,
+  Roboto,
+  Poppins,
+  Nunito,
+  Outfit,
+  Plus_Jakarta_Sans,
+  Montserrat,
+  Lato,
+  Space_Grotesk,
+  Manrope
+} from "next/font/google"
 import { cookies } from "next/headers"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -68,6 +80,31 @@ const outfit = Outfit({
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-plus-jakarta-sans",
+  display: "swap"
+})
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+  display: "swap"
+})
+
+const lato = Lato({
+  subsets: ["latin"],
+  weight: ["300", "400", "700"],
+  variable: "--font-lato",
+  display: "swap"
+})
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap"
+})
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
   display: "swap"
 })
 
@@ -151,7 +188,11 @@ export default async function RootLayout({
     poppins.variable,
     nunito.variable,
     outfit.variable,
-    plusJakartaSans.variable
+    plusJakartaSans.variable,
+    montserrat.variable,
+    lato.variable,
+    spaceGrotesk.variable,
+    manrope.variable
   ].join(" ")
 
   return (
@@ -162,7 +203,35 @@ export default async function RootLayout({
       data-font={defaultFont}
       className={fontClasses}
     >
-      <head />
+      <head>
+        {/*
+         * Blocking script — runs synchronously in <head> before any paint.
+         *
+         * Palette and font cookies are httpOnly (not readable by JS), so
+         * data-palette and data-font are already set correctly via SSR on the
+         * <html> element — no JS needed for those.
+         *
+         * What we DO need here: apply class="dark" before CSS is evaluated.
+         * next-themes injects its script inside <body>, which can fire a frame
+         * too late when the browser paints the shell first. Reading localStorage
+         * (where next-themes stores the user's choice) and falling back to
+         * prefers-color-scheme ensures the dark class is present on the very
+         * first frame, so the inline palette <style> below immediately resolves
+         * the correct dark-mode variables.
+         */}
+        <script
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{
+var d=document.documentElement,t=null;
+try{t=localStorage.getItem("theme")}catch(e){}
+if(t==="dark")d.classList.add("dark");
+else if(t==="light")d.classList.remove("dark");
+else if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)d.classList.add("dark");
+}catch(e){}})();`
+          }}
+        />
+      </head>
       <body className="antialiased">
         <NextTopLoader color="#f97316" showSpinner={false} />
         <ThemeProvider

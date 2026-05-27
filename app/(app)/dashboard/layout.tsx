@@ -11,7 +11,7 @@ export default function DashboardLayout({
   return (
     <PlaylistDraftProvider>
       {/* Subtle gradient orbs — keeps visual language consistent with the landing page */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
         <div
           className="absolute -top-40 right-0 h-[600px] w-[600px] rounded-full"
           style={{

@@ -8,10 +8,16 @@ import {
   useCallback,
   useMemo,
   useEffect,
+  useLayoutEffect,
   type ReactNode
 } from "react"
 import { setPaletteAction } from "@/lib/actions/palette"
 import { isValidPalette, DEFAULT_PALETTE, type Palette } from "@/lib/palette"
+
+// useLayoutEffect runs synchronously before the browser paints, eliminating
+// the flash between the SSR palette (from cookie) and the real palette (from
+// DB). On the server it is a no-op — same behaviour as useEffect in SSR.
+const usePaletteLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect
 
 interface PaletteContextType {
   palette: Palette
@@ -31,7 +37,7 @@ export function PaletteProvider({
   const [palette, setPaletteState] = useState<Palette>(initialPalette)
   const [isPending, startTransition] = useTransition()
 
-  useEffect(() => {
+  usePaletteLayoutEffect(() => {
     document.documentElement.dataset.palette = palette
   }, [palette])
 

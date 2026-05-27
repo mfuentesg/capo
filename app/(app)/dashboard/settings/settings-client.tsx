@@ -72,7 +72,7 @@ export function SettingsClient() {
         </nav>
 
         {/* Content panel */}
-        <div className="flex-1 min-w-0">
+        <div className="w-full flex-1 min-w-0">
           {active === "profile" && (
             <div className="rounded-2xl border bg-card p-6 shadow-sm">
               <ProfileSettings />

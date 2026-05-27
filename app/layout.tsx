@@ -10,6 +10,7 @@ import { Toaster } from "@/components/ui/sonner"
 import NextTopLoader from "nextjs-toploader"
 import { isValidPalette, DEFAULT_PALETTE } from "@/lib/palette"
 import { isValidUIFont, DEFAULT_UI_FONT } from "@/lib/font"
+import { buildPaletteStyle } from "@/lib/palette-styles"
 
 import "./globals.css"
 
@@ -194,6 +195,11 @@ else if(t==="light")d.classList.remove("dark");
 else if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)d.classList.add("dark");
 }catch(e){}})();`
           }}
+        />
+        {/* Inline CSS variables for the user's palette — no external file load required */}
+        <style
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: buildPaletteStyle(defaultPalette) }}
         />
       </head>
       <body className="antialiased">

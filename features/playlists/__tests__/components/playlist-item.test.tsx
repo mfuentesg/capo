@@ -4,7 +4,7 @@ import { PlaylistItem } from "@/features/playlists/components/playlist-item/play
 jest.mock("@/hooks/use-translation", () => ({
   useTranslation: () => ({
     t: {
-      playlists: { draft: "Draft" },
+      playlists: {},
       playlistItem: {
         privatePlaylist: "Private",
         publicGuestEditing: "Public (guest editing)",

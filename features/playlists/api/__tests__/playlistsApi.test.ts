@@ -339,8 +339,7 @@ describe("getPlaylistByShareCode", () => {
       artist: "Traditional",
       key: "C",
       bpm: 120,
-      lyrics: "Amazing grace",
-      isDraft: false
+      lyrics: "Amazing grace"
     })
   })
 

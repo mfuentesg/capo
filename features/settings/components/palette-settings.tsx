@@ -1,5 +1,6 @@
 "use client"
 
+import { Sparkles } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useLocale } from "@/features/settings"
 import { usePalette } from "@/features/settings/contexts/palette-context"
@@ -226,12 +227,29 @@ export function PaletteSettings() {
   const { palette, setPalette } = usePalette()
   const { font, setFont } = useFont()
 
+  const surpriseMe = () => {
+    const otherPalettes = PALETTES.filter((p) => p.id !== palette)
+    const otherFonts = FONTS.filter((f) => f.id !== font)
+    setPalette(otherPalettes[Math.floor(Math.random() * otherPalettes.length)].id)
+    setFont(otherFonts[Math.floor(Math.random() * otherFonts.length)].id)
+  }
+
   return (
     <>
       <section className="space-y-4">
-        <div>
-          <h2 className="text-base font-semibold tracking-tight">{t.settings.palette}</h2>
-          <p className="text-sm text-muted-foreground mt-0.5">{t.settings.paletteDescription}</p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-base font-semibold tracking-tight">{t.settings.palette}</h2>
+            <p className="text-sm text-muted-foreground mt-0.5">{t.settings.paletteDescription}</p>
+          </div>
+          <button
+            type="button"
+            onClick={surpriseMe}
+            className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/60 px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground active:scale-[0.97]"
+          >
+            <Sparkles className="h-3.5 w-3.5" />
+            Surprise me
+          </button>
         </div>
         <div
           className="grid grid-cols-2 gap-2"

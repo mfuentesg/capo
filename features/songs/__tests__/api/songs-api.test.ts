@@ -86,8 +86,7 @@ describe("getSongs", () => {
     expect(result[0]).toMatchObject({
       id: "song-1",
       title: "Amazing Grace",
-      artist: "John Newton",
-      isDraft: false
+      artist: "John Newton"
     })
   })
 })

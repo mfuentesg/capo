@@ -95,7 +95,6 @@ export function PlaylistsClient({ initialPlaylists = [], t }: PlaylistsClientPro
   const deletePlaylistMutation = useDeletePlaylist()
   const [isMobile, setIsMobile] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
-  const [filterStatus, setFilterStatus] = useState<"all" | "drafts" | "completed">("all")
   const [filterVisibility, setFilterVisibility] = useState<"all" | "public" | "private">("all")
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<string | null>(null)
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false)
@@ -128,14 +127,12 @@ export function PlaylistsClient({ initialPlaylists = [], t }: PlaylistsClientPro
   // Calculate active filter count
   const activeFilterCount = useMemo(() => {
     let count = 0
-    if (filterStatus !== "all") count++
     if (filterVisibility !== "all") count++
     return count
-  }, [filterStatus, filterVisibility])
+  }, [filterVisibility])
 
   // Clear all filters
   const clearAllFilters = () => {
-    setFilterStatus("all")
     setFilterVisibility("all")
   }
 
@@ -277,39 +274,6 @@ export function PlaylistsClient({ initialPlaylists = [], t }: PlaylistsClientPro
 
                     <Separator />
 
-                    {/* Status Filter */}
-                    <div className="space-y-2">
-                      <span className="text-sm font-medium">{t.songs.status}</span>
-                      <div className="grid grid-cols-3 gap-2">
-                        <Button
-                          onClick={() => setFilterStatus("all")}
-                          variant={filterStatus === "all" ? "default" : "outline"}
-                          size="sm"
-                          className="justify-center"
-                        >
-                          {t.songs.all}
-                        </Button>
-                        <Button
-                          onClick={() => setFilterStatus("drafts")}
-                          variant={filterStatus === "drafts" ? "default" : "outline"}
-                          size="sm"
-                          className="justify-center"
-                        >
-                          {t.playlists.drafts}
-                        </Button>
-                        <Button
-                          onClick={() => setFilterStatus("completed")}
-                          variant={filterStatus === "completed" ? "default" : "outline"}
-                          size="sm"
-                          className="justify-center"
-                        >
-                          {t.playlists.completed}
-                        </Button>
-                      </div>
-                    </div>
-
-                    <Separator />
-
                     {/* Visibility Filter */}
                     <div className="space-y-2">
                       <span className="text-sm font-medium">{t.filters.visibility}</span>
@@ -350,7 +314,6 @@ export function PlaylistsClient({ initialPlaylists = [], t }: PlaylistsClientPro
             <PlaylistList
               playlists={playlists}
               searchQuery={searchQuery}
-              filterStatus={filterStatus}
               filterVisibility={filterVisibility}
               selectedPlaylistId={selectedPlaylistId}
               isLoading={isLoading && playlists.length === 0}

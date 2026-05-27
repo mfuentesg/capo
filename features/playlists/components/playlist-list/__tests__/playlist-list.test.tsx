@@ -37,7 +37,6 @@ function renderPlaylistList(selectedPlaylistId?: string | null, onSelectPlaylist
       <PlaylistList
         playlists={playlists}
         searchQuery=""
-        filterStatus="all"
         filterVisibility="all"
         selectedPlaylistId={selectedPlaylistId}
         onSelectPlaylist={onSelectPlaylist}
@@ -62,7 +61,6 @@ describe("PlaylistList", () => {
         <PlaylistList
           playlists={playlists}
           searchQuery=""
-          filterStatus="all"
           filterVisibility="all"
           selectedPlaylistId="playlist-2"
           onSelectPlaylist={jest.fn()}

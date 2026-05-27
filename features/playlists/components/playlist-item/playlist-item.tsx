@@ -2,7 +2,6 @@
 
 import { memo } from "react"
 import { Calendar, Music3, Lock, Globe, Users } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import type { Playlist } from "@/features/playlists/types"
 import { useTranslation } from "@/hooks/use-translation"
@@ -64,11 +63,6 @@ export const PlaylistItem = memo(function PlaylistItem({
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
           <p className="text-sm font-bold truncate">{playlist.name}</p>
-          {playlist.isDraft && (
-            <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4 shrink-0">
-              {t.playlists.draft}
-            </Badge>
-          )}
           {playlist.visibility === "private" && (
             <Tooltip>
               <TooltipTrigger

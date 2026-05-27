@@ -10,7 +10,6 @@ export interface Playlist {
   songs: string[] // Array of song IDs
   createdAt: string
   updatedAt: string
-  isDraft?: boolean
   visibility?: "private" | "public"
   allowGuestEditing?: boolean
   shareCode?: string

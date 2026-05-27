@@ -14,7 +14,6 @@ import type { SongOwnership } from "@/features/songs"
 interface PlaylistListProps {
   playlists: Playlist[]
   searchQuery: string
-  filterStatus: "all" | "drafts" | "completed"
   filterVisibility?: "all" | "public" | "private"
   selectedPlaylistId?: string | null
   isLoading?: boolean
@@ -41,7 +40,6 @@ export function PlaylistSkeleton() {
 export function PlaylistList({
   playlists,
   searchQuery,
-  filterStatus,
   filterVisibility = "all",
   selectedPlaylistId = null,
   isLoading = false,
@@ -57,13 +55,6 @@ export function PlaylistList({
       playlist.name.toLowerCase().includes(searchQuery.toLowerCase())
     )
 
-    // Apply status filter
-    if (filterStatus === "drafts") {
-      filtered = filtered.filter((playlist) => playlist.isDraft === true)
-    } else if (filterStatus === "completed") {
-      filtered = filtered.filter((playlist) => !playlist.isDraft)
-    }
-
     // Apply visibility filter
     if (filterVisibility === "public") {
       filtered = filtered.filter((playlist) => playlist.visibility === "public")
@@ -72,7 +63,7 @@ export function PlaylistList({
     }
 
     return filtered
-  }, [searchQuery, playlists, filterStatus, filterVisibility])
+  }, [searchQuery, playlists, filterVisibility])
 
   if (isLoading) {
     return (

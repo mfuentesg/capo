@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore, useTransition } from "react"
 import { useTheme } from "next-themes"
-import { Sun, Moon, Monitor } from "lucide-react"
+import { Sun, Moon, Monitor, Sparkles } from "lucide-react"
 import { useLocale } from "@/features/settings"
 import { cn } from "@/lib/utils"
 import { setThemeAction } from "@/lib/actions/theme"
@@ -13,7 +13,7 @@ type Theme = (typeof THEMES)[number]
 
 const subscribe = () => () => {}
 
-export function ThemeMenuItem() {
+export function ThemeMenuItem({ onSurprise }: { onSurprise?: () => void }) {
   const { t } = useLocale()
   const { theme, setTheme } = useTheme()
   const [, startTransition] = useTransition()
@@ -40,7 +40,7 @@ export function ThemeMenuItem() {
       onSelect={(e) => e.preventDefault()}
     >
       <span className="text-sm flex-1 text-muted-foreground">{t.settings.theme}</span>
-      <div className="flex gap-0.5" role="radiogroup" aria-label={t.settings.theme}>
+      <div className="flex items-center gap-0.5" role="radiogroup" aria-label={t.settings.theme}>
         {THEMES.map((option) => {
           const { icon: Icon, label } = themeConfig[option]
           const isActive = activeTheme === option
@@ -63,6 +63,19 @@ export function ThemeMenuItem() {
             </button>
           )
         })}
+        {onSurprise && (
+          <>
+            <div className="w-px h-4 bg-border/60 mx-0.5" />
+            <button
+              type="button"
+              aria-label={t.settings.surpriseMe}
+              onClick={onSurprise}
+              className="flex items-center justify-center h-7 w-7 rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground active:scale-90"
+            >
+              <Sparkles className="h-4 w-4" />
+            </button>
+          </>
+        )}
       </div>
     </DropdownMenuItem>
   )

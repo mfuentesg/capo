@@ -1,26 +1,37 @@
 "use client"
 
 import Link from "next/link"
-import { Sparkles } from "lucide-react"
+import { useTransition } from "react"
+import { useTheme } from "next-themes"
 import { DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu"
 import { Mail, LogOut, Settings } from "lucide-react"
 import { useSignOut } from "@/features/auth"
 import { useLocale, usePalette, useFont } from "@/features/settings"
 import { VALID_PALETTES } from "@/lib/palette"
 import { VALID_UI_FONTS } from "@/lib/font"
+import { setThemeAction } from "@/lib/actions/theme"
 import { ThemeMenuItem } from "@/components/layout/theme-menu-item"
 
 export function ProfileMenuActions() {
   const { t } = useLocale()
   const { palette, setPalette } = usePalette()
   const { font, setFont } = useFont()
+  const { theme, setTheme } = useTheme()
+  const [, startTransition] = useTransition()
   const signOut = useSignOut()
 
   const surpriseMe = () => {
     const otherPalettes = VALID_PALETTES.filter((p) => p !== palette)
     const otherFonts = VALID_UI_FONTS.filter((f) => f !== font)
+    const modes = ["light", "dark"] as const
+    const otherModes = modes.filter((m) => m !== theme)
+    const newTheme = otherModes[Math.floor(Math.random() * otherModes.length)] ?? "dark"
     setPalette(otherPalettes[Math.floor(Math.random() * otherPalettes.length)])
     setFont(otherFonts[Math.floor(Math.random() * otherFonts.length)])
+    setTheme(newTheme)
+    startTransition(async () => {
+      await setThemeAction(newTheme)
+    })
   }
 
   const handleSignOut = async () => {
@@ -46,20 +57,7 @@ export function ProfileMenuActions() {
 
       <DropdownMenuSeparator />
       <div className="p-1">
-        <ThemeMenuItem />
-        <DropdownMenuItem
-          className="flex items-center gap-2 focus:bg-transparent cursor-default mt-0.5"
-          onSelect={(e) => e.preventDefault()}
-        >
-          <span className="text-sm flex-1 text-muted-foreground">{t.settings.surpriseMe}</span>
-          <button
-            type="button"
-            onClick={surpriseMe}
-            className="flex items-center gap-1.5 rounded-full border border-border bg-muted/60 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:scale-[0.97]"
-          >
-            <Sparkles className="h-3 w-3" />
-          </button>
-        </DropdownMenuItem>
+        <ThemeMenuItem onSurprise={surpriseMe} />
       </div>
 
       <DropdownMenuSeparator />

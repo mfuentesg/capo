@@ -20,5 +20,8 @@ export const songsKeys = {
   detail: (id: string) => [...songsKeys.details(), id] as const,
   allUserSettings: () => [...songsKeys.all, "user-settings", "all"] as const,
   userSettings: (songId: string) => [...songsKeys.detail(songId), "user-settings"] as const,
-  userPreferences: () => [...songsKeys.all, "user-preferences"] as const
+  userPreferences: () => [...songsKeys.all, "user-preferences"] as const,
+  tags: () => [...songsKeys.all, "tags"] as const,
+  tagsList: (userId: string, teamIds: string[]) =>
+    [...songsKeys.tags(), "list", userId, teamIds] as const
 } as const

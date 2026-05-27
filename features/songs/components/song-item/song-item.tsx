@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import { getKeyColorClasses, getBpmColorClasses } from "@/lib/badge-colors"
 import { TeamIcon } from "@/components/ui/icon-picker"
 import type { Song } from "@/features/songs/types"
+import { TagBadge } from "../tag-badge"
 
 interface SongItemProps {
   song: Song
@@ -118,6 +119,9 @@ export const SongItem = memo(function SongItem({
             )}
             {song.bpm} BPM
           </Badge>
+          {song.tags?.map((tag) => (
+            <TagBadge key={tag.id} tag={tag} />
+          ))}
         </div>
       </div>
     </div>

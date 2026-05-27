@@ -4,6 +4,7 @@ export { NewSongsProvider, useNewSongs } from "./contexts"
 export type { NewSongsContextType } from "./contexts"
 
 export { useSongs, useAllSongs, useUpdateSong, useTransferSongToTeam, useDeleteSong } from "./hooks/use-songs"
+export { useTags, useCreateTag, useDeleteTag, useSetSongTags } from "./hooks/use-tags"
 export { useSongRealtime } from "./hooks/use-song-realtime"
 export {
   useUserSongSettings,
@@ -21,6 +22,7 @@ export { getBucketColor } from "./utils"
 
 export type {
   Song,
+  SongTag,
   SongOwnership,
   UserSongSettings,
   UserPreferences,

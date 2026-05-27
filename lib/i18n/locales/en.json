@@ -203,6 +203,15 @@
         "shorthand": "or",
         "example": "Example"
       }
+    },
+    "tags": {
+      "title": "Tags",
+      "addTag": "Add tag",
+      "searchOrCreate": "Search or create tag…",
+      "noTags": "No tags yet",
+      "createTag": "Create tag",
+      "create": "Create",
+      "deleteTag": "Delete tag"
     }
   },
   "playlists": {

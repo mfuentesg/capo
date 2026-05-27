@@ -1,3 +1,9 @@
+export interface SongTag {
+  id: string
+  name: string
+  color?: string | null
+}
+
 export interface Song {
   id: string
   title: string
@@ -6,7 +12,7 @@ export interface Song {
   bpm: number
   lyrics?: string
   notes?: string
-  tags?: string[]
+  tags?: SongTag[]
   fontSize?: number
   transpose?: number
   capo?: number

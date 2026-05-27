@@ -54,6 +54,15 @@ jest.mock("../user-preferences-api", () => ({
   upsertUserPreferences: jest.fn()
 }))
 
+jest.mock("../tags-api", () => ({
+  getTagAssignmentsForSongs: jest.fn().mockResolvedValue(new Map()),
+  getTagsForContext: jest.fn().mockResolvedValue([]),
+  getTagsForUser: jest.fn().mockResolvedValue([]),
+  createTag: jest.fn(),
+  deleteTag: jest.fn(),
+  setSongTags: jest.fn()
+}))
+
 describe("song actions", () => {
   const mockSupabase = { id: "supabase-client" }
 
@@ -180,7 +189,7 @@ describe("getSongsAction", () => {
 
     expect(getSongsApi).toHaveBeenCalledWith(mockSupabase, context, undefined)
     expect(getAllUserSongSettings).toHaveBeenCalledWith(mockSupabase, "user-1")
-    expect(result).toEqual([{ ...songs[0], userSettings: settings[0] }])
+    expect(result).toEqual([{ ...songs[0], userSettings: settings[0], tags: [] }])
   })
 
   it("sets userSettings to null for songs without saved settings", async () => {
@@ -189,7 +198,7 @@ describe("getSongsAction", () => {
 
     const result = await getSongsAction(context)
 
-    expect(result).toEqual([{ ...songs[0], userSettings: null }])
+    expect(result).toEqual([{ ...songs[0], userSettings: null, tags: [] }])
   })
 })
 
@@ -218,7 +227,7 @@ describe("getSongsAllBucketsAction", () => {
       [{ id: "team-1", name: "Band", icon: null }],
       undefined
     )
-    expect(result).toEqual([{ ...songs[0], userSettings: settings[0] }])
+    expect(result).toEqual([{ ...songs[0], userSettings: settings[0], tags: [] }])
   })
 })
 

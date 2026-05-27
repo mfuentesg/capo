@@ -41,6 +41,8 @@ import { transposeKey, calculateCapoKey } from "@/lib/music-theory"
 import { useTranslation } from "@/hooks/use-translation"
 import { createOverlayIds } from "@/lib/ui/stable-overlay-ids"
 import { TransferToTeamDialog } from "../transfer-to-team-dialog"
+import { TagSelector } from "../tag-selector"
+import { useTags, useCreateTag, useDeleteTag, useSetSongTags } from "@/features/songs/hooks/use-tags"
 
 interface EditableFieldProps {
   value: string
@@ -137,6 +139,12 @@ export function SongDetail({ song, onClose, onUpdate, onDelete, onTransferSucces
   const canTransfer = context?.type === "personal" && teams.length > 0
   const bpmDraft = bpmDraftBySongId[song.id]
   const bpmInputValue = bpmDraft ?? String(song.bpm ?? 0)
+
+  const { data: availableTags = [] } = useTags()
+  const { mutateAsync: createTag } = useCreateTag()
+  const { mutate: deleteTag } = useDeleteTag()
+  const { mutate: setSongTags } = useSetSongTags(song.id)
+  const currentTags = song.tags ?? []
 
   const updateTranspose = (nextValue: number) => {
     const clampedValue = Math.max(-6, Math.min(nextValue, 6))
@@ -254,6 +262,20 @@ export function SongDetail({ song, onClose, onUpdate, onDelete, onTransferSucces
               />
               <span className="text-xs text-muted-foreground">{t.songs.bpm}</span>
             </div>
+          </div>
+
+          {/* Tags */}
+          <div className="space-y-1.5">
+            <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+              {t.songs.tags.title}
+            </span>
+            <TagSelector
+              selectedTags={currentTags}
+              availableTags={availableTags}
+              onTagsChange={(tags) => setSongTags(tags.map((tag) => tag.id))}
+              onCreateTag={(name, color) => createTag({ name, color })}
+              onDeleteTag={(tagId) => deleteTag(tagId)}
+            />
           </div>
 
           {/* Transpose + Capo — grouped in a card */}

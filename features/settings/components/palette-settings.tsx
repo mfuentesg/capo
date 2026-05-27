@@ -61,24 +61,24 @@ const PALETTES: Array<{
     dark: { bg: "#282828", primary: "#fe8019", accent1: "#83a598", accent2: "#b8bb26" }
   },
   {
-    id: "everforest",
-    light: { bg: "#fdf6e3", primary: "#8da101", accent1: "#3a94c5", accent2: "#df69ba" },
-    dark: { bg: "#2d353b", primary: "#a7c080", accent1: "#83c092", accent2: "#d699b6" }
+    id: "monokai",
+    light: { bg: "#fafafa", primary: "#f92672", accent1: "#a6e22e", accent2: "#ae81ff" },
+    dark: { bg: "#272822", primary: "#f92672", accent1: "#a6e22e", accent2: "#e6db74" }
   },
   {
-    id: "solarized",
-    light: { bg: "#fdf6e3", primary: "#268bd2", accent1: "#2aa198", accent2: "#d33682" },
-    dark: { bg: "#002b36", primary: "#268bd2", accent1: "#2aa198", accent2: "#d33682" }
+    id: "night-owl",
+    light: { bg: "#fbfbfb", primary: "#4876d6", accent1: "#0c969b", accent2: "#994cc3" },
+    dark: { bg: "#011627", primary: "#addb67", accent1: "#82aaff", accent2: "#c792ea" }
   },
   {
-    id: "github",
-    light: { bg: "#ffffff", primary: "#0969da", accent1: "#1a7f37", accent2: "#8250df" },
-    dark: { bg: "#0d1117", primary: "#58a6ff", accent1: "#3fb950", accent2: "#bc8cff" }
+    id: "horizon",
+    light: { bg: "#fdf0ed", primary: "#e95678", accent1: "#fab795", accent2: "#b877db" },
+    dark: { bg: "#1c1e26", primary: "#e95678", accent1: "#fab795", accent2: "#09f7a0" }
   },
   {
-    id: "kanagawa",
-    light: { bg: "#fffce0", primary: "#624c83", accent1: "#4d699b", accent2: "#6f894e" },
-    dark: { bg: "#1f1f28", primary: "#7e9cd8", accent1: "#957fb8", accent2: "#76946a" }
+    id: "shades-of-purple",
+    light: { bg: "#f2f0ff", primary: "#7c3aed", accent1: "#3ad9b1", accent2: "#ff628c" },
+    dark: { bg: "#2d2b55", primary: "#fad000", accent1: "#b362ff", accent2: "#3ad9b1" }
   }
 ]
 
@@ -91,10 +91,10 @@ const PALETTE_LABELS: Record<Palette, { name: string; desc: string }> = {
   "one-dark-pro": { name: "One Dark Pro", desc: "Dark navy, cool tones" },
   "tokyo-night": { name: "Tokyo Night", desc: "Deep blue Tokyo" },
   gruvbox: { name: "Gruvbox", desc: "Warm retro earth" },
-  everforest: { name: "Everforest", desc: "Warm natural greens" },
-  solarized: { name: "Solarized", desc: "Iconic warm/cool duo" },
-  github: { name: "GitHub", desc: "Familiar & clean" },
-  kanagawa: { name: "Kanagawa", desc: "Japanese wave art" }
+  monokai: { name: "Monokai", desc: "Vivid hacker classic" },
+  "night-owl": { name: "Night Owl", desc: "Deep navy, warm glow" },
+  horizon: { name: "Horizon", desc: "Sunset coral & green" },
+  "shades-of-purple": { name: "Shades of Purple", desc: "Gold on deep purple" }
 }
 
 interface FontEntry {

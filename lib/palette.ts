@@ -7,10 +7,10 @@ export const VALID_PALETTES = [
   "one-dark-pro",
   "tokyo-night",
   "gruvbox",
-  "everforest",
-  "solarized",
-  "github",
-  "kanagawa"
+  "monokai",
+  "night-owl",
+  "horizon",
+  "shades-of-purple"
 ] as const
 export type Palette = (typeof VALID_PALETTES)[number]
 

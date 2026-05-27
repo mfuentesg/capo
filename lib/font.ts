@@ -6,7 +6,11 @@ export const VALID_UI_FONTS = [
   "poppins",
   "nunito",
   "outfit",
-  "plus-jakarta-sans"
+  "plus-jakarta-sans",
+  "montserrat",
+  "lato",
+  "space-grotesk",
+  "manrope"
 ] as const
 export type UIFont = (typeof VALID_UI_FONTS)[number]
 

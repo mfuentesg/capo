@@ -1,7 +1,19 @@
 import type React from "react"
 import type { Metadata } from "next"
 import localFont from "next/font/local"
-import { Inter, DM_Sans, Roboto, Poppins, Nunito, Outfit, Plus_Jakarta_Sans } from "next/font/google"
+import {
+  Inter,
+  DM_Sans,
+  Roboto,
+  Poppins,
+  Nunito,
+  Outfit,
+  Plus_Jakarta_Sans,
+  Montserrat,
+  Lato,
+  Space_Grotesk,
+  Manrope
+} from "next/font/google"
 import { cookies } from "next/headers"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -68,6 +80,31 @@ const outfit = Outfit({
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-plus-jakarta-sans",
+  display: "swap"
+})
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+  display: "swap"
+})
+
+const lato = Lato({
+  subsets: ["latin"],
+  weight: ["300", "400", "700"],
+  variable: "--font-lato",
+  display: "swap"
+})
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap"
+})
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
   display: "swap"
 })
 
@@ -151,7 +188,11 @@ export default async function RootLayout({
     poppins.variable,
     nunito.variable,
     outfit.variable,
-    plusJakartaSans.variable
+    plusJakartaSans.variable,
+    montserrat.variable,
+    lato.variable,
+    spaceGrotesk.variable,
+    manrope.variable
   ].join(" ")
 
   return (

@@ -58,6 +58,26 @@ const PALETTES: Array<{
     id: "gruvbox",
     light: { bg: "#f9f5d7", primary: "#af3a03", accent1: "#427b58", accent2: "#79740e" },
     dark: { bg: "#282828", primary: "#fe8019", accent1: "#83a598", accent2: "#b8bb26" }
+  },
+  {
+    id: "everforest",
+    light: { bg: "#fdf6e3", primary: "#8da101", accent1: "#3a94c5", accent2: "#df69ba" },
+    dark: { bg: "#2d353b", primary: "#a7c080", accent1: "#83c092", accent2: "#d699b6" }
+  },
+  {
+    id: "solarized",
+    light: { bg: "#fdf6e3", primary: "#268bd2", accent1: "#2aa198", accent2: "#d33682" },
+    dark: { bg: "#002b36", primary: "#268bd2", accent1: "#2aa198", accent2: "#d33682" }
+  },
+  {
+    id: "github",
+    light: { bg: "#ffffff", primary: "#0969da", accent1: "#1a7f37", accent2: "#8250df" },
+    dark: { bg: "#0d1117", primary: "#58a6ff", accent1: "#3fb950", accent2: "#bc8cff" }
+  },
+  {
+    id: "kanagawa",
+    light: { bg: "#fffce0", primary: "#624c83", accent1: "#4d699b", accent2: "#6f894e" },
+    dark: { bg: "#1f1f28", primary: "#7e9cd8", accent1: "#957fb8", accent2: "#76946a" }
   }
 ]
 
@@ -69,7 +89,11 @@ const PALETTE_LABELS: Record<Palette, { name: string; desc: string }> = {
   dracula: { name: "Dracula", desc: "Neon on midnight" },
   "one-dark-pro": { name: "One Dark Pro", desc: "Dark navy, cool tones" },
   "tokyo-night": { name: "Tokyo Night", desc: "Deep blue Tokyo" },
-  gruvbox: { name: "Gruvbox", desc: "Warm retro earth" }
+  gruvbox: { name: "Gruvbox", desc: "Warm retro earth" },
+  everforest: { name: "Everforest", desc: "Warm natural greens" },
+  solarized: { name: "Solarized", desc: "Iconic warm/cool duo" },
+  github: { name: "GitHub", desc: "Familiar & clean" },
+  kanagawa: { name: "Kanagawa", desc: "Japanese wave art" }
 }
 
 interface FontEntry {
@@ -92,7 +116,11 @@ const FONTS: FontEntry[] = [
     name: "Plus Jakarta Sans",
     cssVar: "var(--font-plus-jakarta-sans)",
     desc: "Fresh & modern"
-  }
+  },
+  { id: "montserrat", name: "Montserrat", cssVar: "var(--font-montserrat)", desc: "Bold & geometric" },
+  { id: "lato", name: "Lato", cssVar: "var(--font-lato)", desc: "Clean & classic" },
+  { id: "space-grotesk", name: "Space Grotesk", cssVar: "var(--font-space-grotesk)", desc: "Technical & distinct" },
+  { id: "manrope", name: "Manrope", cssVar: "var(--font-manrope)", desc: "Precise & modern" }
 ]
 
 function PaletteCard({

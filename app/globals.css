@@ -664,6 +664,274 @@ html[data-palette="gruvbox"].dark {
   --accent-activity: oklch(0.762 0.175 122);      /* #b8bb26 yellow-green */
 }
 
+/* ── Everforest palette (https://github.com/sainnhe/everforest) ──── */
+html[data-palette="everforest"] {
+  --background: oklch(0.975 0.038 93);             /* bg0  #fdf6e3 */
+  --foreground: oklch(0.452 0.036 228);            /* fg   #5c6a72 */
+  --card: oklch(0.958 0.030 90);                   /* bg1  #f4efdd */
+  --card-foreground: oklch(0.452 0.036 228);
+  --popover: oklch(0.958 0.030 90);
+  --popover-foreground: oklch(0.452 0.036 228);
+  --primary: oklch(0.598 0.158 124);               /* green #8da101 */
+  --primary-foreground: oklch(0.975 0.038 93);
+  --secondary: oklch(0.918 0.028 88);
+  --secondary-foreground: oklch(0.452 0.036 228);
+  --muted: oklch(0.940 0.030 90);
+  --muted-foreground: oklch(0.638 0.022 165);
+  --accent: oklch(0.918 0.028 88);
+  --accent-foreground: oklch(0.452 0.036 228);
+  --destructive: oklch(0.620 0.215 22);            /* red  #f85552 */
+  --border: oklch(0.882 0.028 86);
+  --input: oklch(0.882 0.028 86);
+  --ring: oklch(0.598 0.158 124);
+  --sidebar: oklch(0.948 0.034 92);
+  --sidebar-foreground: oklch(0.452 0.036 228);
+  --sidebar-primary: oklch(0.598 0.158 124);
+  --sidebar-primary-foreground: oklch(0.975 0.038 93);
+  --sidebar-accent: oklch(0.918 0.028 88);
+  --sidebar-accent-foreground: oklch(0.452 0.036 228);
+  --sidebar-border: oklch(0.882 0.028 86);
+  --sidebar-ring: oklch(0.598 0.158 124);
+  --chord: oklch(0.615 0.115 225);                 /* blue #3a94c5 */
+  --accent-songs: oklch(0.615 0.115 225);
+  --accent-playlists: oklch(0.645 0.175 335);      /* purple #df69ba */
+  --accent-activity: oklch(0.598 0.158 124);
+}
+
+html[data-palette="everforest"].dark {
+  --background: oklch(0.228 0.018 208);            /* bg0 #2d353b */
+  --foreground: oklch(0.818 0.038 82);             /* fg  #d3c6aa */
+  --card: oklch(0.262 0.018 210);                  /* bg1 #343f44 */
+  --card-foreground: oklch(0.818 0.038 82);
+  --popover: oklch(0.262 0.018 210);
+  --popover-foreground: oklch(0.818 0.038 82);
+  --primary: oklch(0.758 0.125 142);               /* green #a7c080 */
+  --primary-foreground: oklch(0.228 0.018 208);
+  --secondary: oklch(0.348 0.022 210);             /* #475258 */
+  --secondary-foreground: oklch(0.818 0.038 82);
+  --muted: oklch(0.262 0.018 210);
+  --muted-foreground: oklch(0.608 0.022 165);
+  --accent: oklch(0.348 0.022 210);
+  --accent-foreground: oklch(0.818 0.038 82);
+  --destructive: oklch(0.645 0.180 22);            /* red  #e67e80 */
+  --border: oklch(0.348 0.022 210);
+  --input: oklch(0.348 0.022 210);
+  --ring: oklch(0.758 0.125 142);
+  --sidebar: oklch(0.208 0.015 205);
+  --sidebar-foreground: oklch(0.818 0.038 82);
+  --sidebar-primary: oklch(0.758 0.125 142);
+  --sidebar-primary-foreground: oklch(0.228 0.018 208);
+  --sidebar-accent: oklch(0.262 0.018 210);
+  --sidebar-accent-foreground: oklch(0.818 0.038 82);
+  --sidebar-border: oklch(0.262 0.018 210);
+  --sidebar-ring: oklch(0.758 0.125 142);
+  --chord: oklch(0.735 0.080 200);                 /* aqua #83c092 */
+  --accent-songs: oklch(0.735 0.080 200);
+  --accent-playlists: oklch(0.700 0.115 345);      /* purple #d699b6 */
+  --accent-activity: oklch(0.758 0.125 142);
+}
+
+/* ── Solarized palette (https://ethanschoonover.com/solarized) ────── */
+html[data-palette="solarized"] {
+  --background: oklch(0.975 0.038 93);             /* base3  #fdf6e3 */
+  --foreground: oklch(0.522 0.032 220);            /* base00 #657b83 */
+  --card: oklch(0.938 0.030 88);                   /* base2  #eee8d5 */
+  --card-foreground: oklch(0.522 0.032 220);
+  --popover: oklch(0.938 0.030 88);
+  --popover-foreground: oklch(0.522 0.032 220);
+  --primary: oklch(0.588 0.148 232);               /* blue   #268bd2 */
+  --primary-foreground: oklch(0.975 0.038 93);
+  --secondary: oklch(0.904 0.024 88);
+  --secondary-foreground: oklch(0.522 0.032 220);
+  --muted: oklch(0.920 0.026 88);
+  --muted-foreground: oklch(0.658 0.022 202);      /* base1  #93a1a1 */
+  --accent: oklch(0.904 0.024 88);
+  --accent-foreground: oklch(0.522 0.032 220);
+  --destructive: oklch(0.518 0.225 20);            /* red    #dc322f */
+  --border: oklch(0.878 0.022 85);
+  --input: oklch(0.878 0.022 85);
+  --ring: oklch(0.588 0.148 232);
+  --sidebar: oklch(0.950 0.034 92);
+  --sidebar-foreground: oklch(0.522 0.032 220);
+  --sidebar-primary: oklch(0.588 0.148 232);
+  --sidebar-primary-foreground: oklch(0.975 0.038 93);
+  --sidebar-accent: oklch(0.904 0.024 88);
+  --sidebar-accent-foreground: oklch(0.522 0.032 220);
+  --sidebar-border: oklch(0.878 0.022 85);
+  --sidebar-ring: oklch(0.588 0.148 232);
+  --chord: oklch(0.565 0.228 358);                 /* magenta #d33682 */
+  --accent-songs: oklch(0.588 0.148 232);
+  --accent-playlists: oklch(0.565 0.228 358);
+  --accent-activity: oklch(0.600 0.178 125);       /* green  #859900 */
+}
+
+html[data-palette="solarized"].dark {
+  --background: oklch(0.192 0.048 225);            /* base03 #002b36 */
+  --foreground: oklch(0.612 0.022 202);            /* base0  #839496 */
+  --card: oklch(0.228 0.042 220);                  /* base02 #073642 */
+  --card-foreground: oklch(0.612 0.022 202);
+  --popover: oklch(0.228 0.042 220);
+  --popover-foreground: oklch(0.612 0.022 202);
+  --primary: oklch(0.588 0.148 232);               /* blue   #268bd2 */
+  --primary-foreground: oklch(0.192 0.048 225);
+  --secondary: oklch(0.288 0.042 218);
+  --secondary-foreground: oklch(0.612 0.022 202);
+  --muted: oklch(0.228 0.042 220);
+  --muted-foreground: oklch(0.462 0.035 218);      /* base01 #586e75 */
+  --accent: oklch(0.288 0.042 218);
+  --accent-foreground: oklch(0.612 0.022 202);
+  --destructive: oklch(0.518 0.225 20);
+  --border: oklch(0.288 0.042 218);
+  --input: oklch(0.288 0.042 218);
+  --ring: oklch(0.588 0.148 232);
+  --sidebar: oklch(0.168 0.042 228);
+  --sidebar-foreground: oklch(0.612 0.022 202);
+  --sidebar-primary: oklch(0.588 0.148 232);
+  --sidebar-primary-foreground: oklch(0.192 0.048 225);
+  --sidebar-accent: oklch(0.228 0.042 220);
+  --sidebar-accent-foreground: oklch(0.612 0.022 202);
+  --sidebar-border: oklch(0.228 0.042 220);
+  --sidebar-ring: oklch(0.588 0.148 232);
+  --chord: oklch(0.638 0.115 196);                 /* cyan   #2aa198 */
+  --accent-songs: oklch(0.588 0.148 232);
+  --accent-playlists: oklch(0.565 0.228 358);
+  --accent-activity: oklch(0.600 0.178 125);
+}
+
+/* ── GitHub palette ───────────────────────────────────────────────── */
+html[data-palette="github"] {
+  --background: oklch(1.000 0.000 0);              /* #ffffff */
+  --foreground: oklch(0.178 0.008 260);            /* #1f2328 */
+  --card: oklch(0.975 0.006 248);                  /* #f6f8fa */
+  --card-foreground: oklch(0.178 0.008 260);
+  --popover: oklch(0.975 0.006 248);
+  --popover-foreground: oklch(0.178 0.008 260);
+  --primary: oklch(0.520 0.235 252);               /* #0969da */
+  --primary-foreground: oklch(1.000 0.000 0);
+  --secondary: oklch(0.938 0.008 248);
+  --secondary-foreground: oklch(0.178 0.008 260);
+  --muted: oklch(0.950 0.006 248);
+  --muted-foreground: oklch(0.452 0.018 245);      /* #59636e */
+  --accent: oklch(0.938 0.008 248);
+  --accent-foreground: oklch(0.178 0.008 260);
+  --destructive: oklch(0.512 0.220 18);            /* #d1242f */
+  --border: oklch(0.865 0.010 252);                /* #d0d7de */
+  --input: oklch(0.865 0.010 252);
+  --ring: oklch(0.520 0.235 252);
+  --sidebar: oklch(0.962 0.006 248);
+  --sidebar-foreground: oklch(0.178 0.008 260);
+  --sidebar-primary: oklch(0.520 0.235 252);
+  --sidebar-primary-foreground: oklch(1.000 0.000 0);
+  --sidebar-accent: oklch(0.938 0.008 248);
+  --sidebar-accent-foreground: oklch(0.178 0.008 260);
+  --sidebar-border: oklch(0.865 0.010 252);
+  --sidebar-ring: oklch(0.520 0.235 252);
+  --chord: oklch(0.522 0.248 298);                 /* #8250df purple */
+  --accent-songs: oklch(0.520 0.235 252);
+  --accent-playlists: oklch(0.522 0.248 298);
+  --accent-activity: oklch(0.548 0.145 148);       /* #1a7f37 green */
+}
+
+html[data-palette="github"].dark {
+  --background: oklch(0.138 0.018 258);            /* #0d1117 */
+  --foreground: oklch(0.928 0.010 252);            /* #e6edf3 */
+  --card: oklch(0.165 0.018 260);                  /* #161b22 */
+  --card-foreground: oklch(0.928 0.010 252);
+  --popover: oklch(0.165 0.018 260);
+  --popover-foreground: oklch(0.928 0.010 252);
+  --primary: oklch(0.718 0.175 250);               /* #58a6ff */
+  --primary-foreground: oklch(0.138 0.018 258);
+  --secondary: oklch(0.278 0.018 255);             /* #30363d */
+  --secondary-foreground: oklch(0.928 0.010 252);
+  --muted: oklch(0.165 0.018 260);
+  --muted-foreground: oklch(0.598 0.015 252);      /* #848d97 */
+  --accent: oklch(0.278 0.018 255);
+  --accent-foreground: oklch(0.928 0.010 252);
+  --destructive: oklch(0.668 0.230 18);            /* #f85149 */
+  --border: oklch(0.278 0.018 255);
+  --input: oklch(0.278 0.018 255);
+  --ring: oklch(0.718 0.175 250);
+  --sidebar: oklch(0.118 0.015 258);
+  --sidebar-foreground: oklch(0.928 0.010 252);
+  --sidebar-primary: oklch(0.718 0.175 250);
+  --sidebar-primary-foreground: oklch(0.138 0.018 258);
+  --sidebar-accent: oklch(0.165 0.018 260);
+  --sidebar-accent-foreground: oklch(0.928 0.010 252);
+  --sidebar-border: oklch(0.165 0.018 260);
+  --sidebar-ring: oklch(0.718 0.175 250);
+  --chord: oklch(0.740 0.195 295);                 /* #bc8cff purple */
+  --accent-songs: oklch(0.718 0.175 250);
+  --accent-playlists: oklch(0.740 0.195 295);
+  --accent-activity: oklch(0.718 0.185 148);       /* #3fb950 green */
+}
+
+/* ── Kanagawa palette (https://github.com/rebelot/kanagawa.nvim) ─── */
+html[data-palette="kanagawa"] {
+  --background: oklch(0.988 0.052 100);            /* Lotus #fffce0 */
+  --foreground: oklch(0.382 0.022 285);            /* fg    #545464 */
+  --card: oklch(0.948 0.045 96);                   /* bg2   #ebe9c1 */
+  --card-foreground: oklch(0.382 0.022 285);
+  --popover: oklch(0.948 0.045 96);
+  --popover-foreground: oklch(0.382 0.022 285);
+  --primary: oklch(0.415 0.138 298);               /* lotus violet #624c83 */
+  --primary-foreground: oklch(0.988 0.052 100);
+  --secondary: oklch(0.915 0.035 96);
+  --secondary-foreground: oklch(0.382 0.022 285);
+  --muted: oklch(0.932 0.040 98);
+  --muted-foreground: oklch(0.560 0.025 285);
+  --accent: oklch(0.915 0.035 96);
+  --accent-foreground: oklch(0.382 0.022 285);
+  --destructive: oklch(0.498 0.195 15);            /* lotus red #c84053 */
+  --border: oklch(0.878 0.038 94);
+  --input: oklch(0.878 0.038 94);
+  --ring: oklch(0.415 0.138 298);
+  --sidebar: oklch(0.968 0.050 100);
+  --sidebar-foreground: oklch(0.382 0.022 285);
+  --sidebar-primary: oklch(0.415 0.138 298);
+  --sidebar-primary-foreground: oklch(0.988 0.052 100);
+  --sidebar-accent: oklch(0.915 0.035 96);
+  --sidebar-accent-foreground: oklch(0.382 0.022 285);
+  --sidebar-border: oklch(0.878 0.038 94);
+  --sidebar-ring: oklch(0.415 0.138 298);
+  --chord: oklch(0.468 0.112 248);                 /* lotus blue #4d699b */
+  --accent-songs: oklch(0.468 0.112 248);
+  --accent-playlists: oklch(0.415 0.138 298);
+  --accent-activity: oklch(0.545 0.110 140);       /* lotus green #6f894e */
+}
+
+html[data-palette="kanagawa"].dark {
+  --background: oklch(0.162 0.022 288);            /* Wave bg #1f1f28 */
+  --foreground: oklch(0.880 0.032 82);             /* fg      #dcd7ba */
+  --card: oklch(0.218 0.022 288);                  /* bgM     #2a2a37 */
+  --card-foreground: oklch(0.880 0.032 82);
+  --popover: oklch(0.218 0.022 288);
+  --popover-foreground: oklch(0.880 0.032 82);
+  --primary: oklch(0.672 0.110 252);               /* fujiBlue #7e9cd8 */
+  --primary-foreground: oklch(0.162 0.022 288);
+  --secondary: oklch(0.268 0.022 285);             /* bg3 #363646 */
+  --secondary-foreground: oklch(0.880 0.032 82);
+  --muted: oklch(0.218 0.022 288);
+  --muted-foreground: oklch(0.498 0.018 62);       /* #727169 */
+  --accent: oklch(0.268 0.022 285);
+  --accent-foreground: oklch(0.880 0.032 82);
+  --destructive: oklch(0.688 0.220 18);            /* peachRed #ff5d62 */
+  --border: oklch(0.268 0.022 285);
+  --input: oklch(0.268 0.022 285);
+  --ring: oklch(0.672 0.110 252);
+  --sidebar: oklch(0.130 0.020 288);               /* bgDim #16161d */
+  --sidebar-foreground: oklch(0.880 0.032 82);
+  --sidebar-primary: oklch(0.672 0.110 252);
+  --sidebar-primary-foreground: oklch(0.162 0.022 288);
+  --sidebar-accent: oklch(0.218 0.022 288);
+  --sidebar-accent-foreground: oklch(0.880 0.032 82);
+  --sidebar-border: oklch(0.218 0.022 288);
+  --sidebar-ring: oklch(0.672 0.110 252);
+  --chord: oklch(0.598 0.118 292);                 /* oniViolet #957fb8 */
+  --accent-songs: oklch(0.672 0.110 252);
+  --accent-playlists: oklch(0.598 0.118 292);
+  --accent-activity: oklch(0.585 0.095 142);       /* springGreen #76946a */
+}
+
 /* ── Font overrides ──────────────────────────────────────────────── */
 /*
  * @theme inline causes Tailwind to inline the font value directly into
@@ -696,6 +964,22 @@ html[data-font="outfit"] {
 
 html[data-font="plus-jakarta-sans"] {
   font-family: var(--font-plus-jakarta-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+html[data-font="montserrat"] {
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+
+html[data-font="lato"] {
+  font-family: var(--font-lato), ui-sans-serif, system-ui, sans-serif;
+}
+
+html[data-font="space-grotesk"] {
+  font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+}
+
+html[data-font="manrope"] {
+  font-family: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {

@@ -165,31 +165,26 @@ export default async function RootLayout({
     >
       <head>
         {/*
-         * Blocking script — runs synchronously in <head>, before CSS is evaluated
-         * and before any paint, to guarantee data-palette, data-font, and
-         * class="dark" are set on <html> from the very first frame.
+         * Blocking script — runs synchronously in <head> before any paint.
          *
-         * next-themes injects its own script inside <body>, which is too late when
-         * the browser streams/paints the page shell before reaching it. By
-         * duplicating the logic here we eliminate the flash from the default dark
-         * palette (catppuccin) to the user's chosen palette.
+         * Palette and font cookies are httpOnly (not readable by JS), so
+         * data-palette and data-font are already set correctly via SSR on the
+         * <html> element — no JS needed for those.
          *
-         * Reading order: localStorage → NEXT_THEME cookie (for dark/light),
-         * NEXT_PALETTE cookie (for palette), NEXT_UI_FONT cookie (for font).
+         * What we DO need here: apply class="dark" before CSS is evaluated.
+         * next-themes injects its script inside <body>, which can fire a frame
+         * too late when the browser paints the shell first. Reading localStorage
+         * (where next-themes stores the user's choice) and falling back to
+         * prefers-color-scheme ensures the dark class is present on the very
+         * first frame, so the inline palette <style> below immediately resolves
+         * the correct dark-mode variables.
          */}
         <script
           suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html: `(function(){try{
-var d=document.documentElement,c=document.cookie;
-var p=/(?:^|;\\s*)NEXT_PALETTE=([^;]+)/.exec(c);
-var vp=["catppuccin","aura","nord","rose-pine","dracula","one-dark-pro","tokyo-night","gruvbox"];
-if(p&&vp.indexOf(p[1])!==-1)d.setAttribute("data-palette",p[1]);
-var f=/(?:^|;\\s*)NEXT_UI_FONT=([^;]+)/.exec(c);
-var vf=["geist","inter","dm-sans","roboto","poppins","nunito","outfit","plus-jakarta-sans"];
-if(f&&vf.indexOf(f[1])!==-1)d.setAttribute("data-font",f[1]);
-var t=null;try{t=localStorage.getItem("theme")}catch(e){}
-if(!t){var tm=/(?:^|;\\s*)NEXT_THEME=([^;]+)/.exec(c);t=tm?tm[1]:null;}
+var d=document.documentElement,t=null;
+try{t=localStorage.getItem("theme")}catch(e){}
 if(t==="dark")d.classList.add("dark");
 else if(t==="light")d.classList.remove("dark");
 else if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)d.classList.add("dark");

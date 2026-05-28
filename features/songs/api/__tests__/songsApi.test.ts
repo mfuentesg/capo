@@ -87,8 +87,7 @@ describe("getSongs", () => {
         lyrics: "Amazing grace",
         notes: undefined,
         transpose: 2,
-        capo: 0,
-        isDraft: false
+        capo: 0
       },
       {
         id: "s2",
@@ -99,8 +98,7 @@ describe("getSongs", () => {
         lyrics: undefined,
         notes: undefined,
         transpose: 0,
-        capo: 0,
-        isDraft: true
+        capo: 0
       }
     ])
   })
@@ -171,8 +169,7 @@ describe("getSongsByIds", () => {
         lyrics: undefined,
         notes: "Note",
         transpose: 0,
-        capo: 1,
-        isDraft: false
+        capo: 1
       }
     ])
   })

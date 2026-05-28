@@ -20,7 +20,6 @@ export interface Song {
   fontSize?: number
   transpose?: number
   capo?: number
-  isDraft?: boolean
   ownership?: SongOwnership
   userSettings?: UserSongSettings | null
 }
@@ -50,8 +49,6 @@ export interface SongDetailProps {
   onDelete: (songId: string) => void
 }
 
-export type SongFilterStatus = "all" | "drafts" | "completed"
-
 export type BPMRange = "all" | "slow" | "medium" | "fast"
 
 export interface SongListProps {
@@ -59,7 +56,6 @@ export interface SongListProps {
   previewSong?: Song | null
   selectedSong?: Song | null
   groupBy: GroupBy
-  filterStatus: SongFilterStatus
   bpmRange: BPMRange
   filterTags?: string[]
   isCreatingNewSong?: boolean

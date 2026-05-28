@@ -21,10 +21,6 @@ type SongRow = Pick<
 type SongRowWithOwnership = SongRow &
   Pick<Tables<"songs">, "user_id" | "team_id">
 
-/**
- * Maps database song to frontend song type
- * Converts status enum to isDraft boolean
- */
 function mapDBSongToFrontend(dbSong: SongRow): FrontendSong {
   return {
     id: dbSong.id,
@@ -35,16 +31,10 @@ function mapDBSongToFrontend(dbSong: SongRow): FrontendSong {
     lyrics: dbSong.lyrics || undefined,
     notes: dbSong.notes || undefined,
     transpose: dbSong.transpose ?? 0,
-    capo: dbSong.capo ?? 0,
-    // tags field not in database schema - omit for now
-    isDraft: dbSong.status === "draft"
+    capo: dbSong.capo ?? 0
   }
 }
 
-/**
- * Maps frontend song to database insert type
- * Converts isDraft boolean to status enum
- */
 function mapFrontendSongToDB(
   song: Partial<FrontendSong>,
   userId: string,
@@ -60,16 +50,13 @@ function mapFrontendSongToDB(
     notes: song.notes || null,
     transpose: song.transpose ?? 0,
     capo: song.capo ?? 0,
-    status: song.isDraft ? "draft" : "published",
+    status: "published",
     user_id: isTeam ? null : userId,
     team_id: isTeam ? context.teamId : null,
     created_by: userId
   }
 }
 
-/**
- * Maps frontend song updates to database update type
- */
 function mapFrontendUpdatesToDB(updates: Partial<FrontendSong>): TablesUpdate<"songs"> {
   const dbUpdate: TablesUpdate<"songs"> = {}
 
@@ -79,9 +66,6 @@ function mapFrontendUpdatesToDB(updates: Partial<FrontendSong>): TablesUpdate<"s
   if (updates.bpm !== undefined) dbUpdate.bpm = updates.bpm || null
   if (updates.lyrics !== undefined) dbUpdate.lyrics = updates.lyrics || null
   if (updates.notes !== undefined) dbUpdate.notes = updates.notes || null
-  if (updates.isDraft !== undefined) {
-    dbUpdate.status = updates.isDraft ? "draft" : "published"
-  }
 
   return dbUpdate
 }

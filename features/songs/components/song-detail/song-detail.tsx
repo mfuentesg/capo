@@ -16,7 +16,6 @@ import {
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -202,11 +201,6 @@ export function SongDetail({ song, onClose, onUpdate, onDelete, onTransferSucces
                 className="text-lg font-bold tracking-tight"
                 inputClassName="text-lg font-bold"
               />
-              {song.isDraft && (
-                <Badge variant="secondary" className="text-xs">
-                  {t.songs.draft}
-                </Badge>
-              )}
             </div>
             <EditableField
               value={song.artist}

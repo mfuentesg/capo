@@ -32,7 +32,7 @@ import { useSongs, useCreateSong } from "../hooks/use-songs"
 import { useTags } from "../hooks/use-tags"
 import { useUser } from "@/features/auth"
 import { useAppContext, type AppContext } from "@/features/app-context"
-import type { Song, GroupBy, BPMRange, SongFilterStatus } from "../types"
+import type { Song, GroupBy, BPMRange } from "../types"
 import { getTranslations } from "@/lib/i18n/translations"
 import { createOverlayIds } from "@/lib/ui/stable-overlay-ids"
 
@@ -137,7 +137,6 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
   const [debouncedQuery, setDebouncedQuery] = useState("")
   const [selectedSong, setSelectedSong] = useState<Song | null>(null)
   const [groupBy, setGroupBy] = useState<GroupBy>("none")
-  const [filterStatus, setFilterStatus] = useState<SongFilterStatus>("all")
   const [bpmRange, setBpmRange] = useState<BPMRange>("all")
   const [filterTags, setFilterTags] = useState<string[]>([])
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false)
@@ -264,16 +263,14 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
   // Calculate active filter count
   const activeFilterCount = useMemo(() => {
     let count = 0
-    if (filterStatus !== "all") count++
     if (groupBy !== "none") count++
     if (bpmRange !== "all") count++
     count += filterTags.length
     return count
-  }, [filterStatus, groupBy, bpmRange, filterTags])
+  }, [groupBy, bpmRange, filterTags])
 
   // Clear all filters
   const clearAllFilters = () => {
-    setFilterStatus("all")
     setGroupBy("none")
     setBpmRange("all")
     setFilterTags([])
@@ -375,42 +372,6 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
                           {t.filters.clearAll}
                         </Button>
                       )}
-                    </div>
-
-                    <Separator />
-
-                    {/* Status Filter */}
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <Music className="h-4 w-4" />
-                        <span className="text-sm font-medium">{t.songs.status}</span>
-                      </div>
-                      <div className="grid grid-cols-3 gap-2">
-                        <Button
-                          onClick={() => setFilterStatus("all")}
-                          variant={filterStatus === "all" ? "default" : "outline"}
-                          size="sm"
-                          className="justify-center"
-                        >
-                          {t.songs.all}
-                        </Button>
-                        <Button
-                          onClick={() => setFilterStatus("drafts")}
-                          variant={filterStatus === "drafts" ? "default" : "outline"}
-                          size="sm"
-                          className="justify-center"
-                        >
-                          {t.songs.drafts}
-                        </Button>
-                        <Button
-                          onClick={() => setFilterStatus("completed")}
-                          variant={filterStatus === "completed" ? "default" : "outline"}
-                          size="sm"
-                          className="justify-center"
-                        >
-                          {t.songs.completed}
-                        </Button>
-                      </div>
                     </div>
 
                     <Separator />
@@ -538,7 +499,6 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
               previewSong={previewSong}
               selectedSong={selectedSong}
               groupBy={groupBy}
-              filterStatus={filterStatus}
               bpmRange={bpmRange}
               filterTags={filterTags}
               isCreatingNewSong={isCreatingNewSong}

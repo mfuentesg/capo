@@ -29,7 +29,6 @@ export type {
   GroupBy,
   SongDetailProps,
   SongListProps,
-  SongFilterStatus,
   BPMRange,
   MusicalKey
 } from "./types"

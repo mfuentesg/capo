@@ -107,6 +107,12 @@ export async function setSongTagsAction(songId: string, tagIds: string[]): Promi
   await setSongTagsApi(supabase, songId, tagIds)
 }
 
+export async function getSongTagsAction(songId: string): Promise<SongTag[]> {
+  const supabase = await createClient()
+  const tagMap = await getTagAssignmentsForSongsApi(supabase, [songId])
+  return tagMap.get(songId) ?? []
+}
+
 export async function createSongAction(
   song: Partial<Song>,
   userId: string,

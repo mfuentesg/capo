@@ -65,24 +65,18 @@ export function useDeleteTag() {
 }
 
 /**
- * Replace all tags on a song. Performs optimistic update on the songs list cache.
+ * Replace all tags on a song. Accepts full SongTag objects so the optimistic
+ * update can populate tag data without a secondary cache lookup.
  */
 export function useSetSongTags(songId: string) {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (tagIds: string[]) => setSongTagsAction(songId, tagIds),
-    onMutate: async (tagIds: string[]) => {
-      const allTags = queryClient.getQueryData<SongTag[]>(songsKeys.tags())
-      const newTags = allTags?.filter((t) => tagIds.includes(t.id)) ?? []
+    mutationFn: ({ tagIds }: { tagIds: string[]; tags: SongTag[] }) =>
+      setSongTagsAction(songId, tagIds),
+    onMutate: async ({ tags: newTags }) => {
+      await queryClient.cancelQueries({ queryKey: songsKeys.lists() })
 
-      queryClient.setQueriesData<SongTag[]>({ queryKey: songsKeys.lists() }, (old) => {
-        if (!Array.isArray(old)) return old
-        // songs list stores Song[], not SongTag[]
-        return old
-      })
-
-      // Optimistically update the song in all list caches
       queryClient.setQueriesData<{ id: string; tags?: SongTag[] }[]>(
         { queryKey: songsKeys.lists() },
         (old) => {
@@ -90,20 +84,11 @@ export function useSetSongTags(songId: string) {
           return old.map((s) => (s.id === songId ? { ...s, tags: newTags } : s))
         }
       )
-
-      const prevDetail = queryClient.getQueryData<{ id: string; tags?: SongTag[] }>(
-        songsKeys.detail(songId)
-      )
-      if (prevDetail) {
-        queryClient.setQueryData(songsKeys.detail(songId), { ...prevDetail, tags: newTags })
-      }
-
-      return { prevDetail }
     },
-    onError: (_err, _tagIds, ctx) => {
-      if (ctx?.prevDetail) {
-        queryClient.setQueryData(songsKeys.detail(songId), ctx.prevDetail)
-      }
+    onError: () => {
+      queryClient.invalidateQueries({ queryKey: songsKeys.lists() })
+    },
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: songsKeys.lists() })
     }
   })

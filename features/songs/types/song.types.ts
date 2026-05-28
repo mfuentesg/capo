@@ -61,6 +61,7 @@ export interface SongListProps {
   groupBy: GroupBy
   filterStatus: SongFilterStatus
   bpmRange: BPMRange
+  filterTags?: string[]
   isCreatingNewSong?: boolean
   onSelectSong: (song: Song) => void
 }

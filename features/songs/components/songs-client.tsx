@@ -21,15 +21,15 @@ import {
   Music,
   LayoutList,
   Music2,
-  Music3,
   Settings2,
   X,
   Turtle,
   Rabbit,
   Zap
 } from "lucide-react"
-import { SongList } from "@/features/songs"
+import { SongList, TagBadge } from "@/features/songs"
 import { useSongs, useCreateSong } from "../hooks/use-songs"
+import { useTags } from "../hooks/use-tags"
 import { useUser } from "@/features/auth"
 import { useAppContext, type AppContext } from "@/features/app-context"
 import type { Song, GroupBy, BPMRange, SongFilterStatus } from "../types"
@@ -139,6 +139,7 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
   const [groupBy, setGroupBy] = useState<GroupBy>("none")
   const [filterStatus, setFilterStatus] = useState<SongFilterStatus>("all")
   const [bpmRange, setBpmRange] = useState<BPMRange>("all")
+  const [filterTags, setFilterTags] = useState<string[]>([])
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false)
   const [isCreatingNewSong, setIsCreatingNewSong] = useState(false)
   const [previewSong, setPreviewSong] = useState<Song | null>(null)
@@ -148,6 +149,7 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
   const mobileDrawerIds = createOverlayIds("songs-mobile-drawer")
 
   const { data: songs = initialSongs, isLoading } = useSongs(debouncedQuery || undefined, initialSongs)
+  const { data: availableTags = [] } = useTags()
   const createSongMutation = useCreateSong()
 
   // Track viewport to render Sheet only after mount and on mobile
@@ -167,6 +169,17 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
       void import("@/features/song-draft")
     }
   }, [isMobile])
+
+  // Keep selectedSong in sync with the React Query cache so mutations
+  // (e.g. tag updates) are reflected in the detail panel without a reload.
+  useEffect(() => {
+    if (isCreatingNewSong) return
+    setSelectedSong((prev) => {
+      if (!prev) return prev
+      const updated = songs.find((s) => s.id === prev.id)
+      return updated ?? prev
+    })
+  }, [songs, isCreatingNewSong])
 
   // Debounce search query before sending to server
   useEffect(() => {
@@ -254,14 +267,16 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
     if (filterStatus !== "all") count++
     if (groupBy !== "none") count++
     if (bpmRange !== "all") count++
+    count += filterTags.length
     return count
-  }, [filterStatus, groupBy, bpmRange])
+  }, [filterStatus, groupBy, bpmRange, filterTags])
 
   // Clear all filters
   const clearAllFilters = () => {
     setFilterStatus("all")
     setGroupBy("none")
     setBpmRange("all")
+    setFilterTags([])
   }
 
   return (
@@ -481,18 +496,40 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
                         </Button>
                       </div>
                     </div>
+
+                    {availableTags.length > 0 && (
+                      <>
+                        <Separator />
+                        <div className="space-y-2">
+                          <span className="text-sm font-medium">{t.songs.tags.title}</span>
+                          <div className="flex flex-wrap gap-1.5">
+                            {availableTags.map((tag) => (
+                              <button
+                                key={tag.id}
+                                onClick={() =>
+                                  setFilterTags((prev) =>
+                                    prev.includes(tag.id)
+                                      ? prev.filter((id) => id !== tag.id)
+                                      : [...prev, tag.id]
+                                  )
+                                }
+                                className="focus:outline-none"
+                              >
+                                <TagBadge
+                                  tag={tag}
+                                  className={filterTags.includes(tag.id) ? "ring-2 ring-ring ring-offset-1" : ""}
+                                />
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </PopoverContent>
               </Popover>
             </div>
 
-            {/* Explanation Icon */}
-            <div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <Music3 className="h-3 w-3" />
-              </div>
-              <span className="text-xs">{t.songs.selectSongDescription}</span>
-            </div>
           </div>
 
           <div className="flex-1 overflow-y-auto">
@@ -503,6 +540,7 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
               groupBy={groupBy}
               filterStatus={filterStatus}
               bpmRange={bpmRange}
+              filterTags={filterTags}
               isCreatingNewSong={isCreatingNewSong}
               isLoading={isLoading && songs.length === 0}
               onSelectSong={handleSelectSong}
@@ -518,8 +556,8 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
           minSize={40}
           className="hidden md:flex"
         >
-          <div className="flex-1 overflow-y-auto min-h-0">
-            {isCreatingNewSong ? (
+          {isCreatingNewSong ? (
+            <div className="flex-1 overflow-y-auto min-h-0">
               <SongDraftFormLazy
                 song={previewSong || undefined}
                 onClose={() => {
@@ -533,7 +571,9 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
                 onBucketChange={setCreationBucket}
                 autoFocus
               />
-            ) : selectedSong ? (
+            </div>
+          ) : selectedSong ? (
+            <div className="flex-1 overflow-y-auto min-h-0">
               <SongLyricsPanelLazy
                 key={selectedSong.id}
                 song={selectedSong}
@@ -541,21 +581,21 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
                 onDelete={handleDeleteSong}
                 onTransferSuccess={handleTransferSuccess}
               />
-            ) : (
-              <div className="flex flex-1 flex-col justify-end bg-card relative overflow-hidden p-8 lg:p-12">
-                <div className="pointer-events-none select-none absolute inset-0 flex items-center justify-center" aria-hidden>
-                  <Music style={{ width: "45%", height: "45%" }} className="text-foreground/[0.04]" />
-                </div>
-                <div className="relative">
-                  <div className="h-0.5 w-8 rounded-full mb-4" style={{ background: "var(--accent-songs)" }} />
-                  <h3 className="text-lg font-bold tracking-tight leading-none">{t.songs.selectSong}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground max-w-xs leading-relaxed">
-                    {t.songs.selectSongDescription}
-                  </p>
-                </div>
+            </div>
+          ) : (
+            <div className="flex flex-1 flex-col justify-end bg-card relative overflow-hidden p-8 lg:p-12">
+              <div className="pointer-events-none select-none absolute inset-0 flex items-center justify-center" aria-hidden>
+                <Music style={{ width: "45%", height: "45%" }} className="text-foreground/[0.04]" />
               </div>
-            )}
-          </div>
+              <div className="relative">
+                <div className="h-0.5 w-8 rounded-full mb-4" style={{ background: "var(--accent-songs)" }} />
+                <h3 className="text-lg font-bold tracking-tight leading-none">{t.songs.selectSong}</h3>
+                <p className="mt-2 text-sm text-muted-foreground max-w-xs leading-relaxed">
+                  {t.songs.selectSongDescription}
+                </p>
+              </div>
+            </div>
+          )}
         </ResizablePanel>
       </ResizablePanelGroup>
 

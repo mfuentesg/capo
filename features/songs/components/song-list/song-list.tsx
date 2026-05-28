@@ -36,6 +36,7 @@ export const SongList = memo(function SongList({
   groupBy,
   filterStatus,
   bpmRange,
+  filterTags = [],
   isCreatingNewSong = false,
   isLoading = false,
   onSelectSong
@@ -61,9 +62,13 @@ export const SongList = memo(function SongList({
             ? bpm >= 100 && bpm <= 140
             : bpm > 140)
 
-      return matchesStatus && matchesBpm
+      const matchesTags =
+        filterTags.length === 0 ||
+        filterTags.every((tagId) => song.tags?.some((t) => t.id === tagId))
+
+      return matchesStatus && matchesBpm && matchesTags
     })
-  }, [bpmRange, filterStatus, songs])
+  }, [bpmRange, filterStatus, filterTags, songs])
 
   const groupedSongs = useMemo(() => {
     if (groupBy === "none") {

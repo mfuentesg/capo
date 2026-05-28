@@ -1,12 +1,13 @@
 "use client"
 
-import { useSearchParams } from "next/navigation"
+import { useSearchParams, useRouter } from "next/navigation"
 import {
   useUpdateSong,
   useUserSongSettings,
   useEffectiveSongSettings,
   useUpsertUserSongSettings,
-  useSongRealtime
+  useSongRealtime,
+  SongActionsMenu
 } from "@/features/songs"
 import { LyricsView } from "@/features/lyrics-editor"
 import type { Song } from "@/types"
@@ -23,6 +24,7 @@ export function LyricsPageClient({
   initialUserSettings,
   initialLyricsColumns = 2
 }: LyricsPageClientProps) {
+  const router = useRouter()
   useSongRealtime(song.id)
   const { mutate: updateSong, isPending: isSaving } = useUpdateSong()
   useUserSongSettings(song, initialUserSettings)
@@ -40,6 +42,14 @@ export function LyricsPageClient({
       onSettingsChange={upsertSettings}
       initialLyricsColumns={initialLyricsColumns}
       initialEditing={initialEditing}
+      actionsSlot={
+        <SongActionsMenu
+          song={song}
+          onUpdate={(songId, updates) => updateSong({ songId, updates })}
+          onDelete={() => router.push("/dashboard/songs")}
+          onTransferSuccess={() => router.push("/dashboard/songs")}
+        />
+      }
     />
   )
 }

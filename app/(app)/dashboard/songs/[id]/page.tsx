@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
-import { api as songsApi, getUserProfileData as getUserProfileDataApi } from "@/features/songs"
-import { getSongTagsAction } from "@/features/songs/api/actions"
+import { api as songsApi, getUserProfileData as getUserProfileDataApi, getSongTagsAction } from "@/features/songs"
 import { createClient } from "@/lib/supabase/server"
 import { notFound } from "next/navigation"
 import { LyricsPageClient } from "./lyrics-page-client"

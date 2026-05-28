@@ -214,13 +214,6 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
     setEditorResetKey((k) => k + 1)
   }
 
-  const handleCancel = useCallback(() => {
-    setIsEditing(false)
-    setIsPreviewing(false)
-    setEditedLyrics(savedLyrics)
-    setEditorResetKey((k) => k + 1)
-  }, [savedLyrics])
-
   const handleSave = () => {
     onSaveLyrics?.(editedLyrics)
     setSavedLyrics(editedLyrics)

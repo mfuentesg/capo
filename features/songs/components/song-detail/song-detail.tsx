@@ -28,7 +28,7 @@ import {
   AlertDialogTrigger
 } from "@/components/ui/alert-dialog"
 import { cn } from "@/lib/utils"
-import type { Song, SongTag } from "@/features/songs/types"
+import type { Song } from "@/features/songs/types"
 import { KeySelect } from "@/features/songs"
 import {
   useEffectiveSongSettings,
@@ -143,11 +143,6 @@ export function SongDetail({ song, onClose, onUpdate, onDelete, onTransferSucces
   const { mutateAsync: createTag } = useCreateTag()
   const { mutate: deleteTag } = useDeleteTag()
   const { mutate: setSongTags } = useSetSongTags(song.id)
-  const [currentTags, setCurrentTags] = useState<SongTag[]>(song.tags ?? [])
-
-  useEffect(() => {
-    setCurrentTags(song.tags ?? [])
-  }, [song.id, song.tags])
 
   const updateTranspose = (nextValue: number) => {
     const clampedValue = Math.max(-6, Math.min(nextValue, 6))
@@ -263,10 +258,9 @@ export function SongDetail({ song, onClose, onUpdate, onDelete, onTransferSucces
               </div>
             </div>
             <TagSelector
-              selectedTags={currentTags}
+              selectedTags={song.tags ?? []}
               availableTags={availableTags}
               onTagsChange={(tags) => {
-                setCurrentTags(tags)
                 setSongTags({ tagIds: tags.map((tag) => tag.id), tags })
               }}
               onCreateTag={(name, color) => createTag({ name, color })}

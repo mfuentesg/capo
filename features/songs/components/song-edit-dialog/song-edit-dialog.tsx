@@ -23,12 +23,12 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { KeySelect } from "@/features/songs/components/key-select"
-import { TagSelector } from "@/features/songs/components/tag-selector"
+import { TagSelector } from "../tag-selector"
 import { useTranslation } from "@/hooks/use-translation"
 import { Tag } from "lucide-react"
-import type { Song, SongTag } from "@/features/songs/types"
-import { useTags, useCreateTag, useDeleteTag, useSetSongTags } from "@/features/songs/hooks/use-tags"
-import { songsKeys } from "@/features/songs/hooks/query-keys"
+import type { Song, SongTag } from "../../types"
+import { useTags, useCreateTag, useDeleteTag, useSetSongTags } from "../../hooks/use-tags"
+import { songsKeys } from "../../hooks/query-keys"
 import type { Song as SongFull } from "@/types"
 
 type SongEditFormValues = {

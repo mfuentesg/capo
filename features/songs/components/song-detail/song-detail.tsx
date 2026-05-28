@@ -41,7 +41,7 @@ import { useTranslation } from "@/hooks/use-translation"
 import { createOverlayIds } from "@/lib/ui/stable-overlay-ids"
 import { TransferToTeamDialog } from "../transfer-to-team-dialog"
 import { TagSelector } from "../tag-selector"
-import { useTags, useCreateTag, useDeleteTag, useSetSongTags } from "@/features/songs/hooks/use-tags"
+import { useTags, useCreateTag, useDeleteTag, useSetSongTags } from "../../hooks/use-tags"
 
 interface EditableFieldProps {
   value: string

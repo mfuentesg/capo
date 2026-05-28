@@ -4,6 +4,7 @@
     "save": "Guardar",
     "submit": "Enviar",
     "cancel": "Cancelar",
+    "done": "Listo",
     "delete": "Eliminar",
     "edit": "Editar",
     "search": "Buscar",
@@ -203,6 +204,15 @@
         "shorthand": "o",
         "example": "Ejemplo"
       }
+    },
+    "tags": {
+      "title": "Etiquetas",
+      "addTag": "Agregar etiqueta",
+      "searchOrCreate": "Buscar o crear etiqueta…",
+      "noTags": "Aún no hay etiquetas",
+      "createTag": "Crear etiqueta",
+      "create": "Crear",
+      "deleteTag": "Eliminar etiqueta"
     }
   },
   "playlists": {

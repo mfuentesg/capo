@@ -1,8 +1,7 @@
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { cookies } from "next/headers"
-import { createClient } from "@/lib/supabase/server"
-import { SongsClient, rawApi as songsApi } from "@/features/songs"
+import { SongsClient, getSongsAllBucketsAction } from "@/features/songs"
 import { getTranslations } from "@/lib/i18n/translations"
 import { defaultLocale, isValidLocale } from "@/lib/i18n/config"
 import { getInitialAppContextData } from "@/features/app-context/server"
@@ -35,11 +34,10 @@ export default async function SongsPage() {
 
   const teamIds = teams.map((t) => t.id)
   const teamsMeta = teams.map((t) => ({ id: t.id, name: t.name, icon: t.icon ?? null }))
-  const supabase = await createClient()
 
-  // Fetch songs + translations in parallel now that teams are already available
+  // Fetch songs (with tags) + translations in parallel
   const [initialSongs, t] = await Promise.all([
-    songsApi.getSongsAllBuckets(supabase, user.id, teamIds, teamsMeta).catch(() => []),
+    getSongsAllBucketsAction(user.id, teamIds, teamsMeta).catch(() => []),
     getTranslations(locale)
   ])
 

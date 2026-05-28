@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { api as songsApi, getUserProfileData as getUserProfileDataApi } from "@/features/songs"
+import { api as songsApi, getUserProfileData as getUserProfileDataApi, getSongTagsAction } from "@/features/songs"
 import { createClient } from "@/lib/supabase/server"
 import { notFound } from "next/navigation"
 import { LyricsPageClient } from "./lyrics-page-client"
@@ -31,10 +31,11 @@ export default async function SongLyricsPage({ params }: { params: Promise<{ id:
     data: { user: authUser }
   } = await supabase.auth.getUser()
 
-  // 2. Fetch song and profile data in parallel
-  const [song, profileData] = await Promise.all([
+  // 2. Fetch song, profile data, and tags in parallel
+  const [song, profileData, songTags] = await Promise.all([
     songsApi.getSong(id),
-    authUser ? getUserProfileDataApi(supabase, authUser.id).catch(() => null) : Promise.resolve(null)
+    authUser ? getUserProfileDataApi(supabase, authUser.id).catch(() => null) : Promise.resolve(null),
+    getSongTagsAction(id).catch(() => [])
   ])
 
   if (!song) {
@@ -45,7 +46,7 @@ export default async function SongLyricsPage({ params }: { params: Promise<{ id:
 
   return (
     <LyricsPageClient
-      song={song}
+      song={{ ...song, tags: songTags }}
       initialUserSettings={initialUserSettings}
       initialLyricsColumns={profileData?.preferences.lyricsColumns ?? 2}
     />

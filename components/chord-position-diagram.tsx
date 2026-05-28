@@ -138,7 +138,13 @@ export function ChordPositionDiagram({
     inferredBarreData.push({ barreFret, minSi, maxSi, fingerNum })
   })
 
-  const barreData = [...explicitBarreData, ...inferredBarreData]
+  const seen = new Set<string>()
+  const barreData = [...explicitBarreData, ...inferredBarreData].filter((b) => {
+    const k = `${b.barreFret}-${b.minSi}-${b.maxSi}`
+    if (seen.has(k)) return false
+    seen.add(k)
+    return true
+  })
 
   // Strings whose dot is already covered by a barre bar segment
   const barreCovered = new Set<string>()
@@ -198,7 +204,7 @@ export function ChordPositionDiagram({
         const barreRight = Math.max(sx(b.minSi), sx(b.maxSi))
         const barreCx = (barreLeft + barreRight) / 2
         return (
-          <g key={`${b.barreFret}-${b.minSi}`}>
+          <g key={`${b.barreFret}-${b.minSi}-${b.maxSi}`}>
             <rect
               x={barreLeft - 9} y={dotY(b.barreFret) - 10}
               width={barreRight - barreLeft + 18} height={20}

@@ -40,6 +40,8 @@ import { transposeKey, calculateCapoKey } from "@/lib/music-theory"
 import { useTranslation } from "@/hooks/use-translation"
 import { createOverlayIds } from "@/lib/ui/stable-overlay-ids"
 import { TransferToTeamDialog } from "../transfer-to-team-dialog"
+import { TagSelector } from "../tag-selector"
+import { useTags, useCreateTag, useDeleteTag, useSetSongTags } from "../../hooks/use-tags"
 
 interface EditableFieldProps {
   value: string
@@ -137,6 +139,11 @@ export function SongDetail({ song, onClose, onUpdate, onDelete, onTransferSucces
   const bpmDraft = bpmDraftBySongId[song.id]
   const bpmInputValue = bpmDraft ?? String(song.bpm ?? 0)
 
+  const { data: availableTags = [] } = useTags()
+  const { mutateAsync: createTag } = useCreateTag()
+  const { mutate: deleteTag } = useDeleteTag()
+  const { mutate: setSongTags } = useSetSongTags(song.id)
+
   const updateTranspose = (nextValue: number) => {
     const clampedValue = Math.max(-6, Math.min(nextValue, 6))
     if (clampedValue === transpose) return
@@ -207,47 +214,58 @@ export function SongDetail({ song, onClose, onUpdate, onDelete, onTransferSucces
 
       <div className="flex-1 overflow-y-auto p-4 lg:p-6">
         <div className="max-w-2xl space-y-6">
-          <div className="flex flex-wrap gap-3">
-            <div className="flex items-center gap-2 rounded-full bg-background border px-3 py-1.5">
-              <span className="text-xs text-muted-foreground">{t.songs.key}</span>
-              <KeySelect
-                value={song.key}
-                onValueChange={(value) => onUpdate(song.id, { key: value })}
-                className="h-auto border-0 p-0 font-medium text-sm w-auto gap-1"
-              />
-            </div>
-            <div className="flex items-center gap-2 rounded-full bg-background border px-3 py-1.5">
-              <Clock className="h-3.5 w-3.5 text-muted-foreground" />
-              <Input
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                min={20}
-                max={500}
-                value={bpmInputValue}
-                onChange={(e) => {
-                  const nextValue = e.target.value
-                  if (/^\d*$/.test(nextValue)) {
-                    setBpmDraft(nextValue)
-                  }
-                }}
-                onBlur={commitBpmUpdate}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault()
-                    e.currentTarget.blur()
-                    return
-                  }
+          <div className="space-y-2">
+            <div className="flex flex-wrap gap-3">
+              <div className="flex items-center gap-2 rounded-full bg-background border px-3 py-1.5">
+                <span className="text-xs text-muted-foreground">{t.songs.key}</span>
+                <KeySelect
+                  value={song.key}
+                  onValueChange={(value) => onUpdate(song.id, { key: value })}
+                  className="h-auto border-0 p-0 font-medium text-sm w-auto gap-1"
+                />
+              </div>
+              <div className="flex items-center gap-2 rounded-full bg-background border px-3 py-1.5">
+                <Clock className="h-3.5 w-3.5 text-muted-foreground" />
+                <Input
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  min={20}
+                  max={500}
+                  value={bpmInputValue}
+                  onChange={(e) => {
+                    const nextValue = e.target.value
+                    if (/^\d*$/.test(nextValue)) {
+                      setBpmDraft(nextValue)
+                    }
+                  }}
+                  onBlur={commitBpmUpdate}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault()
+                      e.currentTarget.blur()
+                      return
+                    }
 
-                  if (e.key === "Escape") {
-                    e.preventDefault()
-                    clearBpmDraft()
-                  }
-                }}
-                className="h-auto border-0 p-0 font-medium text-sm tabular-nums w-14 text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-              />
-              <span className="text-xs text-muted-foreground">{t.songs.bpm}</span>
+                    if (e.key === "Escape") {
+                      e.preventDefault()
+                      clearBpmDraft()
+                    }
+                  }}
+                  className="h-auto border-0 p-0 font-medium text-sm tabular-nums w-14 text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                />
+                <span className="text-xs text-muted-foreground">{t.songs.bpm}</span>
+              </div>
             </div>
+            <TagSelector
+              selectedTags={song.tags ?? []}
+              availableTags={availableTags}
+              onTagsChange={(tags) => {
+                setSongTags({ tagIds: tags.map((tag) => tag.id), tags })
+              }}
+              onCreateTag={(name, color) => createTag({ name, color })}
+              onDeleteTag={(tagId) => deleteTag(tagId)}
+            />
           </div>
 
           {/* Transpose + Capo — grouped in a card */}

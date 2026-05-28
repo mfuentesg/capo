@@ -2,6 +2,12 @@ export type SongOwnership =
   | { type: "personal" }
   | { type: "team"; teamId: string; teamName: string; teamIcon?: string | null }
 
+export interface SongTag {
+  id: string
+  name: string
+  color?: string | null
+}
+
 export interface Song {
   id: string
   title: string
@@ -10,7 +16,7 @@ export interface Song {
   bpm: number
   lyrics?: string
   notes?: string
-  tags?: string[]
+  tags?: SongTag[]
   fontSize?: number
   transpose?: number
   capo?: number
@@ -51,6 +57,7 @@ export interface SongListProps {
   selectedSong?: Song | null
   groupBy: GroupBy
   bpmRange: BPMRange
+  filterTags?: string[]
   isCreatingNewSong?: boolean
   onSelectSong: (song: Song) => void
 }

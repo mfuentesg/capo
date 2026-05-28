@@ -34,7 +34,6 @@ export const SongList = memo(function SongList({
   previewSong,
   selectedSong,
   groupBy,
-  filterStatus,
   bpmRange,
   isCreatingNewSong = false,
   isLoading = false,
@@ -48,10 +47,6 @@ export const SongList = memo(function SongList({
 
   const filteredSongs = useMemo(() => {
     return songs.filter((song) => {
-      const matchesStatus =
-        filterStatus === "all" ||
-        (filterStatus === "drafts" ? song.isDraft === true : song.isDraft !== true)
-
       const bpm = song.bpm ?? 0
       const matchesBpm =
         bpmRange === "all" ||
@@ -61,9 +56,9 @@ export const SongList = memo(function SongList({
             ? bpm >= 100 && bpm <= 140
             : bpm > 140)
 
-      return matchesStatus && matchesBpm
+      return matchesBpm
     })
-  }, [bpmRange, filterStatus, songs])
+  }, [bpmRange, songs])
 
   const groupedSongs = useMemo(() => {
     if (groupBy === "none") {
@@ -134,15 +129,6 @@ export const SongList = memo(function SongList({
         <div className="mb-6 relative">
           <div className="rounded-xl border-2 border-orange-500 dark:border-orange-600 bg-orange-100/50 dark:bg-orange-900/20 shadow-lg">
             <div className="relative">
-              <div className="absolute top-2 right-2 z-20">
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-white bg-orange-600 rounded-full">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
-                  </span>
-                  {t.playlists.draft}
-                </span>
-              </div>
               <SongItem
                 song={previewSong}
                 isSelected={true}

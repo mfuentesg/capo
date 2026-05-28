@@ -196,7 +196,6 @@ export async function getPlaylistWithSongs(
           notes: song.notes || undefined,
           transpose: song.transpose ?? undefined,
           capo: song.capo ?? undefined,
-          isDraft: song.status === "draft"
         }
       }),
     createdAt: data.created_at,
@@ -259,7 +258,6 @@ export async function getPublicPlaylistByShareCode(
           notes: song.notes || undefined,
           transpose: song.transpose ?? undefined,
           capo: song.capo ?? undefined,
-          isDraft: song.status === "draft"
         }
       }),
     createdAt: data.created_at,
@@ -321,7 +319,6 @@ export async function getPlaylistByShareCode(
           notes: song.notes || undefined,
           transpose: song.transpose ?? undefined,
           capo: song.capo ?? undefined,
-          isDraft: song.status === "draft"
         }
       }),
     createdAt: data.created_at,

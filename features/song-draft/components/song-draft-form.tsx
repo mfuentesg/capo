@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { KeySelect } from "@/features/songs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { X, Info } from "lucide-react"
+import { X, Info, Music, Mic } from "lucide-react"
 import {
   Form,
   FormControl,
@@ -148,12 +148,15 @@ export function SongDraftForm({
                     <FormItem>
                       <FormLabel>{t.songs.songTitle}</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder={t.songs.songTitlePlaceholder}
-                          {...field}
-                          className="shadow-none"
-                          autoFocus={autoFocus}
-                        />
+                        <div className="relative">
+                          <Music className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            placeholder={t.songs.songTitlePlaceholder}
+                            {...field}
+                            className="pl-9 shadow-none"
+                            autoFocus={autoFocus}
+                          />
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -167,11 +170,14 @@ export function SongDraftForm({
                     <FormItem>
                       <FormLabel>{t.songs.artist}</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder={t.songs.artistPlaceholder}
-                          {...field}
-                          className="shadow-none"
-                        />
+                        <div className="relative">
+                          <Mic className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            placeholder={t.songs.artistPlaceholder}
+                            {...field}
+                            className="pl-9 shadow-none"
+                          />
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>

@@ -20,6 +20,7 @@ import {
   SelectValue
 } from "@/components/ui/select"
 import { Spinner } from "@/components/ui/spinner"
+import { Mail, Users } from "lucide-react"
 import { useTranslation } from "@/hooks/use-translation"
 import { useInviteTeamMember } from "../hooks"
 import type { Tables } from "@/lib/supabase/database.types"
@@ -72,24 +73,30 @@ export function InviteMemberDialog({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">{t.common.email}</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder={t.common.emailPlaceholder}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={inviteTeamMember.isPending}
-              required
-            />
+            <div className="relative">
+              <Mail className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="email"
+                type="email"
+                placeholder={t.common.emailPlaceholder}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={inviteTeamMember.isPending}
+                required
+                className="pl-9"
+              />
+            </div>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="role">{t.common.role}</Label>
-            <Select
-              value={role}
-              onValueChange={(value) => setRole(value as Tables<"team_invitations">["role"])}
-            >
-              <SelectTrigger id="role">
+            <div className="relative">
+              <Users className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
+              <Select
+                value={role}
+                onValueChange={(value) => setRole(value as Tables<"team_invitations">["role"])}
+              >
+              <SelectTrigger id="role" className="pl-9 w-full">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -104,6 +111,7 @@ export function InviteMemberDialog({
                 )}
               </SelectContent>
             </Select>
+            </div>
           </div>
 
           <DialogFooter>

@@ -22,6 +22,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { KeySelect } from "@/features/songs/components/key-select"
+import { Music, Mic } from "lucide-react"
 import { useTranslation } from "@/hooks/use-translation"
 import type { Song } from "@/features/songs/types"
 
@@ -98,7 +99,10 @@ export function SongEditDialog({ song, open, onOpenChange, onUpdate }: SongEditD
                   <FormItem>
                     <FormLabel>{t.songs.songTitle}</FormLabel>
                     <FormControl>
-                      <Input placeholder={t.songs.songTitlePlaceholder} {...field} />
+                      <div className="relative">
+                        <Music className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input placeholder={t.songs.songTitlePlaceholder} {...field} className="pl-9" />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -111,7 +115,10 @@ export function SongEditDialog({ song, open, onOpenChange, onUpdate }: SongEditD
                   <FormItem>
                     <FormLabel>{t.songs.artist}</FormLabel>
                     <FormControl>
-                      <Input placeholder={t.songs.artistPlaceholder} {...field} />
+                      <div className="relative">
+                        <Mic className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input placeholder={t.songs.artistPlaceholder} {...field} className="pl-9" />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -1286,26 +1286,34 @@ html[data-font="manrope"] {
 }
 
 /* ── Performance notes ───────────────────────────────────────────── */
-/* Styled as a musician's pencil annotation — italic, warm tint,     */
-/* with parentheses added via pseudo-elements.                        */
 .performance-note {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
   font-style: italic;
-  font-size: 0.82em;
-  color: oklch(0.58 0.13 65);
-  opacity: 0.88;
+  font-size: 0.78em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: oklch(0.52 0.11 65);
+  background-color: oklch(0.58 0.13 65 / 0.1);
+  border: 1px solid oklch(0.58 0.13 65 / 0.25);
+  border-radius: 4px;
+  padding: 0.05em 0.5em;
+  vertical-align: middle;
 }
 
 .performance-note::before {
-  content: "(\00a0";
+  content: none;
 }
 
 .performance-note::after {
-  content: "\00a0)";
+  content: none;
 }
 
 .dark .performance-note {
-  color: oklch(0.78 0.12 65);
+  color: oklch(0.82 0.1 65);
+  background-color: oklch(0.78 0.12 65 / 0.12);
+  border-color: oklch(0.78 0.12 65 / 0.28);
 }
 
 .multi-column-lyrics {

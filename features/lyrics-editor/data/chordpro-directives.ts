@@ -282,6 +282,15 @@ export const CHORDPRO_DIRECTIVES: ChordProDirective[] = [
       "References a previously defined named section and renders its content inline. Supports an optional repeat count, the 'inline' flag to render chords side-by-side with lyrics instead of stacked, and a 'label:' token to override the header text. The section must be defined using {soc/sov/sob/soi: Name} or {comment: Name} earlier in the song.",
     example:
       "{soc: Chorus}\n[G]How great thou [C]art\n{eoc}\n\n{repeat: Chorus}                    ← stacked layout\n{repeat: Chorus, 2}                 ← labels it \"CHORUS × 2\"\n{repeat: Chorus, inline}            ← side-by-side chord layout\n{repeat: Intro, inline, 2}          ← inline + repeat count\n{repeat: Intro, label: Strophe}     ← custom header text\n{repeat: Intro, label: Strophe, 2}  ← custom header + count"
+  },
+  {
+    name: "start_of_extend",
+    shorthand: "soex",
+    category: "formatting",
+    description:
+      "Prepends a named section's content and then appends the block's own body, rendering the combined result as a single collapsible section. Accepts the same options as {repeat}: optional repeat count, 'inline' flag, and 'label:' token. The base section must be defined using {soc/sov/sob/soi: Name} or {comment: Name} earlier in the song. Pair with {end_of_extend} or {eoex}. Custom extension.",
+    example:
+      "{soi: Intro}\n[D][A]\n{eoi}\n\n{start_of_extend: Intro, label: \"Extended Intro\", inline}\n[D][G][Bm]\n{end_of_extend}\n\n← renders as:\nExtended Intro\n[D][A]\n[D][G][Bm]"
   }
 ]
 

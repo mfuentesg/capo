@@ -130,6 +130,31 @@ Guitarra: Gm Bb Dm F x4
 {comment_box: KEY CHANGE HERE}
 ```
 
+### `{start_of_extend: Name}` / `{soex: Name}` ... `{end_of_extend}` / `{eoex}`
+
+Prepends a named section's content to the block's own body, rendering the combined result as a single collapsible section. Like `{repeat}` but with extra lines appended after the referenced content.
+
+Accepts the same options as section directives: optional repeat count, `inline` flag, and `label:` token.
+
+```
+{soi: Intro}
+[D][A]
+{eoi}
+
+{start_of_extend: Intro, label: "Extended Intro", inline}
+[D][G][Bm]
+{end_of_extend}
+```
+
+Renders as:
+```
+Extended Intro
+[D][A]
+[D][G][Bm]
+```
+
+The base section name is still used for lookup even when `label:` overrides the header text.
+
 ### `{repeat: Name}` / `{repeat: Name, N}` / `{repeat: Name, inline}` / `{repeat: Name, inline, N}` / `{repeat: Name, label: Custom, N}`
 
 References a named section defined earlier in the song (via `{soc/sov/sob/soi: Name}` or `{comment: Name}`) and renders its content at that point.

@@ -293,6 +293,8 @@
     "viewPlaylists": "View playlists",
     "playlistUpdated": "Playlist updated",
     "playlistDeleted": "Playlist deleted",
+    "playlistArchived": "Playlist archived",
+    "playlistUnarchived": "Playlist unarchived",
     "songsAdded": "Songs added to playlist",
     "songsAlreadyInPlaylist": "All songs are already in this playlist",
     "error": "Something went wrong",

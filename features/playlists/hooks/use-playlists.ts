@@ -8,6 +8,8 @@ import {
   createPlaylistAction,
   updatePlaylistAction,
   deletePlaylistAction,
+  archivePlaylistAction,
+  unarchivePlaylistAction,
   addSongsToPlaylistAction,
   reorderPlaylistSongsAction
 } from "../api/actions"
@@ -197,6 +199,68 @@ export function useDeletePlaylist() {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: playlistsKeys.lists() })
       toast.success(t.toasts?.playlistDeleted || "Playlist deleted")
+    }
+  })
+}
+
+/**
+ * Hook to archive a playlist with optimistic updates
+ */
+export function useArchivePlaylist() {
+  const queryClient = useQueryClient()
+  const { t } = useLocale()
+
+  return useMutation({
+    mutationFn: async (playlistId: string) => {
+      return archivePlaylistAction(playlistId)
+    },
+    onMutate: async (playlistId) => {
+      await queryClient.cancelQueries({ queryKey: playlistsKeys.lists() })
+      const snapshots = snapshotPlaylistQueries(queryClient)
+      queryClient.setQueriesData<Playlist[]>({ queryKey: playlistsKeys.lists() }, (old) =>
+        old?.map((p) =>
+          p.id === playlistId ? { ...p, archivedAt: new Date().toISOString() } : p
+        )
+      )
+      return { snapshots }
+    },
+    onError: (_err, _vars, rollbackContext) => {
+      restorePlaylistQueries(queryClient, rollbackContext?.snapshots)
+      toast.error(t.toasts?.error || "Something went wrong")
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: playlistsKeys.lists() })
+      toast.success(t.toasts?.playlistArchived || "Playlist archived")
+    }
+  })
+}
+
+/**
+ * Hook to unarchive a playlist with optimistic updates
+ */
+export function useUnarchivePlaylist() {
+  const queryClient = useQueryClient()
+  const { t } = useLocale()
+
+  return useMutation({
+    mutationFn: async (playlistId: string) => {
+      return unarchivePlaylistAction(playlistId)
+    },
+    onMutate: async (playlistId) => {
+      await queryClient.cancelQueries({ queryKey: playlistsKeys.lists() })
+      const snapshots = snapshotPlaylistQueries(queryClient)
+      queryClient.setQueriesData<Playlist[]>({ queryKey: playlistsKeys.lists() }, (old) =>
+        old?.map((p) => (p.id === playlistId ? { ...p, archivedAt: undefined } : p))
+      )
+      return { snapshots }
+    },
+    onError: (_err, _vars, rollbackContext) => {
+      restorePlaylistQueries(queryClient, rollbackContext?.snapshots)
+      toast.error(t.toasts?.error || "Something went wrong")
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: playlistsKeys.lists() })
+      toast.success(t.toasts?.playlistUnarchived || "Playlist unarchived")
     }
   })
 }

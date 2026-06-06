@@ -494,14 +494,14 @@ describe("archivePlaylist", () => {
     const eq = jest.fn().mockResolvedValue({ error: null })
     const update = jest.fn().mockReturnValue({ eq })
     const from = jest.fn().mockReturnValue({ update })
-    const supabase = { from } as never
+    const supabase = { from } as unknown as Parameters<typeof archivePlaylist>[0]
 
     await archivePlaylist(supabase, "playlist-1")
 
     expect(from).toHaveBeenCalledWith("playlists")
-    expect(update).toHaveBeenCalledWith(
-      expect.objectContaining({ archived_at: expect.any(String) })
-    )
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    const updateCall = (update as jest.Mock).mock.calls[0]?.[0] as Record<string, unknown>
+    expect(updateCall).toMatchObject({ archived_at: expect.any(String) as unknown })
     expect(eq).toHaveBeenCalledWith("id", "playlist-1")
   })
 
@@ -509,7 +509,7 @@ describe("archivePlaylist", () => {
     const eq = jest.fn().mockResolvedValue({ error: new Error("DB error") })
     const update = jest.fn().mockReturnValue({ eq })
     const from = jest.fn().mockReturnValue({ update })
-    const supabase = { from } as never
+    const supabase = { from } as unknown as Parameters<typeof archivePlaylist>[0]
 
     await expect(archivePlaylist(supabase, "playlist-1")).rejects.toThrow("DB error")
   })
@@ -524,7 +524,7 @@ describe("unarchivePlaylist", () => {
     const eq = jest.fn().mockResolvedValue({ error: null })
     const update = jest.fn().mockReturnValue({ eq })
     const from = jest.fn().mockReturnValue({ update })
-    const supabase = { from } as never
+    const supabase = { from } as unknown as Parameters<typeof archivePlaylist>[0]
 
     await unarchivePlaylist(supabase, "playlist-1")
 
@@ -537,7 +537,7 @@ describe("unarchivePlaylist", () => {
     const eq = jest.fn().mockResolvedValue({ error: new Error("DB error") })
     const update = jest.fn().mockReturnValue({ eq })
     const from = jest.fn().mockReturnValue({ update })
-    const supabase = { from } as never
+    const supabase = { from } as unknown as Parameters<typeof archivePlaylist>[0]
 
     await expect(unarchivePlaylist(supabase, "playlist-1")).rejects.toThrow("DB error")
   })

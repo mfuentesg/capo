@@ -2,9 +2,9 @@ import React from "react"
 import { render } from "@testing-library/react"
 import { RenderedSong } from "../rendered-song"
 
-jest.mock("next/dynamic", () => (fn: () => Promise<{ ChordDiagram: () => null }>) => {
+jest.mock("next/dynamic", () => (() => {
   return () => null
-})
+}))
 
 // jsdom does not implement ResizeObserver
 global.ResizeObserver = class ResizeObserver {

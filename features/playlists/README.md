@@ -18,6 +18,8 @@ The playlists feature manages playlists, allowing users to create, edit, organiz
 
 - `PlaylistsProvider` - Provider for playlists context
 - `usePlaylists` - Hook to access and manage playlists
+- `useArchivePlaylist` - Hook to archive a playlist (sets `archivedAt`, optimistic update)
+- `useUnarchivePlaylist` - Hook to restore an archived playlist (clears `archivedAt`, optimistic update)
 
 ### Utils
 
@@ -25,7 +27,7 @@ The playlists feature manages playlists, allowing users to create, edit, organiz
 
 ### Types
 
-- `Playlist` - Playlist type definition (includes `share_code`, `allow_guest_edit`)
+- `Playlist` - Playlist type definition (includes `share_code`, `allow_guest_edit`, `archivedAt`)
 - `PlaylistWithSongs` - Playlist with songs populated
 - `PlaylistDetailProps` - Props for PlaylistDetail component
 - `PlaylistListProps` - Props for PlaylistList component
@@ -35,6 +37,12 @@ The playlists feature manages playlists, allowing users to create, edit, organiz
 Each playlist has a `share_code` (unique, URL-safe). Sharing is opt-in — the code is generated on demand. The `allow_guest_edit` flag controls whether unauthenticated viewers can reorder songs in the shared view.
 
 Shared playlists are accessible at `/shared/[shareCode]` and stay in sync via Supabase Realtime — song reorders by the owner are reflected immediately for all viewers.
+
+## Archive
+
+Playlists can be archived without deleting them. Archived playlists remain in the list but are dimmed with an "Archived" badge. Archive/unarchive from the playlist detail panel — no confirmation required, fully reversible.
+
+**DB:** `archived_at TIMESTAMPTZ NULL` on `playlists`. `NULL` = active, timestamp = archived.
 
 ## Usage
 

@@ -204,6 +204,7 @@ export async function getPlaylistWithSongs(
     visibility: data.is_public ? "public" : "private",
     allowGuestEditing: data.allow_guest_editing ?? false,
     shareCode: data.share_code || undefined,
+    archivedAt: data.archived_at || undefined,
     playlist_songs: sortedPlaylistSongs
   }
 }
@@ -266,6 +267,7 @@ export async function getPublicPlaylistByShareCode(
     visibility: data.is_public ? "public" : "private",
     allowGuestEditing: data.allow_guest_editing ?? false,
     shareCode: data.share_code || undefined,
+    archivedAt: data.archived_at || undefined,
     playlist_songs: sortedPlaylistSongs
   }
 }
@@ -327,6 +329,7 @@ export async function getPlaylistByShareCode(
     visibility: data.is_public ? "public" : "private",
     allowGuestEditing: data.allow_guest_editing ?? false,
     shareCode: data.share_code || undefined,
+    archivedAt: data.archived_at || undefined,
     playlist_songs: sortedPlaylistSongs
   }
 }

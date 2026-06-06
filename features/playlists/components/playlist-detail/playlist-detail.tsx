@@ -11,7 +11,9 @@ import {
   ListMusic,
   Globe,
   Copy,
-  ExternalLink
+  ExternalLink,
+  Archive,
+  ArchiveRestore
 } from "lucide-react"
 import { toast } from "sonner"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -55,7 +57,7 @@ import {
 import type { Playlist } from "@/features/playlists/types"
 import type { SongWithPosition, PlaylistWithSongs } from "@/types/extended"
 import { DraggablePlaylist } from "@/features/playlists/utils"
-import { useReorderPlaylistSongs, usePlaylistSongs, usePlaylistRealtime } from "../../hooks"
+import { useReorderPlaylistSongs, usePlaylistSongs, usePlaylistRealtime, useArchivePlaylist, useUnarchivePlaylist } from "../../hooks"
 import { playlistsKeys } from "../../hooks/query-keys"
 import { removeSongFromPlaylistAction } from "../../api/actions"
 import { createOverlayIds } from "@/lib/ui/stable-overlay-ids"
@@ -230,6 +232,8 @@ function EditableField({
 export function PlaylistDetail({ playlist, onClose, onUpdate, onDelete }: PlaylistDetailProps) {
   usePlaylistRealtime(playlist.id)
   const reorderMutation = useReorderPlaylistSongs()
+  const archiveMutation = useArchivePlaylist()
+  const unarchiveMutation = useUnarchivePlaylist()
   const { data: playlistWithSongsData, isLoading } = usePlaylistSongs(playlist.id)
   const { t } = useTranslation()
   const { locale } = useLocale()
@@ -483,6 +487,47 @@ export function PlaylistDetail({ playlist, onClose, onUpdate, onDelete }: Playli
                 }}
               />
             </div>
+          </div>
+        </div>
+
+        {/* Archive Section */}
+        <div className="rounded-2xl border bg-card shadow-sm p-4">
+          <div className="flex items-center justify-between gap-4">
+            <div className="space-y-0.5">
+              <p className="text-sm font-medium">
+                {playlist.archivedAt ? t.playlists.unarchive : t.playlists.archive}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {playlist.archivedAt
+                  ? t.playlistDetail.unarchiveDescription
+                  : t.playlistDetail.archiveDescription}
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="shrink-0 gap-1.5"
+              onClick={() => {
+                if (playlist.archivedAt) {
+                  unarchiveMutation.mutate(playlist.id)
+                } else {
+                  archiveMutation.mutate(playlist.id)
+                }
+              }}
+              disabled={archiveMutation.isPending || unarchiveMutation.isPending}
+            >
+              {playlist.archivedAt ? (
+                <>
+                  <ArchiveRestore className="h-3.5 w-3.5" />
+                  {t.playlists.unarchive}
+                </>
+              ) : (
+                <>
+                  <Archive className="h-3.5 w-3.5" />
+                  {t.playlists.archive}
+                </>
+              )}
+            </Button>
           </div>
         </div>
 

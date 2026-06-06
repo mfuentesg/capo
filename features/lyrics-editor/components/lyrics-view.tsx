@@ -26,7 +26,6 @@ import {
   Share2
 } from "lucide-react"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
 import type { Song } from "@/types"
 import { TagSelector, useSetSongTags, useTags, useCreateTag } from "@/features/songs"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"

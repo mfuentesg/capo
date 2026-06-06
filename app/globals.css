@@ -43,7 +43,6 @@
  */
 
 @theme inline {
-  --color-elevated-surface: var(--elevated-surface);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -89,8 +88,6 @@
 
 :root {
   --radius: 0.65rem;
-  /* White for all light themes — pops against every tinted page background */
-  --elevated-surface: white;
   /*
    * Catppuccin Latte — https://catppuccin.com/palette
    *
@@ -140,9 +137,6 @@
 }
 
 .dark {
-  /* Elevated surface: mix 25% white into the theme card color.
-     Resolves at use time so every dark palette gets its own lifted shade. */
-  --elevated-surface: color-mix(in oklch, var(--card) 75%, white 25%);
   /* Catppuccin Mocha — https://catppuccin.com/palette */
   --background: oklch(0.148 0.028 277);       /* Base      #1e1e2e */
   --foreground: oklch(0.855 0.042 272);        /* Text      #cdd6f4 */

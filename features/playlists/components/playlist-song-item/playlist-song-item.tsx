@@ -17,7 +17,7 @@ export function PlaylistSongItem({ song, index, className, showDragHandle }: Pla
   return (
     <div
       className={cn(
-        "group flex items-start gap-4 rounded-xl bg-card shadow-sm p-4 transition-shadow hover:shadow-md",
+        "group flex items-start gap-4 rounded-xl bg-card border border-border/60 shadow-sm p-4 transition-shadow hover:shadow-md hover:border-border",
         showDragHandle && "pr-10",
         className
       )}

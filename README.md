@@ -37,7 +37,7 @@ View and edit songs with a split-pane interface: a [CodeMirror](https://codemirr
 
 ### Playlists
 
-Create and manage playlists of songs. Reorder songs via drag-and-drop. Each playlist can be shared publicly with a unique share code, with optional guest edit access.
+Create and manage playlists of songs. Reorder songs via drag-and-drop. Archive playlists to hide them from active view without deleting — unarchive at any time. Each playlist can be shared publicly with a unique share code, with optional guest edit access.
 
 ### Playlist Draft (Quick Add)
 
@@ -113,7 +113,7 @@ This project uses **Feature-Based Architecture (FBA)** for better code organizat
 | `lyrics-editor` | CodeMirror ChordPro editor with live preview and auto-scroll |
 | `playlist-draft` | Quick-add-to-playlist cart for building setlists on the fly |
 | `playlist-sharing` | Public playlist sharing via unique share codes |
-| `playlists` | Create, manage, reorder, and share playlists |
+| `playlists` | Create, manage, reorder, share, and archive playlists |
 | `settings` | Theme (light/dark), language, chord hand, account management |
 | `song-draft` | Create and edit songs in ChordPro format |
 | `songs` | Song library management with search, filtering, and editing |

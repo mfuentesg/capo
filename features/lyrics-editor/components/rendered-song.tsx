@@ -3,7 +3,7 @@
 import { type ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import { ChordProParser } from "chordsheetjs"
-import { ChevronDown, Music2, Repeat2 } from "lucide-react"
+import { ChevronDown, Layers, Music2, Repeat2 } from "lucide-react"
 import { useLocale } from "@/features/settings"
 
 const ChordDiagram = dynamic(() => import("./chord-diagram").then((m) => m.ChordDiagram), {
@@ -44,7 +44,8 @@ type LyricsSegment =
       flags: SectionFlag[]
       inline: boolean
     }
-  | { type: "repeat"; name: string; count: number; html: string; found: boolean; sectionType: string }
+  | { type: "repeat"; name: string; displayLabel?: string; count: number; html: string; found: boolean; sectionType: string; flags: SectionFlag[] }
+  | { type: "extend"; name: string; displayLabel?: string; count: number; html: string; found: boolean; sectionType: string; flags: SectionFlag[] }
 
 // Unique tokens that survive ChordProParser unchanged (no [A-G] at word start).
 const COMMENT_TOKEN = "SECTIONLBL"
@@ -427,13 +428,13 @@ function formatInlineLyricsToHtml(
 // Matches the opening { of any directive that starts a new section or a repeat
 // reference, used to determine where a comment-defined section ends.
 const SECTION_BOUNDARY_RE =
-  /\{(?:c(?:omment(?:_italic|_box)?)?|start_of_(?:chorus|verse|bridge|tab|grid|intro|outro|pre_chorus)|soc|sov|sob|sot|sog|soi|soo|sopc|repeat)(?:[:\s}])/
+  /\{(?:c(?:omment(?:_italic|_box)?)?|start_of_(?:chorus|verse|bridge|tab|grid|intro|outro|pre_chorus)|soc|sov|sob|sot|sog|soi|soo|sopc|repeat|start_of_extend|soex)(?:[:\s}])/
 
 // Scanner: finds all collapsible segment boundaries in order.
 // Unnamed {c} / {comment} (no colon+value) are intentionally skipped — they
 // render as empty labels and should not be treated as section boundaries.
 const SEGMENT_SCAN_RE =
-  /\{(start_of_chorus|soc|start_of_verse|sov|start_of_bridge|sob|start_of_tab|sot|start_of_grid|sog|start_of_intro|soi|start_of_outro|soo|start_of_pre_chorus|sopc|c(?:omment(?:_italic|_box)?)?|repeat)(?::\s*([^}]*))?\}/gi
+  /\{(start_of_chorus|soc|start_of_verse|sov|start_of_bridge|sob|start_of_tab|sot|start_of_grid|sog|start_of_intro|soi|start_of_outro|soo|start_of_pre_chorus|sopc|c(?:omment(?:_italic|_box)?)?|repeat|start_of_extend|soex)(?::\s*([^}]*))?\}/gi
 
 interface SectionEntry {
   content: string
@@ -479,17 +480,30 @@ function buildSectionMap(lyrics: string): Map<string, SectionEntry> {
 
 // Parses directive values that accept an optional count and/or performance flags.
 // Syntax: "Name" | "Name, N" | "Name, flag" | "Name, N, flag1, flag2"
+//         | "Name, label: Display Name, N"
 // - First comma-separated token is the name (quotes stripped)
 // - A positive integer token becomes the repeat count
 // - Tokens matching SECTION_FLAGS become flags
+// - A token starting with "label:" sets a custom display label (overrides name in the header)
 // - Unknown tokens are ignored
 // Used for both {repeat: Name, N} and {sov: Name, N, forte} directives.
-function parseSectionValue(raw: string): { name: string; count: number; flags: SectionFlag[] } {
+function parseSectionValue(raw: string): {
+  name: string
+  count: number
+  flags: SectionFlag[]
+  displayLabel?: string
+} {
   const parts = raw.split(",").map((p) => p.trim())
   const name = parts[0].replace(/^["']|["']$/g, "")
   let count = 1
+  let displayLabel: string | undefined
   const flags: SectionFlag[] = []
   for (const part of parts.slice(1)) {
+    const labelMatch = part.match(/^label:\s*(.+)/i)
+    if (labelMatch) {
+      displayLabel = labelMatch[1].replace(/^["']|["']$/g, "").trim()
+      continue
+    }
     const n = Number(part)
     if (Number.isInteger(n) && n > 0) {
       count = n
@@ -499,7 +513,7 @@ function parseSectionValue(raw: string): { name: string; count: number; flags: S
       flags.push(part as SectionFlag)
     }
   }
-  return { name, count, flags }
+  return { name, count, flags, displayLabel }
 }
 
 function buildSegments(
@@ -544,20 +558,50 @@ function buildSegments(
 
     if (directive === "repeat") {
       if (value) {
-        const { name, count } = parseSectionValue(value)
+        const { name, count, flags, displayLabel } = parseSectionValue(value)
         const entry = sectionMap.get(name.toLowerCase())
         if (entry) {
+          const isInline = flags.includes("inline")
           segments.push({
             type: "repeat",
             name,
+            displayLabel,
             count,
-            html: formatLyricsToHtml(entry.content, transpose, capo, sectionLabels, commentLabel),
+            html: isInline
+              ? formatInlineLyricsToHtml(entry.content, transpose, capo, sectionLabels, commentLabel)
+              : formatLyricsToHtml(entry.content, transpose, capo, sectionLabels, commentLabel),
             found: true,
-            sectionType: entry.sectionType
+            sectionType: entry.sectionType,
+            flags
           })
         } else {
-          segments.push({ type: "repeat", name, count, html: "", found: false, sectionType: "repeat" })
+          segments.push({ type: "repeat", name, displayLabel, count, html: "", found: false, sectionType: "repeat", flags: [] })
         }
+      }
+    } else if (directive === "start_of_extend" || directive === "soex") {
+      if (value) {
+        const { name, count, flags, displayLabel } = parseSectionValue(value)
+        const entry = sectionMap.get(name.toLowerCase())
+        const remaining = lyrics.slice(matchEnd)
+        const endMatch = /\{(?:end_of_extend|eoex)\}/i.exec(remaining)
+        const extendBody = (endMatch ? remaining.slice(0, endMatch.index) : remaining).trim()
+        const combinedContent = entry
+          ? entry.content + (extendBody ? "\n" + extendBody : "")
+          : extendBody
+        const isInline = flags.includes("inline")
+        segments.push({
+          type: "extend",
+          name,
+          displayLabel,
+          count,
+          html: isInline
+            ? formatInlineLyricsToHtml(combinedContent, transpose, capo, sectionLabels, commentLabel)
+            : formatLyricsToHtml(combinedContent, transpose, capo, sectionLabels, commentLabel),
+          found: !!entry,
+          sectionType: entry?.sectionType ?? "extend",
+          flags
+        })
+        newPos = matchEnd + (endMatch ? endMatch.index + endMatch[0].length : remaining.length)
       }
     } else if (/^c(omment(_italic|_box)?)?$/.test(directive)) {
       // Emit as a section segment so it participates in hasComplexSegments and
@@ -855,7 +899,9 @@ export function RenderedSong({
   if (segments) {
     const columnStyle = columns === 2 ? { columnCount: 2 as const } : { columnCount: 1 as const }
     const fontStyle = { fontSize: `${effectiveFontSize * 16}px`, ...columnStyle }
-    const hasComplexSegments = segments.some((s) => s.type === "repeat" || s.type === "section")
+    const hasComplexSegments = segments.some(
+      (s) => s.type === "repeat" || s.type === "section" || s.type === "extend"
+    )
     const visibilityClass = [!showChords && "hide-chords", !showLyrics && "hide-lyrics"]
       .filter(Boolean)
       .join(" ")
@@ -928,9 +974,56 @@ export function RenderedSong({
             )
           }
 
-          // repeat segment
-          const repeatLabel =
-            segment.count > 1 ? `${segment.name} × ${segment.count}` : segment.name
+          if (segment.type === "extend") {
+            const extendBase = segment.displayLabel ?? segment.name
+            const extendLabel =
+              segment.count > 1 ? `${extendBase} × ${segment.count}` : extendBase
+
+            if (!segment.found) {
+              return (
+                <div
+                  key={index}
+                  className="section-repeat section-repeat--not-found"
+                  data-section-type="extend"
+                >
+                  <SectionHeader
+                    name={`${extendLabel} (${t.chords.notFound})`}
+                    isCollapsed={false}
+                  />
+                </div>
+              )
+            }
+
+            const isCollapsed = collapsedSet.has(index)
+            return (
+              <div key={index} className="section-repeat" data-section-type={segment.sectionType}>
+                <SectionHeader
+                  name={extendLabel}
+                  isCollapsed={isCollapsed}
+                  onToggle={() => toggleCollapse(index)}
+                  icon={
+                    <Layers
+                      className="w-3 h-3 shrink-0"
+                      style={{ color: "var(--section-accent)" }}
+                    />
+                  }
+                  flags={segment.flags}
+                />
+                {!isCollapsed && (
+                  <div className="section-repeat-content">
+                    <pre
+                      className="chordsheet-content"
+                      dangerouslySetInnerHTML={{ __html: segment.html }}
+                    />
+                  </div>
+                )}
+              </div>
+            )
+          }
+
+          // repeat segment — use displayLabel if set, otherwise fall back to name
+          const repeatBase = segment.displayLabel ?? segment.name
+          const repeatLabel = segment.count > 1 ? `${repeatBase} × ${segment.count}` : repeatBase
 
           if (!segment.found) {
             return (

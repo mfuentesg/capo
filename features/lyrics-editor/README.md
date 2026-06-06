@@ -130,18 +130,45 @@ Guitarra: Gm Bb Dm F x4
 {comment_box: KEY CHANGE HERE}
 ```
 
-### Custom `{repeat}` directive
+### `{start_of_extend: Name}` / `{soex: Name}` ... `{end_of_extend}` / `{eoex}`
 
-References a named section defined earlier in the song and renders its content inline. The referenced name must match a section or comment label (case-insensitive):
+Prepends a named section's content to the block's own body, rendering the combined result as a single collapsible section. Like `{repeat}` but with extra lines appended after the referenced content.
+
+Accepts the same options as section directives: optional repeat count, `inline` flag, and `label:` token.
 
 ```
-{soc: Chorus}
-[G]How great thou [C]art
-{eoc}
+{soi: Intro}
+[D][A]
+{eoi}
 
-{repeat: Chorus}       renders Chorus section, label "CHORUS"
-{repeat: Chorus, 2}    renders it, label "CHORUS × 2"
-{repeat: Chorus, 3}    renders it, label "CHORUS × 3"
+{start_of_extend: Intro, label: "Extended Intro", inline}
+[D][G][Bm]
+{end_of_extend}
+```
+
+Renders as:
+```
+Extended Intro
+[D][A]
+[D][G][Bm]
+```
+
+The base section name is still used for lookup even when `label:` overrides the header text.
+
+### `{repeat: Name}` / `{repeat: Name, N}` / `{repeat: Name, inline}` / `{repeat: Name, inline, N}` / `{repeat: Name, label: Custom, N}`
+
+References a named section defined earlier in the song (via `{soc/sov/sob/soi: Name}` or `{comment: Name}`) and renders its content at that point.
+
+- `N` — optional repeat count, renders "NAME × N" as the header
+- `inline` — renders the section's chords side-by-side with lyrics (same as the `inline` flag on section directives), instead of the default stacked chord/lyric layout
+- `label: Text` — overrides the header text (the section name is still used for lookup). Quotes optional: `label: Strophe` or `label: "My Intro"` both work.
+
+Examples:
+```
+{repeat: Intro, inline, 2}          ← "INTRO × 2", inline layout
+{repeat: Intro, label: Strophe}     ← "Strophe" header, looks up Intro section
+{repeat: Intro, label: Strophe, 2}  ← "Strophe × 2"
+{repeat: Intro, label: "My Intro", inline, 2}  ← all options combined
 ```
 
 Also works with `{comment: Name}` labels:

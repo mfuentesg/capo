@@ -32,6 +32,7 @@ interface TagSelectorProps {
   onCreateTag: (name: string, color: string) => Promise<SongTag>
   onDeleteTag?: (tagId: string) => void
   disabled?: boolean
+  appendContent?: React.ReactNode
 }
 
 export function TagSelector({
@@ -40,7 +41,8 @@ export function TagSelector({
   onTagsChange,
   onCreateTag,
   onDeleteTag,
-  disabled = false
+  disabled = false,
+  appendContent
 }: TagSelectorProps) {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
@@ -217,6 +219,7 @@ export function TagSelector({
           </div>
         </PopoverContent>
       </Popover>
+      {appendContent}
     </div>
   )
 }

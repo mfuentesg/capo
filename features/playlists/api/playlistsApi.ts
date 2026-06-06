@@ -77,7 +77,8 @@ function transformPlaylistRow(row: PlaylistRow): Playlist {
     updatedAt: row.updated_at,
     visibility: row.is_public ? "public" : "private",
     allowGuestEditing: row.allow_guest_editing ?? false,
-    shareCode: row.share_code || undefined
+    shareCode: row.share_code || undefined,
+    archivedAt: row.archived_at || undefined
   }
 }
 
@@ -203,6 +204,7 @@ export async function getPlaylistWithSongs(
     visibility: data.is_public ? "public" : "private",
     allowGuestEditing: data.allow_guest_editing ?? false,
     shareCode: data.share_code || undefined,
+    archivedAt: data.archived_at || undefined,
     playlist_songs: sortedPlaylistSongs
   }
 }
@@ -265,6 +267,7 @@ export async function getPublicPlaylistByShareCode(
     visibility: data.is_public ? "public" : "private",
     allowGuestEditing: data.allow_guest_editing ?? false,
     shareCode: data.share_code || undefined,
+    archivedAt: data.archived_at || undefined,
     playlist_songs: sortedPlaylistSongs
   }
 }
@@ -326,6 +329,7 @@ export async function getPlaylistByShareCode(
     visibility: data.is_public ? "public" : "private",
     allowGuestEditing: data.allow_guest_editing ?? false,
     shareCode: data.share_code || undefined,
+    archivedAt: data.archived_at || undefined,
     playlist_songs: sortedPlaylistSongs
   }
 }
@@ -419,7 +423,8 @@ export async function createPlaylist(
     updatedAt: playlistRow.updated_at,
     visibility: playlistRow.is_public ? "public" : "private",
     allowGuestEditing: playlistRow.allow_guest_editing ?? false,
-    shareCode: playlistRow.share_code || undefined
+    shareCode: playlistRow.share_code || undefined,
+    archivedAt: playlistRow.archived_at || undefined
   }
 }
 
@@ -529,6 +534,36 @@ export async function deletePlaylist(
   playlistId: string
 ): Promise<void> {
   const { error } = await supabase.from("playlists").delete().eq("id", playlistId)
+
+  if (error) throw error
+}
+
+/**
+ * Archive a playlist (sets archived_at to now)
+ */
+export async function archivePlaylist(
+  supabase: SupabaseClient<Database>,
+  playlistId: string
+): Promise<void> {
+  const { error } = await supabase
+    .from("playlists")
+    .update({ archived_at: new Date().toISOString() })
+    .eq("id", playlistId)
+
+  if (error) throw error
+}
+
+/**
+ * Unarchive a playlist (clears archived_at)
+ */
+export async function unarchivePlaylist(
+  supabase: SupabaseClient<Database>,
+  playlistId: string
+): Promise<void> {
+  const { error } = await supabase
+    .from("playlists")
+    .update({ archived_at: null })
+    .eq("id", playlistId)
 
   if (error) throw error
 }

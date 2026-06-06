@@ -3,7 +3,9 @@ import {
   updatePlaylist,
   getPlaylistByShareCode,
   getPublicPlaylistByShareCode,
-  getPlaylistWithSongs
+  getPlaylistWithSongs,
+  archivePlaylist,
+  unarchivePlaylist
 } from "../playlistsApi"
 
 // ---------------------------------------------------------------------------
@@ -480,5 +482,63 @@ describe("getPlaylistWithSongs", () => {
     const { supabase } = makeDetailSupabase({ data: null, error: new Error("db error") })
 
     await expect(getPlaylistWithSongs(supabase as never, "playlist-1")).rejects.toThrow("db error")
+  })
+})
+
+// ---------------------------------------------------------------------------
+// archivePlaylist
+// ---------------------------------------------------------------------------
+
+describe("archivePlaylist", () => {
+  it("calls UPDATE with archived_at = current timestamp", async () => {
+    const eq = jest.fn().mockResolvedValue({ error: null })
+    const update = jest.fn().mockReturnValue({ eq })
+    const from = jest.fn().mockReturnValue({ update })
+    const supabase = { from } as unknown as Parameters<typeof archivePlaylist>[0]
+
+    await archivePlaylist(supabase, "playlist-1")
+
+    expect(from).toHaveBeenCalledWith("playlists")
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    const updateCall = (update as jest.Mock).mock.calls[0]?.[0] as Record<string, unknown>
+    expect(updateCall).toMatchObject({ archived_at: expect.any(String) as unknown })
+    expect(eq).toHaveBeenCalledWith("id", "playlist-1")
+  })
+
+  it("throws when Supabase returns an error", async () => {
+    const eq = jest.fn().mockResolvedValue({ error: new Error("DB error") })
+    const update = jest.fn().mockReturnValue({ eq })
+    const from = jest.fn().mockReturnValue({ update })
+    const supabase = { from } as unknown as Parameters<typeof archivePlaylist>[0]
+
+    await expect(archivePlaylist(supabase, "playlist-1")).rejects.toThrow("DB error")
+  })
+})
+
+// ---------------------------------------------------------------------------
+// unarchivePlaylist
+// ---------------------------------------------------------------------------
+
+describe("unarchivePlaylist", () => {
+  it("calls UPDATE with archived_at = null", async () => {
+    const eq = jest.fn().mockResolvedValue({ error: null })
+    const update = jest.fn().mockReturnValue({ eq })
+    const from = jest.fn().mockReturnValue({ update })
+    const supabase = { from } as unknown as Parameters<typeof archivePlaylist>[0]
+
+    await unarchivePlaylist(supabase, "playlist-1")
+
+    expect(from).toHaveBeenCalledWith("playlists")
+    expect(update).toHaveBeenCalledWith({ archived_at: null })
+    expect(eq).toHaveBeenCalledWith("id", "playlist-1")
+  })
+
+  it("throws when Supabase returns an error", async () => {
+    const eq = jest.fn().mockResolvedValue({ error: new Error("DB error") })
+    const update = jest.fn().mockReturnValue({ eq })
+    const from = jest.fn().mockReturnValue({ update })
+    const supabase = { from } as unknown as Parameters<typeof archivePlaylist>[0]
+
+    await expect(unarchivePlaylist(supabase, "playlist-1")).rejects.toThrow("DB error")
   })
 })

@@ -26,7 +26,6 @@ import {
   Share2
 } from "lucide-react"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
 import type { Song } from "@/types"
 import { TagSelector, useSetSongTags, useTags, useCreateTag } from "@/features/songs"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
@@ -595,20 +594,6 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
                       <Pencil className="h-4 w-4" />
                     </Button>
                   )}
-                  {isPanel && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="hidden sm:flex gap-1.5 px-2.5 text-xs"
-                      asChild
-                      title={t.songs.editLyrics}
-                    >
-                      <Link href={`/dashboard/songs/${song.id}?edit=true`}>
-                        <Pencil className="h-3.5 w-3.5" />
-                        {t.songs.editLyrics}
-                      </Link>
-                    </Button>
-                  )}
                   <Button
                     variant="ghost"
                     size="icon"
@@ -635,7 +620,7 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
             </div>
           </div>
 
-          {/* Row 3: tags */}
+          {/* Row 3: tags + active settings chips inline */}
           <div className="pl-1 pb-1">
             <TagSelector
               selectedTags={currentTags}
@@ -645,47 +630,47 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
                 setSongTags({ tagIds: tags.map((t) => t.id), tags })
               }}
               onCreateTag={(name, color) => createTag({ name, color })}
+              appendContent={
+                hasModifications() && !isEditing ? (
+                  <>
+                    {!transpose.isAtDefault() && (
+                      <button
+                        onClick={transpose.reset}
+                        className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20 transition-colors"
+                        aria-label={t.songs.reset}
+                      >
+                        <Music2 className="h-3 w-3" />
+                        {t.songs.transpose} {transpose.display()}
+                        <X className="h-2.5 w-2.5 opacity-70" />
+                      </button>
+                    )}
+                    {!capo.isAtDefault() && (
+                      <button
+                        onClick={capo.reset}
+                        className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium bg-violet-500/10 text-violet-600 dark:text-violet-400 hover:bg-violet-500/20 transition-colors"
+                        aria-label={t.songs.reset}
+                      >
+                        <Guitar className="h-3 w-3" />
+                        {t.songs.capo} {capo.value}
+                        <X className="h-2.5 w-2.5 opacity-70" />
+                      </button>
+                    )}
+                    {!font.isAtDefault() && (
+                      <button
+                        onClick={font.reset}
+                        className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium bg-amber-500/10 text-amber-600 dark:text-amber-500 hover:bg-amber-500/20 transition-colors"
+                        aria-label={t.songs.reset}
+                      >
+                        <Type className="h-3 w-3" />
+                        {t.songs.lyrics.fontSize} {font.value.toFixed(2)}×
+                        <X className="h-2.5 w-2.5 opacity-70" />
+                      </button>
+                    )}
+                  </>
+                ) : null
+              }
             />
           </div>
-
-          {/* Row 4: active settings chips — shown only when settings differ from defaults */}
-          {hasModifications() && !isEditing && (
-            <div className="flex flex-wrap items-center gap-1 pl-9 pb-1.5">
-              {!transpose.isAtDefault() && (
-                <button
-                  onClick={transpose.reset}
-                  className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20 transition-colors"
-                  aria-label={t.songs.reset}
-                >
-                  <Music2 className="h-3 w-3" />
-                  {t.songs.transpose} {transpose.display()}
-                  <X className="h-2.5 w-2.5 opacity-70" />
-                </button>
-              )}
-              {!capo.isAtDefault() && (
-                <button
-                  onClick={capo.reset}
-                  className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium bg-violet-500/10 text-violet-600 dark:text-violet-400 hover:bg-violet-500/20 transition-colors"
-                  aria-label={t.songs.reset}
-                >
-                  <Guitar className="h-3 w-3" />
-                  {t.songs.capo} {capo.value}
-                  <X className="h-2.5 w-2.5 opacity-70" />
-                </button>
-              )}
-              {!font.isAtDefault() && (
-                <button
-                  onClick={font.reset}
-                  className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium bg-amber-500/10 text-amber-600 dark:text-amber-500 hover:bg-amber-500/20 transition-colors"
-                  aria-label={t.songs.reset}
-                >
-                  <Type className="h-3 w-3" />
-                  {t.songs.lyrics.fontSize} {font.value.toFixed(2)}×
-                  <X className="h-2.5 w-2.5 opacity-70" />
-                </button>
-              )}
-            </div>
-          )}
         </div>
       </div>
 

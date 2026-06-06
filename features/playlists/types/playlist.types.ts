@@ -13,6 +13,7 @@ export interface Playlist {
   visibility?: "private" | "public"
   allowGuestEditing?: boolean
   shareCode?: string
+  archivedAt?: string
 }
 
 export interface PlaylistWithSongs extends Omit<Playlist, "songs"> {

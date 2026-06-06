@@ -232,7 +232,10 @@
     "playlistName": "Playlist Name",
     "playlistNamePlaceholder": "e.g. Sunday Worship",
     "openPlaylist": "Open Playlist",
-    "suggestName": "Suggest a name"
+    "suggestName": "Suggest a name",
+    "archive": "Archive",
+    "unarchive": "Unarchive",
+    "archivedBadge": "Archived"
   },
   "playlistDetail": {
     "details": "Details",
@@ -262,7 +265,9 @@
     "noSongsToAdd": "All your songs are already in this playlist",
     "addSelectedSongs": "Add {count} songs",
     "dropToRemove": "Drop here to remove",
-    "guestEditingDisabledHint": "Only available when playlist is public"
+    "guestEditingDisabledHint": "Only available when playlist is public",
+    "archiveDescription": "Hides this playlist from active view",
+    "unarchiveDescription": "Restores this playlist to active view"
   },
   "playlistItem": {
     "privatePlaylist": "Private playlist",
@@ -293,6 +298,8 @@
     "viewPlaylists": "View playlists",
     "playlistUpdated": "Playlist updated",
     "playlistDeleted": "Playlist deleted",
+    "playlistArchived": "Playlist archived",
+    "playlistUnarchived": "Playlist unarchived",
     "songsAdded": "Songs added to playlist",
     "songsAlreadyInPlaylist": "All songs are already in this playlist",
     "error": "Something went wrong",

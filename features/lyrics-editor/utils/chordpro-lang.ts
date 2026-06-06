@@ -73,8 +73,12 @@ const SUPPORTED_DIRECTIVES = [
   { label: "sovt", detail: "Begin volta (short) — e.g. {sovt: 1st time}", apply: "sovt: " },
   { label: "end_of_volta", detail: "End volta section", apply: "end_of_volta}" },
   { label: "eovt", detail: "End volta (short)", apply: "eovt}" },
-  // Section references
+  // Section references and extensions
   { label: "repeat", detail: "Reference a named section with optional count — e.g. {repeat: Chorus, 2}", apply: "repeat: " },
+  { label: "start_of_extend", detail: "Prepend a named section then append own content — e.g. {soex: Intro, label: Extended Intro, inline}", apply: "start_of_extend: " },
+  { label: "soex", detail: "Begin extend block (short) — e.g. {soex: Intro, inline}", apply: "soex: " },
+  { label: "end_of_extend", detail: "End extend block", apply: "end_of_extend}" },
+  { label: "eoex", detail: "End extend (short)", apply: "eoex}" },
   // Comments
   { label: "comment", detail: "Inline annotation", apply: "comment: " },
   { label: "c", detail: "Comment (short)", apply: "c: " },
@@ -107,6 +111,7 @@ const FLAG_DIRECTIVES = new Set([
   "start_of_box", "sbox",
   "comment", "c", "comment_italic", "comment_box",
   "repeat",
+  "start_of_extend", "soex",
 ])
 
 const FLAG_COMPLETIONS = [

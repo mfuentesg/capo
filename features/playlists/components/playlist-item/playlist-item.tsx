@@ -1,7 +1,7 @@
 "use client"
 
 import { memo } from "react"
-import { Calendar, Music3, Lock, Globe, Users } from "lucide-react"
+import { Calendar, Music3, Lock, Globe, Users, Archive } from "lucide-react"
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import type { Playlist } from "@/features/playlists/types"
 import { useTranslation } from "@/hooks/use-translation"
@@ -38,7 +38,8 @@ export const PlaylistItem = memo(function PlaylistItem({
         "relative flex w-full items-center gap-3 rounded-xl p-3 cursor-pointer touch-manipulation shadow-sm transition",
         isSelected
           ? "bg-accent-playlists/10 shadow-md ring-2 ring-accent-playlists/40"
-          : "bg-card hover:shadow-md hover:-translate-y-px"
+          : "bg-card hover:shadow-md hover:-translate-y-px",
+        playlist.archivedAt && "opacity-50"
       )}
     >
       {/* Icon badge */}
@@ -99,6 +100,12 @@ export const PlaylistItem = memo(function PlaylistItem({
                 </p>
               </TooltipContent>
             </Tooltip>
+          )}
+          {playlist.archivedAt && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground shrink-0">
+              <Archive className="h-2.5 w-2.5" />
+              {t.playlists.archivedBadge}
+            </span>
           )}
         </div>
         <div className="flex items-center gap-3 mt-1">

@@ -538,6 +538,36 @@ export async function deletePlaylist(
 }
 
 /**
+ * Archive a playlist (sets archived_at to now)
+ */
+export async function archivePlaylist(
+  supabase: SupabaseClient<Database>,
+  playlistId: string
+): Promise<void> {
+  const { error } = await supabase
+    .from("playlists")
+    .update({ archived_at: new Date().toISOString() })
+    .eq("id", playlistId)
+
+  if (error) throw error
+}
+
+/**
+ * Unarchive a playlist (clears archived_at)
+ */
+export async function unarchivePlaylist(
+  supabase: SupabaseClient<Database>,
+  playlistId: string
+): Promise<void> {
+  const { error } = await supabase
+    .from("playlists")
+    .update({ archived_at: null })
+    .eq("id", playlistId)
+
+  if (error) throw error
+}
+
+/**
  * Add a song to a playlist
  *
  * @param supabase - Supabase client instance

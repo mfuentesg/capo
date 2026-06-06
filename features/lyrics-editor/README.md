@@ -130,14 +130,21 @@ Guitarra: Gm Bb Dm F x4
 {comment_box: KEY CHANGE HERE}
 ```
 
-### `{repeat: Name}` / `{repeat: Name, N}` / `{repeat: Name, inline}` / `{repeat: Name, inline, N}`
+### `{repeat: Name}` / `{repeat: Name, N}` / `{repeat: Name, inline}` / `{repeat: Name, inline, N}` / `{repeat: Name, label: Custom, N}`
 
 References a named section defined earlier in the song (via `{soc/sov/sob/soi: Name}` or `{comment: Name}`) and renders its content at that point.
 
 - `N` — optional repeat count, renders "NAME × N" as the header
 - `inline` — renders the section's chords side-by-side with lyrics (same as the `inline` flag on section directives), instead of the default stacked chord/lyric layout
+- `label: Text` — overrides the header text (the section name is still used for lookup). Quotes optional: `label: Strophe` or `label: "My Intro"` both work.
 
-Example: `{repeat: Intro, inline, 2}` renders the Intro section in inline layout with an "INTRO × 2" header.
+Examples:
+```
+{repeat: Intro, inline, 2}          ← "INTRO × 2", inline layout
+{repeat: Intro, label: Strophe}     ← "Strophe" header, looks up Intro section
+{repeat: Intro, label: Strophe, 2}  ← "Strophe × 2"
+{repeat: Intro, label: "My Intro", inline, 2}  ← all options combined
+```
 
 Also works with `{comment: Name}` labels:
 ```

@@ -279,9 +279,9 @@ export const CHORDPRO_DIRECTIVES: ChordProDirective[] = [
     name: "repeat",
     category: "formatting",
     description:
-      "References a previously defined named section and renders its content inline. Supports an optional repeat count and the 'inline' flag to render chords side-by-side with lyrics instead of stacked. The section must be defined using {soc/sov/sob/soi: Name} or {comment: Name} earlier in the song.",
+      "References a previously defined named section and renders its content inline. Supports an optional repeat count, the 'inline' flag to render chords side-by-side with lyrics instead of stacked, and a 'label:' token to override the header text. The section must be defined using {soc/sov/sob/soi: Name} or {comment: Name} earlier in the song.",
     example:
-      "{soc: Chorus}\n[G]How great thou [C]art\n{eoc}\n\n{repeat: Chorus}        ← stacked layout\n{repeat: Chorus, 2}     ← labels it \"CHORUS × 2\"\n{repeat: Chorus, inline} ← side-by-side chord layout\n{repeat: Intro, inline, 2} ← inline + repeat count"
+      "{soc: Chorus}\n[G]How great thou [C]art\n{eoc}\n\n{repeat: Chorus}                    ← stacked layout\n{repeat: Chorus, 2}                 ← labels it \"CHORUS × 2\"\n{repeat: Chorus, inline}            ← side-by-side chord layout\n{repeat: Intro, inline, 2}          ← inline + repeat count\n{repeat: Intro, label: Strophe}     ← custom header text\n{repeat: Intro, label: Strophe, 2}  ← custom header + count"
   }
 ]
 

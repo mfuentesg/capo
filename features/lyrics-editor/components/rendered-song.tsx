@@ -44,7 +44,7 @@ type LyricsSegment =
       flags: SectionFlag[]
       inline: boolean
     }
-  | { type: "repeat"; name: string; count: number; html: string; found: boolean; sectionType: string; flags: SectionFlag[] }
+  | { type: "repeat"; name: string; displayLabel?: string; count: number; html: string; found: boolean; sectionType: string; flags: SectionFlag[] }
 
 // Unique tokens that survive ChordProParser unchanged (no [A-G] at word start).
 const COMMENT_TOKEN = "SECTIONLBL"
@@ -479,17 +479,30 @@ function buildSectionMap(lyrics: string): Map<string, SectionEntry> {
 
 // Parses directive values that accept an optional count and/or performance flags.
 // Syntax: "Name" | "Name, N" | "Name, flag" | "Name, N, flag1, flag2"
+//         | "Name, label: Display Name, N"
 // - First comma-separated token is the name (quotes stripped)
 // - A positive integer token becomes the repeat count
 // - Tokens matching SECTION_FLAGS become flags
+// - A token starting with "label:" sets a custom display label (overrides name in the header)
 // - Unknown tokens are ignored
 // Used for both {repeat: Name, N} and {sov: Name, N, forte} directives.
-function parseSectionValue(raw: string): { name: string; count: number; flags: SectionFlag[] } {
+function parseSectionValue(raw: string): {
+  name: string
+  count: number
+  flags: SectionFlag[]
+  displayLabel?: string
+} {
   const parts = raw.split(",").map((p) => p.trim())
   const name = parts[0].replace(/^["']|["']$/g, "")
   let count = 1
+  let displayLabel: string | undefined
   const flags: SectionFlag[] = []
   for (const part of parts.slice(1)) {
+    const labelMatch = part.match(/^label:\s*(.+)/i)
+    if (labelMatch) {
+      displayLabel = labelMatch[1].replace(/^["']|["']$/g, "").trim()
+      continue
+    }
     const n = Number(part)
     if (Number.isInteger(n) && n > 0) {
       count = n
@@ -499,7 +512,7 @@ function parseSectionValue(raw: string): { name: string; count: number; flags: S
       flags.push(part as SectionFlag)
     }
   }
-  return { name, count, flags }
+  return { name, count, flags, displayLabel }
 }
 
 function buildSegments(
@@ -544,13 +557,14 @@ function buildSegments(
 
     if (directive === "repeat") {
       if (value) {
-        const { name, count, flags } = parseSectionValue(value)
+        const { name, count, flags, displayLabel } = parseSectionValue(value)
         const entry = sectionMap.get(name.toLowerCase())
         if (entry) {
           const isInline = flags.includes("inline")
           segments.push({
             type: "repeat",
             name,
+            displayLabel,
             count,
             html: isInline
               ? formatInlineLyricsToHtml(entry.content, transpose, capo, sectionLabels, commentLabel)
@@ -560,7 +574,7 @@ function buildSegments(
             flags
           })
         } else {
-          segments.push({ type: "repeat", name, count, html: "", found: false, sectionType: "repeat", flags: [] })
+          segments.push({ type: "repeat", name, displayLabel, count, html: "", found: false, sectionType: "repeat", flags: [] })
         }
       }
     } else if (/^c(omment(_italic|_box)?)?$/.test(directive)) {
@@ -932,9 +946,9 @@ export function RenderedSong({
             )
           }
 
-          // repeat segment
-          const repeatLabel =
-            segment.count > 1 ? `${segment.name} × ${segment.count}` : segment.name
+          // repeat segment — use displayLabel if set, otherwise fall back to name
+          const repeatBase = segment.displayLabel ?? segment.name
+          const repeatLabel = segment.count > 1 ? `${repeatBase} × ${segment.count}` : repeatBase
 
           if (!segment.found) {
             return (

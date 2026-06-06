@@ -49,6 +49,18 @@ const STACKED_REPEAT_LYRICS = `{soi: Intro}
 
 {repeat: Intro, 2}`
 
+const CUSTOM_LABEL_LYRICS = `{soi: Intro}
+[A]- -  [E/A][D/A]
+{eoi}
+
+{repeat: Intro, label: Strophe, 2}`
+
+const QUOTED_LABEL_LYRICS = `{soi: Intro}
+[A]- -  [E/A][D/A]
+{eoi}
+
+{repeat: Intro, label: "My Intro", 2}`
+
 describe("RenderedSong — {repeat} inline flag", () => {
   it("renders repeat section with inline chord layout when inline flag present", () => {
     const { container } = render(
@@ -90,5 +102,43 @@ describe("RenderedSong — {repeat} inline flag", () => {
     // Stacked layout produces .clp-pair wrappers
     const repeatBlock = repeatBlocks[1]
     expect(repeatBlock.querySelector(".clp-pair")).not.toBeNull()
+  })
+
+  it("uses custom label from label: token in the section header", () => {
+    const { container } = render(
+      <RenderedSong
+        lyrics={CUSTOM_LABEL_LYRICS}
+        transpose={0}
+        capo={0}
+        fontSize={1}
+        columns={1}
+      />
+    )
+
+    const repeatBlocks = container.querySelectorAll('[data-section-type="intro"]')
+    expect(repeatBlocks.length).toBe(2)
+
+    const repeatHeader = repeatBlocks[1].querySelector(".section-repeat > button, .section-repeat > div")
+    expect(repeatHeader?.textContent).toContain("Strophe")
+    expect(repeatHeader?.textContent).toContain("× 2")
+  })
+
+  it("strips quotes from label: token value", () => {
+    const { container } = render(
+      <RenderedSong
+        lyrics={QUOTED_LABEL_LYRICS}
+        transpose={0}
+        capo={0}
+        fontSize={1}
+        columns={1}
+      />
+    )
+
+    const repeatBlocks = container.querySelectorAll('[data-section-type="intro"]')
+    expect(repeatBlocks.length).toBe(2)
+
+    const repeatHeader = repeatBlocks[1].querySelector(".section-repeat > button, .section-repeat > div")
+    expect(repeatHeader?.textContent).toContain("My Intro")
+    expect(repeatHeader?.textContent).not.toContain('"')
   })
 })

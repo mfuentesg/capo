@@ -44,7 +44,7 @@ type LyricsSegment =
       flags: SectionFlag[]
       inline: boolean
     }
-  | { type: "repeat"; name: string; count: number; html: string; found: boolean; sectionType: string }
+  | { type: "repeat"; name: string; count: number; html: string; found: boolean; sectionType: string; flags: SectionFlag[] }
 
 // Unique tokens that survive ChordProParser unchanged (no [A-G] at word start).
 const COMMENT_TOKEN = "SECTIONLBL"
@@ -544,19 +544,23 @@ function buildSegments(
 
     if (directive === "repeat") {
       if (value) {
-        const { name, count } = parseSectionValue(value)
+        const { name, count, flags } = parseSectionValue(value)
         const entry = sectionMap.get(name.toLowerCase())
         if (entry) {
+          const isInline = flags.includes("inline")
           segments.push({
             type: "repeat",
             name,
             count,
-            html: formatLyricsToHtml(entry.content, transpose, capo, sectionLabels, commentLabel),
+            html: isInline
+              ? formatInlineLyricsToHtml(entry.content, transpose, capo, sectionLabels, commentLabel)
+              : formatLyricsToHtml(entry.content, transpose, capo, sectionLabels, commentLabel),
             found: true,
-            sectionType: entry.sectionType
+            sectionType: entry.sectionType,
+            flags
           })
         } else {
-          segments.push({ type: "repeat", name, count, html: "", found: false, sectionType: "repeat" })
+          segments.push({ type: "repeat", name, count, html: "", found: false, sectionType: "repeat", flags: [] })
         }
       }
     } else if (/^c(omment(_italic|_box)?)?$/.test(directive)) {

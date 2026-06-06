@@ -423,7 +423,8 @@ export async function createPlaylist(
     updatedAt: playlistRow.updated_at,
     visibility: playlistRow.is_public ? "public" : "private",
     allowGuestEditing: playlistRow.allow_guest_editing ?? false,
-    shareCode: playlistRow.share_code || undefined
+    shareCode: playlistRow.share_code || undefined,
+    archivedAt: playlistRow.archived_at || undefined
   }
 }
 

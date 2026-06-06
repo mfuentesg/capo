@@ -14,7 +14,9 @@ import {
   addSongToPlaylist as addSongToPlaylistApi,
   addSongsToPlaylist as addSongsToPlaylistApi,
   removeSongFromPlaylist as removeSongFromPlaylistApi,
-  reorderPlaylistSongs as reorderPlaylistSongsApi
+  reorderPlaylistSongs as reorderPlaylistSongsApi,
+  archivePlaylist as archivePlaylistApi,
+  unarchivePlaylist as unarchivePlaylistApi
 } from "./playlistsApi"
 
 export async function getPlaylistsAction(context: AppContext): Promise<Playlist[]> {
@@ -105,4 +107,14 @@ export async function reorderPlaylistSongsAction(
   if (shareCode) {
     revalidatePath(`/shared/${shareCode}`)
   }
+}
+
+export async function archivePlaylistAction(playlistId: string): Promise<void> {
+  const supabase = await createClient()
+  await archivePlaylistApi(supabase, playlistId)
+}
+
+export async function unarchivePlaylistAction(playlistId: string): Promise<void> {
+  const supabase = await createClient()
+  await unarchivePlaylistApi(supabase, playlistId)
 }

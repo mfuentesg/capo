@@ -232,7 +232,10 @@
     "playlistName": "Nombre del playlist",
     "playlistNamePlaceholder": "ej. Adoración del Domingo",
     "openPlaylist": "Abrir playlist",
-    "suggestName": "Sugerir un nombre"
+    "suggestName": "Sugerir un nombre",
+    "archive": "Archivar",
+    "unarchive": "Desarchivar",
+    "archivedBadge": "Archivado"
   },
   "playlistDetail": {
     "details": "Detalles",
@@ -262,7 +265,9 @@
     "noSongsToAdd": "Todas tus canciones ya están en este playlist",
     "addSelectedSongs": "Agregar {count} canciones",
     "dropToRemove": "Soltar aquí para eliminar",
-    "guestEditingDisabledHint": "Solo disponible cuando el playlist es público"
+    "guestEditingDisabledHint": "Solo disponible cuando el playlist es público",
+    "archiveDescription": "Oculta este playlist de la vista activa",
+    "unarchiveDescription": "Restaura este playlist a la vista activa"
   },
   "playlistItem": {
     "privatePlaylist": "Playlist privado",

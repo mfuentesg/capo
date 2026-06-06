@@ -77,7 +77,8 @@ function transformPlaylistRow(row: PlaylistRow): Playlist {
     updatedAt: row.updated_at,
     visibility: row.is_public ? "public" : "private",
     allowGuestEditing: row.allow_guest_editing ?? false,
-    shareCode: row.share_code || undefined
+    shareCode: row.share_code || undefined,
+    archivedAt: row.archived_at || undefined
   }
 }
 

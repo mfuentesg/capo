@@ -154,6 +154,7 @@ export type Database = {
       playlists: {
         Row: {
           allow_guest_editing: boolean
+          archived_at: string | null
           created_at: string
           created_by: string
           date: string | null
@@ -169,6 +170,7 @@ export type Database = {
         }
         Insert: {
           allow_guest_editing?: boolean
+          archived_at?: string | null
           created_at?: string
           created_by: string
           date?: string | null
@@ -184,6 +186,7 @@ export type Database = {
         }
         Update: {
           allow_guest_editing?: boolean
+          archived_at?: string | null
           created_at?: string
           created_by?: string
           date?: string | null
@@ -250,6 +253,71 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      song_tag_assignments: {
+        Row: {
+          song_id: string
+          tag_id: string
+        }
+        Insert: {
+          song_id: string
+          tag_id: string
+        }
+        Update: {
+          song_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "song_tag_assignments_song_id_fkey"
+            columns: ["song_id"]
+            isOneToOne: false
+            referencedRelation: "songs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "song_tag_assignments_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "song_tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      song_tags: {
+        Row: {
+          color: string | null
+          created_at: string
+          id: string
+          name: string
+          team_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          team_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          team_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "song_tags_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       songs: {
         Row: {
@@ -326,71 +394,6 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      song_tag_assignments: {
-        Row: {
-          song_id: string
-          tag_id: string
-        }
-        Insert: {
-          song_id: string
-          tag_id: string
-        }
-        Update: {
-          song_id?: string
-          tag_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "song_tag_assignments_song_id_fkey"
-            columns: ["song_id"]
-            isOneToOne: false
-            referencedRelation: "songs"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "song_tag_assignments_tag_id_fkey"
-            columns: ["tag_id"]
-            isOneToOne: false
-            referencedRelation: "song_tags"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      song_tags: {
-        Row: {
-          color: string | null
-          created_at: string
-          id: string
-          name: string
-          team_id: string | null
-          user_id: string | null
-        }
-        Insert: {
-          color?: string | null
-          created_at?: string
-          id?: string
-          name: string
-          team_id?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          color?: string | null
-          created_at?: string
-          id?: string
-          name?: string
-          team_id?: string | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "song_tags_team_id_fkey"
-            columns: ["team_id"]
-            isOneToOne: false
-            referencedRelation: "teams"
             referencedColumns: ["id"]
           },
         ]

@@ -43,7 +43,7 @@ import { SaveStatus } from "@/components/ui/save-status"
 import { createOverlayIds } from "@/lib/ui/stable-overlay-ids"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
-import { convertToChordPro } from "../utils/chordpro-converter"
+import { convertChordAboveLyricsBlocks } from "../utils/chordpro-converter"
 
 const MIN_SCROLL_SPEED = 10
 const MAX_SCROLL_SPEED = 300
@@ -260,8 +260,8 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
   }, [savedLyrics, showChords, showLyrics, song.title, song.artist, t.toasts])
 
   const handleParseChords = useCallback(() => {
-    const { format, output } = convertToChordPro(editedLyrics)
-    if (format === "chord-above-lyrics") {
+    const { converted, output } = convertChordAboveLyricsBlocks(editedLyrics)
+    if (converted) {
       setEditedLyrics(output)
       setEditorResetKey((k) => k + 1)
       toast.success(t.toasts.lyricsConvertedToChordPro)

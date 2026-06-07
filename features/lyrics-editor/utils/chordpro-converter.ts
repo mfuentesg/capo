@@ -16,6 +16,12 @@ function isChordLine(line: string): boolean {
   return chordCount / tokens.length >= 0.7
 }
 
+// A line that has no ChordPro brackets or directives — could be part of chord-above-lyrics
+function isPlainLine(line: string): boolean {
+  const trimmed = line.trim()
+  return !trimmed.includes("[") && !trimmed.startsWith("{") && !trimmed.startsWith("#")
+}
+
 export function detectFormat(text: string): DetectedFormat {
   if (/\[[A-G][^\]]*\]/.test(text)) return "chordpro"
   const lines = text.split("\n")
@@ -35,4 +41,54 @@ export function convertToChordPro(text: string): ConversionResult {
   if (format === "chordpro") return { format, output: text }
   if (format === "chord-above-lyrics") return { format, output: convertChordAboveLyrics(text) }
   return { format: "plain-text", output: text }
+}
+
+// Converts chord-above-lyrics blocks within a document that may already contain
+// ChordPro-formatted sections. Only unbracketed blocks with chord+lyric pairs are
+// touched; everything else is left unchanged.
+export function convertChordAboveLyricsBlocks(text: string): {
+  converted: boolean
+  output: string
+} {
+  const lines = text.split("\n")
+
+  type Segment = { lines: string[]; isPlain: boolean }
+  const segments: Segment[] = []
+
+  for (const line of lines) {
+    const plain = isPlainLine(line)
+    const last = segments[segments.length - 1]
+    if (last && last.isPlain === plain) {
+      last.lines.push(line)
+    } else {
+      segments.push({ lines: [line], isPlain: plain })
+    }
+  }
+
+  let anyConverted = false
+  const resultParts: string[] = []
+
+  for (const seg of segments) {
+    if (!seg.isPlain) {
+      resultParts.push(seg.lines.join("\n"))
+      continue
+    }
+
+    const hasChordLine = seg.lines.some(isChordLine)
+    const hasLyricLine = seg.lines.some((l) => !isChordLine(l) && l.trim().length > 0)
+
+    if (hasChordLine && hasLyricLine) {
+      try {
+        const converted = convertChordAboveLyrics(seg.lines.join("\n"))
+        resultParts.push(converted.trim())
+        anyConverted = true
+      } catch {
+        resultParts.push(seg.lines.join("\n"))
+      }
+    } else {
+      resultParts.push(seg.lines.join("\n"))
+    }
+  }
+
+  return { converted: anyConverted, output: resultParts.join("\n") }
 }

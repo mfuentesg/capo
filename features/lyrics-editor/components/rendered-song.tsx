@@ -1,6 +1,6 @@
 "use client"
 
-import { type ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
+import { type ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import { ChordProParser } from "chordsheetjs"
 import { ChevronDown, Layers, Music2, Repeat2 } from "lucide-react"
@@ -845,13 +845,26 @@ export function RenderedSong({
     [t]
   )
 
-  const handleChordClick = (e: React.MouseEvent) => {
-    const target = e.target as HTMLElement
-    const chordElement = target.closest(".chord")
+  const tapOriginRef = useRef<{ x: number; y: number } | null>(null)
+
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    tapOriginRef.current = { x: e.clientX, y: e.clientY }
+  }, [])
+
+  // Use onPointerUp instead of onClick so iOS does not mark the container as a
+  // tap-delay target. onClick causes iOS to wait 300 ms to rule out double-tap,
+  // and during that window native text-selection handle drags are blocked.
+  const handlePointerUp = useCallback((e: React.PointerEvent) => {
+    if (!tapOriginRef.current) return
+    const dx = Math.abs(e.clientX - tapOriginRef.current.x)
+    const dy = Math.abs(e.clientY - tapOriginRef.current.y)
+    tapOriginRef.current = null
+    if (dx > 10 || dy > 10) return // scroll or selection drag — ignore
+    const chordElement = (e.target as HTMLElement).closest(".chord")
     if (chordElement) {
       setSelectedChord(chordElement.textContent)
     }
-  }
+  }, [])
 
   const toggleCollapse = (index: number) => {
     setCollapsedSet((prev) => {
@@ -908,7 +921,7 @@ export function RenderedSong({
 
     if (!hasComplexSegments) {
       return (
-        <div ref={wrapperRef} className={visibilityClass || undefined} onClick={handleChordClick}>
+        <div ref={wrapperRef} className={visibilityClass || undefined} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
           <pre
             className="chordsheet-content multi-column-lyrics"
             style={fontStyle}
@@ -924,7 +937,7 @@ export function RenderedSong({
         ref={wrapperRef}
         className={`multi-column-lyrics space-y-6${visibilityClass ? ` ${visibilityClass}` : ""}`}
         style={fontStyle}
-        onClick={handleChordClick}
+        onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}
       >
         {segments.map((segment, index) => {
           if (segment.type === "normal") {

@@ -993,6 +993,9 @@ html[data-font="manrope"] {
 
 .chordsheet-content {
   @apply whitespace-pre-wrap break-words leading-[1.6] overflow-x-visible m-0 max-w-full;
+  touch-action: manipulation;
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 .chordsheet-content .chord {

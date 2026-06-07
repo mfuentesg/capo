@@ -54,12 +54,23 @@ export default function SongEditorImpl({ content, onChange }: Props) {
       const { from, to } = viewUpdate.state.selection.main
       if (from !== to) {
         selectionRef.current = { from, to }
-        setHasSelection(true)
+        // Do NOT call setHasSelection(true) here — showing the toolbar mid-drag
+        // causes a layout shift that pushes the editor down and disrupts selection.
+        // The toolbar appears on pointerUp / keyUp instead.
       } else {
         selectionRef.current = null
         setHasSelection(false)
       }
     }
+  }, [])
+
+  const revealToolbar = useCallback(() => {
+    if (selectionRef.current) setHasSelection(true)
+  }, [])
+
+  const hideToolbar = useCallback(() => {
+    selectionRef.current = null
+    setHasSelection(false)
   }, [])
 
   const handleWrap = useCallback(
@@ -77,7 +88,7 @@ export default function SongEditorImpl({ content, onChange }: Props) {
   )
 
   return (
-    <div>
+    <div onPointerUp={revealToolbar} onKeyUp={revealToolbar}>
       <SectionWrapToolbar visible={hasSelection && !!onChange} onWrap={handleWrap} />
       <CodeMirror
         ref={editorRef}
@@ -87,6 +98,7 @@ export default function SongEditorImpl({ content, onChange }: Props) {
         extensions={extensions}
         onChange={(value) => onChange?.(value)}
         onUpdate={handleUpdate}
+        onBlur={hideToolbar}
         basicSetup={{
           lineNumbers: false,
           foldGutter: false,

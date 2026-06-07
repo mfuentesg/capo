@@ -3,6 +3,7 @@
 import { SECTION_TYPES } from "../utils/section-wrap"
 import type { SectionType } from "../utils/section-wrap"
 import { cn } from "@/lib/utils"
+import { useTranslation } from "@/hooks/use-translation"
 
 interface SectionWrapToolbarProps {
   visible: boolean
@@ -11,6 +12,8 @@ interface SectionWrapToolbarProps {
 }
 
 export function SectionWrapToolbar({ visible, onWrap, className }: SectionWrapToolbarProps) {
+  const { t } = useTranslation()
+
   if (!visible) return null
 
   return (
@@ -20,7 +23,7 @@ export function SectionWrapToolbar({ visible, onWrap, className }: SectionWrapTo
         className
       )}
     >
-      <span className="text-xs text-muted-foreground shrink-0 mr-0.5">Wrap as</span>
+      <span className="text-xs text-muted-foreground shrink-0 mr-0.5">{t.songs.lyrics.wrapAs}</span>
       {SECTION_TYPES.map((type) => (
         <button
           key={type.key}

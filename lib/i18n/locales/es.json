@@ -186,6 +186,8 @@
       "showLyricsLabel": "Letra",
       "chordproReference": "Referencia ChordPro",
       "docs": "Docs",
+      "parseChords": "Analizar acordes",
+      "parseChordsAlreadyChordPro": "La letra ya está en formato ChordPro",
       "autoScroll": {
         "start": "Iniciar desplazamiento automático",
         "stop": "Detener desplazamiento automático",

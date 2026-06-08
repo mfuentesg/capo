@@ -186,6 +186,9 @@
       "showLyricsLabel": "Lyrics",
       "chordproReference": "ChordPro Reference",
       "docs": "Docs",
+      "wrapAs": "Wrap as",
+      "parseChords": "Parse chords",
+      "parseChordsAlreadyChordPro": "Lyrics are already in ChordPro format",
       "autoScroll": {
         "start": "Start auto-scroll",
         "stop": "Stop auto-scroll",

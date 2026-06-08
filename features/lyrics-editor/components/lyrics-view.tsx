@@ -23,7 +23,8 @@ import {
   Turtle,
   Rabbit,
   Zap,
-  Share2
+  Share2,
+  Wand2
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import type { Song } from "@/types"
@@ -42,6 +43,7 @@ import { SaveStatus } from "@/components/ui/save-status"
 import { createOverlayIds } from "@/lib/ui/stable-overlay-ids"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
+import { convertChordAboveLyricsBlocks } from "../utils/chordpro-converter"
 
 const MIN_SCROLL_SPEED = 10
 const MAX_SCROLL_SPEED = 300
@@ -256,6 +258,17 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
       }
     }
   }, [savedLyrics, showChords, showLyrics, song.title, song.artist, t.toasts])
+
+  const handleParseChords = useCallback(() => {
+    const { converted, output } = convertChordAboveLyricsBlocks(editedLyrics)
+    if (converted) {
+      setEditedLyrics(output)
+      setEditorResetKey((k) => k + 1)
+      toast.success(t.toasts.lyricsConvertedToChordPro)
+    } else {
+      toast.info(t.songs.lyrics.parseChordsAlreadyChordPro)
+    }
+  }, [editedLyrics, t.toasts.lyricsConvertedToChordPro, t.songs.lyrics.parseChordsAlreadyChordPro])
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     if (isEditing || (!onPrevSong && !onNextSong)) return
@@ -559,6 +572,16 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
                     ) : (
                       <Eye className="h-4 w-4" />
                     )}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-9 w-9"
+                    onClick={handleParseChords}
+                    aria-label={t.songs.lyrics.parseChords}
+                    title={t.songs.lyrics.parseChords}
+                  >
+                    <Wand2 className="h-4 w-4" />
                   </Button>
                   <Button
                     variant="ghost"

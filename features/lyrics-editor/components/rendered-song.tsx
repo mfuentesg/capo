@@ -1,6 +1,6 @@
 "use client"
 
-import { type ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
+import { type ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import { ChordProParser } from "chordsheetjs"
 import { ChevronDown, Layers, Music2, Repeat2 } from "lucide-react"
@@ -845,13 +845,10 @@ export function RenderedSong({
     [t]
   )
 
-  const handleChordClick = (e: React.MouseEvent) => {
-    const target = e.target as HTMLElement
-    const chordElement = target.closest(".chord")
-    if (chordElement) {
-      setSelectedChord(chordElement.textContent)
-    }
-  }
+  const handleChordClick = useCallback((e: React.MouseEvent) => {
+    const chordElement = (e.target as HTMLElement).closest(".chord")
+    if (chordElement) setSelectedChord(chordElement.textContent)
+  }, [])
 
   const toggleCollapse = (index: number) => {
     setCollapsedSet((prev) => {
@@ -908,7 +905,7 @@ export function RenderedSong({
 
     if (!hasComplexSegments) {
       return (
-        <div ref={wrapperRef} className={visibilityClass || undefined} onClick={handleChordClick}>
+        <div ref={wrapperRef} className={visibilityClass || undefined} onClick={handleChordClick} style={{ touchAction: "manipulation" }}>
           <pre
             className="chordsheet-content multi-column-lyrics"
             style={fontStyle}
@@ -923,7 +920,7 @@ export function RenderedSong({
       <div
         ref={wrapperRef}
         className={`multi-column-lyrics space-y-6${visibilityClass ? ` ${visibilityClass}` : ""}`}
-        style={fontStyle}
+        style={{ ...fontStyle, touchAction: "manipulation" }}
         onClick={handleChordClick}
       >
         {segments.map((segment, index) => {

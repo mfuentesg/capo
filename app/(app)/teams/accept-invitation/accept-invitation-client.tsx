@@ -136,7 +136,8 @@ export function AcceptInvitationClient() {
                   <Button
                     onClick={() => {
                       if (token) {
-                        document.cookie = `_invitation_token=${token}; path=/; max-age=3600; SameSite=Lax`
+                        const secure = window.location.protocol === "https:" ? "; Secure" : ""
+                        document.cookie = `_invitation_token=${encodeURIComponent(token)}; path=/; max-age=3600; SameSite=Lax${secure}`
                       }
                       router.push("/")
                     }}

@@ -18,8 +18,6 @@ import {
   archivePlaylist as archivePlaylistApi,
   unarchivePlaylist as unarchivePlaylistApi
 } from "./playlistsApi"
-import { getTagAssignmentsForSongsAction } from "@/features/songs"
-
 export async function getPlaylistsAction(context: AppContext): Promise<Playlist[]> {
   const supabase = await createClient()
   return getPlaylistsApi(supabase, context)
@@ -35,13 +33,8 @@ export async function getPlaylistsAllBucketsAction(
 
 export async function getPlaylistWithSongsAction(playlistId: string) {
   const supabase = await createClient()
-  const playlist = await getPlaylistWithSongsApi(supabase, playlistId)
-  if (!playlist) return null
-  const tagMap = await getTagAssignmentsForSongsAction(playlist.songs.map((s) => s.id))
-  return {
-    ...playlist,
-    songs: playlist.songs.map((song) => ({ ...song, tags: tagMap.get(song.id) ?? [] }))
-  }
+  // Tags are embedded in the playlist query itself — no second round-trip needed
+  return getPlaylistWithSongsApi(supabase, playlistId)
 }
 
 export async function createPlaylistAction(

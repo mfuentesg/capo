@@ -2,12 +2,17 @@ import type { Locale } from "./config"
 import en from "./locales/en.json"
 import es from "./locales/es.json"
 
-const translations: Record<Locale, typeof en> = {
+// The full translations dictionary type. Client code should import this as a
+// type-only import — importing getTranslations as a value pulls every locale
+// into the client bundle (the client-side LocaleProvider loads locales lazily).
+export type Translations = typeof en
+
+const translations: Record<Locale, Translations> = {
   en,
   es
 }
 
-export function getTranslations(locale: Locale): typeof en {
+export function getTranslations(locale: Locale): Translations {
   return translations[locale] || translations.en
 }
 

@@ -8,17 +8,26 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 import type { Tables, TablesInsert, TablesUpdate } from "@/lib/supabase/database.types"
 import type { AppContext } from "@/features/app-context"
-import type { Song as FrontendSong, SongOwnership } from "@/features/songs/types"
+import type { Song as FrontendSong, SongOwnership, SongTag } from "@/features/songs/types"
 import { applyContextFilter } from "@/lib/supabase/apply-context-filter"
 
-// Only the columns fetched by SONG_COLUMNS — a subset of the full row type
+// Columns shared by list and detail queries. List queries deliberately exclude
+// lyrics/notes — they can be kilobytes per song and the list UI never shows them.
 type SongRow = Pick<
   Tables<"songs">,
-  "id" | "title" | "artist" | "key" | "bpm" | "lyrics" | "notes" | "transpose" | "capo" | "status"
->
+  "id" | "title" | "artist" | "key" | "bpm" | "transpose" | "capo" | "status"
+> &
+  Partial<Pick<Tables<"songs">, "lyrics" | "notes">>
+
+type TagJoinRow = { id: string; name: string; color: string | null }
+
+// Shape of the embedded tag join on list queries
+type SongRowWithTags = SongRow & {
+  song_tag_assignments?: Array<{ song_tags: TagJoinRow | TagJoinRow[] | null }> | null
+}
 
 // Extended row type including ownership columns
-type SongRowWithOwnership = SongRow &
+type SongRowWithOwnership = SongRowWithTags &
   Pick<Tables<"songs">, "user_id" | "team_id">
 
 function mapDBSongToFrontend(dbSong: SongRow): FrontendSong {
@@ -101,9 +110,30 @@ function mapDBSongWithOwnershipToFrontend(
  * @param context - App context (personal or team)
  * @returns Promise<FrontendSong[]> - Array of songs
  */
-const SONG_COLUMNS = "id, title, artist, key, bpm, lyrics, notes, transpose, capo, status"
-const SONG_COLUMNS_WITH_OWNERSHIP =
-  "id, title, artist, key, bpm, lyrics, notes, transpose, capo, status, user_id, team_id"
+// List queries: no lyrics/notes (heavy text fetched on demand via getSong),
+// tags embedded in the same query to avoid a second round-trip.
+const TAGS_EMBED = "song_tag_assignments(song_tags(id, name, color))"
+const SONG_LIST_COLUMNS = `id, title, artist, key, bpm, transpose, capo, status, ${TAGS_EMBED}`
+const SONG_LIST_COLUMNS_WITH_OWNERSHIP = `id, title, artist, key, bpm, transpose, capo, status, user_id, team_id, ${TAGS_EMBED}`
+// Detail query: full content, no embeds
+const SONG_DETAIL_COLUMNS = "id, title, artist, key, bpm, lyrics, notes, transpose, capo, status"
+
+/**
+ * Maps the embedded song_tag_assignments join to the frontend SongTag[] shape.
+ * PostgREST returns the FK-joined row as a single object, but the untyped
+ * client may represent it as an array — handle both.
+ */
+function mapAssignedTags(assignments: SongRowWithTags["song_tag_assignments"]): SongTag[] {
+  const tags: SongTag[] = []
+  for (const row of assignments ?? []) {
+    const rawTag = row.song_tags
+    if (!rawTag) continue
+    const tag = Array.isArray(rawTag) ? rawTag[0] : rawTag
+    if (!tag) continue
+    tags.push({ id: tag.id, name: tag.name, color: tag.color })
+  }
+  return tags
+}
 
 /**
  * Builds a prefix-matching tsquery string for use with to_tsquery().
@@ -125,7 +155,7 @@ export async function getSongs(
   context: AppContext,
   searchQuery?: string
 ): Promise<FrontendSong[]> {
-  let query = supabase.from("songs").select(SONG_COLUMNS)
+  let query = supabase.from("songs").select(SONG_LIST_COLUMNS)
   query = applyContextFilter(query, context)
 
   if (searchQuery && searchQuery.trim().length > 0) {
@@ -135,7 +165,10 @@ export async function getSongs(
   const { data, error } = await query.order("created_at", { ascending: false })
 
   if (error) throw error
-  return (data || []).map(mapDBSongToFrontend)
+  return ((data || []) as SongRowWithTags[]).map((row) => ({
+    ...mapDBSongToFrontend(row),
+    tags: mapAssignedTags(row.song_tag_assignments)
+  }))
 }
 
 /**
@@ -167,7 +200,7 @@ export async function getSongsAllBuckets(
 
   let query = supabase
     .from("songs")
-    .select(SONG_COLUMNS_WITH_OWNERSHIP)
+    .select(SONG_LIST_COLUMNS_WITH_OWNERSHIP)
     .or(orFilter)
 
   if (searchQuery && searchQuery.trim().length > 0) {
@@ -177,9 +210,10 @@ export async function getSongsAllBuckets(
   const { data, error } = await query.order("created_at", { ascending: false })
 
   if (error) throw error
-  return (data || []).map((row) =>
-    mapDBSongWithOwnershipToFrontend(row as SongRowWithOwnership, teams)
-  )
+  return ((data || []) as SongRowWithOwnership[]).map((row) => ({
+    ...mapDBSongWithOwnershipToFrontend(row, teams),
+    tags: mapAssignedTags(row.song_tag_assignments)
+  }))
 }
 
 /**
@@ -192,7 +226,11 @@ export async function getSong(
   supabase: SupabaseClient,
   songId: string
 ): Promise<FrontendSong | null> {
-  const response = await supabase.from("songs").select("*").eq("id", songId).single()
+  const response = await supabase
+    .from("songs")
+    .select(SONG_DETAIL_COLUMNS)
+    .eq("id", songId)
+    .single()
 
   if (response.error) {
     if (response.error.code === "PGRST116") return null
@@ -214,7 +252,10 @@ export async function getSongsByIds(
 ): Promise<FrontendSong[]> {
   if (songIds.length === 0) return []
 
-  const { data, error } = await supabase.from("songs").select(SONG_COLUMNS).in("id", songIds)
+  const { data, error } = await supabase
+    .from("songs")
+    .select(SONG_DETAIL_COLUMNS)
+    .in("id", songIds)
 
   if (error) throw error
   return (data || []).map(mapDBSongToFrontend)

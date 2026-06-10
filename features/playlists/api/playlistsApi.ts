@@ -33,11 +33,42 @@ const PLAYLIST_SONGS_WITH_SONG = `
   song:songs (${SONG_FIELDS})
 `
 
+// Same as above but with tags embedded — used by the authenticated detail view
+// so tags don't require a second round-trip
+const PLAYLIST_SONGS_WITH_SONG_AND_TAGS = `
+  song_id,
+  position,
+  song:songs (${SONG_FIELDS}, song_tag_assignments(song_tags(id, name, color)))
+`
+
+type TagJoinRow = { id: string; name: string; color: string | null }
+
 // Subset row type matching SONG_FIELDS — used to type the nested song in query results
 type NestedSongRow = Pick<
   Tables<"songs">,
   "id" | "title" | "artist" | "key" | "bpm" | "lyrics" | "notes" | "transpose" | "capo" | "status"
->
+> & {
+  song_tag_assignments?: Array<{ song_tags: TagJoinRow | TagJoinRow[] | null }> | null
+}
+
+/**
+ * Maps the embedded song_tag_assignments join to the frontend SongTag shape.
+ * PostgREST returns the FK-joined row as a single object, but the untyped
+ * client may represent it as an array — handle both.
+ */
+function mapAssignedTags(
+  assignments: NestedSongRow["song_tag_assignments"]
+): Song["tags"] {
+  const tags: NonNullable<Song["tags"]> = []
+  for (const row of assignments ?? []) {
+    const rawTag = row.song_tags
+    if (!rawTag) continue
+    const tag = Array.isArray(rawTag) ? rawTag[0] : rawTag
+    if (!tag) continue
+    tags.push({ id: tag.id, name: tag.name, color: tag.color })
+  }
+  return tags
+}
 
 function generateShareCode(length = 12): string {
   const bytes = new Uint8Array(length)
@@ -160,7 +191,7 @@ export async function getPlaylistWithSongs(
 ): Promise<PlaylistWithSongs | null> {
   const { data, error } = await supabase
     .from("playlists")
-    .select(`*, playlist_songs (${PLAYLIST_SONGS_WITH_SONG})`)
+    .select(`*, playlist_songs (${PLAYLIST_SONGS_WITH_SONG_AND_TAGS})`)
     .eq("id", playlistId)
     .single()
 
@@ -197,6 +228,7 @@ export async function getPlaylistWithSongs(
           notes: song.notes || undefined,
           transpose: song.transpose ?? undefined,
           capo: song.capo ?? undefined,
+          tags: mapAssignedTags(song.song_tag_assignments)
         }
       }),
     createdAt: data.created_at,

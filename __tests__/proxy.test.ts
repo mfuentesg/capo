@@ -99,7 +99,7 @@ describe("Proxy", () => {
 
     mockSupabase = {
       auth: {
-        getUser: jest.fn()
+        getClaims: jest.fn()
       }
     }
 
@@ -118,8 +118,8 @@ describe("Proxy", () => {
 
   describe("proxy function", () => {
     it("should redirect authenticated users from home to dashboard", async () => {
-      mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: { id: "123" } },
+      mockSupabase.auth.getClaims.mockResolvedValue({
+        data: { claims: { sub: "123" } },
         error: null
       })
 
@@ -133,8 +133,8 @@ describe("Proxy", () => {
     })
 
     it("should allow unauthenticated users to access home page", async () => {
-      mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: null },
+      mockSupabase.auth.getClaims.mockResolvedValue({
+        data: null,
         error: null
       })
 
@@ -146,21 +146,21 @@ describe("Proxy", () => {
     })
 
     it("should continue with request for non-home paths", async () => {
-      mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: { id: "123" } },
+      mockSupabase.auth.getClaims.mockResolvedValue({
+        data: { claims: { sub: "123" } },
         error: null
       })
 
       const request = new NextRequest("http://localhost:3000/dashboard")
       const response = await proxy(request)
 
-      expect(mockSupabase.auth.getUser).toHaveBeenCalled()
+      expect(mockSupabase.auth.getClaims).toHaveBeenCalled()
       expect(response.status).toBe(200)
     })
 
     it("should redirect authenticated users from /login to dashboard", async () => {
-      mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: { id: "123" } },
+      mockSupabase.auth.getClaims.mockResolvedValue({
+        data: { claims: { sub: "123" } },
         error: null
       })
 
@@ -174,8 +174,8 @@ describe("Proxy", () => {
     })
 
     it("should allow unauthenticated users to access /login", async () => {
-      mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: null },
+      mockSupabase.auth.getClaims.mockResolvedValue({
+        data: null,
         error: null
       })
 
@@ -187,8 +187,8 @@ describe("Proxy", () => {
     })
 
     it("should allow unauthenticated users to access legacy dashboard playlist share links", async () => {
-      mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: null },
+      mockSupabase.auth.getClaims.mockResolvedValue({
+        data: null,
         error: null
       })
 
@@ -211,7 +211,7 @@ describe("Proxy", () => {
     })
 
     it("should handle session check errors gracefully", async () => {
-      mockSupabase.auth.getUser.mockRejectedValue(new Error("Network error"))
+      mockSupabase.auth.getClaims.mockRejectedValue(new Error("Network error"))
 
       const request = new NextRequest("http://localhost:3000/")
       const response = await proxy(request)
@@ -234,8 +234,8 @@ describe("Proxy", () => {
         return mockSupabase
       })
 
-      mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: null },
+      mockSupabase.auth.getClaims.mockResolvedValue({
+        data: null,
         error: null
       })
 
@@ -247,8 +247,8 @@ describe("Proxy", () => {
     })
 
     it("should use correct Supabase client configuration", async () => {
-      mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: null },
+      mockSupabase.auth.getClaims.mockResolvedValue({
+        data: null,
         error: null
       })
 
@@ -269,8 +269,8 @@ describe("Proxy", () => {
 
     describe("Invitation Token Handling", () => {
       it("should redirect unauthenticated user accessing invitation link to login", async () => {
-        mockSupabase.auth.getUser.mockResolvedValue({
-          data: { user: null },
+        mockSupabase.auth.getClaims.mockResolvedValue({
+          data: null,
           error: null
         })
 
@@ -284,8 +284,8 @@ describe("Proxy", () => {
       })
 
       it("should store invitation token in cookie when redirecting unauthenticated user", async () => {
-        mockSupabase.auth.getUser.mockResolvedValue({
-          data: { user: null },
+        mockSupabase.auth.getClaims.mockResolvedValue({
+          data: null,
           error: null
         })
 
@@ -302,8 +302,8 @@ describe("Proxy", () => {
       })
 
       it("should not interfere with authenticated users accessing invitation page", async () => {
-        mockSupabase.auth.getUser.mockResolvedValue({
-          data: { user: { id: "user-123", email: "test@example.com" } },
+        mockSupabase.auth.getClaims.mockResolvedValue({
+          data: { claims: { sub: "user-123", email: "test@example.com" } },
           error: null
         })
 
@@ -317,8 +317,8 @@ describe("Proxy", () => {
       })
 
       it("should handle missing token gracefully", async () => {
-        mockSupabase.auth.getUser.mockResolvedValue({
-          data: { user: null },
+        mockSupabase.auth.getClaims.mockResolvedValue({
+          data: null,
           error: null
         })
 
@@ -331,8 +331,8 @@ describe("Proxy", () => {
       })
 
       it("should redirect to login page (/) when user is unauthenticated", async () => {
-        mockSupabase.auth.getUser.mockResolvedValue({
-          data: { user: null },
+        mockSupabase.auth.getClaims.mockResolvedValue({
+          data: null,
           error: null
         })
 

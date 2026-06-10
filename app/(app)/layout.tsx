@@ -8,6 +8,7 @@ import type { ChordHand } from "@/lib/actions/chord-hand"
 import { getInitialAppContextData } from "@/features/app-context/server"
 import { defaultLocale, isValidLocale } from "@/lib/i18n/config"
 import type { Locale } from "@/lib/i18n/config"
+import { getTranslations } from "@/lib/i18n/translations"
 import { isValidPalette, DEFAULT_PALETTE } from "@/lib/palette"
 import { isValidUIFont, DEFAULT_UI_FONT } from "@/lib/font"
 
@@ -68,7 +69,14 @@ export default async function AppLayout({
           initialUser={appContextData.user}
           initialViewFilter={appContextData.initialViewFilter}
         >
-          <LocaleProvider initialLocale={initialLocale}>
+          <LocaleProvider
+            initialLocale={initialLocale}
+            // Non-default locales aren't in the client bundle — provide the
+            // dictionary from the server so SSR and hydration stay consistent
+            initialTranslations={
+              initialLocale !== defaultLocale ? getTranslations(initialLocale) : undefined
+            }
+          >
             <ChordHandProvider initialChordHand={initialChordHand}>
               <PaletteProvider initialPalette={initialPalette}>
                 <FontProvider initialFont={initialFont}>{children}</FontProvider>

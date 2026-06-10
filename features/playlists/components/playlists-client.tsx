@@ -16,12 +16,12 @@ import type { Playlist } from "../types"
 import { usePlaylists, useCreatePlaylist, useUpdatePlaylist, useDeletePlaylist, useArchivePlaylist, useUnarchivePlaylist } from "../hooks"
 import { useUser } from "@/features/auth"
 import { useAppContext, type AppContext } from "@/features/app-context"
-import { getTranslations } from "@/lib/i18n/translations"
+import type { Translations } from "@/lib/i18n/translations"
 import { createOverlayIds } from "@/lib/ui/stable-overlay-ids"
 
 interface PlaylistsClientProps {
   initialPlaylists?: Playlist[]
-  t: ReturnType<typeof getTranslations>
+  t: Translations
 }
 
 function PlaylistDetailSkeleton() {

@@ -1,7 +1,13 @@
+import { cache } from "react"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { PlaylistShareView } from "@/features/playlist-sharing"
 import { api } from "@/features/playlists"
+
+// Deduplicates the fetch between generateMetadata and the page render
+const getPlaylistByShareCode = cache((shareCode: string) =>
+  api.getPlaylistByShareCode(shareCode)
+)
 
 export async function generateMetadata({
   params
@@ -9,7 +15,7 @@ export async function generateMetadata({
   params: Promise<{ shareCode: string }>
 }): Promise<Metadata> {
   const { shareCode } = await params
-  const playlist = await api.getPlaylistByShareCode(shareCode)
+  const playlist = await getPlaylistByShareCode(shareCode)
 
   if (!playlist) {
     return { title: "Playlist Not Found" }
@@ -41,7 +47,7 @@ export default async function SharedPlaylistPage({
   params: Promise<{ shareCode: string }>
 }) {
   const { shareCode } = await params
-  const playlist = await api.getPlaylistByShareCode(shareCode)
+  const playlist = await getPlaylistByShareCode(shareCode)
 
   if (!playlist) {
     notFound()

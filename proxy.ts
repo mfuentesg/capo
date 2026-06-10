@@ -65,12 +65,12 @@ function applyCookiesToResponse(response: NextResponse, cookiesToSet: CookieToSe
   })
 }
 
-function shouldRedirectToDashboard(user: unknown): boolean {
-  return !!user
+function shouldRedirectToDashboard(claims: unknown): boolean {
+  return !!claims
 }
 
-function shouldRedirectToLogin(user: unknown, error: unknown): boolean {
-  return !!error || !user
+function shouldRedirectToLogin(claims: unknown, error: unknown): boolean {
+  return !!error || !claims
 }
 
 function extractInvitationToken(request: NextRequest): string | null {
@@ -94,27 +94,28 @@ export async function proxy(request: NextRequest) {
     const cookiesToSet: CookieToSet[] = []
     const supabase = createSupabaseClient(request, envVars, cookiesToSet)
 
-    const {
-      data: { user },
-      error
-    } = await supabase.auth.getUser()
+    // getClaims verifies the JWT locally (against cached JWKS) instead of
+    // calling the Supabase Auth server on every request like getUser does.
+    // Expired sessions are still refreshed automatically before verification.
+    const { data, error } = await supabase.auth.getClaims()
+    const claims = data?.claims ?? null
 
     let response: NextResponse = NextResponse.next()
 
     if (
       (pathname === "/" || pathname === "/login") &&
-      shouldRedirectToDashboard(user)
+      shouldRedirectToDashboard(claims)
     ) {
       response = NextResponse.redirect(new URL(DEFAULT_REDIRECT_PATH, request.url))
     } else if (
       pathname.startsWith("/dashboard") &&
-      shouldRedirectToLogin(user, error) &&
+      shouldRedirectToLogin(claims, error) &&
       !isLegacyPublicSharePath(pathname)
     ) {
       response = NextResponse.redirect(new URL(LOGIN_PATH, request.url))
     } else if (
       pathname.startsWith("/teams/accept-invitation") &&
-      shouldRedirectToLogin(user, error)
+      shouldRedirectToLogin(claims, error)
     ) {
       // Unauthenticated user accessing invitation link
       const token = extractInvitationToken(request)

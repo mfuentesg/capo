@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { useUser } from "@/features/auth"
 import { useAcceptTeamInvitation, usePendingInvitations, mapInvitationAcceptError } from "@/features/teams"
 import type { PendingInvitation } from "@/features/teams"
-import { getTranslations } from "@/lib/i18n/translations"
+import type { Translations } from "@/lib/i18n/translations"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Spinner } from "@/components/ui/spinner"
@@ -48,7 +48,7 @@ export function PendingInvitationsClient({
   t,
   initialInvitations = []
 }: {
-  t: ReturnType<typeof getTranslations>
+  t: Translations
   initialInvitations?: PendingInvitation[]
 }) {
   const router = useRouter()

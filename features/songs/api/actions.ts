@@ -30,26 +30,18 @@ import {
   setSongTags as setSongTagsApi
 } from "./tags-api"
 
-function mergeTags(songs: Song[], tagMap: Map<string, SongTag[]>): Song[] {
-  return songs.map((song) => ({ ...song, tags: tagMap.get(song.id) ?? [] }))
-}
-
 export async function getSongsAction(context: AppContext, searchQuery?: string): Promise<Song[]> {
   const supabase = await createClient()
+  // Tags are embedded in the songs query itself, so both fetches run in parallel
   const [songs, settings] = await Promise.all([
     getSongsApi(supabase, context, searchQuery),
     getAllUserSongSettingsApi(supabase, context.userId)
   ])
   const settingsBySongId = new Map(settings.map((s) => [s.songId, s]))
-  const withSettings = songs.map((song) => ({
+  return songs.map((song) => ({
     ...song,
     userSettings: settingsBySongId.get(song.id) ?? null
   }))
-  const tagMap = await getTagAssignmentsForSongsApi(
-    supabase,
-    withSettings.map((s) => s.id)
-  )
-  return mergeTags(withSettings, tagMap)
 }
 
 export async function getSongsAllBucketsAction(
@@ -59,20 +51,16 @@ export async function getSongsAllBucketsAction(
   searchQuery?: string
 ): Promise<Song[]> {
   const supabase = await createClient()
+  // Tags are embedded in the songs query itself, so both fetches run in parallel
   const [songs, settings] = await Promise.all([
     getSongsAllBucketsApi(supabase, userId, teamIds, teams, searchQuery),
     getAllUserSongSettingsApi(supabase, userId)
   ])
   const settingsBySongId = new Map(settings.map((s) => [s.songId, s]))
-  const withSettings = songs.map((song) => ({
+  return songs.map((song) => ({
     ...song,
     userSettings: settingsBySongId.get(song.id) ?? null
   }))
-  const tagMap = await getTagAssignmentsForSongsApi(
-    supabase,
-    withSettings.map((s) => s.id)
-  )
-  return mergeTags(withSettings, tagMap)
 }
 
 export async function getTagsForContextAction(context: AppContext): Promise<SongTag[]> {

@@ -12,11 +12,11 @@ import { toast } from "sonner"
 import { TeamWithMemberCount } from "@/features/teams"
 
 import { useTeams } from "../hooks/use-teams"
-import { getTranslations } from "@/lib/i18n/translations"
+import type { Translations } from "@/lib/i18n/translations"
 
 interface TeamsClientProps {
   initialTeams?: TeamWithMemberCount[]
-  t: ReturnType<typeof getTranslations>
+  t: Translations
 }
 
 export function TeamsClient({ initialTeams = [], t }: TeamsClientProps) {

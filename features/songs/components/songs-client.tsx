@@ -33,12 +33,12 @@ import { useTags } from "../hooks/use-tags"
 import { useUser } from "@/features/auth"
 import { useAppContext, type AppContext } from "@/features/app-context"
 import type { Song, GroupBy, BPMRange } from "../types"
-import { getTranslations } from "@/lib/i18n/translations"
+import type { Translations } from "@/lib/i18n/translations"
 import { createOverlayIds } from "@/lib/ui/stable-overlay-ids"
 
 interface SongsClientProps {
   initialSongs?: Song[]
-  t: ReturnType<typeof getTranslations>
+  t: Translations
 }
 
 function SongDetailSkeleton() {

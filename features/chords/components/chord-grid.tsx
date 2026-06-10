@@ -1,10 +1,17 @@
 "use client"
 
 import * as React from "react"
+import dynamic from "next/dynamic"
 import { ChordCard } from "./chord-card"
-import { ChordDiagram } from "@/features/lyrics-editor"
 import { keyLabel, type ChordEntry } from "../utils/chord-db-helpers"
 import { useLocale } from "@/features/settings"
+
+// Lazy-loaded: avoids pulling the lyrics-editor barrel (chordsheetjs etc.)
+// into the chords page chunk — the diagram only renders once a card is tapped
+const ChordDiagram = dynamic(
+  () => import("@/features/lyrics-editor").then((m) => m.ChordDiagram),
+  { ssr: false }
+)
 
 interface ChordGridProps {
   chords: ChordEntry[]

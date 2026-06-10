@@ -4,6 +4,7 @@ import { Music2, Turtle, Rabbit, Zap } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import { getKeyColorClasses, getBpmColorClasses } from "@/lib/badge-colors"
+import { TagBadge } from "@/features/songs"
 import type { SongWithPosition } from "@/types/extended"
 
 interface PlaylistSongItemProps {
@@ -42,6 +43,9 @@ export function PlaylistSongItem({ song, index, className }: PlaylistSongItemPro
             )}
             {song.bpm} BPM
           </Badge>
+          {song.tags?.map((tag) => (
+            <TagBadge key={tag.id} tag={tag} />
+          ))}
         </div>
       </div>
     </div>

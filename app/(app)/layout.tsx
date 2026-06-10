@@ -8,8 +8,7 @@ import type { ChordHand } from "@/lib/actions/chord-hand"
 import { getInitialAppContextData } from "@/features/app-context/server"
 import { defaultLocale, isValidLocale } from "@/lib/i18n/config"
 import type { Locale } from "@/lib/i18n/config"
-import { isValidPalette, DEFAULT_PALETTE } from "@/lib/palette"
-import { isValidUIFont, DEFAULT_UI_FONT } from "@/lib/font"
+import { resolvePalette, resolveFont } from "@/lib/display-preferences"
 
 export default async function AppLayout({
   children
@@ -39,25 +38,16 @@ export default async function AppLayout({
     initialChordHand = chordHandCookie?.value === "right" ? "right" : "left"
   }
 
-  // Palette: DB takes priority, then cookie, then default
-  const dbPalette = appContextData.preferences?.palette
-  let initialPalette
-  if (isValidPalette(dbPalette)) {
-    initialPalette = dbPalette
-  } else {
-    const paletteCookie = cookieStore.get("NEXT_PALETTE")
-    initialPalette = isValidPalette(paletteCookie?.value) ? paletteCookie.value : DEFAULT_PALETTE
-  }
-
-  // Font: DB takes priority, then cookie, then default
-  const dbFont = appContextData.preferences?.uiFont
-  let initialFont
-  if (isValidUIFont(dbFont)) {
-    initialFont = dbFont
-  } else {
-    const fontCookie = cookieStore.get("NEXT_UI_FONT")
-    initialFont = isValidUIFont(fontCookie?.value) ? fontCookie.value : DEFAULT_UI_FONT
-  }
+  // Same DB-first resolution as the root layout, so the provider state always
+  // matches the SSR'd <html> attributes and the mount effects are no-ops.
+  const initialPalette = resolvePalette(
+    appContextData.preferences?.palette,
+    cookieStore.get("NEXT_PALETTE")?.value
+  )
+  const initialFont = resolveFont(
+    appContextData.preferences?.uiFont,
+    cookieStore.get("NEXT_UI_FONT")?.value
+  )
 
   return (
     <QueryProvider initialUser={appContextData.user}>

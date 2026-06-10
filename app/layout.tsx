@@ -20,8 +20,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import NextTopLoader from "nextjs-toploader"
-import { isValidPalette, DEFAULT_PALETTE } from "@/lib/palette"
-import { isValidUIFont, DEFAULT_UI_FONT } from "@/lib/font"
+import { resolveTheme, resolvePalette, resolveFont } from "@/lib/display-preferences"
+import { getInitialAppContextData } from "@/features/app-context/server"
 
 import "./globals.css"
 
@@ -157,9 +157,6 @@ export const metadata: Metadata = {
   }
 }
 
-const VALID_THEMES = ["light", "dark", "system"] as const
-type Theme = (typeof VALID_THEMES)[number]
-
 export default async function RootLayout({
   children
 }: Readonly<{
@@ -167,17 +164,14 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies()
 
-  const themeCookie = cookieStore.get("NEXT_THEME")
-  const defaultTheme: Theme =
-    themeCookie && (VALID_THEMES as readonly string[]).includes(themeCookie.value)
-      ? (themeCookie.value as Theme)
-      : "system"
+  // DB preferences take priority over cookies (see lib/display-preferences.ts).
+  // getInitialAppContextData is wrapped in React cache(), so the nested
+  // app/(app)/layout.tsx call reuses this fetch within the same request.
+  const { preferences } = await getInitialAppContextData()
 
-  const paletteCookie = cookieStore.get("NEXT_PALETTE")
-  const defaultPalette = isValidPalette(paletteCookie?.value) ? paletteCookie.value : DEFAULT_PALETTE
-
-  const fontCookie = cookieStore.get("NEXT_UI_FONT")
-  const defaultFont = isValidUIFont(fontCookie?.value) ? fontCookie.value : DEFAULT_UI_FONT
+  const defaultTheme = resolveTheme(preferences?.theme, cookieStore.get("NEXT_THEME")?.value)
+  const defaultPalette = resolvePalette(preferences?.palette, cookieStore.get("NEXT_PALETTE")?.value)
+  const defaultFont = resolveFont(preferences?.uiFont, cookieStore.get("NEXT_UI_FONT")?.value)
 
   const fontClasses = [
     geistSans.variable,
@@ -201,23 +195,21 @@ export default async function RootLayout({
       suppressHydrationWarning
       data-palette={defaultPalette}
       data-font={defaultFont}
-      className={fontClasses}
+      className={defaultTheme === "dark" ? `${fontClasses} dark` : fontClasses}
     >
       <head>
         {/*
          * Blocking script — runs synchronously in <head> before any paint.
          *
-         * Palette and font cookies are httpOnly (not readable by JS), so
-         * data-palette and data-font are already set correctly via SSR on the
-         * <html> element — no JS needed for those.
+         * data-palette and data-font are resolved DB-first on the server and
+         * rendered directly on <html>, so no JS is needed for those.
          *
-         * What we DO need here: apply class="dark" before CSS is evaluated.
-         * next-themes injects its script inside <body>, which can fire a frame
-         * too late when the browser paints the shell first. Reading localStorage
-         * (where next-themes stores the user's choice) and falling back to
-         * prefers-color-scheme ensures the dark class is present on the very
-         * first frame, so the inline palette <style> below immediately resolves
-         * the correct dark-mode variables.
+         * The dark class is also SSR'd when the resolved theme is "dark", but
+         * next-themes stores the per-device choice in localStorage, which the
+         * server cannot read. This script reconciles localStorage (and
+         * prefers-color-scheme for "system") against the SSR markup before
+         * first paint, using the same precedence next-themes applies after
+         * mount: localStorage first, then the SSR-resolved default.
          */}
         <script
           suppressHydrationWarning
@@ -225,9 +217,8 @@ export default async function RootLayout({
             __html: `(function(){try{
 var d=document.documentElement,t=null;
 try{t=localStorage.getItem("theme")}catch(e){}
-if(t==="dark")d.classList.add("dark");
-else if(t==="light")d.classList.remove("dark");
-else if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)d.classList.add("dark");
+if(!t)t=${JSON.stringify(defaultTheme)};
+d.classList.toggle("dark",!!(t==="dark"||(t!=="light"&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)));
 }catch(e){}})();`
           }}
         />

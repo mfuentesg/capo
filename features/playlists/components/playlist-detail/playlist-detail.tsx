@@ -342,7 +342,7 @@ export function PlaylistDetail({ playlist, onClose, onUpdate, onDelete }: Playli
   }
 
   return (
-    <div className="flex flex-1 flex-col bg-card border-t-2 border-accent-playlists">
+    <div className="flex flex-1 flex-col bg-muted/30 border-t-2 border-accent-playlists">
       <div className="shrink-0 flex flex-col border-b bg-card p-4 lg:p-6">
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">

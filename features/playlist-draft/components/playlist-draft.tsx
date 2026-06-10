@@ -116,7 +116,7 @@ function PlaylistDraftBody({
 }: PlaylistDraftBodyProps) {
   const { t } = useTranslation()
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
+    useSensor(PointerSensor, { activationConstraint: { delay: 200, tolerance: 5 } })
   )
 
   return (

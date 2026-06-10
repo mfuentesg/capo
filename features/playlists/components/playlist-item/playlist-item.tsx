@@ -14,6 +14,7 @@ interface PlaylistItemProps {
   playlist: Playlist
   isSelected: boolean
   onSelect: (playlist: Playlist) => void
+  onArchive?: (playlist: Playlist) => void
   ownershipLabel?: string
   bucketColor?: string
   teamIcon?: string | null
@@ -23,6 +24,7 @@ export const PlaylistItem = memo(function PlaylistItem({
   playlist,
   isSelected,
   onSelect,
+  onArchive,
   ownershipLabel,
   bucketColor,
   teamIcon
@@ -148,6 +150,20 @@ export const PlaylistItem = memo(function PlaylistItem({
         </div>
       </div>
 
+      {onArchive && (
+        <button
+          type="button"
+          aria-label={playlist.archivedAt ? t.playlists.unarchive : t.playlists.archive}
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation()
+            onArchive(playlist)
+          }}
+          className="shrink-0 flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground/60 hover:text-foreground hover:bg-muted transition-colors active:scale-90 touch-manipulation"
+        >
+          <Archive className="h-4 w-4" />
+        </button>
+      )}
     </div>
   )
 })

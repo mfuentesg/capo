@@ -61,37 +61,37 @@ describe("team actions", () => {
     jest.clearAllMocks()
     ;(createClient as jest.Mock).mockResolvedValue(mockSupabase)
     mockSupabase.auth.getUser.mockResolvedValue({
-      data: { user: { id: "user-1" } },
+      data: { user: { id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } },
       error: null
     })
   })
 
   it("creates a team and revalidates team list route", async () => {
-    ;(createTeamApi as jest.Mock).mockResolvedValue({ id: "team-1" })
+    ;(createTeamApi as jest.Mock).mockResolvedValue({ id: "dddddddd-dddd-4ddd-8ddd-dddddddddddd" })
 
     const result = await createTeamAction({
       name: "Worship Team",
-      created_by: "user-1"
+      created_by: "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
     })
 
-    expect(result).toBe("team-1")
+    expect(result).toBe("dddddddd-dddd-4ddd-8ddd-dddddddddddd")
     expect(createTeamApi).toHaveBeenCalledWith(mockSupabase, {
       name: "Worship Team",
-      created_by: "user-1"
+      created_by: "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
     })
     expect(revalidatePath).toHaveBeenCalledWith("/dashboard/teams")
   })
 
   it("updates, deletes, leaves, and transfers ownership with team route revalidation", async () => {
-    await updateTeamAction("team-1", { name: "Updated Team" })
-    await deleteTeamAction("team-1")
-    await leaveTeamAction("team-1")
-    await transferTeamOwnershipAction("team-1", "user-2")
+    await updateTeamAction("dddddddd-dddd-4ddd-8ddd-dddddddddddd", { name: "Updated Team" })
+    await deleteTeamAction("dddddddd-dddd-4ddd-8ddd-dddddddddddd")
+    await leaveTeamAction("dddddddd-dddd-4ddd-8ddd-dddddddddddd")
+    await transferTeamOwnershipAction("dddddddd-dddd-4ddd-8ddd-dddddddddddd", "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee")
 
-    expect(updateTeamApi).toHaveBeenCalledWith(mockSupabase, "team-1", { name: "Updated Team" })
-    expect(deleteTeamApi).toHaveBeenCalledWith(mockSupabase, "team-1")
-    expect(leaveTeamApi).toHaveBeenCalledWith(mockSupabase, "team-1")
-    expect(transferTeamOwnershipApi).toHaveBeenCalledWith(mockSupabase, "team-1", "user-2")
+    expect(updateTeamApi).toHaveBeenCalledWith(mockSupabase, "dddddddd-dddd-4ddd-8ddd-dddddddddddd", { name: "Updated Team" })
+    expect(deleteTeamApi).toHaveBeenCalledWith(mockSupabase, "dddddddd-dddd-4ddd-8ddd-dddddddddddd")
+    expect(leaveTeamApi).toHaveBeenCalledWith(mockSupabase, "dddddddd-dddd-4ddd-8ddd-dddddddddddd")
+    expect(transferTeamOwnershipApi).toHaveBeenCalledWith(mockSupabase, "dddddddd-dddd-4ddd-8ddd-dddddddddddd", "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee")
     expect(revalidatePath).toHaveBeenCalledTimes(4)
     expect(revalidatePath).toHaveBeenNthCalledWith(1, "/dashboard/teams")
     expect(revalidatePath).toHaveBeenNthCalledWith(2, "/dashboard/teams")
@@ -100,52 +100,52 @@ describe("team actions", () => {
   })
 
   it("invites a member with explicit and default roles", async () => {
-    await inviteTeamMemberAction("team-1", "admin@example.com", "admin")
-    await inviteTeamMemberAction("team-1", "member@example.com")
+    await inviteTeamMemberAction("dddddddd-dddd-4ddd-8ddd-dddddddddddd", "admin@example.com", "admin")
+    await inviteTeamMemberAction("dddddddd-dddd-4ddd-8ddd-dddddddddddd", "member@example.com")
 
     expect(inviteTeamMemberApi).toHaveBeenNthCalledWith(
       1,
       mockSupabase,
-      "team-1",
+      "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
       "admin@example.com",
       "admin"
     )
     expect(inviteTeamMemberApi).toHaveBeenNthCalledWith(
       2,
       mockSupabase,
-      "team-1",
+      "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
       "member@example.com",
       "member"
     )
-    expect(revalidatePath).not.toHaveBeenCalledWith("/dashboard/teams/team-1")
+    expect(revalidatePath).not.toHaveBeenCalledWith("/dashboard/teams/dddddddd-dddd-4ddd-8ddd-dddddddddddd")
     expect(revalidatePath).toHaveBeenCalledTimes(0)
   })
 
   it("removes members, changes role, and deletes invitations", async () => {
-    await removeTeamMemberAction("team-1", "user-3")
-    await changeTeamMemberRoleAction("team-1", "user-3", "viewer")
-    await deleteTeamInvitationAction("invite-1")
+    await removeTeamMemberAction("dddddddd-dddd-4ddd-8ddd-dddddddddddd", "ffffffff-ffff-4fff-8fff-ffffffffffff")
+    await changeTeamMemberRoleAction("dddddddd-dddd-4ddd-8ddd-dddddddddddd", "ffffffff-ffff-4fff-8fff-ffffffffffff", "viewer")
+    await deleteTeamInvitationAction("99999999-9999-4999-8999-999999999999")
 
-    expect(removeTeamMemberApi).toHaveBeenCalledWith(mockSupabase, "team-1", "user-3")
+    expect(removeTeamMemberApi).toHaveBeenCalledWith(mockSupabase, "dddddddd-dddd-4ddd-8ddd-dddddddddddd", "ffffffff-ffff-4fff-8fff-ffffffffffff")
     expect(changeTeamMemberRoleApi).toHaveBeenCalledWith(
       mockSupabase,
-      "team-1",
-      "user-3",
+      "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "ffffffff-ffff-4fff-8fff-ffffffffffff",
       "viewer"
     )
-    expect(deleteTeamInvitationApi).toHaveBeenCalledWith(mockSupabase, "invite-1")
-    expect(revalidatePath).toHaveBeenCalledWith("/dashboard/teams/team-1")
+    expect(deleteTeamInvitationApi).toHaveBeenCalledWith(mockSupabase, "99999999-9999-4999-8999-999999999999")
+    expect(revalidatePath).toHaveBeenCalledWith("/dashboard/teams/dddddddd-dddd-4ddd-8ddd-dddddddddddd")
     expect(revalidatePath).toHaveBeenCalledWith("/dashboard/invitations")
     expect(revalidatePath).toHaveBeenCalledTimes(3)
   })
 
   it("accepts invitation and revalidates invitation and team routes", async () => {
-    ;(acceptTeamInvitationApi as jest.Mock).mockResolvedValue("team-1")
+    ;(acceptTeamInvitationApi as jest.Mock).mockResolvedValue("dddddddd-dddd-4ddd-8ddd-dddddddddddd")
 
     const result = await acceptTeamInvitationAction("invite-token")
 
     expect(result).toEqual({
-      teamId: "team-1",
+      teamId: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
       errorCode: null,
       errorMessage: null
     })
@@ -241,5 +241,41 @@ describe("getPendingInvitationsAction", () => {
 
     expect(getPendingInvitationsApi).toHaveBeenCalledWith(mockSupabase)
     expect(result).toEqual(invitations)
+  })
+})
+
+describe("input validation", () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+    ;(createClient as jest.Mock).mockResolvedValue({ id: "supabase-client" })
+  })
+
+  it("rejects a non-UUID team id", async () => {
+    await expect(deleteTeamAction("not-a-uuid")).rejects.toThrow()
+    expect(deleteTeamApi).not.toHaveBeenCalled()
+  })
+
+  it("rejects an invalid email on invitation", async () => {
+    await expect(
+      inviteTeamMemberAction("dddddddd-dddd-4ddd-8ddd-dddddddddddd", "not-an-email")
+    ).rejects.toThrow()
+    expect(inviteTeamMemberApi).not.toHaveBeenCalled()
+  })
+
+  it("rejects an unknown role on role change", async () => {
+    await expect(
+      changeTeamMemberRoleAction(
+        "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "ffffffff-ffff-4fff-8fff-ffffffffffff",
+        "superadmin" as never
+      )
+    ).rejects.toThrow()
+    expect(changeTeamMemberRoleApi).not.toHaveBeenCalled()
+  })
+
+  it("returns INVALID_TOKEN for malformed invitation tokens", async () => {
+    const result = await acceptTeamInvitationAction("")
+    expect(result.errorCode).toBe("INVALID_TOKEN")
+    expect(acceptTeamInvitationApi).not.toHaveBeenCalled()
   })
 })

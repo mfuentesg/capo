@@ -18,6 +18,7 @@ import {
   archivePlaylist as archivePlaylistApi,
   unarchivePlaylist as unarchivePlaylistApi
 } from "./playlistsApi"
+import { getTagAssignmentsForSongsAction } from "@/features/songs"
 
 export async function getPlaylistsAction(context: AppContext): Promise<Playlist[]> {
   const supabase = await createClient()
@@ -34,7 +35,13 @@ export async function getPlaylistsAllBucketsAction(
 
 export async function getPlaylistWithSongsAction(playlistId: string) {
   const supabase = await createClient()
-  return getPlaylistWithSongsApi(supabase, playlistId)
+  const playlist = await getPlaylistWithSongsApi(supabase, playlistId)
+  if (!playlist) return null
+  const tagMap = await getTagAssignmentsForSongsAction(playlist.songs.map((s) => s.id))
+  return {
+    ...playlist,
+    songs: playlist.songs.map((song) => ({ ...song, tags: tagMap.get(song.id) ?? [] }))
+  }
 }
 
 export async function createPlaylistAction(

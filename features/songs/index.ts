@@ -16,7 +16,7 @@ export { useUserPreferences, useUpsertUserPreferences } from "./hooks/use-user-p
 export { songsKeys } from "./hooks/query-keys"
 
 export { api, rawApi, getUserProfileData, getUserPreferences, upsertUserPreferences } from "./api"
-export { getSongsAllBucketsAction, getSongTagsAction } from "./api/actions"
+export { getSongsAllBucketsAction, getSongTagsAction, getTagAssignmentsForSongsAction } from "./api/actions"
 export type { UserProfileData } from "./api"
 
 export { getBucketColor } from "./utils"

@@ -113,6 +113,13 @@ export async function getSongTagsAction(songId: string): Promise<SongTag[]> {
   return tagMap.get(songId) ?? []
 }
 
+export async function getTagAssignmentsForSongsAction(
+  songIds: string[]
+): Promise<Map<string, SongTag[]>> {
+  const supabase = await createClient()
+  return getTagAssignmentsForSongsApi(supabase, songIds)
+}
+
 export async function createSongAction(
   song: Partial<Song>,
   userId: string,

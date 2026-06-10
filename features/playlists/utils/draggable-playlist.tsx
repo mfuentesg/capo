@@ -46,7 +46,7 @@ const SortableSong = memo(
         ref={setNodeRef}
         style={sortStyle}
         {...attributes}
-        className={`flex items-center gap-2.5 rounded-xl bg-card shadow-sm p-3 touch-manipulation ${isDragging ? "opacity-70 z-50" : ""}`}
+        className={`flex items-center gap-2.5 rounded-xl bg-card border border-border/50 shadow-sm p-3 touch-manipulation ${isDragging ? "opacity-70 z-50" : ""}`}
       >
         {/* Drag handle — left side, non-interactive visual only */}
         <div

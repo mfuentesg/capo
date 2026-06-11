@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge"
 import { Plus, Search, ListMusic, Settings2, X } from "lucide-react"
 import { PlaylistList } from "./playlist-list"
 import type { Playlist } from "../types"
-import { usePlaylists, useCreatePlaylist, useUpdatePlaylist, useDeletePlaylist } from "../hooks"
+import { usePlaylists, useCreatePlaylist, useUpdatePlaylist, useDeletePlaylist, useArchivePlaylist, useUnarchivePlaylist } from "../hooks"
 import { useUser } from "@/features/auth"
 import { useAppContext, type AppContext } from "@/features/app-context"
 import { getTranslations } from "@/lib/i18n/translations"
@@ -93,6 +93,8 @@ export function PlaylistsClient({ initialPlaylists = [], t }: PlaylistsClientPro
   const [creationBucket, setCreationBucket] = useState<AppContext | null>(null)
   const updatePlaylistMutation = useUpdatePlaylist()
   const deletePlaylistMutation = useDeletePlaylist()
+  const archivePlaylistMutation = useArchivePlaylist()
+  const unarchivePlaylistMutation = useUnarchivePlaylist()
   const [isMobile, setIsMobile] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [filterVisibility, setFilterVisibility] = useState<"all" | "public" | "private">("all")
@@ -135,6 +137,14 @@ export function PlaylistsClient({ initialPlaylists = [], t }: PlaylistsClientPro
   const clearAllFilters = () => {
     setFilterVisibility("all")
   }
+
+  const handleArchivePlaylist = useCallback((playlist: Playlist) => {
+    if (playlist.archivedAt) {
+      unarchivePlaylistMutation.mutate(playlist.id)
+    } else {
+      archivePlaylistMutation.mutate(playlist.id)
+    }
+  }, [archivePlaylistMutation, unarchivePlaylistMutation])
 
   const handleSelectPlaylist = useCallback((playlist: Playlist) => {
     startTransition(() => {
@@ -318,6 +328,7 @@ export function PlaylistsClient({ initialPlaylists = [], t }: PlaylistsClientPro
               selectedPlaylistId={selectedPlaylistId}
               isLoading={isLoading && playlists.length === 0}
               onSelectPlaylist={handleSelectPlaylist}
+              onArchivePlaylist={handleArchivePlaylist}
             />
           </div>
         </ResizablePanel>

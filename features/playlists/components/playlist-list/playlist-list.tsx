@@ -18,6 +18,7 @@ interface PlaylistListProps {
   selectedPlaylistId?: string | null
   isLoading?: boolean
   onSelectPlaylist: (playlist: Playlist) => void
+  onArchivePlaylist?: (playlist: Playlist) => void
 }
 
 export function PlaylistSkeleton() {
@@ -43,7 +44,8 @@ export function PlaylistList({
   filterVisibility = "all",
   selectedPlaylistId = null,
   isLoading = false,
-  onSelectPlaylist
+  onSelectPlaylist,
+  onArchivePlaylist
 }: PlaylistListProps) {
   const { t } = useTranslation()
   const { teams } = useAppContext()
@@ -121,6 +123,7 @@ export function PlaylistList({
             bucketColor={bucketColor}
             teamIcon={teamIcon}
             onSelect={onSelectPlaylist}
+            onArchive={onArchivePlaylist}
           />
         )
       })}

@@ -14,9 +14,10 @@ import {
 import { setPaletteAction } from "@/lib/actions/palette"
 import { isValidPalette, DEFAULT_PALETTE, type Palette } from "@/lib/palette"
 
-// useLayoutEffect runs synchronously before the browser paints, eliminating
-// the flash between the SSR palette (from cookie) and the real palette (from
-// DB). On the server it is a no-op — same behaviour as useEffect in SSR.
+// The SSR'd data-palette on <html> uses the same DB-first resolution as
+// initialPalette (lib/display-preferences.ts), so this mount effect is
+// normally a no-op safety net. useLayoutEffect keeps any rare correction from
+// painting twice. On the server it is a no-op — same behaviour as useEffect.
 const usePaletteLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect
 
 interface PaletteContextType {

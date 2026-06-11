@@ -1,7 +1,7 @@
 "use client"
 
 import { memo, startTransition } from "react"
-import { GripVerticalIcon, Trash2 } from "lucide-react"
+import { GripVerticalIcon, X } from "lucide-react"
 import { useTranslation } from "@/hooks/use-translation"
 import {
   DndContext,
@@ -46,41 +46,39 @@ const SortableSong = memo(
         ref={setNodeRef}
         style={sortStyle}
         {...attributes}
-        className={`relative rounded-lg ${isDragging ? "opacity-70 z-50" : ""}`}
+        className={`flex items-center gap-2.5 rounded-xl bg-card shadow-sm p-3 touch-manipulation ${isDragging ? "opacity-70 z-50" : ""}`}
       >
-        <div className="flex items-center gap-1">
-          {/* Drag affordance — left side, non-interactive visual only */}
-          <div
-            {...listeners}
-            className="shrink-0 flex items-center justify-center self-stretch px-1 cursor-grab touch-none"
-          >
-            <GripVerticalIcon className="h-4 w-4 text-muted-foreground/40" />
-          </div>
-
-          {/* Song row — tappable to open lyrics */}
-          <div
-            className={`relative flex-1 min-w-0 touch-manipulation cursor-pointer ${isDragging ? "cursor-grabbing" : ""}`}
-            onClick={() => startTransition(() => onSongClick?.(index))}
-          >
-            <PlaylistSongItem song={song} index={index} />
-          </div>
-
-          {/* Remove button — right side, properly sized for touch */}
-          {onRemoveSong && (
-            <button
-              type="button"
-              aria-label={t.common.removeSong}
-              onPointerDown={(e) => e.stopPropagation()}
-              onClick={(e) => {
-                e.stopPropagation()
-                onRemoveSong(song.id)
-              }}
-              className="shrink-0 flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground/60 hover:text-destructive hover:bg-destructive/10 transition-colors active:scale-90 touch-manipulation"
-            >
-              <Trash2 className="h-4 w-4" />
-            </button>
-          )}
+        {/* Drag handle — left side, non-interactive visual only */}
+        <div
+          {...listeners}
+          className="shrink-0 flex items-center justify-center self-stretch px-1 cursor-grab touch-none"
+        >
+          <GripVerticalIcon className="h-4 w-4 text-muted-foreground/40" />
         </div>
+
+        {/* Song row — tappable to open lyrics */}
+        <div
+          className={`relative flex-1 min-w-0 cursor-pointer ${isDragging ? "cursor-grabbing" : ""}`}
+          onClick={() => startTransition(() => onSongClick?.(index))}
+        >
+          <PlaylistSongItem song={song} index={index} />
+        </div>
+
+        {/* Remove button — right side, properly sized for touch */}
+        {onRemoveSong && (
+          <button
+            type="button"
+            aria-label={t.common.removeSong}
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation()
+              onRemoveSong(song.id)
+            }}
+            className="shrink-0 flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground/60 hover:text-destructive hover:bg-destructive/10 transition-colors active:scale-90 touch-manipulation"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
       </div>
     )
   }

@@ -4,52 +4,36 @@ import { Music2, Turtle, Rabbit, Zap } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import { getKeyColorClasses, getBpmColorClasses } from "@/lib/badge-colors"
+import { TagBadge } from "@/features/songs"
 import type { SongWithPosition } from "@/types/extended"
 
 interface PlaylistSongItemProps {
   song: SongWithPosition
   index: number
   className?: string
-  showDragHandle?: boolean
 }
 
-export function PlaylistSongItem({ song, index, className, showDragHandle }: PlaylistSongItemProps) {
+export function PlaylistSongItem({ song, index, className }: PlaylistSongItemProps) {
   return (
-    <div
-      className={cn(
-        "group flex items-start gap-4 rounded-xl bg-card border border-border/60 shadow-sm p-4 transition-shadow hover:shadow-md hover:border-border",
-        showDragHandle && "pr-10",
-        className
-      )}
-    >
-      {/* Position number — morphs to a music icon on hover to hint that the item is tappable */}
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-base font-bold text-primary">
-        {showDragHandle ? (
-          <>
-            <span className="group-hover:hidden">{index + 1}</span>
-            <Music2 className="hidden h-4 w-4 group-hover:block" />
-          </>
-        ) : (
-          index + 1
-        )}
+    <div className={cn("flex items-center gap-2.5", className)}>
+      {/* Position badge */}
+      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary tabular-nums">
+        {index + 1}
       </div>
 
       {/* Song Info */}
-      <div className="flex min-w-0 flex-1 flex-col gap-2">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0 flex-1">
-            <h4 className="truncate text-base font-semibold leading-tight">{song.title}</h4>
-            <p className="mt-0.5 truncate text-sm text-muted-foreground">{song.artist}</p>
-          </div>
+      <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+        <div className="min-w-0">
+          <h4 className="truncate text-sm font-bold leading-tight">{song.title}</h4>
+          <p className="mt-0.5 truncate text-xs text-muted-foreground">{song.artist}</p>
         </div>
 
-        {/* Metadata Row */}
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="outline" className={cn("gap-1.5 font-mono text-xs", getKeyColorClasses(song.key))}>
+        <div className="flex flex-wrap items-center gap-1.5">
+          <Badge variant="outline" className={cn("gap-1 font-mono text-xs", getKeyColorClasses(song.key))}>
             <Music2 className="h-3 w-3" />
             {song.key}
           </Badge>
-          <Badge variant="secondary" className={cn("gap-1.5 text-xs", getBpmColorClasses(song.bpm))}>
+          <Badge variant="secondary" className={cn("gap-1 text-xs", getBpmColorClasses(song.bpm))}>
             {song.bpm < 90 ? (
               <Turtle className="h-3 w-3" />
             ) : song.bpm <= 120 ? (
@@ -59,6 +43,9 @@ export function PlaylistSongItem({ song, index, className, showDragHandle }: Pla
             )}
             {song.bpm} BPM
           </Badge>
+          {song.tags?.map((tag) => (
+            <TagBadge key={tag.id} tag={tag} />
+          ))}
         </div>
       </div>
     </div>

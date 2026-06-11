@@ -2,8 +2,8 @@
 
 import { useState, useTransition } from "react"
 import { Button } from "@/components/ui/button"
-import { useLocale } from "@/features/settings"
-import { deleteAccountAction } from "@/features/settings/api/actions"
+import { useLocale } from "../contexts"
+import { deleteAccountAction } from "../api/actions"
 
 export function AccountDangerZone() {
   const { t } = useLocale()

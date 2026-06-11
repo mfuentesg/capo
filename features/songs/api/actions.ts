@@ -1,6 +1,8 @@
 "use server"
 
+import { z } from "zod"
 import { createClient } from "@/lib/supabase/server"
+import { uuidSchema, uuidArraySchema } from "@/lib/validation"
 import type { Song, UserSongSettings, UserPreferences, SongTag } from "../types"
 import type { UserProfileData } from "./user-preferences-api"
 import type { AppContext } from "@/features/app-context"
@@ -34,6 +36,24 @@ function mergeTags(songs: Song[], tagMap: Map<string, SongTag[]>): Song[] {
   return songs.map((song) => ({ ...song, tags: tagMap.get(song.id) ?? [] }))
 }
 
+// Validates user-editable song fields on create/update; unknown keys (e.g.
+// ownership, userSettings) pass through untouched and are handled by the API layer.
+const songFieldsSchema = z.looseObject({
+  title: z.string().trim().min(1).max(200).optional(),
+  artist: z.string().trim().max(200).optional(),
+  key: z.string().max(12).optional(),
+  bpm: z.number().int().min(0).max(400).optional(),
+  lyrics: z.string().max(100_000).optional(),
+  notes: z.string().max(10_000).optional(),
+  // fontSize is a scale factor (UI range 0.5–3), not pixels
+  fontSize: z.number().min(0.25).max(10).optional(),
+  transpose: z.number().int().min(-11).max(11).optional(),
+  capo: z.number().int().min(0).max(24).optional()
+})
+
+const tagNameSchema = z.string().trim().min(1).max(50)
+const tagColorSchema = z.string().max(32).nullable()
+
 export async function getSongsAction(context: AppContext, searchQuery?: string): Promise<Song[]> {
   const supabase = await createClient()
   const [songs, settings] = await Promise.all([
@@ -58,6 +78,8 @@ export async function getSongsAllBucketsAction(
   teams: { id: string; name: string; icon: string | null }[],
   searchQuery?: string
 ): Promise<Song[]> {
+  uuidSchema.parse(userId)
+  uuidArraySchema.parse(teamIds)
   const supabase = await createClient()
   const [songs, settings] = await Promise.all([
     getSongsAllBucketsApi(supabase, userId, teamIds, teams, searchQuery),
@@ -84,6 +106,8 @@ export async function getTagsForUserAction(
   userId: string,
   teamIds: string[]
 ): Promise<SongTag[]> {
+  uuidSchema.parse(userId)
+  uuidArraySchema.parse(teamIds)
   const supabase = await createClient()
   return getTagsForUserApi(supabase, userId, teamIds)
 }
@@ -93,21 +117,27 @@ export async function createTagAction(
   color: string | null,
   context: AppContext
 ): Promise<SongTag> {
+  const validatedName = tagNameSchema.parse(name)
+  tagColorSchema.parse(color)
   const supabase = await createClient()
-  return createTagApi(supabase, name, color, context)
+  return createTagApi(supabase, validatedName, color, context)
 }
 
 export async function deleteTagAction(tagId: string): Promise<void> {
+  uuidSchema.parse(tagId)
   const supabase = await createClient()
   await deleteTagApi(supabase, tagId)
 }
 
 export async function setSongTagsAction(songId: string, tagIds: string[]): Promise<void> {
+  uuidSchema.parse(songId)
+  uuidArraySchema.parse(tagIds)
   const supabase = await createClient()
   await setSongTagsApi(supabase, songId, tagIds)
 }
 
 export async function getSongTagsAction(songId: string): Promise<SongTag[]> {
+  uuidSchema.parse(songId)
   const supabase = await createClient()
   const tagMap = await getTagAssignmentsForSongsApi(supabase, [songId])
   return tagMap.get(songId) ?? []
@@ -125,24 +155,31 @@ export async function createSongAction(
   userId: string,
   context?: AppContext
 ): Promise<Song> {
+  const validated = songFieldsSchema.parse(song) as Partial<Song>
+  uuidSchema.parse(userId)
   const supabase = await createClient()
   const result = context
-    ? await createSongApi(supabase, song, userId, context)
-    : await createSongApi(supabase, song, userId)
+    ? await createSongApi(supabase, validated, userId, context)
+    : await createSongApi(supabase, validated, userId)
   return result
 }
 
 export async function updateSongAction(songId: string, updates: Partial<Song>): Promise<Song> {
+  uuidSchema.parse(songId)
+  const validated = songFieldsSchema.parse(updates) as Partial<Song>
   const supabase = await createClient()
-  return updateSongApi(supabase, songId, updates)
+  return updateSongApi(supabase, songId, validated)
 }
 
 export async function deleteSongAction(songId: string): Promise<void> {
+  uuidSchema.parse(songId)
   const supabase = await createClient()
   await deleteSongApi(supabase, songId)
 }
 
 export async function transferSongToTeamAction(songId: string, teamId: string): Promise<void> {
+  uuidSchema.parse(songId)
+  uuidSchema.parse(teamId)
   const supabase = await createClient()
   const {
     data: { user }
@@ -154,6 +191,7 @@ export async function transferSongToTeamAction(songId: string, teamId: string): 
 export async function getUserSongSettingsAction(
   songId: string
 ): Promise<UserSongSettings | null> {
+  uuidSchema.parse(songId)
   const supabase = await createClient()
   const {
     data: { user }
@@ -162,10 +200,19 @@ export async function getUserSongSettingsAction(
   return getUserSongSettingsApi(supabase, user.id, songId)
 }
 
+const userSongSettingsSchema = z.object({
+  capo: z.number().int().min(0).max(24),
+  transpose: z.number().int().min(-11).max(11),
+  // fontSize is a scale factor (UI range 0.5–3), not pixels
+  fontSize: z.number().min(0.25).max(10).optional()
+})
+
 export async function upsertUserSongSettingsAction(
   songId: string,
   settings: Omit<UserSongSettings, "songId">
 ): Promise<UserSongSettings> {
+  uuidSchema.parse(songId)
+  userSongSettingsSchema.parse(settings)
   const supabase = await createClient()
   const {
     data: { user }
@@ -196,9 +243,19 @@ export async function getUserProfileDataAction(): Promise<UserProfileData | null
   return getUserProfileDataApi(supabase, session.user.id)
 }
 
+const userPreferencesSchema = z.object({
+  lyricsColumns: z.union([z.literal(1), z.literal(2)]),
+  locale: z.string().max(10).optional(),
+  theme: z.enum(["light", "dark", "system"]).optional(),
+  chordHand: z.enum(["right", "left"]).optional(),
+  palette: z.string().max(50).optional(),
+  uiFont: z.string().max(50).optional()
+})
+
 export async function upsertUserPreferencesAction(
   preferences: UserPreferences
 ): Promise<UserPreferences | null> {
+  userPreferencesSchema.parse(preferences)
   const supabase = await createClient()
   const {
     data: { user }

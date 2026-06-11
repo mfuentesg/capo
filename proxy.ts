@@ -136,6 +136,11 @@ export async function proxy(request: NextRequest) {
     return response
   } catch (error) {
     console.error("Error in proxy:", error)
+    // Fail closed for protected routes: if the auth check itself blows up,
+    // send the user to login instead of letting the request through.
+    if (pathname.startsWith("/dashboard") && !isLegacyPublicSharePath(pathname)) {
+      return NextResponse.redirect(new URL(LOGIN_PATH, request.url))
+    }
     return NextResponse.next()
   }
 }

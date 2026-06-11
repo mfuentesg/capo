@@ -12,10 +12,10 @@ import { SELECTED_TEAM_ID_KEY } from "@/features/app-context"
 import type { AuthError } from "@supabase/supabase-js"
 import { toast } from "sonner"
 import { useLocale } from "@/features/settings"
-import type { UserInfo } from "@/features/auth/types"
+import type { UserInfo } from "../types"
 import type { Session } from "@supabase/supabase-js"
-import { api as authApi } from "@/features/auth/api"
-import { signOutAction } from "@/features/auth/api/actions"
+import { api as authApi } from "../api"
+import { signOutAction } from "../api/actions"
 
 export function useSession() {
   return useQuery<Session | null, Error, Session | null, readonly ["auth", "session"]>({

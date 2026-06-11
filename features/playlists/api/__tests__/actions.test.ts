@@ -55,24 +55,24 @@ describe("playlist actions", () => {
   })
 
   it("creates a playlist", async () => {
-    const playlistData = { name: "Setlist", songs: ["song-1"], visibility: "public" as const }
+    const playlistData = { name: "Setlist", songs: ["aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"], visibility: "public" as const }
     const createdPlaylist = {
-      id: "playlist-1",
+      id: "11111111-1111-4111-8111-111111111111",
       ...playlistData,
       createdAt: "2026-01-01T00:00:00.000Z",
       updatedAt: "2026-01-01T00:00:00.000Z"
     }
     ;(createPlaylistApi as jest.Mock).mockResolvedValue(createdPlaylist)
 
-    const result = await createPlaylistAction(playlistData, "user-1")
+    const result = await createPlaylistAction(playlistData, "cccccccc-cccc-4ccc-8ccc-cccccccccccc")
 
     expect(result).toEqual(createdPlaylist)
-    expect(createPlaylistApi).toHaveBeenCalledWith(mockSupabase, playlistData, "user-1")
+    expect(createPlaylistApi).toHaveBeenCalledWith(mockSupabase, playlistData, "cccccccc-cccc-4ccc-8ccc-cccccccccccc")
   })
 
   it("updates a playlist", async () => {
     const updatedPlaylist = {
-      id: "playlist-1",
+      id: "11111111-1111-4111-8111-111111111111",
       name: "Updated",
       songs: [],
       createdAt: "2026-01-01T00:00:00.000Z",
@@ -80,16 +80,16 @@ describe("playlist actions", () => {
     }
     ;(updatePlaylistApi as jest.Mock).mockResolvedValue(updatedPlaylist)
 
-    const result = await updatePlaylistAction("playlist-1", { name: "Updated" })
+    const result = await updatePlaylistAction("11111111-1111-4111-8111-111111111111", { name: "Updated" })
 
     expect(result).toEqual(updatedPlaylist)
-    expect(updatePlaylistApi).toHaveBeenCalledWith(mockSupabase, "playlist-1", { name: "Updated" })
+    expect(updatePlaylistApi).toHaveBeenCalledWith(mockSupabase, "11111111-1111-4111-8111-111111111111", { name: "Updated" })
     expect(revalidatePath).not.toHaveBeenCalled()
   })
 
   it("updates a playlist with shareCode and revalidates shared route", async () => {
     const updatedPlaylist = {
-      id: "playlist-1",
+      id: "11111111-1111-4111-8111-111111111111",
       name: "Updated",
       songs: [],
       shareCode: "ABC123",
@@ -98,48 +98,48 @@ describe("playlist actions", () => {
     }
     ;(updatePlaylistApi as jest.Mock).mockResolvedValue(updatedPlaylist)
 
-    await updatePlaylistAction("playlist-1", { name: "Updated" })
+    await updatePlaylistAction("11111111-1111-4111-8111-111111111111", { name: "Updated" })
 
     expect(revalidatePath).toHaveBeenCalledWith("/shared/ABC123")
   })
 
   it("deletes a playlist", async () => {
-    await deletePlaylistAction("playlist-2")
+    await deletePlaylistAction("22222222-2222-4222-8222-222222222222")
 
-    expect(deletePlaylistApi).toHaveBeenCalledWith(mockSupabase, "playlist-2")
+    expect(deletePlaylistApi).toHaveBeenCalledWith(mockSupabase, "22222222-2222-4222-8222-222222222222")
   })
 
   it("adds a song to a playlist", async () => {
-    await addSongToPlaylistAction("playlist-1", "song-1")
+    await addSongToPlaylistAction("11111111-1111-4111-8111-111111111111", "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa")
 
-    expect(addSongToPlaylistApi).toHaveBeenCalledWith(mockSupabase, "playlist-1", "song-1")
+    expect(addSongToPlaylistApi).toHaveBeenCalledWith(mockSupabase, "11111111-1111-4111-8111-111111111111", "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa")
   })
 
   it("removes a song from a playlist", async () => {
-    await removeSongFromPlaylistAction("playlist-1", "song-2")
+    await removeSongFromPlaylistAction("11111111-1111-4111-8111-111111111111", "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb")
 
-    expect(removeSongFromPlaylistApi).toHaveBeenCalledWith(mockSupabase, "playlist-1", "song-2")
+    expect(removeSongFromPlaylistApi).toHaveBeenCalledWith(mockSupabase, "11111111-1111-4111-8111-111111111111", "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb")
   })
 
   it("reorders songs in a playlist without shareCode and skips shared revalidation", async () => {
     const updates = [
-      { songId: "song-1", position: 0 },
-      { songId: "song-2", position: 1 }
+      { songId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", position: 0 },
+      { songId: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", position: 1 }
     ]
 
-    await reorderPlaylistSongsAction("playlist-1", updates)
+    await reorderPlaylistSongsAction("11111111-1111-4111-8111-111111111111", updates)
 
-    expect(reorderPlaylistSongsApi).toHaveBeenCalledWith(mockSupabase, "playlist-1", updates)
+    expect(reorderPlaylistSongsApi).toHaveBeenCalledWith(mockSupabase, "11111111-1111-4111-8111-111111111111", updates)
     expect(revalidatePath).not.toHaveBeenCalled()
   })
 
   it("reorders songs in a playlist with shareCode and revalidates shared route", async () => {
     const updates = [
-      { songId: "song-1", position: 0 },
-      { songId: "song-2", position: 1 }
+      { songId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", position: 0 },
+      { songId: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", position: 1 }
     ]
 
-    await reorderPlaylistSongsAction("playlist-1", updates, "SHARE123")
+    await reorderPlaylistSongsAction("11111111-1111-4111-8111-111111111111", updates, "SHARE123")
 
     expect(revalidatePath).toHaveBeenCalledWith("/shared/SHARE123")
   })
@@ -147,7 +147,7 @@ describe("playlist actions", () => {
 
 describe("getPlaylistsAction", () => {
   const mockSupabase = { id: "supabase-client" }
-  const context = { type: "personal" as const, userId: "user-1" }
+  const context = { type: "personal" as const, userId: "cccccccc-cccc-4ccc-8ccc-cccccccccccc" }
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -155,7 +155,7 @@ describe("getPlaylistsAction", () => {
   })
 
   it("fetches playlists for the given context", async () => {
-    const playlists = [{ id: "p-1", name: "Setlist" }]
+    const playlists = [{ id: "33333333-3333-4333-8333-333333333333", name: "Setlist" }]
     ;(getPlaylistsApi as jest.Mock).mockResolvedValue(playlists)
 
     const result = await getPlaylistsAction(context)
@@ -174,12 +174,12 @@ describe("getPlaylistsAllBucketsAction", () => {
   })
 
   it("fetches playlists across all buckets for a user", async () => {
-    const playlists = [{ id: "p-2", name: "All Songs" }]
+    const playlists = [{ id: "44444444-4444-4444-8444-444444444444", name: "All Songs" }]
     ;(getPlaylistsAllBucketsApi as jest.Mock).mockResolvedValue(playlists)
 
-    const result = await getPlaylistsAllBucketsAction("user-1", ["team-1"])
+    const result = await getPlaylistsAllBucketsAction("cccccccc-cccc-4ccc-8ccc-cccccccccccc", ["dddddddd-dddd-4ddd-8ddd-dddddddddddd"])
 
-    expect(getPlaylistsAllBucketsApi).toHaveBeenCalledWith(mockSupabase, "user-1", ["team-1"])
+    expect(getPlaylistsAllBucketsApi).toHaveBeenCalledWith(mockSupabase, "cccccccc-cccc-4ccc-8ccc-cccccccccccc", ["dddddddd-dddd-4ddd-8ddd-dddddddddddd"])
     expect(result).toEqual(playlists)
   })
 })
@@ -193,13 +193,50 @@ describe("getPlaylistWithSongsAction", () => {
   })
 
   it("fetches a single playlist with its songs", async () => {
-    const playlist = { id: "p-1", name: "Setlist", songs: [] }
+    const playlist = { id: "33333333-3333-4333-8333-333333333333", name: "Setlist", songs: [] }
     ;(getPlaylistWithSongsApi as jest.Mock).mockResolvedValue(playlist)
 
-    const result = await getPlaylistWithSongsAction("p-1")
+    const result = await getPlaylistWithSongsAction("33333333-3333-4333-8333-333333333333")
 
-    expect(getPlaylistWithSongsApi).toHaveBeenCalledWith(mockSupabase, "p-1")
+    expect(getPlaylistWithSongsApi).toHaveBeenCalledWith(mockSupabase, "33333333-3333-4333-8333-333333333333")
     expect(result).toEqual(playlist)
+  })
+})
+
+describe("input validation", () => {
+  const mockSupabase = { id: "supabase-client" }
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+    ;(createClient as jest.Mock).mockResolvedValue(mockSupabase)
+  })
+
+  it("rejects a non-UUID playlist id", async () => {
+    await expect(deletePlaylistAction("not-a-uuid")).rejects.toThrow()
+    expect(deletePlaylistApi).not.toHaveBeenCalled()
+  })
+
+  it("rejects a non-UUID song id when adding to a playlist", async () => {
+    await expect(
+      addSongToPlaylistAction("11111111-1111-4111-8111-111111111111", "not-a-uuid")
+    ).rejects.toThrow()
+    expect(addSongToPlaylistApi).not.toHaveBeenCalled()
+  })
+
+  it("rejects an empty playlist name on create", async () => {
+    await expect(
+      createPlaylistAction({ name: "   " }, "cccccccc-cccc-4ccc-8ccc-cccccccccccc")
+    ).rejects.toThrow()
+    expect(createPlaylistApi).not.toHaveBeenCalled()
+  })
+
+  it("rejects negative positions when reordering", async () => {
+    await expect(
+      reorderPlaylistSongsAction("11111111-1111-4111-8111-111111111111", [
+        { songId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", position: -1 }
+      ])
+    ).rejects.toThrow()
+    expect(reorderPlaylistSongsApi).not.toHaveBeenCalled()
   })
 })
 
@@ -212,8 +249,8 @@ describe("addSongsToPlaylistAction", () => {
   })
 
   it("adds multiple songs to a playlist", async () => {
-    await addSongsToPlaylistAction("p-1", ["song-1", "song-2"])
+    await addSongsToPlaylistAction("33333333-3333-4333-8333-333333333333", ["aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"])
 
-    expect(addSongsToPlaylistApi).toHaveBeenCalledWith(mockSupabase, "p-1", ["song-1", "song-2"])
+    expect(addSongsToPlaylistApi).toHaveBeenCalledWith(mockSupabase, "33333333-3333-4333-8333-333333333333", ["aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"])
   })
 })

@@ -73,7 +73,7 @@ describe("song actions", () => {
 
   it("creates a song", async () => {
     const song = {
-      id: "song-1",
+      id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
       title: "Amazing Grace",
       artist: "Traditional",
       key: "C",
@@ -84,15 +84,15 @@ describe("song actions", () => {
     }
     ;(createSongApi as jest.Mock).mockResolvedValue(song)
 
-    const result = await createSongAction({ title: "Amazing Grace" }, "user-1")
+    const result = await createSongAction({ title: "Amazing Grace" }, "cccccccc-cccc-4ccc-8ccc-cccccccccccc")
 
     expect(result).toEqual(song)
-    expect(createSongApi).toHaveBeenCalledWith(mockSupabase, { title: "Amazing Grace" }, "user-1")
+    expect(createSongApi).toHaveBeenCalledWith(mockSupabase, { title: "Amazing Grace" }, "cccccccc-cccc-4ccc-8ccc-cccccccccccc")
   })
 
   it("updates a song without revalidating routes", async () => {
     const updatedSong = {
-      id: "song-1",
+      id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
       title: "Updated Song",
       artist: "",
       key: "",
@@ -103,16 +103,16 @@ describe("song actions", () => {
     }
     ;(updateSongApi as jest.Mock).mockResolvedValue(updatedSong)
 
-    const result = await updateSongAction("song-1", { title: "Updated Song" })
+    const result = await updateSongAction("aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", { title: "Updated Song" })
 
     expect(result).toEqual(updatedSong)
-    expect(updateSongApi).toHaveBeenCalledWith(mockSupabase, "song-1", { title: "Updated Song" })
+    expect(updateSongApi).toHaveBeenCalledWith(mockSupabase, "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", { title: "Updated Song" })
   })
 
   it("deletes a song", async () => {
-    await deleteSongAction("song-4")
+    await deleteSongAction("77777777-7777-4777-8777-777777777777")
 
-    expect(deleteSongApi).toHaveBeenCalledWith(mockSupabase, "song-4")
+    expect(deleteSongApi).toHaveBeenCalledWith(mockSupabase, "77777777-7777-4777-8777-777777777777")
   })
 })
 
@@ -126,20 +126,20 @@ describe("transferSongToTeamAction", () => {
       auth: { getUser: jest.fn().mockResolvedValue({ data: { user: null } }) }
     })
 
-    await expect(transferSongToTeamAction("song-1", "team-1")).rejects.toThrow("Unauthorized")
+    await expect(transferSongToTeamAction("aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "dddddddd-dddd-4ddd-8ddd-dddddddddddd")).rejects.toThrow("Unauthorized")
     expect(transferSongToTeamApi).not.toHaveBeenCalled()
   })
 
   it("transfers song to team", async () => {
     const mockSupabase = {
-      auth: { getUser: jest.fn().mockResolvedValue({ data: { user: { id: "user-1" } } }) }
+      auth: { getUser: jest.fn().mockResolvedValue({ data: { user: { id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } } }) }
     }
     ;(createClient as jest.Mock).mockResolvedValue(mockSupabase)
     ;(transferSongToTeamApi as jest.Mock).mockResolvedValue(undefined)
 
-    await transferSongToTeamAction("song-1", "team-1")
+    await transferSongToTeamAction("aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "dddddddd-dddd-4ddd-8ddd-dddddddddddd")
 
-    expect(transferSongToTeamApi).toHaveBeenCalledWith(mockSupabase, "song-1", "team-1")
+    expect(transferSongToTeamApi).toHaveBeenCalledWith(mockSupabase, "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "dddddddd-dddd-4ddd-8ddd-dddddddddddd")
   })
 })
 
@@ -156,25 +156,25 @@ describe("getAllUserSongSettingsAction", () => {
 
   it("calls getAllUserSongSettings with supabase and userId", async () => {
     const mockSupabase = {
-      auth: { getUser: jest.fn().mockResolvedValue({ data: { user: { id: "user-1" } } }) }
+      auth: { getUser: jest.fn().mockResolvedValue({ data: { user: { id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } } }) }
     }
     ;(createClient as jest.Mock).mockResolvedValue(mockSupabase)
     ;(getAllUserSongSettings as jest.Mock).mockResolvedValue([
-      { songId: "song-1", capo: 2, transpose: 0, fontSize: undefined }
+      { songId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", capo: 2, transpose: 0, fontSize: undefined }
     ])
 
     const result = await getAllUserSongSettingsAction()
 
-    expect(getAllUserSongSettings).toHaveBeenCalledWith(mockSupabase, "user-1")
-    expect(result).toEqual([{ songId: "song-1", capo: 2, transpose: 0, fontSize: undefined }])
+    expect(getAllUserSongSettings).toHaveBeenCalledWith(mockSupabase, "cccccccc-cccc-4ccc-8ccc-cccccccccccc")
+    expect(result).toEqual([{ songId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", capo: 2, transpose: 0, fontSize: undefined }])
   })
 })
 
 describe("getSongsAction", () => {
   const mockSupabase = { id: "supabase-client" }
-  const context = { type: "personal" as const, userId: "user-1" }
-  const songs = [{ id: "song-1", title: "Song", artist: "", key: "C", bpm: 120 }]
-  const settings = [{ songId: "song-1", capo: 2, transpose: 0 }]
+  const context = { type: "personal" as const, userId: "cccccccc-cccc-4ccc-8ccc-cccccccccccc" }
+  const songs = [{ id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", title: "Song", artist: "", key: "C", bpm: 120 }]
+  const settings = [{ songId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", capo: 2, transpose: 0 }]
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -188,8 +188,8 @@ describe("getSongsAction", () => {
     const result = await getSongsAction(context)
 
     expect(getSongsApi).toHaveBeenCalledWith(mockSupabase, context, undefined)
-    expect(getAllUserSongSettings).toHaveBeenCalledWith(mockSupabase, "user-1")
-    expect(result).toEqual([{ ...songs[0], userSettings: settings[0] }])
+    expect(getAllUserSongSettings).toHaveBeenCalledWith(mockSupabase, "cccccccc-cccc-4ccc-8ccc-cccccccccccc")
+    expect(result).toEqual([{ ...songs[0], userSettings: settings[0], tags: [] }])
   })
 
   it("sets userSettings to null for songs without saved settings", async () => {
@@ -204,7 +204,7 @@ describe("getSongsAction", () => {
 
 describe("getSongsAllBucketsAction", () => {
   const mockSupabase = { id: "supabase-client" }
-  const songs = [{ id: "song-2", title: "Another", artist: "", key: "G", bpm: 90 }]
+  const songs = [{ id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", title: "Another", artist: "", key: "G", bpm: 90 }]
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -212,19 +212,19 @@ describe("getSongsAllBucketsAction", () => {
   })
 
   it("fetches all-bucket songs with settings merged", async () => {
-    const settings = [{ songId: "song-2", capo: 0, transpose: 1 }]
+    const settings = [{ songId: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", capo: 0, transpose: 1 }]
     ;(getSongsAllBucketsApi as jest.Mock).mockResolvedValue(songs)
     ;(getAllUserSongSettings as jest.Mock).mockResolvedValue(settings)
 
-    const result = await getSongsAllBucketsAction("user-1", ["team-1"], [
-      { id: "team-1", name: "Band", icon: null }
+    const result = await getSongsAllBucketsAction("cccccccc-cccc-4ccc-8ccc-cccccccccccc", ["dddddddd-dddd-4ddd-8ddd-dddddddddddd"], [
+      { id: "dddddddd-dddd-4ddd-8ddd-dddddddddddd", name: "Band", icon: null }
     ])
 
     expect(getSongsAllBucketsApi).toHaveBeenCalledWith(
       mockSupabase,
-      "user-1",
-      ["team-1"],
-      [{ id: "team-1", name: "Band", icon: null }],
+      "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+      ["dddddddd-dddd-4ddd-8ddd-dddddddddddd"],
+      [{ id: "dddddddd-dddd-4ddd-8ddd-dddddddddddd", name: "Band", icon: null }],
       undefined
     )
     expect(result).toEqual([{ ...songs[0], userSettings: settings[0] }])
@@ -237,23 +237,23 @@ describe("getUserSongSettingsAction", () => {
       auth: { getUser: jest.fn().mockResolvedValue({ data: { user: null } }) }
     })
 
-    const result = await getUserSongSettingsAction("song-1")
+    const result = await getUserSongSettingsAction("aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa")
 
     expect(result).toBeNull()
     expect(getUserSongSettingsApi).not.toHaveBeenCalled()
   })
 
   it("calls getUserSongSettings with supabase, userId, and songId", async () => {
-    const settings = { songId: "song-1", capo: 1, transpose: 0 }
+    const settings = { songId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", capo: 1, transpose: 0 }
     const mockSupabase = {
-      auth: { getUser: jest.fn().mockResolvedValue({ data: { user: { id: "user-1" } } }) }
+      auth: { getUser: jest.fn().mockResolvedValue({ data: { user: { id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } } }) }
     }
     ;(createClient as jest.Mock).mockResolvedValue(mockSupabase)
     ;(getUserSongSettingsApi as jest.Mock).mockResolvedValue(settings)
 
-    const result = await getUserSongSettingsAction("song-1")
+    const result = await getUserSongSettingsAction("aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa")
 
-    expect(getUserSongSettingsApi).toHaveBeenCalledWith(mockSupabase, "user-1", "song-1")
+    expect(getUserSongSettingsApi).toHaveBeenCalledWith(mockSupabase, "cccccccc-cccc-4ccc-8ccc-cccccccccccc", "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa")
     expect(result).toEqual(settings)
   })
 })
@@ -265,22 +265,22 @@ describe("upsertUserSongSettingsAction", () => {
     })
 
     await expect(
-      upsertUserSongSettingsAction("song-1", { capo: 2, transpose: 0 })
+      upsertUserSongSettingsAction("aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", { capo: 2, transpose: 0 })
     ).rejects.toThrow("Unauthorized")
     expect(upsertUserSongSettingsApi).not.toHaveBeenCalled()
   })
 
   it("calls upsertUserSongSettings with supabase, userId, songId, and settings", async () => {
-    const settings = { songId: "song-1", capo: 2, transpose: 0 }
+    const settings = { songId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", capo: 2, transpose: 0 }
     const mockSupabase = {
-      auth: { getUser: jest.fn().mockResolvedValue({ data: { user: { id: "user-1" } } }) }
+      auth: { getUser: jest.fn().mockResolvedValue({ data: { user: { id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } } }) }
     }
     ;(createClient as jest.Mock).mockResolvedValue(mockSupabase)
     ;(upsertUserSongSettingsApi as jest.Mock).mockResolvedValue(settings)
 
-    const result = await upsertUserSongSettingsAction("song-1", { capo: 2, transpose: 0 })
+    const result = await upsertUserSongSettingsAction("aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", { capo: 2, transpose: 0 })
 
-    expect(upsertUserSongSettingsApi).toHaveBeenCalledWith(mockSupabase, "user-1", "song-1", {
+    expect(upsertUserSongSettingsApi).toHaveBeenCalledWith(mockSupabase, "cccccccc-cccc-4ccc-8ccc-cccccccccccc", "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", {
       capo: 2,
       transpose: 0
     })
@@ -306,7 +306,7 @@ describe("getUserProfileDataAction", () => {
       auth: {
         getSession: jest
           .fn()
-          .mockResolvedValue({ data: { session: { user: { id: "user-1" } } } })
+          .mockResolvedValue({ data: { session: { user: { id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } } } })
       }
     }
     ;(createClient as jest.Mock).mockResolvedValue(mockSupabase)
@@ -314,7 +314,7 @@ describe("getUserProfileDataAction", () => {
 
     const result = await getUserProfileDataAction()
 
-    expect(getUserProfileDataApi).toHaveBeenCalledWith(mockSupabase, "user-1")
+    expect(getUserProfileDataApi).toHaveBeenCalledWith(mockSupabase, "cccccccc-cccc-4ccc-8ccc-cccccccccccc")
     expect(result).toEqual(profileData)
   })
 })
@@ -334,14 +334,14 @@ describe("upsertUserPreferencesAction", () => {
   it("calls upsertUserPreferences with supabase, userId, and preferences", async () => {
     const prefs = { lyricsColumns: 1 as const }
     const mockSupabase = {
-      auth: { getUser: jest.fn().mockResolvedValue({ data: { user: { id: "user-1" } } }) }
+      auth: { getUser: jest.fn().mockResolvedValue({ data: { user: { id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } } }) }
     }
     ;(createClient as jest.Mock).mockResolvedValue(mockSupabase)
     ;(upsertUserPreferencesApi as jest.Mock).mockResolvedValue(prefs)
 
     const result = await upsertUserPreferencesAction(prefs)
 
-    expect(upsertUserPreferencesApi).toHaveBeenCalledWith(mockSupabase, "user-1", prefs)
+    expect(upsertUserPreferencesApi).toHaveBeenCalledWith(mockSupabase, "cccccccc-cccc-4ccc-8ccc-cccccccccccc", prefs)
     expect(result).toEqual(prefs)
   })
 })

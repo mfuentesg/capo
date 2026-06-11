@@ -173,7 +173,7 @@ describe("getAllUserSongSettingsAction", () => {
 describe("getSongsAction", () => {
   const mockSupabase = { id: "supabase-client" }
   const context = { type: "personal" as const, userId: "cccccccc-cccc-4ccc-8ccc-cccccccccccc" }
-  const songs = [{ id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", title: "Song", artist: "", key: "C", bpm: 120 }]
+  const songs = [{ id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", title: "Song", artist: "", key: "C", bpm: 120, tags: [] }]
   const settings = [{ songId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", capo: 2, transpose: 0 }]
 
   beforeEach(() => {
@@ -204,7 +204,7 @@ describe("getSongsAction", () => {
 
 describe("getSongsAllBucketsAction", () => {
   const mockSupabase = { id: "supabase-client" }
-  const songs = [{ id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", title: "Another", artist: "", key: "G", bpm: 90 }]
+  const songs = [{ id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", title: "Another", artist: "", key: "G", bpm: 90, tags: [] }]
 
   beforeEach(() => {
     jest.clearAllMocks()

@@ -32,10 +32,6 @@ import {
   setSongTags as setSongTagsApi
 } from "./tags-api"
 
-function mergeTags(songs: Song[], tagMap: Map<string, SongTag[]>): Song[] {
-  return songs.map((song) => ({ ...song, tags: tagMap.get(song.id) ?? [] }))
-}
-
 // Validates user-editable song fields on create/update; unknown keys (e.g.
 // ownership, userSettings) pass through untouched and are handled by the API layer.
 const songFieldsSchema = z.looseObject({

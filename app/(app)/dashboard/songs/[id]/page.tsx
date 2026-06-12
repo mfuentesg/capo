@@ -1,8 +1,12 @@
+import { cache } from "react"
 import type { Metadata } from "next"
 import { api as songsApi, getUserProfileData as getUserProfileDataApi, getSongTagsAction } from "@/features/songs"
 import { createClient } from "@/lib/supabase/server"
 import { notFound } from "next/navigation"
 import { LyricsPageClient } from "./lyrics-page-client"
+
+// Deduplicates the fetch between generateMetadata and the page render
+const getSong = cache((id: string) => songsApi.getSong(id))
 
 export async function generateMetadata({
   params
@@ -10,7 +14,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>
 }): Promise<Metadata> {
   const { id } = await params
-  const song = await songsApi.getSong(id)
+  const song = await getSong(id)
 
   if (!song) {
     return { title: "Song Not Found", robots: { index: false, follow: false } }
@@ -33,7 +37,7 @@ export default async function SongLyricsPage({ params }: { params: Promise<{ id:
 
   // 2. Fetch song, profile data, and tags in parallel
   const [song, profileData, songTags] = await Promise.all([
-    songsApi.getSong(id),
+    getSong(id),
     authUser ? getUserProfileDataApi(supabase, authUser.id).catch(() => null) : Promise.resolve(null),
     getSongTagsAction(id).catch(() => [])
   ])

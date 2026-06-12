@@ -43,10 +43,20 @@ export function usePlaylistRealtime(playlistId: string) {
           schema: "public",
           table: "songs"
           // No row-level filter: songs.playlist_id doesn't exist (relationship is via
-          // playlist_songs). Any song edit triggers a refetch, but RLS ensures only
-          // authorized rows are returned. Acceptable for the current scale.
+          // playlist_songs). Instead, the handler checks the changed song id against
+          // the cached playlist and skips invalidation for unrelated songs.
         },
-        () => {
+        (payload) => {
+          const changedId =
+            (payload.new as { id?: string } | null)?.id ??
+            (payload.old as { id?: string } | null)?.id
+          const cached = queryClient.getQueryData<{ songs?: Array<{ id: string }> }>(
+            playlistsKeys.detail(playlistId)
+          )
+          // Only skip when we can prove the song isn't in this playlist
+          if (changedId && cached?.songs && !cached.songs.some((s) => s.id === changedId)) {
+            return
+          }
           queryClient.invalidateQueries({ queryKey: playlistsKeys.detail(playlistId) })
         }
       )

@@ -5,8 +5,11 @@ jest.mock("@/lib/supabase/apply-context-filter", () => ({
   applyContextFilter: jest.fn((query: unknown) => query)
 }))
 
-// Must match the SONG_COLUMNS constant in songsApi.ts
-const SONG_COLUMNS = "id, title, artist, key, bpm, lyrics, notes, transpose, capo, status"
+// Must match the constants in songsApi.ts — list queries exclude lyrics/notes
+// and embed tags; the by-ids query fetches full content
+const SONG_LIST_COLUMNS =
+  "id, title, artist, key, bpm, transpose, capo, status, song_tag_assignments(song_tags(id, name, color))"
+const SONG_DETAIL_COLUMNS = "id, title, artist, key, bpm, lyrics, notes, transpose, capo, status"
 
 const personalContext = { type: "personal" as const, userId: "user-1" }
 
@@ -21,12 +24,12 @@ function makeOrderSupabase(result: { data: unknown; error: unknown }) {
 describe("getSongs", () => {
   afterEach(() => jest.clearAllMocks())
 
-  it("selects SONG_COLUMNS instead of wildcard", async () => {
+  it("selects list columns (no lyrics/notes) with embedded tags", async () => {
     const { supabase, select } = makeOrderSupabase({ data: [], error: null })
 
     await getSongs(supabase as never, personalContext)
 
-    expect(select).toHaveBeenCalledWith(SONG_COLUMNS)
+    expect(select).toHaveBeenCalledWith(SONG_LIST_COLUMNS)
   })
 
   it("queries the songs table and orders by created_at descending", async () => {
@@ -54,11 +57,12 @@ describe("getSongs", () => {
         artist: "Traditional",
         key: "C",
         bpm: 120,
-        lyrics: "Amazing grace",
-        notes: null,
         transpose: 2,
         capo: 0,
-        status: "published"
+        status: "published",
+        song_tag_assignments: [
+          { song_tags: { id: "tag-1", name: "Hymn", color: "#fff" } }
+        ]
       },
       {
         id: "s2",
@@ -66,11 +70,10 @@ describe("getSongs", () => {
         artist: null,
         key: null,
         bpm: null,
-        lyrics: null,
-        notes: null,
         transpose: 0,
         capo: 0,
-        status: "draft"
+        status: "draft",
+        song_tag_assignments: []
       }
     ]
     const { supabase } = makeOrderSupabase({ data: dbRows, error: null })
@@ -84,10 +87,11 @@ describe("getSongs", () => {
         artist: "Traditional",
         key: "C",
         bpm: 120,
-        lyrics: "Amazing grace",
+        lyrics: undefined,
         notes: undefined,
         transpose: 2,
-        capo: 0
+        capo: 0,
+        tags: [{ id: "tag-1", name: "Hymn", color: "#fff" }]
       },
       {
         id: "s2",
@@ -98,7 +102,8 @@ describe("getSongs", () => {
         lyrics: undefined,
         notes: undefined,
         transpose: 0,
-        capo: 0
+        capo: 0,
+        tags: []
       }
     ])
   })
@@ -122,7 +127,7 @@ describe("getSongsByIds", () => {
     expect(supabase.from).not.toHaveBeenCalled()
   })
 
-  it("selects SONG_COLUMNS and filters by the provided IDs", async () => {
+  it("selects detail columns and filters by the provided IDs", async () => {
     const inFn = jest.fn().mockResolvedValue({ data: [], error: null })
     const select = jest.fn().mockReturnValue({ in: inFn })
     const supabase = { from: jest.fn().mockReturnValue({ select }) }
@@ -130,7 +135,7 @@ describe("getSongsByIds", () => {
     await getSongsByIds(supabase as never, ["s1", "s2"])
 
     expect(supabase.from).toHaveBeenCalledWith("songs")
-    expect(select).toHaveBeenCalledWith(SONG_COLUMNS)
+    expect(select).toHaveBeenCalledWith(SONG_DETAIL_COLUMNS)
     expect(inFn).toHaveBeenCalledWith("id", ["s1", "s2"])
   })
 

@@ -173,7 +173,7 @@ describe("getAllUserSongSettingsAction", () => {
 describe("getSongsAction", () => {
   const mockSupabase = { id: "supabase-client" }
   const context = { type: "personal" as const, userId: "cccccccc-cccc-4ccc-8ccc-cccccccccccc" }
-  const songs = [{ id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", title: "Song", artist: "", key: "C", bpm: 120 }]
+  const songs = [{ id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", title: "Song", artist: "", key: "C", bpm: 120, tags: [] }]
   const settings = [{ songId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", capo: 2, transpose: 0 }]
 
   beforeEach(() => {
@@ -198,13 +198,13 @@ describe("getSongsAction", () => {
 
     const result = await getSongsAction(context)
 
-    expect(result).toEqual([{ ...songs[0], userSettings: null, tags: [] }])
+    expect(result).toEqual([{ ...songs[0], userSettings: null }])
   })
 })
 
 describe("getSongsAllBucketsAction", () => {
   const mockSupabase = { id: "supabase-client" }
-  const songs = [{ id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", title: "Another", artist: "", key: "G", bpm: 90 }]
+  const songs = [{ id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", title: "Another", artist: "", key: "G", bpm: 90, tags: [] }]
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -227,7 +227,7 @@ describe("getSongsAllBucketsAction", () => {
       [{ id: "dddddddd-dddd-4ddd-8ddd-dddddddddddd", name: "Band", icon: null }],
       undefined
     )
-    expect(result).toEqual([{ ...songs[0], userSettings: settings[0], tags: [] }])
+    expect(result).toEqual([{ ...songs[0], userSettings: settings[0] }])
   })
 })
 

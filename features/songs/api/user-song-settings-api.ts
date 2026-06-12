@@ -2,7 +2,13 @@ import type { SupabaseClient } from "@supabase/supabase-js"
 import type { Database, Tables, TablesInsert } from "@/lib/supabase/database.types"
 import type { UserSongSettings } from "@/features/songs/types"
 
-type UserSongSettingsRow = Tables<"user_song_settings">
+// Only the columns the frontend type consumes
+const SETTINGS_COLUMNS = "song_id, capo, transpose, font_size"
+
+type UserSongSettingsRow = Pick<
+  Tables<"user_song_settings">,
+  "song_id" | "capo" | "transpose" | "font_size"
+>
 
 function mapRowToSettings(row: UserSongSettingsRow): UserSongSettings {
   return {
@@ -20,7 +26,7 @@ export async function getUserSongSettings(
 ): Promise<UserSongSettings | null> {
   const { data, error } = await supabase
     .from("user_song_settings")
-    .select("*")
+    .select(SETTINGS_COLUMNS)
     .eq("user_id", userId)
     .eq("song_id", songId)
     .maybeSingle()
@@ -35,7 +41,7 @@ export async function getAllUserSongSettings(
 ): Promise<UserSongSettings[]> {
   const { data, error } = await supabase
     .from("user_song_settings")
-    .select("*")
+    .select(SETTINGS_COLUMNS)
     .eq("user_id", userId)
 
   if (error) throw error
@@ -60,7 +66,7 @@ export async function upsertUserSongSettings(
   const { data, error } = await supabase
     .from("user_song_settings")
     .upsert(row, { onConflict: "user_id,song_id" })
-    .select()
+    .select(SETTINGS_COLUMNS)
     .single()
 
   if (error) throw error

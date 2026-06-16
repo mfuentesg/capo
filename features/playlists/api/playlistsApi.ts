@@ -26,15 +26,7 @@ const SHARE_CODE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 // Only the columns actually consumed by the Song frontend type
 const SONG_FIELDS = "id, title, artist, key, bpm, lyrics, notes, transpose, capo, status"
 
-// Nested select for playlist_songs joined with the minimal song columns
-const PLAYLIST_SONGS_WITH_SONG = `
-  song_id,
-  position,
-  song:songs (${SONG_FIELDS})
-`
-
-// Same as above but with tags embedded — used by the authenticated detail view
-// so tags don't require a second round-trip
+// Nested select for playlist_songs joined with the minimal song columns and tags
 const PLAYLIST_SONGS_WITH_SONG_AND_TAGS = `
   song_id,
   position,
@@ -253,7 +245,7 @@ export async function getPublicPlaylistByShareCode(
 ): Promise<PlaylistWithSongs | null> {
   const { data, error } = await supabase
     .from("playlists")
-    .select(`*, playlist_songs (${PLAYLIST_SONGS_WITH_SONG})`)
+    .select(`*, playlist_songs (${PLAYLIST_SONGS_WITH_SONG_AND_TAGS})`)
     .eq("share_code", shareCode)
     .eq("is_public", true)
     .or("share_expires_at.is.null,share_expires_at.gt.now()")
@@ -292,6 +284,7 @@ export async function getPublicPlaylistByShareCode(
           notes: song.notes || undefined,
           transpose: song.transpose ?? undefined,
           capo: song.capo ?? undefined,
+          tags: mapAssignedTags(song.song_tag_assignments)
         }
       }),
     createdAt: data.created_at,
@@ -317,7 +310,7 @@ export async function getPlaylistByShareCode(
 ): Promise<PlaylistWithSongs | null> {
   const { data, error } = await supabase
     .from("playlists")
-    .select(`*, playlist_songs (${PLAYLIST_SONGS_WITH_SONG})`)
+    .select(`*, playlist_songs (${PLAYLIST_SONGS_WITH_SONG_AND_TAGS})`)
     .eq("share_code", shareCode)
     .single()
 
@@ -354,6 +347,7 @@ export async function getPlaylistByShareCode(
           notes: song.notes || undefined,
           transpose: song.transpose ?? undefined,
           capo: song.capo ?? undefined,
+          tags: mapAssignedTags(song.song_tag_assignments)
         }
       }),
     createdAt: data.created_at,

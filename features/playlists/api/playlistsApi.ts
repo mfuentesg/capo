@@ -253,7 +253,7 @@ export async function getPublicPlaylistByShareCode(
 ): Promise<PlaylistWithSongs | null> {
   const { data, error } = await supabase
     .from("playlists")
-    .select(`*, playlist_songs (${PLAYLIST_SONGS_WITH_SONG})`)
+    .select(`*, playlist_songs (${PLAYLIST_SONGS_WITH_SONG_AND_TAGS})`)
     .eq("share_code", shareCode)
     .eq("is_public", true)
     .or("share_expires_at.is.null,share_expires_at.gt.now()")
@@ -292,6 +292,7 @@ export async function getPublicPlaylistByShareCode(
           notes: song.notes || undefined,
           transpose: song.transpose ?? undefined,
           capo: song.capo ?? undefined,
+          tags: mapAssignedTags(song.song_tag_assignments)
         }
       }),
     createdAt: data.created_at,
@@ -317,7 +318,7 @@ export async function getPlaylistByShareCode(
 ): Promise<PlaylistWithSongs | null> {
   const { data, error } = await supabase
     .from("playlists")
-    .select(`*, playlist_songs (${PLAYLIST_SONGS_WITH_SONG})`)
+    .select(`*, playlist_songs (${PLAYLIST_SONGS_WITH_SONG_AND_TAGS})`)
     .eq("share_code", shareCode)
     .single()
 
@@ -354,6 +355,7 @@ export async function getPlaylistByShareCode(
           notes: song.notes || undefined,
           transpose: song.transpose ?? undefined,
           capo: song.capo ?? undefined,
+          tags: mapAssignedTags(song.song_tag_assignments)
         }
       }),
     createdAt: data.created_at,

@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { getKeyColorClasses, getBpmColorClasses } from "@/lib/badge-colors"
 import { TeamIcon } from "@/components/ui/icon-picker"
 import { useTranslation } from "@/hooks/use-translation"
+import { TagBadge } from "@/features/songs"
 import type { Song } from "@/features/songs"
 
 interface PlaylistDraftItemProps {
@@ -70,6 +71,9 @@ export function PlaylistDraftItem({ song, index, onRemove }: PlaylistDraftItemPr
           <Badge variant="secondary" className={cn("gap-1 text-xs", getBpmColorClasses(song.bpm))}>
             {song.bpm} BPM
           </Badge>
+          {song.tags?.map((tag) => (
+            <TagBadge key={tag.id} tag={tag} />
+          ))}
         </div>
       </div>
 

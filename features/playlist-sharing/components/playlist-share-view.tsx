@@ -37,6 +37,7 @@ import {
   useUserPreferences,
   useUpdateSong
 } from "@/features/songs"
+import { TagBadge } from "@/features/songs"
 import { usePublicPlaylistRealtime } from "../hooks"
 import { formatLongDate } from "@/lib/utils"
 
@@ -408,6 +409,13 @@ export function PlaylistShareView({ playlist }: PlaylistShareViewProps) {
                                 {song.artist}
                               </p>
                             )}
+                            {song.tags && song.tags.length > 0 && (
+                              <div className="mt-1 flex flex-wrap gap-1">
+                                {song.tags.map((tag) => (
+                                  <TagBadge key={tag.id} tag={tag} />
+                                ))}
+                              </div>
+                            )}
                           </div>
                           <div className="flex shrink-0 items-center gap-1.5">
                             {song.key && (
@@ -457,6 +465,13 @@ export function PlaylistShareView({ playlist }: PlaylistShareViewProps) {
                   <p className="truncate text-base font-medium">{song.title}</p>
                   {song.artist && (
                     <p className="truncate text-sm text-muted-foreground">{song.artist}</p>
+                  )}
+                  {song.tags && song.tags.length > 0 && (
+                    <div className="mt-1 flex flex-wrap gap-1">
+                      {song.tags.map((tag) => (
+                        <TagBadge key={tag.id} tag={tag} />
+                      ))}
+                    </div>
                   )}
                 </div>
                 <div className="flex shrink-0 items-center gap-1.5">

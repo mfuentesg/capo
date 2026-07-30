@@ -13,7 +13,8 @@ import {
   Copy,
   ExternalLink,
   Archive,
-  ArchiveRestore
+  ArchiveRestore,
+  Info
 } from "lucide-react"
 import { toast } from "sonner"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -52,8 +53,10 @@ import {
   useEffectiveSongSettings,
   useUpsertUserSongSettings,
   useUserPreferences,
-  SongSkeleton
+  SongSkeleton,
+  SongEditDialog
 } from "@/features/songs"
+import type { Song } from "@/features/songs"
 import type { Playlist } from "@/features/playlists/types"
 import type { SongWithPosition, PlaylistWithSongs } from "@/types/extended"
 import { DraggablePlaylist } from "@/features/playlists/utils"
@@ -67,6 +70,7 @@ interface ActiveSongLyricsProps {
   song: SongWithPosition
   onClose: () => void
   onSaveLyrics: (lyrics: string) => void
+  onUpdate: (songId: string, updates: Partial<Song>) => void
   isSaving: boolean
   onPrevSong?: () => void
   onNextSong?: () => void
@@ -80,6 +84,7 @@ function ActiveSongLyrics({
   song,
   onClose,
   onSaveLyrics,
+  onUpdate,
   isSaving,
   onPrevSong,
   onNextSong,
@@ -88,6 +93,8 @@ function ActiveSongLyrics({
   songPosition,
   slideDirection
 }: ActiveSongLyricsProps) {
+  const { t } = useTranslation()
+  const [isEditDetailsOpen, setIsEditDetailsOpen] = useState(false)
   const { data: userSettings } = useUserSongSettings(song)
   const effectiveSettings = useEffectiveSongSettings(song)
   const { mutate: upsertSettings } = useUpsertUserSongSettings(song)
@@ -119,6 +126,25 @@ function ActiveSongLyrics({
       hasNextSong={hasNextSong}
       songPosition={songPosition}
       slideDirection={slideDirection}
+      actionsSlot={
+        <>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-9 w-9"
+            onClick={() => setIsEditDetailsOpen(true)}
+            aria-label={t.songs.editDetails}
+          >
+            <Info className="h-4 w-4" />
+          </Button>
+          <SongEditDialog
+            song={song}
+            open={isEditDetailsOpen}
+            onOpenChange={setIsEditDetailsOpen}
+            onUpdate={onUpdate}
+          />
+        </>
+      }
     />
   )
 }
@@ -259,6 +285,29 @@ export function PlaylistDetail({ playlist, onClose, onUpdate, onDelete }: Playli
   )
 
   const { mutate: updateSong, isPending: isSavingLyrics } = useUpdateSong()
+
+  const handleUpdateSongDetails = useCallback(
+    (songId: string, updates: Partial<Song>) => {
+      queryClient.setQueryData(
+        playlistsKeys.detail(playlist.id),
+        (old: PlaylistWithSongs | null | undefined) => {
+          if (!old) return old
+          return {
+            ...old,
+            songs: old.songs.map((s) => (s.id === songId ? { ...s, ...updates } : s))
+          }
+        }
+      )
+      updateSong(
+        { songId, updates },
+        {
+          onSuccess: () =>
+            queryClient.invalidateQueries({ queryKey: playlistsKeys.detail(playlist.id) })
+        }
+      )
+    },
+    [queryClient, playlist.id, updateSong]
+  )
 
   const removeSongMutation = useMutation({
     mutationFn: (songId: string) => removeSongFromPlaylistAction(playlist.id, songId),
@@ -686,6 +735,7 @@ export function PlaylistDetail({ playlist, onClose, onUpdate, onDelete }: Playli
                       }
                     )
                   }}
+                  onUpdate={handleUpdateSongDetails}
                   isSaving={isSavingLyrics}
                 />
               )}

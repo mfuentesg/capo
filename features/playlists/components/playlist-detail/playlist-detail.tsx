@@ -14,7 +14,7 @@ import {
   ExternalLink,
   Archive,
   ArchiveRestore,
-  Info
+  SlidersHorizontal
 } from "lucide-react"
 import { toast } from "sonner"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -135,7 +135,7 @@ function ActiveSongLyrics({
             onClick={() => setIsEditDetailsOpen(true)}
             aria-label={t.songs.editDetails}
           >
-            <Info className="h-4 w-4" />
+            <SlidersHorizontal className="h-4 w-4" />
           </Button>
           <SongEditDialog
             song={song}

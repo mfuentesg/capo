@@ -13,6 +13,7 @@ export {
   useAddSongsToPlaylist,
   useReorderPlaylistSongs
 } from "./use-playlists"
+export { useSongFrequencies } from "./use-song-frequencies"
 export { usePlaylistRealtime } from "./use-playlist-realtime"
 export { usePlaylistPresence } from "./use-playlist-presence"
 export { usePlaylistCollaboration } from "./use-playlist-collaboration"

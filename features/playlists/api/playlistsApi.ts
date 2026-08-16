@@ -11,6 +11,7 @@ import type { AppContext } from "@/features/app-context"
 import type { Playlist } from "@/features/playlists/types"
 import type { Song } from "@/features/songs"
 import { applyContextFilter } from "@/lib/supabase/apply-context-filter"
+import { computeSongFrequencies, type SongFrequency } from "@/features/playlists/utils/song-frequency"
 
 type PlaylistRow = Tables<"playlists"> & {
   playlist_songs?: Array<{ song_id: string; position: number }>
@@ -738,4 +739,43 @@ export async function ensurePlaylistShareCode(
 
   if (error) throw error
   return data as string
+}
+
+type SongFrequencyRow = {
+  song_id: string
+  playlists: { date: string | null; created_at: string }
+}
+
+/**
+ * Fetch how often each song has appeared across playlists in the current
+ * context, along with its most recent play date.
+ *
+ * @param supabase - Supabase client instance
+ * @param context - App context (personal or team)
+ * @returns Promise<Map<string, SongFrequency>> - Per-song play count and last-played date
+ */
+export async function getSongFrequencies(
+  supabase: SupabaseClient<Database>,
+  context: AppContext
+): Promise<Map<string, SongFrequency>> {
+  let query = supabase
+    .from("playlist_songs")
+    .select("song_id, playlists!inner(date, created_at, user_id, team_id)")
+
+  query =
+    context.type === "personal"
+      ? query.eq("playlists.user_id", context.userId).is("playlists.team_id", null)
+      : query.eq("playlists.team_id", context.teamId).is("playlists.user_id", null)
+
+  const { data, error } = await query
+
+  if (error) throw error
+
+  return computeSongFrequencies(
+    ((data || []) as SongFrequencyRow[]).map((row) => ({
+      songId: row.song_id,
+      date: row.playlists.date,
+      createdAt: row.playlists.created_at
+    }))
+  )
 }

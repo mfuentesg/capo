@@ -40,3 +40,44 @@ it("renders no left border style when bucketColor is provided", () => {
   const outerDiv = container.firstChild as HTMLElement
   expect(outerDiv?.style.borderLeftColor).toBe("")
 })
+
+it("renders no frequency badge when the song has never been played", () => {
+  const { queryByText } = render(
+    <SongItem
+      song={mockSong}
+      isSelected={false}
+      isInCart={false}
+      onSelect={jest.fn()}
+      onToggleCart={jest.fn()}
+    />
+  )
+  expect(queryByText(/ago/)).not.toBeInTheDocument()
+})
+
+it("renders a frequency badge with count and last-played label when provided", () => {
+  const { getByText } = render(
+    <SongItem
+      song={mockSong}
+      isSelected={false}
+      isInCart={false}
+      frequency={{ count: 3, isRecentlyPlayed: false, lastPlayedLabel: "5w ago" }}
+      onSelect={jest.fn()}
+      onToggleCart={jest.fn()}
+    />
+  )
+  expect(getByText("3× · 5w ago")).toBeInTheDocument()
+})
+
+it("applies the warning style to the frequency badge when recently played", () => {
+  const { getByText } = render(
+    <SongItem
+      song={mockSong}
+      isSelected={false}
+      isInCart={false}
+      frequency={{ count: 2, isRecentlyPlayed: true, lastPlayedLabel: "3d ago" }}
+      onSelect={jest.fn()}
+      onToggleCart={jest.fn()}
+    />
+  )
+  expect(getByText("2× · 3d ago").className).toContain("amber")
+})

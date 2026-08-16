@@ -4,6 +4,7 @@ import {
   getPlaylists as getPlaylistsApi,
   getPlaylistsAllBuckets as getPlaylistsAllBucketsApi,
   getPlaylistWithSongs as getPlaylistWithSongsApi,
+  getSongFrequencies as getSongFrequenciesApi,
   addSongToPlaylist as addSongToPlaylistApi,
   addSongsToPlaylist as addSongsToPlaylistApi,
   createPlaylist as createPlaylistApi,
@@ -16,6 +17,7 @@ import {
   getPlaylistsAction,
   getPlaylistsAllBucketsAction,
   getPlaylistWithSongsAction,
+  getSongFrequenciesAction,
   addSongToPlaylistAction,
   addSongsToPlaylistAction,
   createPlaylistAction,
@@ -37,6 +39,7 @@ jest.mock("../playlistsApi", () => ({
   getPlaylists: jest.fn(),
   getPlaylistsAllBuckets: jest.fn(),
   getPlaylistWithSongs: jest.fn(),
+  getSongFrequencies: jest.fn(),
   createPlaylist: jest.fn(),
   updatePlaylist: jest.fn(),
   deletePlaylist: jest.fn(),
@@ -162,6 +165,26 @@ describe("getPlaylistsAction", () => {
 
     expect(getPlaylistsApi).toHaveBeenCalledWith(mockSupabase, context)
     expect(result).toEqual(playlists)
+  })
+})
+
+describe("getSongFrequenciesAction", () => {
+  const mockSupabase = { id: "supabase-client" }
+  const context = { type: "personal" as const, userId: "cccccccc-cccc-4ccc-8ccc-cccccccccccc" }
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+    ;(createClient as jest.Mock).mockResolvedValue(mockSupabase)
+  })
+
+  it("fetches song frequencies for the given context", async () => {
+    const frequencies = new Map([["song-1", { count: 2, lastPlayedDate: "2026-01-15" }]])
+    ;(getSongFrequenciesApi as jest.Mock).mockResolvedValue(frequencies)
+
+    const result = await getSongFrequenciesAction(context)
+
+    expect(getSongFrequenciesApi).toHaveBeenCalledWith(mockSupabase, context)
+    expect(result).toEqual(frequencies)
   })
 })
 

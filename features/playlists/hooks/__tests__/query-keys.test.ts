@@ -29,4 +29,13 @@ describe("playlistsKeys", () => {
   it("publicByCode returns key scoped to share code", () => {
     expect(playlistsKeys.publicByCode("ABC123")).toEqual(["playlists", "public", "ABC123"])
   })
+
+  it("frequencies returns base frequencies key", () => {
+    expect(playlistsKeys.frequencies()).toEqual(["playlists", "frequencies"])
+  })
+
+  it("frequency returns key scoped to context", () => {
+    const context = { type: "personal" as const, userId: "u1" }
+    expect(playlistsKeys.frequency(context)).toEqual(["playlists", "frequencies", context])
+  })
 })

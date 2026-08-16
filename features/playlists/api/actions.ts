@@ -6,10 +6,12 @@ import { createClient } from "@/lib/supabase/server"
 import { uuidSchema, uuidArraySchema } from "@/lib/validation"
 import type { Playlist } from "../types"
 import type { AppContext } from "@/features/app-context"
+import type { SongFrequency } from "../utils/song-frequency"
 import {
   getPlaylists as getPlaylistsApi,
   getPlaylistsAllBuckets as getPlaylistsAllBucketsApi,
   getPlaylistWithSongs as getPlaylistWithSongsApi,
+  getSongFrequencies as getSongFrequenciesApi,
   createPlaylist as createPlaylistApi,
   updatePlaylist as updatePlaylistApi,
   deletePlaylist as deletePlaylistApi,
@@ -40,6 +42,13 @@ export async function getPlaylistWithSongsAction(playlistId: string) {
   const supabase = await createClient()
   // Tags are embedded in the playlist query itself — no second round-trip needed
   return getPlaylistWithSongsApi(supabase, playlistId)
+}
+
+export async function getSongFrequenciesAction(
+  context: AppContext
+): Promise<Map<string, SongFrequency>> {
+  const supabase = await createClient()
+  return getSongFrequenciesApi(supabase, context)
 }
 
 const createPlaylistSchema = z.object({

@@ -1,22 +1,29 @@
 "use client"
 
-import { X, GripVertical, Music2 } from "lucide-react"
+import { X, GripVertical, Music2, Repeat } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
-import { getKeyColorClasses, getBpmColorClasses } from "@/lib/badge-colors"
+import { getKeyColorClasses, getBpmColorClasses, getFrequencyColorClasses } from "@/lib/badge-colors"
 import { TeamIcon } from "@/components/ui/icon-picker"
 import { useTranslation } from "@/hooks/use-translation"
 import { TagBadge } from "@/features/songs"
 import type { Song } from "@/features/songs"
 
+interface SongFrequencyBadgeInfo {
+  count: number
+  isRecentlyPlayed: boolean
+  lastPlayedLabel: string
+}
+
 interface PlaylistDraftItemProps {
   song: Song
   index: number
+  frequency?: SongFrequencyBadgeInfo
   onRemove: (songId: string) => void
 }
 
-export function PlaylistDraftItem({ song, index, onRemove }: PlaylistDraftItemProps) {
+export function PlaylistDraftItem({ song, index, frequency, onRemove }: PlaylistDraftItemProps) {
   const { t } = useTranslation()
 
   const ownershipLabel =
@@ -71,6 +78,15 @@ export function PlaylistDraftItem({ song, index, onRemove }: PlaylistDraftItemPr
           <Badge variant="secondary" className={cn("gap-1 text-xs", getBpmColorClasses(song.bpm))}>
             {song.bpm} BPM
           </Badge>
+          {frequency && (
+            <Badge
+              variant="outline"
+              className={cn("gap-1 text-xs", getFrequencyColorClasses(frequency.isRecentlyPlayed))}
+            >
+              <Repeat className="h-3 w-3" />
+              {`${frequency.count}× · ${frequency.lastPlayedLabel}`}
+            </Badge>
+          )}
           {song.tags?.map((tag) => (
             <TagBadge key={tag.id} tag={tag} />
           ))}

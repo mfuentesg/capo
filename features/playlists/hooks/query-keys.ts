@@ -17,5 +17,7 @@ export const playlistsKeys = {
   details: () => [...playlistsKeys.all, "detail"] as const,
   detail: (id: string) => [...playlistsKeys.details(), id] as const,
   public: () => [...playlistsKeys.all, "public"] as const,
-  publicByCode: (shareCode: string) => [...playlistsKeys.public(), shareCode] as const
+  publicByCode: (shareCode: string) => [...playlistsKeys.public(), shareCode] as const,
+  frequencies: () => [...playlistsKeys.all, "frequencies"] as const,
+  frequency: (context: AppContext) => [...playlistsKeys.frequencies(), context] as const
 } as const

@@ -10,6 +10,7 @@ import { usePlaylistDraft } from "@/features/playlist-draft"
 import { useTranslation } from "@/hooks/use-translation"
 import { useAppContext, useViewFilter } from "@/features/app-context"
 import { getBucketColor } from "@/features/songs/utils"
+import { useSongFrequencies, getFrequencyBadgeInfo } from "@/features/playlists"
 
 export function SongSkeleton() {
   return (
@@ -45,6 +46,7 @@ export const SongList = memo(function SongList({
   const { teams } = useAppContext()
   const { viewFilter } = useViewFilter()
   const showBucketColors = viewFilter.type === "all"
+  const { data: frequencies = new Map() } = useSongFrequencies()
 
   const filteredSongs = useMemo(() => {
     return songs.filter((song) => {
@@ -168,6 +170,7 @@ export const SongList = memo(function SongList({
                 isInCart={isSongInDraft(song.id)}
                 isDisabled={isCreatingNewSong}
                 bucketColor={showBucketColors ? getBucketColor(song.ownership, teams) : undefined}
+                frequency={getFrequencyBadgeInfo(song.id, frequencies)}
                 onSelect={onSelectSong}
                 onToggleCart={toggleSongInDraft}
               />

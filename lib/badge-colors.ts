@@ -17,3 +17,12 @@ export function getBpmColorClasses(bpm: number): string {
     return "text-[var(--accent-activity)] bg-[color-mix(in_oklch,var(--accent-activity)_10%,transparent)] border-[color-mix(in_oklch,var(--accent-activity)_30%,transparent)]"
   return "text-rose-600 dark:text-rose-400 bg-rose-500/10 border-rose-500/30"
 }
+
+/**
+ * Frequency badges flag songs played within the repetition window (amber)
+ * vs. everything else (muted neutral).
+ */
+export function getFrequencyColorClasses(isRecentlyPlayed: boolean): string {
+  if (isRecentlyPlayed) return "text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/30"
+  return "text-muted-foreground bg-muted border-border"
+}

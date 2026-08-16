@@ -46,6 +46,7 @@ import { CSS } from "@dnd-kit/utilities"
 import { PlaylistDraftItem } from "./playlist-draft-item"
 import type { Song } from "@/types"
 import type { Playlist } from "@/features/playlists"
+import { useSongFrequencies, getFrequencyBadgeInfo } from "@/features/playlists"
 import { useTranslation } from "@/hooks/use-translation"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { createOverlayIds } from "@/lib/ui/stable-overlay-ids"
@@ -81,10 +82,12 @@ interface PlaylistDraftBodyProps {
 function SortableDraftItem({
   song,
   index,
+  frequency,
   onRemove
 }: {
   song: Song
   index: number
+  frequency?: ReturnType<typeof getFrequencyBadgeInfo>
   onRemove: (songId: string) => void
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -99,7 +102,7 @@ function SortableDraftItem({
       {...listeners}
       className={isDragging ? "opacity-70 z-50" : ""}
     >
-      <PlaylistDraftItem song={song} index={index} onRemove={onRemove} />
+      <PlaylistDraftItem song={song} index={index} frequency={frequency} onRemove={onRemove} />
     </div>
   )
 }
@@ -115,6 +118,7 @@ function PlaylistDraftBody({
   onDragEnd
 }: PlaylistDraftBodyProps) {
   const { t } = useTranslation()
+  const { data: frequencies = new Map() } = useSongFrequencies()
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { delay: 200, tolerance: 5 } })
   )
@@ -131,7 +135,13 @@ function PlaylistDraftBody({
         <SortableContext items={songs.map((s) => s.id)} strategy={verticalListSortingStrategy}>
           <div className="space-y-2">
             {songs.map((song, index) => (
-              <SortableDraftItem key={song.id} song={song} index={index} onRemove={onRemove} />
+              <SortableDraftItem
+                key={song.id}
+                song={song}
+                index={index}
+                frequency={getFrequencyBadgeInfo(song.id, frequencies)}
+                onRemove={onRemove}
+              />
             ))}
           </div>
         </SortableContext>

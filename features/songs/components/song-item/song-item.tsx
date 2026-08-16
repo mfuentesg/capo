@@ -1,12 +1,18 @@
 "use client"
 import { memo } from "react"
-import { Music2, Turtle, Rabbit, Zap, Check, Plus } from "lucide-react"
+import { Music2, Turtle, Rabbit, Zap, Check, Plus, Repeat } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
-import { getKeyColorClasses, getBpmColorClasses } from "@/lib/badge-colors"
+import { getKeyColorClasses, getBpmColorClasses, getFrequencyColorClasses } from "@/lib/badge-colors"
 import { TeamIcon } from "@/components/ui/icon-picker"
 import type { Song } from "@/features/songs/types"
 import { TagBadge } from "../tag-badge"
+
+interface SongFrequencyBadgeInfo {
+  count: number
+  isRecentlyPlayed: boolean
+  lastPlayedLabel: string
+}
 
 interface SongItemProps {
   song: Song
@@ -15,6 +21,7 @@ interface SongItemProps {
   isDisabled?: boolean
   isPreview?: boolean
   bucketColor?: string
+  frequency?: SongFrequencyBadgeInfo
   onSelect: (song: Song) => void
   onToggleCart: (song: Song) => void
 }
@@ -26,6 +33,7 @@ export const SongItem = memo(function SongItem({
   isDisabled = false,
   isPreview = false,
   bucketColor,
+  frequency,
   onSelect,
   onToggleCart
 }: SongItemProps) {
@@ -119,6 +127,15 @@ export const SongItem = memo(function SongItem({
             )}
             {song.bpm} BPM
           </Badge>
+          {frequency && (
+            <Badge
+              variant="outline"
+              className={cn("gap-1.5 text-xs", getFrequencyColorClasses(frequency.isRecentlyPlayed))}
+            >
+              <Repeat className="h-3 w-3" />
+              {`${frequency.count}× · ${frequency.lastPlayedLabel}`}
+            </Badge>
+          )}
           {song.tags?.map((tag) => (
             <TagBadge key={tag.id} tag={tag} />
           ))}

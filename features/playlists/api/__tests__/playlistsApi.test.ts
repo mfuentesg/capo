@@ -5,7 +5,8 @@ import {
   getPublicPlaylistByShareCode,
   getPlaylistWithSongs,
   archivePlaylist,
-  unarchivePlaylist
+  unarchivePlaylist,
+  getSongFrequencies
 } from "../playlistsApi"
 
 // ---------------------------------------------------------------------------
@@ -540,5 +541,76 @@ describe("unarchivePlaylist", () => {
     const supabase = { from } as unknown as Parameters<typeof archivePlaylist>[0]
 
     await expect(unarchivePlaylist(supabase, "playlist-1")).rejects.toThrow("DB error")
+  })
+})
+
+// ---------------------------------------------------------------------------
+// getSongFrequencies
+// ---------------------------------------------------------------------------
+
+describe("getSongFrequencies", () => {
+  function makeFrequencySupabase(result: { data: unknown; error: unknown }) {
+    const is = jest.fn().mockResolvedValue(result)
+    const eq = jest.fn().mockReturnValue({ is })
+    const select = jest.fn().mockReturnValue({ eq })
+    const from = jest.fn().mockReturnValue({ select })
+    return { supabase: { from } as unknown as Parameters<typeof getSongFrequencies>[0], from, select, eq, is }
+  }
+
+  it("queries playlist_songs joined with the playlist's date/created_at", async () => {
+    const { supabase, from, select } = makeFrequencySupabase({ data: [], error: null })
+
+    await getSongFrequencies(supabase, { type: "personal", userId: "user-1" })
+
+    expect(from).toHaveBeenCalledWith("playlist_songs")
+    expect(select).toHaveBeenCalledWith(
+      "song_id, playlists!inner(date, created_at, user_id, team_id)"
+    )
+  })
+
+  it("filters to the current user's playlists for a personal context", async () => {
+    const { supabase, eq, is } = makeFrequencySupabase({ data: [], error: null })
+
+    await getSongFrequencies(supabase, { type: "personal", userId: "user-1" })
+
+    expect(eq).toHaveBeenCalledWith("playlists.user_id", "user-1")
+    expect(is).toHaveBeenCalledWith("playlists.team_id", null)
+  })
+
+  it("filters to the team's playlists for a team context", async () => {
+    const { supabase, eq, is } = makeFrequencySupabase({ data: [], error: null })
+
+    await getSongFrequencies(supabase, { type: "team", teamId: "team-1", userId: "user-1" })
+
+    expect(eq).toHaveBeenCalledWith("playlists.team_id", "team-1")
+    expect(is).toHaveBeenCalledWith("playlists.user_id", null)
+  })
+
+  it("aggregates rows into a song frequency map", async () => {
+    const { supabase } = makeFrequencySupabase({
+      data: [
+        {
+          song_id: "song-1",
+          playlists: { date: "2026-01-01", created_at: "2026-01-01T00:00:00.000Z" }
+        },
+        {
+          song_id: "song-1",
+          playlists: { date: "2026-01-15", created_at: "2026-01-15T00:00:00.000Z" }
+        }
+      ],
+      error: null
+    })
+
+    const result = await getSongFrequencies(supabase, { type: "personal", userId: "user-1" })
+
+    expect(result.get("song-1")).toEqual({ count: 2, lastPlayedDate: "2026-01-15" })
+  })
+
+  it("throws when the query returns an error", async () => {
+    const { supabase } = makeFrequencySupabase({ data: null, error: new Error("DB error") })
+
+    await expect(
+      getSongFrequencies(supabase, { type: "personal", userId: "user-1" })
+    ).rejects.toThrow("DB error")
   })
 })

@@ -46,6 +46,7 @@ export function CifraClubImportDialog({
     network: t.songs.cifraImport.errors.network,
     http_status: t.songs.cifraImport.errors.network,
     no_chord_block: t.songs.cifraImport.errors.parseFailed,
+    rate_limited: t.songs.cifraImport.errors.rateLimited,
     unexpected: t.songs.cifraImport.errors.unknown
   }
 

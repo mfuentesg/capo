@@ -233,6 +233,7 @@
         "unsupportedHost": "Only cifraclub.com URLs are supported",
         "network": "Couldn't reach CifraClub. Please try again.",
         "parseFailed": "Couldn't read this CifraClub page — try pasting the lyrics manually.",
+        "rateLimited": "Too many imports — please wait a minute and try again.",
         "unknown": "Something went wrong. Please try again."
       }
     }

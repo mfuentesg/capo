@@ -233,6 +233,7 @@
         "unsupportedHost": "Solo se admiten URLs de cifraclub.com",
         "network": "No se pudo conectar con CifraClub. Inténtalo de nuevo.",
         "parseFailed": "No se pudo leer esta página de CifraClub. Intenta pegar la letra manualmente.",
+        "rateLimited": "Demasiadas importaciones. Espera un minuto e inténtalo de nuevo.",
         "unknown": "Algo salió mal. Inténtalo de nuevo."
       }
     }

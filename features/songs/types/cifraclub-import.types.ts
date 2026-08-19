@@ -4,6 +4,7 @@ export type CifraClubParseError =
   | "network"
   | "http_status"
   | "no_chord_block"
+  | "rate_limited"
   | "unexpected"
 
 export interface CifraClubParsedSong {

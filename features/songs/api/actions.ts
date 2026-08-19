@@ -258,6 +258,23 @@ export async function upsertUserPreferencesAction(
 
 const cifraClubUrlSchema = z.string().trim().min(1).max(2000)
 
+const CIFRA_IMPORT_RATE_LIMIT = 10
+const CIFRA_IMPORT_RATE_WINDOW_MS = 60_000
+// Process-local throttle: resets on redeploy and does not coordinate across
+// serverless instances, so it's a v1 abuse deterrent rather than a hard
+// guarantee. Good enough given imports don't write to Supabase themselves.
+const cifraImportAttempts = new Map<string, number[]>()
+
+function isCifraImportRateLimited(key: string): boolean {
+  const now = Date.now()
+  const recent = (cifraImportAttempts.get(key) ?? []).filter(
+    (timestamp) => now - timestamp < CIFRA_IMPORT_RATE_WINDOW_MS
+  )
+  recent.push(now)
+  cifraImportAttempts.set(key, recent)
+  return recent.length > CIFRA_IMPORT_RATE_LIMIT
+}
+
 // Fetches and parses a CifraClub song page server-side. Unlike the actions
 // above, this reaches out to a third-party site, which can fail in many more
 // ways than a Supabase call — so it never throws, it always returns a typed
@@ -269,6 +286,14 @@ export async function importSongFromCifraClubAction(url: string): Promise<CifraC
   }
 
   try {
+    const supabase = await createClient()
+    const {
+      data: { user }
+    } = await supabase.auth.getUser()
+    if (isCifraImportRateLimited(user?.id ?? "anonymous")) {
+      return { success: false, error: "rate_limited" }
+    }
+
     const validated = validateCifraClubUrl(parsedInput.data)
     if (!validated.ok) {
       return { success: false, error: validated.error }

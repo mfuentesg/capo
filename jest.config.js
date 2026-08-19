@@ -24,6 +24,7 @@ const customJestConfig = {
     "app/auth/callback/route.ts",
     "features/**/api/actions.ts",
     "features/auth/api/authApi.ts",
+    "features/songs/utils/cifraclub/*.ts",
     "features/**/hooks/query-keys.ts",
     "features/teams/constants.ts",
     "lib/constants.ts",

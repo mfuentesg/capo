@@ -356,6 +356,16 @@ Line two</pre></body></html>`
 
   const originalFetch = global.fetch
 
+  beforeEach(() => {
+    // Keyed by the test's own name so each test gets an isolated rate-limit
+    // bucket — the limiter is process-scoped and would otherwise leak state
+    // across test cases that all reuse the same mocked user id.
+    const userId = expect.getState().currentTestName ?? "test-user"
+    ;(createClient as jest.Mock).mockResolvedValue({
+      auth: { getUser: jest.fn().mockResolvedValue({ data: { user: { id: userId } } }) }
+    })
+  })
+
   afterEach(() => {
     global.fetch = originalFetch
   })
@@ -421,5 +431,22 @@ Line two</pre></body></html>`
     expect(result.data.artist).toBe("John Mayer")
     expect(result.data.title).toBe("Gravity")
     expect(result.data.lyrics).toContain("[")
+  })
+
+  it("rate-limits a user after too many imports within the window", async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      headers: new Headers(),
+      text: async () => VALID_HTML
+    }) as unknown as typeof fetch
+
+    const url = "https://www.cifraclub.com/john-mayer/gravity/"
+    const results = []
+    for (let i = 0; i < 11; i++) {
+      results.push(await importSongFromCifraClubAction(url))
+    }
+
+    expect(results.slice(0, 10).every((r) => r.success)).toBe(true)
+    expect(results[10]).toEqual({ success: false, error: "rate_limited" })
   })
 })

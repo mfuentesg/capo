@@ -31,6 +31,10 @@ import {
   deleteTag as deleteTagApi,
   setSongTags as setSongTagsApi
 } from "./tags-api"
+import { validateCifraClubUrl } from "../utils/cifraclub/validate-url"
+import { fetchCifraClubPage } from "../utils/cifraclub/fetch-cifraclub-page"
+import { parseCifraClubHtml } from "../utils/cifraclub/parse-html"
+import type { CifraClubImportResult } from "../types/cifraclub-import.types"
 
 // Validates user-editable song fields on create/update; unknown keys (e.g.
 // ownership, userSettings) pass through untouched and are handled by the API layer.
@@ -250,4 +254,39 @@ export async function upsertUserPreferencesAction(
   } = await supabase.auth.getUser()
   if (!user) return null
   return upsertUserPreferencesApi(supabase, user.id, preferences)
+}
+
+const cifraClubUrlSchema = z.string().trim().min(1).max(2000)
+
+// Fetches and parses a CifraClub song page server-side. Unlike the actions
+// above, this reaches out to a third-party site, which can fail in many more
+// ways than a Supabase call — so it never throws, it always returns a typed
+// result the caller can render a message from.
+export async function importSongFromCifraClubAction(url: string): Promise<CifraClubImportResult> {
+  const parsedInput = cifraClubUrlSchema.safeParse(url)
+  if (!parsedInput.success) {
+    return { success: false, error: "invalid_url" }
+  }
+
+  try {
+    const validated = validateCifraClubUrl(parsedInput.data)
+    if (!validated.ok) {
+      return { success: false, error: validated.error }
+    }
+
+    const fetched = await fetchCifraClubPage(validated.url.href)
+    if (!fetched.ok) {
+      return { success: false, error: fetched.reason }
+    }
+
+    const parsed = parseCifraClubHtml(fetched.html, validated.url)
+    if (!parsed.success) {
+      return { success: false, error: parsed.error }
+    }
+
+    return { success: true, data: parsed.data }
+  } catch (err) {
+    console.error("[cifraclub-import] Unexpected error:", err)
+    return { success: false, error: "unexpected" }
+  }
 }

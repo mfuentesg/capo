@@ -27,7 +27,8 @@ import {
   getUserProfileDataAction,
   upsertUserPreferencesAction,
   transferSongToTeamAction,
-  updateSongAction
+  updateSongAction,
+  importSongFromCifraClubAction
 } from "../actions"
 
 jest.mock("@/lib/supabase/server", () => ({
@@ -343,5 +344,82 @@ describe("upsertUserPreferencesAction", () => {
 
     expect(upsertUserPreferencesApi).toHaveBeenCalledWith(mockSupabase, "cccccccc-cccc-4ccc-8ccc-cccccccccccc", prefs)
     expect(result).toEqual(prefs)
+  })
+})
+
+describe("importSongFromCifraClubAction", () => {
+  const VALID_HTML = `<!doctype html>
+<html><body><pre><b>G</b>       <b>D</b>
+Line one
+<b>C</b>       <b>G</b>
+Line two</pre></body></html>`
+
+  const originalFetch = global.fetch
+
+  afterEach(() => {
+    global.fetch = originalFetch
+  })
+
+  it("returns invalid_url for a malformed URL", async () => {
+    const result = await importSongFromCifraClubAction("not a url")
+    expect(result).toEqual({ success: false, error: "invalid_url" })
+  })
+
+  it("returns invalid_url for an empty string", async () => {
+    const result = await importSongFromCifraClubAction("")
+    expect(result).toEqual({ success: false, error: "invalid_url" })
+  })
+
+  it("returns wrong_host for a non-CifraClub URL", async () => {
+    const result = await importSongFromCifraClubAction("https://example.com/song")
+    expect(result).toEqual({ success: false, error: "wrong_host" })
+  })
+
+  it("returns network on a fetch failure", async () => {
+    global.fetch = jest.fn().mockRejectedValue(new Error("boom")) as unknown as typeof fetch
+
+    const result = await importSongFromCifraClubAction("https://www.cifraclub.com/john-mayer/gravity/")
+
+    expect(result).toEqual({ success: false, error: "network" })
+  })
+
+  it("returns http_status on a non-ok response", async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: false,
+      headers: new Headers(),
+      text: async () => ""
+    }) as unknown as typeof fetch
+
+    const result = await importSongFromCifraClubAction("https://www.cifraclub.com/john-mayer/gravity/")
+
+    expect(result).toEqual({ success: false, error: "http_status" })
+  })
+
+  it("returns no_chord_block when the page has no chord sheet", async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      headers: new Headers(),
+      text: async () => "<html><body>no chords here</body></html>"
+    }) as unknown as typeof fetch
+
+    const result = await importSongFromCifraClubAction("https://www.cifraclub.com/john-mayer/gravity/")
+
+    expect(result).toEqual({ success: false, error: "no_chord_block" })
+  })
+
+  it("parses a valid page end-to-end", async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      headers: new Headers(),
+      text: async () => VALID_HTML
+    }) as unknown as typeof fetch
+
+    const result = await importSongFromCifraClubAction("https://www.cifraclub.com/john-mayer/gravity/")
+
+    expect(result.success).toBe(true)
+    if (!result.success) return
+    expect(result.data.artist).toBe("John Mayer")
+    expect(result.data.title).toBe("Gravity")
+    expect(result.data.lyrics).toContain("[")
   })
 })

@@ -33,3 +33,4 @@ export type {
   BPMRange,
   MusicalKey
 } from "./types"
+export type { CifraClubParsedSong } from "./types/cifraclub-import.types"

@@ -11,6 +11,11 @@ describe("validateCifraClubUrl", () => {
     expect(result.ok).toBe(true)
   })
 
+  it("accepts cifraclub.com.br (confirmed the same site's Portuguese edition)", () => {
+    const result = validateCifraClubUrl("https://www.cifraclub.com.br/israel-houghton/eres-fiel/")
+    expect(result.ok).toBe(true)
+  })
+
   it("rejects an unparseable URL", () => {
     const result = validateCifraClubUrl("not a url")
     expect(result).toEqual({ ok: false, error: "invalid_url" })
@@ -31,8 +36,8 @@ describe("validateCifraClubUrl", () => {
     expect(result).toEqual({ ok: false, error: "wrong_host" })
   })
 
-  it("rejects a host that merely starts with the allowed host", () => {
-    const result = validateCifraClubUrl("https://cifraclub.com.br/song")
+  it("rejects a host that merely starts with an allowed host", () => {
+    const result = validateCifraClubUrl("https://cifraclub.com.mx/song")
     expect(result).toEqual({ ok: false, error: "wrong_host" })
   })
 })

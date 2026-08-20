@@ -2,7 +2,7 @@
 // (we fetch ourselves) — this also avoids undici's web-fetch shim requiring
 // browser globals (ReadableStream, MessagePort, ...) that jsdom lacks.
 import * as cheerio from "cheerio/slim"
-import { convertToChordPro } from "@/features/lyrics-editor/utils/chordpro-converter"
+import { convertChordAboveLyricsBlocks } from "@/features/lyrics-editor/utils/chordpro-converter"
 import type { CifraClubParsedSong, CifraClubParseError } from "../../types/cifraclub-import.types"
 
 const MIN_CHORD_BLOCK_LINES = 2
@@ -20,28 +20,9 @@ function humanizeSlug(slug: string): string {
     .join(" ")
 }
 
-function readJsonLd($: cheerio.CheerioAPI): { title?: string; artist?: string } {
-  for (const el of $('script[type="application/ld+json"]').toArray()) {
-    try {
-      const json: unknown = JSON.parse($(el).contents().text())
-      const entries = Array.isArray(json) ? json : [json]
-      for (const entry of entries) {
-        if (typeof entry !== "object" || entry === null) continue
-        const record = entry as Record<string, unknown>
-        const name = typeof record.name === "string" ? record.name : undefined
-        const byArtist = record.byArtist as Record<string, unknown> | undefined
-        const artist = typeof byArtist?.name === "string" ? byArtist.name : undefined
-        if (name || artist) return { title: name, artist }
-      }
-    } catch {
-      // Malformed JSON-LD block — skip it and try the next one/fallback.
-    }
-  }
-  return {}
-}
-
-// CifraClub URLs follow /artist-slug/song-slug/, the most stable signal on
-// the page (more so than markup, which may change without notice).
+// CifraClub URLs follow /artist-slug/song-slug/ — the most stable signal on
+// the page, since it doesn't depend on markup that can change without
+// notice. Checked first; JSON-LD/meta are only fallbacks for non-standard URLs.
 function readTitleArtistFromUrl(url: URL): { title?: string; artist?: string } {
   const segments = url.pathname.split("/").filter(Boolean)
   const [artistSlug, songSlug] = segments
@@ -51,18 +32,63 @@ function readTitleArtistFromUrl(url: URL): { title?: string; artist?: string } {
   }
 }
 
-function readTitleArtistFromMeta($: cheerio.CheerioAPI): { title?: string; artist?: string } {
-  const ogTitle = $('meta[property="og:title"]').attr("content")?.trim()
-  if (ogTitle?.includes(" - ")) {
-    const [first, second] = ogTitle.split(" - ")
-    return { artist: first?.trim(), title: second?.trim() }
+// CifraClub embeds several JSON-LD blocks. A MusicRecording/Article block's
+// `name` is often the combined "Artist - Title" — not a clean title — so
+// only the MusicComposition block's `name` is trusted for title; `byArtist`
+// is read from whichever block has it.
+function readJsonLd($: cheerio.CheerioAPI): { title?: string; artist?: string } {
+  let title: string | undefined
+  let artist: string | undefined
+
+  for (const el of $('script[type="application/ld+json"]').toArray()) {
+    try {
+      const json: unknown = JSON.parse($(el).contents().text())
+      const entries = Array.isArray(json) ? json : [json]
+      for (const entry of entries) {
+        if (typeof entry !== "object" || entry === null) continue
+        const record = entry as Record<string, unknown>
+        const type = record["@type"]
+        const types = Array.isArray(type) ? type : [type]
+        const name = typeof record.name === "string" ? record.name : undefined
+        const byArtist = record.byArtist as Record<string, unknown> | undefined
+        const artistName = typeof byArtist?.name === "string" ? byArtist.name : undefined
+
+        if (!title && types.includes("MusicComposition") && name) {
+          title = name
+        }
+        if (!artist && artistName) {
+          artist = artistName
+        }
+      }
+    } catch {
+      // Malformed JSON-LD block — skip it and try the next one/fallback.
+    }
   }
-  const h1 = $("h1").first().text().trim()
-  return { title: h1 || undefined }
+
+  return { title, artist }
 }
 
+function readTitleFromH1($: cheerio.CheerioAPI): string | undefined {
+  const h1 = $("h1").first().text().trim()
+  return h1 || undefined
+}
+
+// Observed og:title format is "Title - Artist - Cifra Club".
+function readTitleArtistFromOgTitle($: cheerio.CheerioAPI): { title?: string; artist?: string } {
+  const raw = $('meta[property="og:title"]').attr("content")?.trim()
+  if (!raw) return {}
+  const withoutSuffix = raw.replace(/\s*-\s*Cifra Club\s*$/i, "").trim()
+  const [title, artist] = withoutSuffix.split(" - ").map((part) => part.trim())
+  return { title: title || undefined, artist: artist || undefined }
+}
+
+// Cheerio's .text() includes <script>/<style> contents (unlike a browser's
+// rendered text), so those are stripped first — otherwise the regex can
+// false-match inside CSS/JS (e.g. "tom:c" inside "bottom:calc(...)").
 function readKey($: cheerio.CheerioAPI): { key: string; keyFound: boolean } {
-  const match = $("body").text().match(KEY_PATTERN)
+  const body = $("body").clone()
+  body.find("script, style").remove()
+  const match = body.text().match(KEY_PATTERN)
   return match ? { key: match[1], keyFound: true } : { key: "", keyFound: false }
 }
 
@@ -91,14 +117,23 @@ export function parseCifraClubHtml(html: string, sourceUrl: URL): ParseCifraClub
     return { success: false, error: "no_chord_block" }
   }
 
-  const fromJsonLd = readJsonLd($)
   const fromUrl = readTitleArtistFromUrl(sourceUrl)
-  const fromMeta = readTitleArtistFromMeta($)
+  const fromJsonLd = readJsonLd($)
+  const fromH1 = readTitleFromH1($)
+  const fromOgTitle = readTitleArtistFromOgTitle($)
 
-  const title = fromJsonLd.title || fromUrl.title || fromMeta.title || ""
-  const artist = fromJsonLd.artist || fromUrl.artist || fromMeta.artist || ""
+  const title = fromUrl.title || fromJsonLd.title || fromH1 || fromOgTitle.title || ""
+  const artist = fromUrl.artist || fromJsonLd.artist || fromOgTitle.artist || ""
   const { key, keyFound } = readKey($)
-  const { output: lyrics } = convertToChordPro(rawChordBlock.trim())
+
+  // CifraClub inlines its own bracketed section labels (e.g. "[Estribillo]")
+  // in the same text as the chord-above-lyrics content. Chords themselves
+  // never appear bracketed in the flattened text (only their plain name,
+  // e.g. "E"), so any "[...]" here is a section label, not a chord — strip
+  // the brackets so the parser below can't mistake it for ChordPro syntax
+  // (which would make it skip conversion entirely).
+  const withoutSectionBrackets = rawChordBlock.replace(/\[([^\]]*)\]/g, "$1")
+  const { output: lyrics } = convertChordAboveLyricsBlocks(withoutSectionBrackets.trim())
 
   return { success: true, data: { title, artist, key, lyrics, keyFound } }
 }

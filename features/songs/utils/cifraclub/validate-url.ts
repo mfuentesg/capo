@@ -2,7 +2,9 @@ import type { CifraClubParseError } from "../../types/cifraclub-import.types"
 
 // Exact-match allowlist only — never `includes()`/`endsWith()`, which would
 // let a host like "cifraclub.com.evil.example" slip through.
-const ALLOWED_HOSTS = new Set(["cifraclub.com"])
+// cifraclub.com.br is confirmed the same site's Portuguese edition (the
+// .com page itself links to it via <link rel="alternate" hreflang="pt">).
+const ALLOWED_HOSTS = new Set(["cifraclub.com", "cifraclub.com.br"])
 
 export type ValidatedCifraClubUrl =
   | { ok: true; url: URL }

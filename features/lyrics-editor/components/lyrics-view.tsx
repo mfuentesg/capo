@@ -8,6 +8,7 @@ import {
   ArrowLeft,
   BookOpen,
   Music2,
+  Music4,
   Type,
   Plus,
   Minus,
@@ -28,7 +29,14 @@ import {
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import type { Song } from "@/types"
-import { TagSelector, useSetSongTags, useTags, useCreateTag } from "@/features/songs"
+import type { CifraClubParsedSong } from "@/features/songs"
+import {
+  TagSelector,
+  useSetSongTags,
+  useTags,
+  useCreateTag,
+  CifraClubImportDialog
+} from "@/features/songs"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
 import { useLyricsSettings } from "@/features/lyrics-editor"
@@ -135,6 +143,7 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
   const [isEditing, setIsEditing] = useState(initialEditing)
   const [isPreviewing, setIsPreviewing] = useState(false)
   const [isReferenceOpen, setIsReferenceOpen] = useState(false)
+  const [isCifraImportOpen, setIsCifraImportOpen] = useState(false)
   const [hasInitializedEditor, setHasInitializedEditor] = useState(initialEditing)
   const [editedLyrics, setEditedLyrics] = useState(song.lyrics || "")
   const [savedLyrics, setSavedLyrics] = useState(song.lyrics || "")
@@ -269,6 +278,15 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
       toast.info(t.songs.lyrics.parseChordsAlreadyChordPro)
     }
   }, [editedLyrics, t.toasts.lyricsConvertedToChordPro, t.songs.lyrics.parseChordsAlreadyChordPro])
+
+  const handleCifraClubImport = useCallback(
+    (result: CifraClubParsedSong) => {
+      setEditedLyrics(result.lyrics)
+      setEditorResetKey((k) => k + 1)
+      toast.success(t.toasts.cifraImportSuccess)
+    },
+    [t.toasts.cifraImportSuccess]
+  )
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     if (isEditing || (!onPrevSong && !onNextSong)) return
@@ -587,6 +605,16 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
                     variant="ghost"
                     size="icon"
                     className="h-9 w-9"
+                    onClick={() => setIsCifraImportOpen(true)}
+                    aria-label={t.songs.lyrics.importFromCifraClub}
+                    title={t.songs.lyrics.importFromCifraClub}
+                  >
+                    <Music4 className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-9 w-9"
                     onClick={() => setIsReferenceOpen(true)}
                     aria-label={t.songs.lyrics.chordproReference}
                   >
@@ -834,6 +862,13 @@ export const LyricsView = forwardRef<LyricsViewHandle, LyricsViewProps>(function
         </>
       )}
       <LazyChordProReference open={isReferenceOpen} onOpenChange={setIsReferenceOpen} />
+      <CifraClubImportDialog
+        mode="replace-lyrics"
+        hasExistingLyrics={editedLyrics.trim().length > 0}
+        open={isCifraImportOpen}
+        onOpenChange={setIsCifraImportOpen}
+        onImported={handleCifraClubImport}
+      />
     </div>
   )
 })

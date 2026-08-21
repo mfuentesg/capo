@@ -189,6 +189,7 @@
       "wrapAs": "Envolver como",
       "parseChords": "Analizar acordes",
       "parseChordsAlreadyChordPro": "La letra ya está en formato ChordPro",
+      "importFromCifraClub": "Importar desde CifraClub",
       "autoScroll": {
         "start": "Iniciar desplazamiento automático",
         "stop": "Detener desplazamiento automático",
@@ -216,6 +217,25 @@
       "createTag": "Crear etiqueta",
       "create": "Crear",
       "deleteTag": "Eliminar etiqueta"
+    },
+    "cifraImport": {
+      "button": "Importar desde CifraClub",
+      "dialogTitleCreate": "Importar canción desde CifraClub",
+      "dialogTitleReplace": "Importar letra desde CifraClub",
+      "urlLabel": "URL de CifraClub",
+      "urlPlaceholder": "https://www.cifraclub.com/artista/cancion/",
+      "importButton": "Importar",
+      "importing": "Importando…",
+      "confirmReplaceTitle": "Reemplazar letra",
+      "confirmReplaceDescription": "Esto reemplazará la letra actual con la importada. Esta acción no se puede deshacer.",
+      "errors": {
+        "invalidUrl": "Ingresa una URL válida",
+        "unsupportedHost": "Solo se admiten URLs de cifraclub.com",
+        "network": "No se pudo conectar con CifraClub. Inténtalo de nuevo.",
+        "parseFailed": "No se pudo leer esta página de CifraClub. Intenta pegar la letra manualmente.",
+        "rateLimited": "Demasiadas importaciones. Espera un minuto e inténtalo de nuevo.",
+        "unknown": "Algo salió mal. Inténtalo de nuevo."
+      }
     }
   },
   "playlists": {
@@ -333,7 +353,8 @@
     "roleChangePermissionDenied": "No tienes permiso para cambiar roles",
     "roleChangeAdminLimit": "Los administradores solo pueden asignar Miembro o Espectador",
     "lyricsCopied": "Letra copiada al portapapeles",
-    "lyricsConvertedToChordPro": "Texto pegado convertido a ChordPro"
+    "lyricsConvertedToChordPro": "Texto pegado convertido a ChordPro",
+    "cifraImportSuccess": "Importado desde CifraClub"
   },
   "errors": {
     "unexpectedError": "Ocurrió un error inesperado. Por favor, inténtelo de nuevo.",

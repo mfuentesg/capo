@@ -19,6 +19,7 @@ import {
   Plus,
   Search,
   Music,
+  Music4,
   LayoutList,
   Music2,
   Settings2,
@@ -27,12 +28,14 @@ import {
   Rabbit,
   Zap
 } from "lucide-react"
-import { SongList, TagBadge } from "@/features/songs"
+import { toast } from "sonner"
+import { SongList, TagBadge, CifraClubImportDialog } from "@/features/songs"
 import { useSongs, useCreateSong } from "../hooks/use-songs"
 import { useTags } from "../hooks/use-tags"
 import { useUser } from "@/features/auth"
 import { useAppContext, type AppContext } from "@/features/app-context"
 import type { Song, GroupBy, BPMRange } from "../types"
+import type { CifraClubParsedSong } from "../types/cifraclub-import.types"
 import type { Translations } from "@/lib/i18n/translations"
 import { createOverlayIds } from "@/lib/ui/stable-overlay-ids"
 
@@ -141,6 +144,7 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
   const [filterTags, setFilterTags] = useState<string[]>([])
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false)
   const [isCreatingNewSong, setIsCreatingNewSong] = useState(false)
+  const [isCifraImportOpen, setIsCifraImportOpen] = useState(false)
   const [previewSong, setPreviewSong] = useState<Song | null>(null)
   const [creationBucket, setCreationBucket] = useState<AppContext | null>(null)
   const filterPopoverIds = createOverlayIds("songs-filter-popover")
@@ -239,13 +243,34 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
     }
   }
 
+  const handleCifraClubImported = (imported: CifraClubParsedSong) => {
+    const previewId = crypto.randomUUID()
+    const newPreview: Song = {
+      id: previewId,
+      title: imported.title,
+      artist: imported.artist,
+      key: imported.key,
+      bpm: 0,
+      lyrics: imported.lyrics
+    }
+    setPreviewSong(newPreview)
+    setSelectedSong(newPreview)
+    setIsCreatingNewSong(true)
+    setIsMobileDrawerOpen(true)
+    setCreationBucket(context)
+    toast.success(t.toasts.cifraImportSuccess)
+  }
+
   const handleSaveSong = async (song: Song) => {
     if (!user?.id) {
       return // User not authenticated
     }
+    // SongDraftForm's buildSong() only carries title/artist/key/bpm — merge
+    // back in any lyrics seeded by a CifraClub import before persisting.
+    const songToSave = previewSong?.lyrics ? { ...song, lyrics: previewSong.lyrics } : song
     try {
       const savedSong = await createSongMutation.mutateAsync({
-        song,
+        song: songToSave,
         userId: user.id,
         context: creationBucket ?? undefined
       })
@@ -298,15 +323,27 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
                 </h1>
                 <span className="text-sm text-muted-foreground tabular-nums">· {songs.length}</span>
               </div>
-              <Button
-                size="sm"
-                className="gap-1.5 rounded-full"
-                onClick={handleCreateNewSong}
-                disabled={isCreatingNewSong}
-              >
-                <Plus className="h-4 w-4" />
-                {t.songs.addSong}
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-1.5 rounded-full"
+                  onClick={() => setIsCifraImportOpen(true)}
+                  disabled={isCreatingNewSong}
+                >
+                  <Music4 className="h-4 w-4" />
+                  {t.songs.cifraImport.button}
+                </Button>
+                <Button
+                  size="sm"
+                  className="gap-1.5 rounded-full"
+                  onClick={handleCreateNewSong}
+                  disabled={isCreatingNewSong}
+                >
+                  <Plus className="h-4 w-4" />
+                  {t.songs.addSong}
+                </Button>
+              </div>
             </div>
 
             <div className="relative mt-4 flex items-center gap-2">
@@ -602,6 +639,13 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
           </SheetContent>
         </Sheet>
       )}
+
+      <CifraClubImportDialog
+        mode="create"
+        open={isCifraImportOpen}
+        onOpenChange={setIsCifraImportOpen}
+        onImported={handleCifraClubImported}
+      />
     </div>
   )
 }

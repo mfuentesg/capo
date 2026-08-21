@@ -189,6 +189,7 @@
       "wrapAs": "Wrap as",
       "parseChords": "Parse chords",
       "parseChordsAlreadyChordPro": "Lyrics are already in ChordPro format",
+      "importFromCifraClub": "Import from CifraClub",
       "autoScroll": {
         "start": "Start auto-scroll",
         "stop": "Stop auto-scroll",
@@ -216,6 +217,25 @@
       "createTag": "Create tag",
       "create": "Create",
       "deleteTag": "Delete tag"
+    },
+    "cifraImport": {
+      "button": "Import from CifraClub",
+      "dialogTitleCreate": "Import song from CifraClub",
+      "dialogTitleReplace": "Import lyrics from CifraClub",
+      "urlLabel": "CifraClub URL",
+      "urlPlaceholder": "https://www.cifraclub.com/artist/song/",
+      "importButton": "Import",
+      "importing": "Importing…",
+      "confirmReplaceTitle": "Replace lyrics",
+      "confirmReplaceDescription": "This will replace your current lyrics with the imported ones. This cannot be undone.",
+      "errors": {
+        "invalidUrl": "Enter a valid URL",
+        "unsupportedHost": "Only cifraclub.com URLs are supported",
+        "network": "Couldn't reach CifraClub. Please try again.",
+        "parseFailed": "Couldn't read this CifraClub page — try pasting the lyrics manually.",
+        "rateLimited": "Too many imports — please wait a minute and try again.",
+        "unknown": "Something went wrong. Please try again."
+      }
     }
   },
   "playlists": {
@@ -333,7 +353,8 @@
     "roleChangePermissionDenied": "You do not have permission to change roles",
     "roleChangeAdminLimit": "Admins can only assign Member or Viewer",
     "lyricsCopied": "Lyrics copied to clipboard",
-    "lyricsConvertedToChordPro": "Pasted text converted to ChordPro"
+    "lyricsConvertedToChordPro": "Pasted text converted to ChordPro",
+    "cifraImportSuccess": "Imported from CifraClub"
   },
   "errors": {
     "unexpectedError": "An unexpected error occurred. Please try again.",

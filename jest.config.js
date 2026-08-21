@@ -10,6 +10,10 @@ const createJestConfig = nextJest({
 const customJestConfig = {
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   testEnvironment: "jest-environment-jsdom",
+  // jsdom's default export condition resolves to cheerio's ESM "browser"
+  // build, which Jest's CJS transform can't parse. Clearing the condition
+  // list makes module resolution fall back to the standard Node build.
+  testEnvironmentOptions: { customExportConditions: [""] },
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/$1",
     "^react-resizable-panels$": "<rootDir>/__mocks__/react-resizable-panels.js"
@@ -20,6 +24,7 @@ const customJestConfig = {
     "app/auth/callback/route.ts",
     "features/**/api/actions.ts",
     "features/auth/api/authApi.ts",
+    "features/songs/utils/cifraclub/*.ts",
     "features/**/hooks/query-keys.ts",
     "features/teams/constants.ts",
     "lib/constants.ts",

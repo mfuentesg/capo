@@ -316,7 +316,7 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
           className="flex flex-col border-r bg-background"
         >
           <div className="border-b border-r p-4 lg:p-6">
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
               <div className="flex items-center gap-2">
                 <h1 className="text-xl font-bold tracking-tight lg:text-2xl">
                   {t.songs.title}
@@ -327,16 +327,16 @@ export function SongsClient({ initialSongs = [], t }: SongsClientProps) {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="gap-1.5 rounded-full"
+                  className="flex-1 gap-1.5 rounded-full sm:flex-initial"
                   onClick={() => setIsCifraImportOpen(true)}
                   disabled={isCreatingNewSong}
                 >
                   <Music4 className="h-4 w-4" />
-                  {t.songs.cifraImport.button}
+                  <span className="truncate">{t.songs.cifraImport.button}</span>
                 </Button>
                 <Button
                   size="sm"
-                  className="gap-1.5 rounded-full"
+                  className="flex-1 gap-1.5 rounded-full sm:flex-initial"
                   onClick={handleCreateNewSong}
                   disabled={isCreatingNewSong}
                 >

@@ -219,7 +219,7 @@
       "deleteTag": "Delete tag"
     },
     "cifraImport": {
-      "button": "Import from CifraClub",
+      "button": "Import",
       "dialogTitleCreate": "Import song from CifraClub",
       "dialogTitleReplace": "Import lyrics from CifraClub",
       "urlLabel": "CifraClub URL",

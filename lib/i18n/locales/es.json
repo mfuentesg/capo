@@ -219,7 +219,7 @@
       "deleteTag": "Eliminar etiqueta"
     },
     "cifraImport": {
-      "button": "Importar desde CifraClub",
+      "button": "Importar",
       "dialogTitleCreate": "Importar canción desde CifraClub",
       "dialogTitleReplace": "Importar letra desde CifraClub",
       "urlLabel": "URL de CifraClub",

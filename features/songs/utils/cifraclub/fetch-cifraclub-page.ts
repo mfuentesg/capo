@@ -6,6 +6,8 @@ const MAX_RESPONSE_BYTES = 3_000_000
 // CifraClub itself may redirect once (e.g. a canonical URL change); this
 // bounds how many hops we'll follow before giving up.
 const MAX_REDIRECTS = 3
+const BROWSER_USER_AGENT =
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
 export type FetchCifraClubPageResult =
   | { ok: true; html: string }
@@ -21,7 +23,13 @@ export async function fetchCifraClubPage(url: string): Promise<FetchCifraClubPag
   try {
     for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
       const res = await fetch(currentUrl, {
-        headers: { "User-Agent": "Mozilla/5.0 (compatible; CapoApp/1.0)" },
+        // CifraClub sits behind bot protection that rejects non-browser user agents
+        // (403), so send browser-like headers.
+        headers: {
+          "User-Agent": BROWSER_USER_AGENT,
+          Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          "Accept-Language": "en-US,en;q=0.9,pt-BR;q=0.8,es;q=0.7"
+        },
         signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
         redirect: "manual"
       })
@@ -47,6 +55,7 @@ export async function fetchCifraClubPage(url: string): Promise<FetchCifraClubPag
       }
 
       if (!res.ok) {
+        console.error(`[cifraclub] unexpected status ${res.status} for ${currentUrl}`)
         return { ok: false, reason: "http_status" }
       }
 
@@ -64,7 +73,8 @@ export async function fetchCifraClubPage(url: string): Promise<FetchCifraClubPag
     }
 
     return { ok: false, reason: "http_status" }
-  } catch {
+  } catch (error) {
+    console.error("[cifraclub] fetch failed", error)
     return { ok: false, reason: "network" }
   }
 }

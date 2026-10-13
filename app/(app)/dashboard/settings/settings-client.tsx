@@ -10,15 +10,17 @@ import {
   PaletteSettings,
   useLocale
 } from "@/features/settings"
+import { ApiTokensSettings } from "@/features/api-tokens/client"
 import { Separator } from "@/components/ui/separator"
-import { User, Palette, ShieldAlert } from "lucide-react"
+import { User, Palette, ShieldAlert, KeyRound } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-type Section = "profile" | "appearance" | "account"
+type Section = "profile" | "appearance" | "api" | "account"
 
 const NAV_ITEMS: { id: Section; label: string; icon: typeof User }[] = [
   { id: "profile", label: "Profile", icon: User },
   { id: "appearance", label: "Appearance", icon: Palette },
+  { id: "api", label: "API", icon: KeyRound },
   { id: "account", label: "Account", icon: ShieldAlert }
 ]
 
@@ -88,6 +90,12 @@ export function SettingsClient() {
               <LanguageSettings />
               <Separator />
               <ChordHandSettings />
+            </div>
+          )}
+
+          {active === "api" && (
+            <div className="rounded-2xl border bg-card p-6 shadow-sm">
+              <ApiTokensSettings />
             </div>
           )}
 

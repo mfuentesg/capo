@@ -95,7 +95,30 @@
     "deleteAccount": "Delete account",
     "deleteAccountConfirm": "Are you sure? This is irreversible.",
     "deleteAccountConfirmButton": "Yes, delete my account",
-    "deleteAccountPending": "Deleting…"
+    "deleteAccountPending": "Deleting…",
+    "apiTokens": {
+      "title": "API tokens",
+      "description": "Tokens let external tools such as HollyShow read your songs.",
+      "nameLabel": "Token name",
+      "namePlaceholder": "e.g. Church laptop",
+      "create": "Create token",
+      "creating": "Creating...",
+      "revealTitle": "Copy your new token",
+      "revealWarning": "This token will not be shown again. Store it somewhere safe.",
+      "copy": "Copy",
+      "copied": "Copied",
+      "close": "Close",
+      "empty": "No tokens yet.",
+      "createdOn": "Created {date}",
+      "lastUsed": "Last used {date}",
+      "neverUsed": "Never used",
+      "revoked": "Revoked",
+      "revoke": "Revoke",
+      "revokeAria": "Revoke token {name}",
+      "loadError": "Could not load tokens.",
+      "createError": "Could not create the token.",
+      "revokeError": "Could not revoke the token."
+    }
   },
   "songs": {
     "title": "Songs",

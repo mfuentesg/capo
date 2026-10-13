@@ -22,7 +22,8 @@ CREATE POLICY "Users revoke own api tokens" ON api_tokens FOR UPDATE
   WITH CHECK (user_id = (SELECT auth.uid()));
 
 -- Read-only export of every song the token's user can see (own songs + team songs).
--- Mirrors the "Users can read own songs" / "Team members can read team songs" policies.
+-- Mirrors the "Users can read own songs" / "Team members can read team songs" policies;
+-- tags are limited to those the token's user can see (song_tags RLS: own personal tags + team tags).
 CREATE OR REPLACE FUNCTION export_songs_for_token(
   p_token_hash TEXT,
   p_since TIMESTAMPTZ,
@@ -58,7 +59,9 @@ BEGIN
          COALESCE(
            (SELECT array_agg(tg.name ORDER BY tg.name)
               FROM song_tag_assignments a JOIN song_tags tg ON tg.id = a.tag_id
-             WHERE a.song_id = s.id),
+             WHERE a.song_id = s.id
+               AND (tg.user_id = v_user
+                    OR (tg.team_id IS NOT NULL AND is_team_member(tg.team_id, v_user)))),
            ARRAY[]::TEXT[]),
          s.updated_at, TRUE
     FROM songs s

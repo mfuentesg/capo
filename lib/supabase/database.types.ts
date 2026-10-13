@@ -658,7 +658,7 @@ export type Database = {
           p_after_updated: string
           p_limit: number
           p_since: string
-          p_token_hash: string
+          p_token: string
         }
         Returns: {
           artist: string

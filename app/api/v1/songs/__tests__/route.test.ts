@@ -38,12 +38,23 @@ describe("GET /api/v1/songs", () => {
     expect(await res.json()).toEqual({ error: "unauthorized" })
   })
 
-  it("hashes the token before calling the database", async () => {
+  it("passes the raw token (hashed inside SQL), never a hash", async () => {
     rpc.mockResolvedValue({ data: [], error: null })
     await GET(req())
     const args = callArgs(0)
-    expect(args.p_token_hash).toEqual(expect.stringMatching(/^[0-9a-f]{64}$/))
-    expect(JSON.stringify(args)).not.toContain("capo_tok")
+    expect(args.p_token).toBe("capo_tok")
+    expect(args).not.toHaveProperty("p_token_hash")
+  })
+
+  it("reads server_time before calling the database", async () => {
+    let atRpc = ""
+    rpc.mockImplementation(async () => {
+      atRpc = new Date(Date.now() + 50).toISOString()
+      await new Promise((r) => setTimeout(r, 60))
+      return { data: [], error: null }
+    })
+    const body = (await (await GET(req())).json()) as Body
+    expect(Date.parse(body.server_time)).toBeLessThan(Date.parse(atRpc))
   })
 
   it("returns songs, server_time and a null cursor on the last page", async () => {

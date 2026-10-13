@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js"
 import { NextResponse } from "next/server"
 import { env } from "@/lib/env"
 import type { Database } from "@/lib/supabase/database.types"
-import { decodeCursor, encodeCursor, hashToken, parseBearer } from "@/features/api-tokens"
+import { decodeCursor, encodeCursor, parseBearer } from "@/features/api-tokens"
 
 const DEFAULT_LIMIT = 200
 const MAX_LIMIT = 500
@@ -36,8 +36,10 @@ export async function GET(request: Request) {
   // The generated Args types are non-null (the SQL function has no DEFAULTs), but the function
   // accepts NULL for the optional filters. Cast so we can pass null; cursor fields are always
   // passed together or not at all.
+  // Read before the query so the client's next `updated_since` can never skip a row.
+  const serverTime = new Date().toISOString()
   const { data, error } = await supabase.rpc("export_songs_for_token", {
-    p_token_hash: hashToken(token),
+    p_token: token,
     p_since: since,
     p_after_updated: cursor?.updatedAt ?? null,
     p_after_id: cursor?.id ?? null,
@@ -85,6 +87,6 @@ export async function GET(request: Request) {
   return NextResponse.json({
     songs,
     next_cursor: nextCursor,
-    server_time: new Date().toISOString()
+    server_time: serverTime
   })
 }

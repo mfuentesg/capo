@@ -3,7 +3,7 @@ CREATE TABLE api_tokens (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   name TEXT NOT NULL CHECK (length(trim(name)) > 0),
-  token_hash TEXT NOT NULL UNIQUE,
+  token_hash TEXT NOT NULL UNIQUE CHECK (token_hash ~ '^[0-9a-f]{64}$'),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   last_used_at TIMESTAMPTZ,
   revoked_at TIMESTAMPTZ
@@ -21,11 +21,34 @@ CREATE POLICY "Users revoke own api tokens" ON api_tokens FOR UPDATE
   USING (user_id = (SELECT auth.uid()))
   WITH CHECK (user_id = (SELECT auth.uid()));
 
+-- The hash is a credential-equivalent for anyone who can read it, and rows must only ever be
+-- revoked: expose just the columns the app needs and make revocation one-way.
+REVOKE ALL ON api_tokens FROM anon, authenticated;
+GRANT SELECT (id, name, created_at, last_used_at, revoked_at) ON api_tokens TO authenticated;
+GRANT INSERT (user_id, name, token_hash) ON api_tokens TO authenticated;
+GRANT UPDATE (revoked_at) ON api_tokens TO authenticated;
+
+CREATE OR REPLACE FUNCTION api_tokens_revocation_is_one_way() RETURNS trigger
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  IF OLD.revoked_at IS NOT NULL AND NEW.revoked_at IS DISTINCT FROM OLD.revoked_at THEN
+    RAISE EXCEPTION 'api token revocation cannot be undone or changed'
+      USING ERRCODE = 'check_violation';
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER api_tokens_revocation_is_one_way
+  BEFORE UPDATE ON api_tokens
+  FOR EACH ROW EXECUTE FUNCTION api_tokens_revocation_is_one_way();
+
 -- Read-only export of every song the token's user can see (own songs + team songs).
 -- Mirrors the "Users can read own songs" / "Team members can read team songs" policies;
 -- tags are limited to those the token's user can see (song_tags RLS: own personal tags + team tags).
 CREATE OR REPLACE FUNCTION export_songs_for_token(
-  p_token_hash TEXT,
+  p_token TEXT,
   p_since TIMESTAMPTZ,
   p_after_updated TIMESTAMPTZ,
   p_after_id UUID,
@@ -37,14 +60,15 @@ RETURNS TABLE (
 )
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = public
+SET search_path = public, pg_temp
 AS $$
 DECLARE
   v_user UUID;
   v_limit INT := LEAST(GREATEST(COALESCE(p_limit, 200), 1), 500);
 BEGIN
   UPDATE api_tokens t SET last_used_at = now()
-   WHERE t.token_hash = p_token_hash AND t.revoked_at IS NULL
+   WHERE t.token_hash = encode(sha256(convert_to(p_token, 'UTF8')), 'hex')
+     AND t.revoked_at IS NULL
   RETURNING t.user_id INTO v_user;
 
   IF v_user IS NULL THEN

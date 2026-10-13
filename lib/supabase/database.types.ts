@@ -82,6 +82,36 @@ export type Database = {
           },
         ]
       }
+      api_tokens: {
+        Row: {
+          created_at: string
+          id: string
+          last_used_at: string | null
+          name: string
+          revoked_at: string | null
+          token_hash: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_used_at?: string | null
+          name: string
+          revoked_at?: string | null
+          token_hash: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_used_at?: string | null
+          name?: string
+          revoked_at?: string | null
+          token_hash?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       feedback: {
         Row: {
           created_at: string | null
@@ -622,6 +652,27 @@ export type Database = {
       delete_expired_team_invitations: { Args: never; Returns: undefined }
       delete_user_account: { Args: { p_user_id: string }; Returns: undefined }
       ensure_share_code: { Args: { playlist_id: string }; Returns: string }
+      export_songs_for_token: {
+        Args: {
+          p_after_id: string
+          p_after_updated: string
+          p_limit: number
+          p_since: string
+          p_token_hash: string
+        }
+        Returns: {
+          artist: string
+          bpm: number
+          id: string
+          key: string
+          lyrics: string
+          status: string
+          tags: string[]
+          title: string
+          updated_at: string
+          valid: boolean
+        }[]
+      }
       get_team_role: {
         Args: { team_id: string; user_id: string }
         Returns: Database["public"]["Enums"]["team_role_enum"]

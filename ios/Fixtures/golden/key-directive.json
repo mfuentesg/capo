@@ -1,0 +1,431 @@
+{
+  "source": "key-directive.cho",
+  "sectionLabels": {
+    "chorus": "Chorus",
+    "verse": "Verse",
+    "bridge": "Bridge"
+  },
+  "commentLabel": "Note",
+  "cases": [
+    {
+      "transpose": -6,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "normal",
+          "html": "\n\n\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Db7</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">Amazing grace, how sweet the sound</span></span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Bbm</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Ab</span></span></span><span class=\"clp-lyric-text\">That saved a wretch like me</span></span>"
+        },
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:9ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Ab</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">I once was lost, but now am found</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 2",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:10ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Bbm</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Ab</span></span></span><span class=\"clp-lyric-text\">Was blind but now I see</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": -6,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "normal",
+          "html": "\n\n\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Cb</span></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Cb7</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Fb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Cb</span></span></span><span class=\"clp-lyric-text\">Amazing grace, how sweet the sound</span></span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Cb</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Abm</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">That saved a wretch like me</span></span>"
+        },
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Fb</span></span><span class=\"clp-col\" style=\"min-width:9ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Cb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Cb</span></span></span><span class=\"clp-lyric-text\">I once was lost, but now am found</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 2",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Cb</span></span><span class=\"clp-col\" style=\"min-width:10ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Abm</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">Was blind but now I see</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": -6,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "normal",
+          "html": "\n\n\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Ab</span></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Ab7</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Ab</span></span></span><span class=\"clp-lyric-text\">Amazing grace, how sweet the sound</span></span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Ab</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Fm</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Eb</span></span></span><span class=\"clp-lyric-text\">That saved a wretch like me</span></span>"
+        },
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:9ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Ab</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Eb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Ab</span></span></span><span class=\"clp-lyric-text\">I once was lost, but now am found</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 2",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Ab</span></span><span class=\"clp-col\" style=\"min-width:10ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Fm</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Eb</span></span></span><span class=\"clp-lyric-text\">Was blind but now I see</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": -1,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "normal",
+          "html": "\n\n\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Gb7</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Cb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">Amazing grace, how sweet the sound</span></span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Ebm</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">That saved a wretch like me</span></span>"
+        },
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:9ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">I once was lost, but now am found</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 2",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:10ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Ebm</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">Was blind but now I see</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": -1,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "normal",
+          "html": "\n\n\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">E7</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">E</span></span></span><span class=\"clp-lyric-text\">Amazing grace, how sweet the sound</span></span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Dbm</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">That saved a wretch like me</span></span>"
+        },
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:9ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Fb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Cb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Fb</span></span></span><span class=\"clp-lyric-text\">I once was lost, but now am found</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 2",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Fb</span></span><span class=\"clp-col\" style=\"min-width:10ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Dbm</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Cb</span></span></span><span class=\"clp-lyric-text\">Was blind but now I see</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": -1,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "normal",
+          "html": "\n\n\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Db7</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">Amazing grace, how sweet the sound</span></span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Bbm</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Ab</span></span></span><span class=\"clp-lyric-text\">That saved a wretch like me</span></span>"
+        },
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:9ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Ab</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">I once was lost, but now am found</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 2",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:10ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Bbm</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Ab</span></span></span><span class=\"clp-lyric-text\">Was blind but now I see</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": 0,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "normal",
+          "html": "\n\n\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">G7</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G</span></span></span><span class=\"clp-lyric-text\">Amazing grace, how sweet the sound</span></span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Em</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">D</span></span></span><span class=\"clp-lyric-text\">That saved a wretch like me</span></span>"
+        },
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">C</span></span><span class=\"clp-col\" style=\"min-width:9ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">D</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G</span></span></span><span class=\"clp-lyric-text\">I once was lost, but now am found</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 2",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:10ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Em</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">D</span></span></span><span class=\"clp-lyric-text\">Was blind but now I see</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": 0,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "normal",
+          "html": "\n\n\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">F</span></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">F7</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Bb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">F</span></span></span><span class=\"clp-lyric-text\">Amazing grace, how sweet the sound</span></span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Dm</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">C</span></span></span><span class=\"clp-lyric-text\">That saved a wretch like me</span></span>"
+        },
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Bb</span></span><span class=\"clp-col\" style=\"min-width:9ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">C</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">F</span></span></span><span class=\"clp-lyric-text\">I once was lost, but now am found</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 2",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">F</span></span><span class=\"clp-col\" style=\"min-width:10ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Dm</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">C</span></span></span><span class=\"clp-lyric-text\">Was blind but now I see</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": 0,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "normal",
+          "html": "\n\n\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">D</span></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">D7</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">D</span></span></span><span class=\"clp-lyric-text\">Amazing grace, how sweet the sound</span></span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">D</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Bm</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">A</span></span></span><span class=\"clp-lyric-text\">That saved a wretch like me</span></span>"
+        },
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:9ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">D</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">D</span></span></span><span class=\"clp-lyric-text\">I once was lost, but now am found</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 2",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">D</span></span><span class=\"clp-col\" style=\"min-width:10ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Bm</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">A</span></span></span><span class=\"clp-lyric-text\">Was blind but now I see</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": 1,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "normal",
+          "html": "\n\n\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">G#7</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">Amazing grace, how sweet the sound</span></span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Fm</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Eb</span></span></span><span class=\"clp-lyric-text\">That saved a wretch like me</span></span>"
+        },
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:9ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">D#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">I once was lost, but now am found</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 2",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:10ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Fm</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">D#</span></span></span><span class=\"clp-lyric-text\">Was blind but now I see</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": 1,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "normal",
+          "html": "\n\n\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">F#7</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">F#</span></span></span><span class=\"clp-lyric-text\">Amazing grace, how sweet the sound</span></span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">D#m</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">That saved a wretch like me</span></span>"
+        },
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:9ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">F#</span></span></span><span class=\"clp-lyric-text\">I once was lost, but now am found</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 2",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:10ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Ebm</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">C#</span></span></span><span class=\"clp-lyric-text\">Was blind but now I see</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": 1,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "normal",
+          "html": "\n\n\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">D#</span></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">D#7</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">D#</span></span></span><span class=\"clp-lyric-text\">Amazing grace, how sweet the sound</span></span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">D#</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Cm</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Bb</span></span></span><span class=\"clp-lyric-text\">That saved a wretch like me</span></span>"
+        },
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:9ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">D#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">A#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">D#</span></span></span><span class=\"clp-lyric-text\">I once was lost, but now am found</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 2",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">D#</span></span><span class=\"clp-col\" style=\"min-width:10ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Cm</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">A#</span></span></span><span class=\"clp-lyric-text\">Was blind but now I see</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": 6,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "normal",
+          "html": "\n\n\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">C#7</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C#</span></span></span><span class=\"clp-lyric-text\">Amazing grace, how sweet the sound</span></span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">A#m</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">That saved a wretch like me</span></span>"
+        },
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:9ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C#</span></span></span><span class=\"clp-lyric-text\">I once was lost, but now am found</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 2",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:10ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">A#m</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">Was blind but now I see</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": 6,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "normal",
+          "html": "\n\n\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">B7</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">Amazing grace, how sweet the sound</span></span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">G#m</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">F#</span></span></span><span class=\"clp-lyric-text\">That saved a wretch like me</span></span>"
+        },
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:9ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">I once was lost, but now am found</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 2",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:10ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">G#m</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">F#</span></span></span><span class=\"clp-lyric-text\">Was blind but now I see</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": 6,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "normal",
+          "html": "\n\n\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">G#7</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">Amazing grace, how sweet the sound</span></span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Fm</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Eb</span></span></span><span class=\"clp-lyric-text\">That saved a wretch like me</span></span>"
+        },
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:9ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">D#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">I once was lost, but now am found</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 2",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:10ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">E#m</span></span><span class=\"clp-col\" style=\"min-width:2ch\"></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">D#</span></span></span><span class=\"clp-lyric-text\">Was blind but now I see</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    }
+  ]
+}

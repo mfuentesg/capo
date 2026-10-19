@@ -1,0 +1,17 @@
+{start_of_box: Outer}
+[C]Before volta
+{start_of_volta: 1.}
+[G]First [Am]ending
+{end_of_volta}
+{start_of_volta: 2.}
+[F]Second [G]ending
+{end_of_volta}
+[C]After volta
+{end_of_box}
+{start_of_box: Unclosed}
+[Dm]No close [G]here
+{sbox: Hidden, label}
+[Em]Hidden label [A]box
+{sovt}
+[C]Unlabeled [G]volta
+{eovt}

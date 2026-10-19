@@ -1,0 +1,1691 @@
+{
+  "source": "sections-advanced.cho",
+  "sectionLabels": {
+    "chorus": "Chorus",
+    "verse": "Verse",
+    "bridge": "Bridge"
+  },
+  "commentLabel": "Note",
+  "cases": [
+    {
+      "transpose": -6,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:7ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">Unnamed chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Ebm</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">Unnamed verse line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "pre_chorus",
+          "sectionType": "pre_chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Abm</span></span><span class=\"clp-col\" style=\"min-width:11ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">Unnamed pre-chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "tab",
+          "sectionType": "tab",
+          "html": "e|--0--2--3--|",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:8ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">Custom labeled verse</span></span>",
+          "count": 2,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Ebm</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\"></span></span>"
+        },
+        {
+          "type": "repeat",
+          "name": "Intro",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Ebm</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\"></span></span>",
+          "found": true,
+          "sectionType": "comment",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Missing",
+          "count": 1,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Verse 1",
+          "count": 3,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Missing",
+          "displayLabel": "Ext",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:10ch\"><span class=\"chord\">Ab</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Eb</span></span></span><span class=\"clp-lyric-text\">Extension of nothing</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Bb</span></span><span class=\"clp-col\" style=\"min-width:12ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F</span></span></span><span class=\"clp-lyric-text\">Extend with no end marker</span></span>\n<span class=\"section-label section-label--chorus\">Final</span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:9ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Ab</span></span></span><span class=\"clp-lyric-text\">Unclosed final section</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        }
+      ]
+    },
+    {
+      "transpose": -6,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Fb</span></span><span class=\"clp-col\" style=\"min-width:7ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Cb</span></span></span><span class=\"clp-lyric-text\">Unnamed chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Dbm</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">A</span></span></span><span class=\"clp-lyric-text\">Unnamed verse line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "pre_chorus",
+          "sectionType": "pre_chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Gbm</span></span><span class=\"clp-col\" style=\"min-width:11ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Cb</span></span></span><span class=\"clp-lyric-text\">Unnamed pre-chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "tab",
+          "sectionType": "tab",
+          "html": "e|--0--2--3--|",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Fb</span></span><span class=\"clp-col\" style=\"min-width:8ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">A</span></span></span><span class=\"clp-lyric-text\">Custom labeled verse</span></span>",
+          "count": 2,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Fb</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Cb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Dbm</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">A</span></span></span><span class=\"clp-lyric-text\"></span></span>"
+        },
+        {
+          "type": "repeat",
+          "name": "Intro",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Fb</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Cb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Dbm</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">A</span></span></span><span class=\"clp-lyric-text\"></span></span>",
+          "found": true,
+          "sectionType": "comment",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Missing",
+          "count": 1,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Verse 1",
+          "count": 3,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Missing",
+          "displayLabel": "Ext",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:10ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">Extension of nothing</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Ab</span></span><span class=\"clp-col\" style=\"min-width:12ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Eb</span></span></span><span class=\"clp-lyric-text\">Extend with no end marker</span></span>\n<span class=\"section-label section-label--chorus\">Final</span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:9ch\"><span class=\"chord\">Cb</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">Unclosed final section</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        }
+      ]
+    },
+    {
+      "transpose": -6,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:7ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Ab</span></span></span><span class=\"clp-lyric-text\">Unnamed chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Bbm</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">Unnamed verse line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "pre_chorus",
+          "sectionType": "pre_chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Ebm</span></span><span class=\"clp-col\" style=\"min-width:11ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Ab</span></span></span><span class=\"clp-lyric-text\">Unnamed pre-chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "tab",
+          "sectionType": "tab",
+          "html": "e|--0--2--3--|",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:8ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">Custom labeled verse</span></span>",
+          "count": 2,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Ab</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Bbm</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\"></span></span>"
+        },
+        {
+          "type": "repeat",
+          "name": "Intro",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Ab</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Bbm</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\"></span></span>",
+          "found": true,
+          "sectionType": "comment",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Missing",
+          "count": 1,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Verse 1",
+          "count": 3,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Missing",
+          "displayLabel": "Ext",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:10ch\"><span class=\"chord\">Eb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Bb</span></span></span><span class=\"clp-lyric-text\">Extension of nothing</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">F</span></span><span class=\"clp-col\" style=\"min-width:12ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C</span></span></span><span class=\"clp-lyric-text\">Extend with no end marker</span></span>\n<span class=\"section-label section-label--chorus\">Final</span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:9ch\"><span class=\"chord\">Ab</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Eb</span></span></span><span class=\"clp-lyric-text\">Unclosed final section</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        }
+      ]
+    },
+    {
+      "transpose": -1,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:7ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">Unnamed chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Abm</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">E</span></span></span><span class=\"clp-lyric-text\">Unnamed verse line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "pre_chorus",
+          "sectionType": "pre_chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Dbm</span></span><span class=\"clp-col\" style=\"min-width:11ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">Unnamed pre-chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "tab",
+          "sectionType": "tab",
+          "html": "e|--0--2--3--|",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:8ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">E</span></span></span><span class=\"clp-lyric-text\">Custom labeled verse</span></span>",
+          "count": 2,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Abm</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">E</span></span></span><span class=\"clp-lyric-text\"></span></span>"
+        },
+        {
+          "type": "repeat",
+          "name": "Intro",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Abm</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">E</span></span></span><span class=\"clp-lyric-text\"></span></span>",
+          "found": true,
+          "sectionType": "comment",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Missing",
+          "count": 1,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Verse 1",
+          "count": 3,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Missing",
+          "displayLabel": "Ext",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:10ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Ab</span></span></span><span class=\"clp-lyric-text\">Extension of nothing</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Eb</span></span><span class=\"clp-col\" style=\"min-width:12ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Bb</span></span></span><span class=\"clp-lyric-text\">Extend with no end marker</span></span>\n<span class=\"section-label section-label--chorus\">Final</span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:9ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">Unclosed final section</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        }
+      ]
+    },
+    {
+      "transpose": -1,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:7ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Fb</span></span></span><span class=\"clp-lyric-text\">Unnamed chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Gbm</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">D</span></span></span><span class=\"clp-lyric-text\">Unnamed verse line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "pre_chorus",
+          "sectionType": "pre_chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Cbm</span></span><span class=\"clp-col\" style=\"min-width:11ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Fb</span></span></span><span class=\"clp-lyric-text\">Unnamed pre-chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "tab",
+          "sectionType": "tab",
+          "html": "e|--0--2--3--|",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:8ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">D</span></span></span><span class=\"clp-lyric-text\">Custom labeled verse</span></span>",
+          "count": 2,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Fb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Gbm</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">D</span></span></span><span class=\"clp-lyric-text\"></span></span>"
+        },
+        {
+          "type": "repeat",
+          "name": "Intro",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Fb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Gbm</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">D</span></span></span><span class=\"clp-lyric-text\"></span></span>",
+          "found": true,
+          "sectionType": "comment",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Missing",
+          "count": 1,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Verse 1",
+          "count": 3,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Missing",
+          "displayLabel": "Ext",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:10ch\"><span class=\"chord\">Cb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">Extension of nothing</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:12ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Ab</span></span></span><span class=\"clp-lyric-text\">Extend with no end marker</span></span>\n<span class=\"section-label section-label--chorus\">Final</span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:9ch\"><span class=\"chord\">Fb</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Cb</span></span></span><span class=\"clp-lyric-text\">Unclosed final section</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        }
+      ]
+    },
+    {
+      "transpose": -1,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:7ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">Unnamed chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Ebm</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">Unnamed verse line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "pre_chorus",
+          "sectionType": "pre_chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Abm</span></span><span class=\"clp-col\" style=\"min-width:11ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">Unnamed pre-chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "tab",
+          "sectionType": "tab",
+          "html": "e|--0--2--3--|",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:8ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">Custom labeled verse</span></span>",
+          "count": 2,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Ebm</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\"></span></span>"
+        },
+        {
+          "type": "repeat",
+          "name": "Intro",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Ebm</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\"></span></span>",
+          "found": true,
+          "sectionType": "comment",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Missing",
+          "count": 1,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Verse 1",
+          "count": 3,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Missing",
+          "displayLabel": "Ext",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:10ch\"><span class=\"chord\">Ab</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Eb</span></span></span><span class=\"clp-lyric-text\">Extension of nothing</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Bb</span></span><span class=\"clp-col\" style=\"min-width:12ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F</span></span></span><span class=\"clp-lyric-text\">Extend with no end marker</span></span>\n<span class=\"section-label section-label--chorus\">Final</span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:9ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Ab</span></span></span><span class=\"clp-lyric-text\">Unclosed final section</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        }
+      ]
+    },
+    {
+      "transpose": 0,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">C</span></span><span class=\"clp-col\" style=\"min-width:7ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">G</span></span></span><span class=\"clp-lyric-text\">Unnamed chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Am</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">F</span></span></span><span class=\"clp-lyric-text\">Unnamed verse line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "pre_chorus",
+          "sectionType": "pre_chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Dm</span></span><span class=\"clp-col\" style=\"min-width:11ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">G</span></span></span><span class=\"clp-lyric-text\">Unnamed pre-chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "tab",
+          "sectionType": "tab",
+          "html": "e|--0--2--3--|",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">C</span></span><span class=\"clp-col\" style=\"min-width:8ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">F</span></span></span><span class=\"clp-lyric-text\">Custom labeled verse</span></span>",
+          "count": 2,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">C</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Am</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">F</span></span></span><span class=\"clp-lyric-text\"></span></span>"
+        },
+        {
+          "type": "repeat",
+          "name": "Intro",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">C</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Am</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">F</span></span></span><span class=\"clp-lyric-text\"></span></span>",
+          "found": true,
+          "sectionType": "comment",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Missing",
+          "count": 1,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Verse 1",
+          "count": 3,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Missing",
+          "displayLabel": "Ext",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:10ch\"><span class=\"chord\">D</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">A</span></span></span><span class=\"clp-lyric-text\">Extension of nothing</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:12ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">Extend with no end marker</span></span>\n<span class=\"section-label section-label--chorus\">Final</span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:9ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">D</span></span></span><span class=\"clp-lyric-text\">Unclosed final section</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        }
+      ]
+    },
+    {
+      "transpose": 0,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Bb</span></span><span class=\"clp-col\" style=\"min-width:7ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">F</span></span></span><span class=\"clp-lyric-text\">Unnamed chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Gm</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Eb</span></span></span><span class=\"clp-lyric-text\">Unnamed verse line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "pre_chorus",
+          "sectionType": "pre_chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Cm</span></span><span class=\"clp-col\" style=\"min-width:11ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">F</span></span></span><span class=\"clp-lyric-text\">Unnamed pre-chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "tab",
+          "sectionType": "tab",
+          "html": "e|--0--2--3--|",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Bb</span></span><span class=\"clp-col\" style=\"min-width:8ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Eb</span></span></span><span class=\"clp-lyric-text\">Custom labeled verse</span></span>",
+          "count": 2,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Bb</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">F</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Gm</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Eb</span></span></span><span class=\"clp-lyric-text\"></span></span>"
+        },
+        {
+          "type": "repeat",
+          "name": "Intro",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Bb</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">F</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Gm</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Eb</span></span></span><span class=\"clp-lyric-text\"></span></span>",
+          "found": true,
+          "sectionType": "comment",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Missing",
+          "count": 1,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Verse 1",
+          "count": 3,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Missing",
+          "displayLabel": "Ext",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:10ch\"><span class=\"chord\">C</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">G</span></span></span><span class=\"clp-lyric-text\">Extension of nothing</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">D</span></span><span class=\"clp-col\" style=\"min-width:12ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">A</span></span></span><span class=\"clp-lyric-text\">Extend with no end marker</span></span>\n<span class=\"section-label section-label--chorus\">Final</span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:9ch\"><span class=\"chord\">F</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">C</span></span></span><span class=\"clp-lyric-text\">Unclosed final section</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        }
+      ]
+    },
+    {
+      "transpose": 0,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:7ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">D</span></span></span><span class=\"clp-lyric-text\">Unnamed chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Em</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">C</span></span></span><span class=\"clp-lyric-text\">Unnamed verse line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "pre_chorus",
+          "sectionType": "pre_chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Am</span></span><span class=\"clp-col\" style=\"min-width:11ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">D</span></span></span><span class=\"clp-lyric-text\">Unnamed pre-chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "tab",
+          "sectionType": "tab",
+          "html": "e|--0--2--3--|",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:8ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C</span></span></span><span class=\"clp-lyric-text\">Custom labeled verse</span></span>",
+          "count": 2,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">D</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Em</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">C</span></span></span><span class=\"clp-lyric-text\"></span></span>"
+        },
+        {
+          "type": "repeat",
+          "name": "Intro",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">D</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Em</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">C</span></span></span><span class=\"clp-lyric-text\"></span></span>",
+          "found": true,
+          "sectionType": "comment",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Missing",
+          "count": 1,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Verse 1",
+          "count": 3,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Missing",
+          "displayLabel": "Ext",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:10ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">E</span></span></span><span class=\"clp-lyric-text\">Extension of nothing</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:12ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">Extend with no end marker</span></span>\n<span class=\"section-label section-label--chorus\">Final</span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:9ch\"><span class=\"chord\">D</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">A</span></span></span><span class=\"clp-lyric-text\">Unclosed final section</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        }
+      ]
+    },
+    {
+      "transpose": 1,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:7ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">Unnamed chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">A#m</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">F#</span></span></span><span class=\"clp-lyric-text\">Unnamed verse line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "pre_chorus",
+          "sectionType": "pre_chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">D#m</span></span><span class=\"clp-col\" style=\"min-width:11ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">Unnamed pre-chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "tab",
+          "sectionType": "tab",
+          "html": "e|--0--2--3--|",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:8ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">F#</span></span></span><span class=\"clp-lyric-text\">Custom labeled verse</span></span>",
+          "count": 2,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">A#m</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">F#</span></span></span><span class=\"clp-lyric-text\"></span></span>"
+        },
+        {
+          "type": "repeat",
+          "name": "Intro",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">A#m</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">F#</span></span></span><span class=\"clp-lyric-text\"></span></span>",
+          "found": true,
+          "sectionType": "comment",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Missing",
+          "count": 1,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Verse 1",
+          "count": 3,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Missing",
+          "displayLabel": "Ext",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:10ch\"><span class=\"chord\">D#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">A#</span></span></span><span class=\"clp-lyric-text\">Extension of nothing</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">F</span></span><span class=\"clp-col\" style=\"min-width:12ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C</span></span></span><span class=\"clp-lyric-text\">Extend with no end marker</span></span>\n<span class=\"section-label section-label--chorus\">Final</span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:9ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">D#</span></span></span><span class=\"clp-lyric-text\">Unclosed final section</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        }
+      ]
+    },
+    {
+      "transpose": 1,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:7ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">F#</span></span></span><span class=\"clp-lyric-text\">Unnamed chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">G#m</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">E</span></span></span><span class=\"clp-lyric-text\">Unnamed verse line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "pre_chorus",
+          "sectionType": "pre_chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">C#m</span></span><span class=\"clp-col\" style=\"min-width:11ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">F#</span></span></span><span class=\"clp-lyric-text\">Unnamed pre-chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "tab",
+          "sectionType": "tab",
+          "html": "e|--0--2--3--|",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:8ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">E</span></span></span><span class=\"clp-lyric-text\">Custom labeled verse</span></span>",
+          "count": 2,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">G#m</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">E</span></span></span><span class=\"clp-lyric-text\"></span></span>"
+        },
+        {
+          "type": "repeat",
+          "name": "Intro",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">G#m</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">E</span></span></span><span class=\"clp-lyric-text\"></span></span>",
+          "found": true,
+          "sectionType": "comment",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Missing",
+          "count": 1,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Verse 1",
+          "count": 3,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Missing",
+          "displayLabel": "Ext",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:10ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">Extension of nothing</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">Eb</span></span><span class=\"clp-col\" style=\"min-width:12ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Bb</span></span></span><span class=\"clp-lyric-text\">Extend with no end marker</span></span>\n<span class=\"section-label section-label--chorus\">Final</span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:9ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">C#</span></span></span><span class=\"clp-lyric-text\">Unclosed final section</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        }
+      ]
+    },
+    {
+      "transpose": 1,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:7ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">D#</span></span></span><span class=\"clp-lyric-text\">Unnamed chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">E#m</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">C#</span></span></span><span class=\"clp-lyric-text\">Unnamed verse line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "pre_chorus",
+          "sectionType": "pre_chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">A#m</span></span><span class=\"clp-col\" style=\"min-width:11ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">D#</span></span></span><span class=\"clp-lyric-text\">Unnamed pre-chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "tab",
+          "sectionType": "tab",
+          "html": "e|--0--2--3--|",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:8ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C#</span></span></span><span class=\"clp-lyric-text\">Custom labeled verse</span></span>",
+          "count": 2,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">D#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">E#m</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">C#</span></span></span><span class=\"clp-lyric-text\"></span></span>"
+        },
+        {
+          "type": "repeat",
+          "name": "Intro",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">D#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">E#m</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">C#</span></span></span><span class=\"clp-lyric-text\"></span></span>",
+          "found": true,
+          "sectionType": "comment",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Missing",
+          "count": 1,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Verse 1",
+          "count": 3,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Missing",
+          "displayLabel": "Ext",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:10ch\"><span class=\"chord\">A#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">E#</span></span></span><span class=\"clp-lyric-text\">Extension of nothing</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">C</span></span><span class=\"clp-col\" style=\"min-width:12ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">G</span></span></span><span class=\"clp-lyric-text\">Extend with no end marker</span></span>\n<span class=\"section-label section-label--chorus\">Final</span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:9ch\"><span class=\"chord\">D#</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">A#</span></span></span><span class=\"clp-lyric-text\">Unclosed final section</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        }
+      ]
+    },
+    {
+      "transpose": 6,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:7ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">C#</span></span></span><span class=\"clp-lyric-text\">Unnamed chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">D#m</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">Unnamed verse line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "pre_chorus",
+          "sectionType": "pre_chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">G#m</span></span><span class=\"clp-col\" style=\"min-width:11ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">C#</span></span></span><span class=\"clp-lyric-text\">Unnamed pre-chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "tab",
+          "sectionType": "tab",
+          "html": "e|--0--2--3--|",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:8ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">Custom labeled verse</span></span>",
+          "count": 2,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">D#m</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\"></span></span>"
+        },
+        {
+          "type": "repeat",
+          "name": "Intro",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">D#m</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\"></span></span>",
+          "found": true,
+          "sectionType": "comment",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Missing",
+          "count": 1,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Verse 1",
+          "count": 3,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Missing",
+          "displayLabel": "Ext",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:10ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">D#</span></span></span><span class=\"clp-lyric-text\">Extension of nothing</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">A#</span></span><span class=\"clp-col\" style=\"min-width:12ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F</span></span></span><span class=\"clp-lyric-text\">Extend with no end marker</span></span>\n<span class=\"section-label section-label--chorus\">Final</span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:9ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">Unclosed final section</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        }
+      ]
+    },
+    {
+      "transpose": 6,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:7ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">Unnamed chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">C#m</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">A</span></span></span><span class=\"clp-lyric-text\">Unnamed verse line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "pre_chorus",
+          "sectionType": "pre_chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">F#m</span></span><span class=\"clp-col\" style=\"min-width:11ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">Unnamed pre-chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "tab",
+          "sectionType": "tab",
+          "html": "e|--0--2--3--|",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:8ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">A</span></span></span><span class=\"clp-lyric-text\">Custom labeled verse</span></span>",
+          "count": 2,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">C#m</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">A</span></span></span><span class=\"clp-lyric-text\"></span></span>"
+        },
+        {
+          "type": "repeat",
+          "name": "Intro",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">C#m</span></span><span class=\"clp-col\" style=\"min-width:1ch\"><span class=\"chord\">A</span></span></span><span class=\"clp-lyric-text\"></span></span>",
+          "found": true,
+          "sectionType": "comment",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Missing",
+          "count": 1,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Verse 1",
+          "count": 3,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Missing",
+          "displayLabel": "Ext",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:10ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">C#</span></span></span><span class=\"clp-lyric-text\">Extension of nothing</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:12ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Eb</span></span></span><span class=\"clp-lyric-text\">Extend with no end marker</span></span>\n<span class=\"section-label section-label--chorus\">Final</span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:9ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">F#</span></span></span><span class=\"clp-lyric-text\">Unclosed final section</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        }
+      ]
+    },
+    {
+      "transpose": 6,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:7ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">Unnamed chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">A#m</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">Unnamed verse line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "pre_chorus",
+          "sectionType": "pre_chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">D#m</span></span><span class=\"clp-col\" style=\"min-width:11ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">Unnamed pre-chorus line</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "tab",
+          "sectionType": "tab",
+          "html": "e|--0--2--3--|",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:8ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">Custom labeled verse</span></span>",
+          "count": 2,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">A#m</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\"></span></span>"
+        },
+        {
+          "type": "repeat",
+          "name": "Intro",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">A#m</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\"></span></span>",
+          "found": true,
+          "sectionType": "comment",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Missing",
+          "count": 1,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "repeat",
+          "name": "Verse 1",
+          "count": 3,
+          "html": "",
+          "found": false,
+          "sectionType": "repeat",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Missing",
+          "displayLabel": "Ext",
+          "count": 1,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:10ch\"><span class=\"chord\">D#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">A#</span></span></span><span class=\"clp-lyric-text\">Extension of nothing</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">E#</span></span><span class=\"clp-col\" style=\"min-width:12ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C</span></span></span><span class=\"clp-lyric-text\">Extend with no end marker</span></span>\n<span class=\"section-label section-label--chorus\">Final</span>\n<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:9ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:6ch\"></span><span class=\"clp-col\" style=\"min-width:7ch\"><span class=\"chord\">D#</span></span></span><span class=\"clp-lyric-text\">Unclosed final section</span></span>",
+          "found": false,
+          "sectionType": "extend",
+          "flags": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "ios": {
+    "sync": {
+      "idle": "Al día",
+      "syncing": "Sincronizando…",
+      "pushing": "Enviando cambios…",
+      "pulling": "Obteniendo actualizaciones…",
+      "offline": "Sin conexión",
+      "error": "Error de sincronización",
+      "lastSync": "Última sincronización {time}",
+      "never": "Nunca sincronizado",
+      "syncNow": "Sincronizar ahora",
+      "pendingChanges": "Cambios pendientes: {count}",
+      "conflictCount": "Conflictos: {count}",
+      "failedChanges": "Cambios fallidos: {count}"
+    },
+    "offline": {
+      "banner": "Estás sin conexión",
+      "requiresConnection": "Esta acción requiere conexión a internet.",
+      "availableOffline": "Disponible sin conexión",
+      "notFullyAvailable": "Algunas canciones aún no se han descargado",
+      "pinned": "Fijada para uso sin conexión",
+      "pin": "Fijar para uso sin conexión",
+      "unpin": "Dejar de fijar"
+    },
+    "demo": {
+      "badge": "Modo demo",
+      "description": "Mostrando datos de ejemplo. No se guarda nada en un servidor.",
+      "use": "Usar demo",
+      "configurationMissing": "Falta la configuración del servidor",
+      "configurationMissingDescription": "Esta compilación no tiene configuración de servidor. Puedes explorar la app con datos de ejemplo."
+    },
+    "server": {
+      "environment": "Entorno",
+      "url": "Servidor"
+    },
+    "performance": {
+      "shortcutsTitle": "Atajos de teclado",
+      "pageDown": "Página siguiente",
+      "pageUp": "Página anterior",
+      "nextSong": "Canción siguiente",
+      "previousSong": "Canción anterior",
+      "toggleAutoScroll": "Activar o detener el desplazamiento automático",
+      "scrollFaster": "Desplazar más rápido",
+      "scrollSlower": "Desplazar más lento",
+      "increaseFont": "Texto más grande",
+      "decreaseFont": "Texto más pequeño"
+    },
+    "setlist": {
+      "position": "{current} / {total}",
+      "next": "Siguiente: {title}",
+      "close": "Cerrar lista"
+    },
+    "conflict": {
+      "title": "Conflictos",
+      "description": "Esta canción se modificó en otro dispositivo mientras la editabas.",
+      "mine": "Mi versión",
+      "theirs": "Versión del servidor",
+      "keepMine": "Conservar la mía",
+      "keepTheirs": "Conservar la del servidor",
+      "keepBoth": "Conservar ambas",
+      "copyTitle": "{title} (copia)",
+      "deletedOnServer": "Esta canción se eliminó en el servidor."
+    },
+    "eraseData": {
+      "title": "Borrar datos sin conexión",
+      "message": "Elimina la copia local de tu biblioteca de este dispositivo. Puedes descargarla de nuevo al iniciar sesión.",
+      "pendingWarning": "{count} cambios no se han sincronizado y se perderán.",
+      "confirm": "Borrar"
+    }
+  }
+}

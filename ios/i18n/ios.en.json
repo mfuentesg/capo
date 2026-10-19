@@ -1,0 +1,72 @@
+{
+  "ios": {
+    "sync": {
+      "idle": "Up to date",
+      "syncing": "Syncing…",
+      "pushing": "Sending changes…",
+      "pulling": "Fetching updates…",
+      "offline": "Offline",
+      "error": "Sync failed",
+      "lastSync": "Last synced {time}",
+      "never": "Never synced",
+      "syncNow": "Sync now",
+      "pendingChanges": "Pending changes: {count}",
+      "conflictCount": "Conflicts: {count}",
+      "failedChanges": "Failed changes: {count}"
+    },
+    "offline": {
+      "banner": "You are offline",
+      "requiresConnection": "This action requires an internet connection.",
+      "availableOffline": "Available offline",
+      "notFullyAvailable": "Some songs are not downloaded yet",
+      "pinned": "Pinned for offline use",
+      "pin": "Pin for offline use",
+      "unpin": "Unpin"
+    },
+    "demo": {
+      "badge": "Demo mode",
+      "description": "Showing sample data. Nothing is saved to a server.",
+      "use": "Use demo",
+      "configurationMissing": "Server configuration missing",
+      "configurationMissingDescription": "This build has no server configuration. You can explore the app with sample data."
+    },
+    "server": {
+      "environment": "Environment",
+      "url": "Server"
+    },
+    "performance": {
+      "shortcutsTitle": "Keyboard shortcuts",
+      "pageDown": "Page down",
+      "pageUp": "Page up",
+      "nextSong": "Next song",
+      "previousSong": "Previous song",
+      "toggleAutoScroll": "Toggle auto-scroll",
+      "scrollFaster": "Scroll faster",
+      "scrollSlower": "Scroll slower",
+      "increaseFont": "Larger text",
+      "decreaseFont": "Smaller text"
+    },
+    "setlist": {
+      "position": "{current} / {total}",
+      "next": "Next: {title}",
+      "close": "Close setlist"
+    },
+    "conflict": {
+      "title": "Conflicts",
+      "description": "This song was changed on another device while you were editing it.",
+      "mine": "My version",
+      "theirs": "Server version",
+      "keepMine": "Keep mine",
+      "keepTheirs": "Keep theirs",
+      "keepBoth": "Keep both",
+      "copyTitle": "{title} (copy)",
+      "deletedOnServer": "This song was deleted on the server."
+    },
+    "eraseData": {
+      "title": "Erase offline data",
+      "message": "Removes the local copy of your library from this device. You can download it again by signing in.",
+      "pendingWarning": "{count} changes have not been synced and will be lost.",
+      "confirm": "Erase"
+    }
+  }
+}

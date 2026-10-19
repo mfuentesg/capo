@@ -1,0 +1,431 @@
+{
+  "source": "volta-box-comment.cho",
+  "sectionLabels": {
+    "chorus": "Chorus",
+    "verse": "Verse",
+    "bridge": "Bridge"
+  },
+  "commentLabel": "Note",
+  "cases": [
+    {
+      "transpose": -6,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Abm7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Db7</span></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Gbmaj7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Eb7</span></span></span><span class=\"clp-lyric-text\"></span></span>\n<span class=\"performance-note\">Play softly</span>\n<div class=\"volta-block\"><div class=\"volta-label\">1.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">Line one ending</span></span></div></div>\n\n<div class=\"volta-block\"><div class=\"volta-label\">2.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">Line two ending</span></span></div></div>\n<div class=\"lyrics-box\"><div class=\"lyrics-box-label\">Bridge</div><div class=\"lyrics-box-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Fb</span></span><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">B/Eb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Dbm7</span></span></span><span class=\"clp-lyric-text\">Boxed content here</span></span></div></div>"
+        },
+        {
+          "type": "section",
+          "name": "Outro",
+          "sectionType": "comment-label",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": -6,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Gbm7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Cb7</span></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Fbmaj7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Db7</span></span></span><span class=\"clp-lyric-text\"></span></span>\n<span class=\"performance-note\">Play softly</span>\n<div class=\"volta-block\"><div class=\"volta-label\">1.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Fb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Cb</span></span></span><span class=\"clp-lyric-text\">Line one ending</span></span></div></div>\n\n<div class=\"volta-block\"><div class=\"volta-label\">2.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Fb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">A</span></span></span><span class=\"clp-lyric-text\">Line two ending</span></span></div></div>\n<div class=\"lyrics-box\"><div class=\"lyrics-box-label\">Bridge</div><div class=\"lyrics-box-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">D</span></span><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">A/Db</span></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Cbm7</span></span></span><span class=\"clp-lyric-text\">Boxed content here</span></span></div></div>"
+        },
+        {
+          "type": "section",
+          "name": "Outro",
+          "sectionType": "comment-label",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": -6,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Ebm7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Ab7</span></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Dbmaj7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Bb7</span></span></span><span class=\"clp-lyric-text\"></span></span>\n<span class=\"performance-note\">Play softly</span>\n<div class=\"volta-block\"><div class=\"volta-label\">1.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Ab</span></span></span><span class=\"clp-lyric-text\">Line one ending</span></span></div></div>\n\n<div class=\"volta-block\"><div class=\"volta-label\">2.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">Line two ending</span></span></div></div>\n<div class=\"lyrics-box\"><div class=\"lyrics-box-label\">Bridge</div><div class=\"lyrics-box-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Cb</span></span><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Gb/Bb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Abm7</span></span></span><span class=\"clp-lyric-text\">Boxed content here</span></span></div></div>"
+        },
+        {
+          "type": "section",
+          "name": "Outro",
+          "sectionType": "comment-label",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": -1,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Dbm7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Gb7</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Bmaj7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Ab7</span></span></span><span class=\"clp-lyric-text\"></span></span>\n<span class=\"performance-note\">Play softly</span>\n<div class=\"volta-block\"><div class=\"volta-label\">1.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">Line one ending</span></span></div></div>\n\n<div class=\"volta-block\"><div class=\"volta-label\">2.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">E</span></span></span><span class=\"clp-lyric-text\">Line two ending</span></span></div></div>\n<div class=\"lyrics-box\"><div class=\"lyrics-box-label\">Bridge</div><div class=\"lyrics-box-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">E/Ab</span></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Gbm7</span></span></span><span class=\"clp-lyric-text\">Boxed content here</span></span></div></div>"
+        },
+        {
+          "type": "section",
+          "name": "Outro",
+          "sectionType": "comment-label",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": -1,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Cbm7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Fb7</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Amaj7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Gb7</span></span></span><span class=\"clp-lyric-text\"></span></span>\n<span class=\"performance-note\">Play softly</span>\n<div class=\"volta-block\"><div class=\"volta-label\">1.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Fb</span></span></span><span class=\"clp-lyric-text\">Line one ending</span></span></div></div>\n\n<div class=\"volta-block\"><div class=\"volta-label\">2.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">D</span></span></span><span class=\"clp-lyric-text\">Line two ending</span></span></div></div>\n<div class=\"lyrics-box\"><div class=\"lyrics-box-label\">Bridge</div><div class=\"lyrics-box-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">D/Gb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Fbm7</span></span></span><span class=\"clp-lyric-text\">Boxed content here</span></span></div></div>"
+        },
+        {
+          "type": "section",
+          "name": "Outro",
+          "sectionType": "comment-label",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": -1,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Abm7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Db7</span></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Gbmaj7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Eb7</span></span></span><span class=\"clp-lyric-text\"></span></span>\n<span class=\"performance-note\">Play softly</span>\n<div class=\"volta-block\"><div class=\"volta-label\">1.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">Line one ending</span></span></div></div>\n\n<div class=\"volta-block\"><div class=\"volta-label\">2.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">Line two ending</span></span></div></div>\n<div class=\"lyrics-box\"><div class=\"lyrics-box-label\">Bridge</div><div class=\"lyrics-box-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">B/Eb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Dbm7</span></span></span><span class=\"clp-lyric-text\">Boxed content here</span></span></div></div>"
+        },
+        {
+          "type": "section",
+          "name": "Outro",
+          "sectionType": "comment-label",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": 0,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Dm7</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">G7</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Cmaj7</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">A7</span></span></span><span class=\"clp-lyric-text\"></span></span>\n<span class=\"performance-note\">Play softly</span>\n<div class=\"volta-block\"><div class=\"volta-label\">1.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">G</span></span></span><span class=\"clp-lyric-text\">Line one ending</span></span></div></div>\n\n<div class=\"volta-block\"><div class=\"volta-label\">2.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F</span></span></span><span class=\"clp-lyric-text\">Line two ending</span></span></div></div>\n<div class=\"lyrics-box\"><div class=\"lyrics-box-label\">Bridge</div><div class=\"lyrics-box-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Bb</span></span><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">F/A</span></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Gm7</span></span></span><span class=\"clp-lyric-text\">Boxed content here</span></span></div></div>"
+        },
+        {
+          "type": "section",
+          "name": "Outro",
+          "sectionType": "comment-label",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": 0,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Cm7</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">F7</span></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Bbmaj7</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">G7</span></span></span><span class=\"clp-lyric-text\"></span></span>\n<span class=\"performance-note\">Play softly</span>\n<div class=\"volta-block\"><div class=\"volta-label\">1.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Bb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F</span></span></span><span class=\"clp-lyric-text\">Line one ending</span></span></div></div>\n\n<div class=\"volta-block\"><div class=\"volta-label\">2.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Bb</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Eb</span></span></span><span class=\"clp-lyric-text\">Line two ending</span></span></div></div>\n<div class=\"lyrics-box\"><div class=\"lyrics-box-label\">Bridge</div><div class=\"lyrics-box-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Ab</span></span><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Eb/G</span></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Fm7</span></span></span><span class=\"clp-lyric-text\">Boxed content here</span></span></div></div>"
+        },
+        {
+          "type": "section",
+          "name": "Outro",
+          "sectionType": "comment-label",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": 0,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">Am7</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">D7</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gmaj7</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">E7</span></span></span><span class=\"clp-lyric-text\"></span></span>\n<span class=\"performance-note\">Play softly</span>\n<div class=\"volta-block\"><div class=\"volta-label\">1.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">D</span></span></span><span class=\"clp-lyric-text\">Line one ending</span></span></div></div>\n\n<div class=\"volta-block\"><div class=\"volta-label\">2.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C</span></span></span><span class=\"clp-lyric-text\">Line two ending</span></span></div></div>\n<div class=\"lyrics-box\"><div class=\"lyrics-box-label\">Bridge</div><div class=\"lyrics-box-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F</span></span><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">C/E</span></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Dm7</span></span></span><span class=\"clp-lyric-text\">Boxed content here</span></span></div></div>"
+        },
+        {
+          "type": "section",
+          "name": "Outro",
+          "sectionType": "comment-label",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": 1,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">D#m7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">G#7</span></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C#maj7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">A#7</span></span></span><span class=\"clp-lyric-text\"></span></span>\n<span class=\"performance-note\">Play softly</span>\n<div class=\"volta-block\"><div class=\"volta-label\">1.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">Line one ending</span></span></div></div>\n\n<div class=\"volta-block\"><div class=\"volta-label\">2.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F#</span></span></span><span class=\"clp-lyric-text\">Line two ending</span></span></div></div>\n<div class=\"lyrics-box\"><div class=\"lyrics-box-label\">Bridge</div><div class=\"lyrics-box-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Cb</span></span><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">F#/A#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">G#m7</span></span></span><span class=\"clp-lyric-text\">Boxed content here</span></span></div></div>"
+        },
+        {
+          "type": "section",
+          "name": "Outro",
+          "sectionType": "comment-label",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": 1,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">C#m7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">F#7</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Bmaj7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">G#7</span></span></span><span class=\"clp-lyric-text\"></span></span>\n<span class=\"performance-note\">Play softly</span>\n<div class=\"volta-block\"><div class=\"volta-label\">1.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F#</span></span></span><span class=\"clp-lyric-text\">Line one ending</span></span></div></div>\n\n<div class=\"volta-block\"><div class=\"volta-label\">2.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">E</span></span></span><span class=\"clp-lyric-text\">Line two ending</span></span></div></div>\n<div class=\"lyrics-box\"><div class=\"lyrics-box-label\">Bridge</div><div class=\"lyrics-box-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">E/G#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">F#m7</span></span></span><span class=\"clp-lyric-text\">Boxed content here</span></span></div></div>"
+        },
+        {
+          "type": "section",
+          "name": "Outro",
+          "sectionType": "comment-label",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": 1,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">A#m7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">D#7</span></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">G#maj7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">E#7</span></span></span><span class=\"clp-lyric-text\"></span></span>\n<span class=\"performance-note\">Play softly</span>\n<div class=\"volta-block\"><div class=\"volta-label\">1.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">D#</span></span></span><span class=\"clp-lyric-text\">Line one ending</span></span></div></div>\n\n<div class=\"volta-block\"><div class=\"volta-label\">2.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C#</span></span></span><span class=\"clp-lyric-text\">Line two ending</span></span></div></div>\n<div class=\"lyrics-box\"><div class=\"lyrics-box-label\">Bridge</div><div class=\"lyrics-box-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">C#/E#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">D#m7</span></span></span><span class=\"clp-lyric-text\">Boxed content here</span></span></div></div>"
+        },
+        {
+          "type": "section",
+          "name": "Outro",
+          "sectionType": "comment-label",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": 6,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">G#m7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">C#7</span></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F#maj7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">D#7</span></span></span><span class=\"clp-lyric-text\"></span></span>\n<span class=\"performance-note\">Play softly</span>\n<div class=\"volta-block\"><div class=\"volta-label\">1.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C#</span></span></span><span class=\"clp-lyric-text\">Line one ending</span></span></div></div>\n\n<div class=\"volta-block\"><div class=\"volta-label\">2.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">Line two ending</span></span></div></div>\n<div class=\"lyrics-box\"><div class=\"lyrics-box-label\">Bridge</div><div class=\"lyrics-box-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Fb</span></span><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">B/D#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">C#m7</span></span></span><span class=\"clp-lyric-text\">Boxed content here</span></span></div></div>"
+        },
+        {
+          "type": "section",
+          "name": "Outro",
+          "sectionType": "comment-label",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": 6,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">F#m7</span></span><span class=\"clp-col\" style=\"min-width:2ch\"><span class=\"chord\">B7</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Emaj7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">C#7</span></span></span><span class=\"clp-lyric-text\"></span></span>\n<span class=\"performance-note\">Play softly</span>\n<div class=\"volta-block\"><div class=\"volta-label\">1.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">Line one ending</span></span></div></div>\n\n<div class=\"volta-block\"><div class=\"volta-label\">2.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">A</span></span></span><span class=\"clp-lyric-text\">Line two ending</span></span></div></div>\n<div class=\"lyrics-box\"><div class=\"lyrics-box-label\">Bridge</div><div class=\"lyrics-box-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">D</span></span><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">A/C#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Bm7</span></span></span><span class=\"clp-lyric-text\">Boxed content here</span></span></div></div>"
+        },
+        {
+          "type": "section",
+          "name": "Outro",
+          "sectionType": "comment-label",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    },
+    {
+      "transpose": 6,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Intro",
+          "sectionType": "comment",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "normal",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">D#m7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">G#7</span></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C#maj7</span></span><span class=\"clp-col\" style=\"min-width:3ch\"><span class=\"chord\">A#7</span></span></span><span class=\"clp-lyric-text\"></span></span>\n<span class=\"performance-note\">Play softly</span>\n<div class=\"volta-block\"><div class=\"volta-label\">1.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">Line one ending</span></span></div></div>\n\n<div class=\"volta-block\"><div class=\"volta-label\">2.</div><div class=\"volta-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">Line two ending</span></span></div></div>\n<div class=\"lyrics-box\"><div class=\"lyrics-box-label\">Bridge</div><div class=\"lyrics-box-content\"><span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Cb</span></span><span class=\"clp-col\" style=\"min-width:8ch\"><span class=\"chord\">Gb/A#</span></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">G#m7</span></span></span><span class=\"clp-lyric-text\">Boxed content here</span></span></div></div>"
+        },
+        {
+          "type": "section",
+          "name": "Outro",
+          "sectionType": "comment-label",
+          "html": "",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        }
+      ]
+    }
+  ]
+}

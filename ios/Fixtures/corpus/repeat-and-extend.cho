@@ -1,0 +1,10 @@
+{soc: Chorus, forte}
+[Am]Sing it [F]loud, [C]sing it [G]proud
+{eoc}
+{sov: Verse 1}
+[C]First line [G]here
+{eov}
+{repeat: Chorus, 2}
+{start_of_extend: Chorus, inline}
+[E7]Extra [Am]tag
+{end_of_extend}

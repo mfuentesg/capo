@@ -1,0 +1,9 @@
+build/
+Packages/*/.build
+Packages/*/.swiftpm
+Capo/Capo/Secrets.plist
+Capo/Secrets.*.plist
+!Capo/Secrets.example.plist
+*.xcresult
+xcuserdata/
+.DS_Store

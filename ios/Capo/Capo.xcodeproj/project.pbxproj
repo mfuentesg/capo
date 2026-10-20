@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A10000000000000000000012 /* CapoAppKit in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000011 /* CapoAppKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		A10000000000000000000001 /* Capo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Capo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A10000000000000000000012 /* CapoAppKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,6 +69,9 @@
 				A10000000000000000000002 /* Capo */,
 			);
 			name = Capo;
+			packageProductDependencies = (
+				A10000000000000000000011 /* CapoAppKit */,
+			);
 			productName = Capo;
 			productReference = A10000000000000000000001 /* Capo.app */;
 			productType = "com.apple.product-type.application";
@@ -88,6 +96,9 @@
 				Base,
 			);
 			mainGroup = A10000000000000000000004;
+			packageReferences = (
+				A10000000000000000000010 /* XCLocalSwiftPackageReference "../Packages/CapoAppKit" */,
+			);
 			productRefGroup = A10000000000000000000005 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -154,6 +165,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 27322XSMN7;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Config/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Capo;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -175,6 +187,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 27322XSMN7;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Config/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Capo;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -210,6 +223,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		A10000000000000000000010 /* XCLocalSwiftPackageReference "../Packages/CapoAppKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/CapoAppKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A10000000000000000000011 /* CapoAppKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CapoAppKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A1000000000000000000000A /* Project object */;
 }

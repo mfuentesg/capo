@@ -23,7 +23,8 @@ let package = Package(
         .product(name: "CapoSync", package: "CapoData"),
         .product(name: "CapoSupabase", package: "CapoSupabase"),
         .product(name: "CapoFakes", package: "CapoCore"),
-        .product(name: "CapoCore", package: "CapoCore")
+        .product(name: "CapoCore", package: "CapoCore"),
+        .product(name: "Supabase", package: "supabase-swift")
       ],
       swiftSettings: [.defaultIsolation(MainActor.self)]
     ),

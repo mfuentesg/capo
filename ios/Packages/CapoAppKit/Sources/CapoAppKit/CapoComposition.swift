@@ -24,6 +24,9 @@ public nonisolated enum CapoComposition {
     logger.info("Starting against \(config.environmentName, privacy: .public) (\(config.supabaseURL.absoluteString, privacy: .public))")
     let client = SupabaseClientFactory.make(config: config)
     let auth = SupabaseAuthService(client: client, callbackURL: config.authCallbackURL)
+    #if DEBUG
+      DevSession.applyIfPresent(to: client)
+    #endif
     let remotes = Remotes(
       teams: SupabaseTeamsRemote(client: client, webBaseURL: config.webBaseURL),
       syncSource: SupabaseRemoteSyncSource(client: client),

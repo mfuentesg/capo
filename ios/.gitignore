@@ -7,3 +7,4 @@ Capo/Secrets.*.plist
 *.xcresult
 xcuserdata/
 .DS_Store
+Capo/Capo/DevSession.plist

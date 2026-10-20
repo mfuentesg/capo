@@ -129,3 +129,30 @@ private func firstStatus(
   }
 }
 
+#if DEBUG
+  @Suite struct DevSessionTests {
+    @Test func loadsTokensFromBundledPlist() throws {
+      let directory = temporaryDirectory()
+      try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+      defer { try? FileManager.default.removeItem(at: directory) }
+      let plist: [String: Any] = ["ACCESS_TOKEN": "access", "REFRESH_TOKEN": "refresh"]
+      try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0)
+        .write(to: directory.appendingPathComponent("DevSession.plist"))
+
+      let session = try #require(DevSession.load(from: try #require(Bundle(url: directory))))
+      #expect(session.accessToken == "access")
+      #expect(session.refreshToken == "refresh")
+    }
+
+    @Test func missingOrIncompletePlistIsIgnored() throws {
+      let directory = temporaryDirectory()
+      try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+      defer { try? FileManager.default.removeItem(at: directory) }
+      let bundle = try #require(Bundle(url: directory))
+      #expect(DevSession.load(from: bundle) == nil)
+      try PropertyListSerialization.data(fromPropertyList: ["ACCESS_TOKEN": "a"], format: .xml, options: 0)
+        .write(to: directory.appendingPathComponent("DevSession.plist"))
+      #expect(DevSession.load(from: bundle) == nil)
+    }
+  }
+#endif

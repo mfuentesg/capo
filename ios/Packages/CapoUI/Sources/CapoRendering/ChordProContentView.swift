@@ -1,3 +1,4 @@
+@_exported import CapoChordPro
 import CapoDesign
 import SwiftUI
 

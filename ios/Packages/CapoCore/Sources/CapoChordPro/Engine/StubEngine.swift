@@ -17,14 +17,3 @@ public enum LegacyHTMLSerializer {
     }.joined(separator: "\n")
   }
 }
-
-public enum ChordTransposer {
-  public static func transpose(_ chord: String, by delta: Int) -> String { chord }
-  public static func normalize(_ chord: String, toKey key: String) -> String { chord }
-}
-
-public enum MusicTheory {
-  public static func transposeKey(_ key: String, semitones: Int) -> String { key }
-  public static func capoKey(_ key: String, capo: Int) -> String { key }
-  public static func effectiveKey(_ key: String, transpose: Int, capo: Int) -> String { key }
-}

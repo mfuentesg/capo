@@ -4,7 +4,7 @@ import Testing
 import CapoChordPro
 
 /// One segment exactly as song-pipeline.ts emits it (JSON.stringify drops undefined fields).
-struct GoldenSegment: Codable, Equatable, CustomStringConvertible {
+struct GoldenSegment: Codable, Equatable, Sendable, CustomStringConvertible {
   var type: String
   var name: String?
   var sectionType: String?

@@ -234,26 +234,41 @@ struct ContentProcessor {
   /// chords are normalized to the transposed key.
   static func transposeSong(_ lines: inout [SongLine], by delta: Int) throws {
     var transposedKey: Key?
+    // Songs repeat a handful of chords; results only depend on the chord text and the key in
+    // effect, so cache them until the next `{key}` tag. Failures are not cached (they throw).
+    var cache: [Units: Units?] = [:]
     for l in lines.indices {
       for i in lines[l].indices {
         switch lines[l][i] {
         case .tag(let name, let value) where name == keyTagName:
           let key = try Key.parseOrFail(String(units: value)).transpose(delta)
           transposedKey = key
+          cache.removeAll(keepingCapacity: true)
           lines[l][i] = .tag(name: name, value: try key.toString().units)
         case .pair(let chords, let lyrics):
-          guard let chord = Chord.parse(units: chords) else { continue }
-          var changed = try chord.transpose(delta)
-          if let transposedKey {
-            changed = try changed.normalize(key: transposedKey, normalizeSuffix: false)
+          if chords.isEmpty { continue }
+          let result: Units?
+          if let cached = cache[chords] {
+            result = cached
+          } else {
+            result = try transposeChord(chords, by: delta, key: transposedKey)
+            cache[chords] = result
           }
-          let string = try changed.toString()
-          if !string.isEmpty { lines[l][i] = .pair(chords: string.units, lyrics: lyrics) }
+          if let result { lines[l][i] = .pair(chords: result, lyrics: lyrics) }
         default:
           continue
         }
       }
     }
+  }
+
+  /// `ChordLyricsPair.transpose(delta, key)`; nil leaves the pair unchanged.
+  private static func transposeChord(_ chords: Units, by delta: Int, key: Key?) throws -> Units? {
+    guard let chord = Chord.parse(units: chords) else { return nil }
+    var changed = try chord.transpose(delta)
+    if let key { changed = try changed.normalize(key: key, normalizeSuffix: false) }
+    let string = try changed.toString()
+    return string.isEmpty ? nil : string.units
   }
 }
 

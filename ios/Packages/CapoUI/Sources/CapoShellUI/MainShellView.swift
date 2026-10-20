@@ -200,9 +200,14 @@ private struct SidebarView: View {
     @Bindable var nav = model.navigation
     List(selection: $nav.sidebar) {
       Section {
-        ContextRows(model: model)
+        contextRow(.personal(userID: model.session.userID), ContextStrings.personal, "person")
+        ForEach(model.contextStore.teams) { entry in
+          contextRow(
+            .team(teamID: entry.id),
+            [entry.team.icon, entry.team.name].compactMap { $0 }.joined(separator: " "), "person.2")
+        }
       } header: {
-        Text(String(localized: "ios.shell.context", defaultValue: "Library", bundle: .capoDesign))  // TODO(i18n)
+        Text(String(localized: "ios.shell.contextHeader", defaultValue: "Context", bundle: .capoDesign))  // TODO(i18n)
       }
       Section {
         row(.library, ContextStrings.library, "music.note.list")
@@ -210,6 +215,8 @@ private struct SidebarView: View {
         row(.teams, ContextStrings.teams, "person.3")
         row(.conflicts, ContextStrings.conflicts, "exclamationmark.triangle", badge: model.conflictCount)
         row(.settings, ContextStrings.settings, "gearshape")
+      } header: {
+        Text(String(localized: "ios.shell.navigateHeader", defaultValue: "Capo", bundle: .capoDesign))  // TODO(i18n)
       }
     }
     .navigationTitle("Capo")
@@ -219,8 +226,26 @@ private struct SidebarView: View {
   private func row(_ item: SidebarItem, _ title: String, _ symbol: String, badge: Int = 0) -> some View {
     Label(title, systemImage: symbol)
       .badge(badge)
-      .frame(minHeight: CapoMetrics.minTouchTarget - 8)
+      .frame(maxWidth: .infinity, minHeight: CapoMetrics.minTouchTarget - 8, alignment: .leading)
       .tag(item)
+  }
+
+  private func contextRow(_ context: AppContext, _ title: String, _ symbol: String) -> some View {
+    Button {
+      model.select(context)
+    } label: {
+      HStack {
+        Label(title, systemImage: symbol)
+        Spacer()
+        if model.context == context {
+          Image(systemName: "checkmark").foregroundStyle(.tint).fontWeight(.semibold)
+        }
+      }
+      .frame(minHeight: CapoMetrics.minTouchTarget - 8)
+      .contentShape(Rectangle())
+    }
+    .buttonStyle(.plain)
+    .accessibilityAddTraits(model.context == context ? .isSelected : [])
   }
 
   private var footer: some View {

@@ -72,7 +72,8 @@ let package = Package(
     .testTarget(name: "CapoLibraryUITests", dependencies: ["CapoLibraryUI"]),
     .testTarget(name: "CapoPerformanceUITests", dependencies: ["CapoPerformanceUI"]),
     .testTarget(name: "CapoPlaylistsUITests", dependencies: ["CapoPlaylistsUI"]),
-    .testTarget(name: "CapoEditorUITests", dependencies: ["CapoEditorUI"])
+    .testTarget(name: "CapoEditorUITests", dependencies: ["CapoEditorUI"]),
+    .testTarget(name: "CapoTeamsUITests", dependencies: ["CapoTeamsUI", "CapoDesign"])
   ],
   swiftLanguageModes: [.v6]
 )

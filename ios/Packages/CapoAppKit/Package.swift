@@ -11,7 +11,8 @@ let package = Package(
     .package(path: "../CapoCore"),
     .package(path: "../CapoData"),
     .package(path: "../CapoSupabase"),
-    .package(path: "../CapoUI")
+    .package(path: "../CapoUI"),
+    .package(url: "https://github.com/supabase/supabase-swift.git", from: "2.0.0")
   ],
   targets: [
     .target(
@@ -25,6 +26,15 @@ let package = Package(
         .product(name: "CapoCore", package: "CapoCore")
       ],
       swiftSettings: [.defaultIsolation(MainActor.self)]
+    ),
+    .testTarget(
+      name: "CapoAppKitTests",
+      dependencies: [
+        "CapoAppKit",
+        .product(name: "CapoFakes", package: "CapoCore"),
+        .product(name: "CapoSupabase", package: "CapoSupabase"),
+        .product(name: "Supabase", package: "supabase-swift")
+      ]
     )
   ],
   swiftLanguageModes: [.v6]

@@ -51,10 +51,12 @@ public nonisolated enum CapoComposition {
   }
 
   static func makeUserServices(
-    session: AuthSession, remotes: Remotes, config: AppConfig
+    session: AuthSession, remotes: Remotes, config: AppConfig, directory: URL? = nil,
+    reachability: (any ReachabilityMonitor)? = nil
   ) throws -> UserServices {
     let userID = session.userID
-    let database = try CapoDatabase.open(userID: userID, directory: try databaseDirectory())
+    let database = try CapoDatabase.open(
+      userID: userID, directory: try directory ?? databaseDirectory())
     let teamsRemote = remotes.teams
     let syncBox = SyncBox()
     let repositories = LocalRepositories(
@@ -63,7 +65,7 @@ public nonisolated enum CapoComposition {
     let engine = SyncEngine(
       userID: userID, store: repositories.syncStore,
       remote: remotes.syncSource, writer: remotes.writer, realtime: remotes.realtime,
-      reachability: NWReachabilityMonitor())
+      reachability: reachability ?? NWReachabilityMonitor())
     syncBox.engine = engine
     logger.info("Opened local database for user \(userID.uuidString, privacy: .private)")
 

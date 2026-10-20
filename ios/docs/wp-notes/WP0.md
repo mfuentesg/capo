@@ -52,3 +52,13 @@
 ### Resolved versions
 - GRDB.swift 7.11.1 (FTS5 + `unicode61(diacritics: .remove)` confirmed by `FTS5SmokeTests`).
 - supabase-swift 2.55.4.
+
+### INT-1 (live composition)
+- `CapoComposition.makeLive` builds one Supabase client and its remotes per app run; per session it opens
+  `ApplicationSupport/Capo/<userID>.sqlite`, `LocalRepositories` and a `SyncEngine`. The shell (WP5) already
+  calls `sync.start()`, `syncNow(.appLaunch)` and `syncNow(.foreground)` on scenePhase, so the composition does not.
+- `tearDown(erase:)` stops the engine and calls `CapoDatabase.erase()` (drops the data and recreates the
+  schema). The `.sqlite` file itself stays because the DatabasePool is still open at that point.
+- Sharing is a thin `RemoteSharingService` over `SupabaseTeamsRemote.ensureShareCode`.
+- `ios/scripts/use-supabase.sh local [--device] | production | demo` writes or removes the git-ignored
+  `Secrets.plist`. It uses the `supabase` CLI directly (`pnpm supabase` runs an install first in this repo).

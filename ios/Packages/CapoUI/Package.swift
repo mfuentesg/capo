@@ -65,6 +65,9 @@ let package = Package(
       ],
       swiftSettings: mainActorByDefault
     ),
+    .testTarget(name: "CapoDesignTests", dependencies: ["CapoDesign"]),
+    .testTarget(name: "CapoAuthUITests", dependencies: ["CapoAuthUI"]),
+    .testTarget(name: "CapoShellUITests", dependencies: ["CapoShellUI"]),
     .testTarget(name: "CapoRenderingTests", dependencies: ["CapoRendering"]),
     .testTarget(name: "CapoLibraryUITests", dependencies: ["CapoLibraryUI"]),
     .testTarget(name: "CapoPerformanceUITests", dependencies: ["CapoPerformanceUI"]),

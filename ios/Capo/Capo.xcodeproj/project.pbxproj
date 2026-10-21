@@ -60,6 +60,7 @@
 				A10000000000000000000007 /* Sources */,
 				A10000000000000000000003 /* Frameworks */,
 				A10000000000000000000008 /* Resources */,
+				A10000000000000000000020 /* Strip DevSession.plist from Release */,
 			);
 			buildRules = (
 			);
@@ -117,6 +118,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A10000000000000000000020 /* Strip DevSession.plist from Release */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Strip DevSession.plist from Release";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# DevSession.plist holds a local-stack session token (git-ignored, Debug only).\n# The synchronized group bundles it for every configuration, so remove it from non-Debug builds.\nif [ \"${CONFIGURATION}\" != \"Debug\" ]; then\n  rm -f \"${TARGET_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/DevSession.plist\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A10000000000000000000007 /* Sources */ = {

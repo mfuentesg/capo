@@ -12,43 +12,68 @@ struct SongRow: View {
       if showsSelection {
         Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
           .font(.title3)
-          .foregroundStyle(isSelected ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary))
+          .foregroundStyle(isSelected ? CapoTheme.primary : CapoTheme.subtext)
       }
-      VStack(alignment: .leading, spacing: 4) {
-        HStack(spacing: 6) {
-          Text(item.title).font(.headline).lineLimit(1)
+      VStack(alignment: .leading, spacing: 3) {
+        HStack(spacing: 8) {
+          Text(item.title).font(.system(size: 17, weight: .semibold)).lineLimit(1)
           if item.hasPendingChanges {
-            Circle().fill(.orange).frame(width: 8, height: 8)
+            Circle().fill(CapoTheme.primary).frame(width: 8, height: 8)
               .accessibilityLabel(LibraryStrings.pendingChanges)
           }
         }
         if let artist = item.artist, !artist.isEmpty {
-          Text(artist).font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
+          Text(artist).font(.system(size: 14)).foregroundStyle(CapoTheme.subtext).lineLimit(1)
         }
         if !item.tags.isEmpty {
-          HStack(spacing: 4) {
-            ForEach(item.tags.prefix(3)) { TagChip(name: $0.name, colorHex: $0.color) }
+          HStack(spacing: 5) {
+            ForEach(item.tags.prefix(3)) { SongRowTag(name: $0.name, colorHex: $0.color) }
             if item.tags.count > 3 {
               Text(LibraryStrings.moreTags(item.tags.count - 3))
-                .font(.caption).foregroundStyle(.secondary)
+                .font(.caption).foregroundStyle(CapoTheme.subtext)
             }
           }
         }
       }
       Spacer(minLength: 8)
-      VStack(alignment: .trailing, spacing: 4) {
-        if let key = item.key, !key.isEmpty {
-          Text(key)
-            .font(.subheadline.weight(.semibold).monospaced())
-            .padding(.horizontal, 8).padding(.vertical, 2)
-            .background(.quaternary, in: RoundedRectangle(cornerRadius: 6))
-        }
+      VStack(alignment: .trailing, spacing: 6) {
+        if let key = item.key, !key.isEmpty { KeyBadge(key) }
         if let bpm = item.bpm, bpm > 0 {
-          Text(LibraryStrings.bpm(bpm)).font(.caption).foregroundStyle(.secondary)
+          Text(LibraryStrings.bpm(bpm)).font(.system(size: 13)).foregroundStyle(CapoTheme.subtext)
         }
       }
     }
-    .frame(minHeight: 56)
+    .foregroundStyle(CapoTheme.text)
+    .padding(.horizontal, 14)
+    .padding(.vertical, 10)
+    .frame(minHeight: 80)
+    .background(
+      CapoTheme.card,
+      in: RoundedRectangle(cornerRadius: CapoRadius.medium + 2, style: .continuous)
+    )
+    .overlay(
+      RoundedRectangle(cornerRadius: CapoRadius.medium + 2, style: .continuous)
+        .strokeBorder(isSelected ? CapoTheme.primary : Color.clear, lineWidth: 2)
+    )
     .contentShape(Rectangle())
+  }
+}
+
+/// Compact tag chip for list rows: coloured dot plus name on a tinted fill.
+struct SongRowTag: View {
+  let name: String
+  let colorHex: String?
+
+  var body: some View {
+    let color = HexColor.tagColor(colorHex)
+    HStack(spacing: 5) {
+      Circle().fill(color).frame(width: 7, height: 7)
+      Text(name).lineLimit(1)
+    }
+    .font(.system(size: 11, weight: .medium))
+    .foregroundStyle(CapoTheme.text)
+    .padding(.horizontal, 8)
+    .frame(height: 20)
+    .background(color.opacity(0.16), in: Capsule())
   }
 }

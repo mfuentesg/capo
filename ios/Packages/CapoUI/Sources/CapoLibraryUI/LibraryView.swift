@@ -20,20 +20,23 @@ public struct LibraryView: View {
     @Bindable var model = model
     List(selection: $selection) {
       ForEach(model.songs) { item in
-        SongRow(item: item)
+        SongRow(item: item, isSelected: selection == item.id)
           .tag(item.id)
+          .listRowBackground(Color.clear)
+          .listRowSeparator(.hidden)
+          .listRowInsets(EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 12))
           .swipeActions(edge: .trailing) {
             Button { actions.addSongsToPlaylist([item.id]) } label: {
               Label(LibraryStrings.addToSetlist, systemImage: "music.note.list")
             }
-            .tint(.blue)
+            .tint(CapoTheme.primary)
           }
           .swipeActions(edge: .leading) {
             if canEdit {
               Button { assignTagsFor = SongSheetTarget(id: item.id) } label: {
                 Label(LibraryStrings.assignTags, systemImage: "tag")
               }
-              .tint(.indigo)
+              .tint(CapoTheme.chord)
             }
           }
           .contextMenu {
@@ -52,6 +55,8 @@ public struct LibraryView: View {
       }
     }
     .listStyle(.plain)
+    .scrollContentBackground(.hidden)
+    .background(CapoTheme.background)
     .overlay { emptyState }
     .safeAreaInset(edge: .top, spacing: 0) {
       if !model.tags.isEmpty {
@@ -69,6 +74,11 @@ public struct LibraryView: View {
         ToolbarItem(placement: .topBarTrailing) {
           Button { actions.openEditor(.create) } label: {
             Label(LibraryStrings.newSong, systemImage: "plus")
+              .labelStyle(.iconOnly)
+              .fontWeight(.bold)
+              .foregroundStyle(CapoTheme.onPrimary)
+              .frame(width: CapoMetrics.minTouchTarget, height: 40)
+              .background(CapoTheme.primary, in: RoundedRectangle(cornerRadius: CapoRadius.small + 2, style: .continuous))
           }
         }
       }
@@ -120,7 +130,10 @@ struct TagFilterBar: View {
     ScrollView(.horizontal, showsIndicators: false) {
       HStack(spacing: 8) {
         ForEach(tags) { tag in
-          Button { onToggle(tag.id) } label: {
+          Button {
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            onToggle(tag.id)
+          } label: {
             TagChip(name: tag.name, colorHex: tag.color, isSelected: selected.contains(tag.id))
               .frame(minHeight: 44)
               .contentShape(Rectangle())
@@ -130,7 +143,7 @@ struct TagFilterBar: View {
       }
       .padding(.horizontal)
     }
-    .background(.background)
+    .background(CapoTheme.background)
   }
 }
 
@@ -169,5 +182,6 @@ struct FilterMenu: View {
         systemImage: model.filters.hasActiveFilters
           ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
     }
+    .tint(CapoTheme.info)
   }
 }

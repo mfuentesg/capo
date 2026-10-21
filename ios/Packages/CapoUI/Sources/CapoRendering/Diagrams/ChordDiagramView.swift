@@ -140,31 +140,28 @@ public struct ChordDiagramView: View {
 }
 
 enum ChordDiagramStrings {
-  // TODO(i18n): harvested by B1 into the string catalogs.
   static var instrument: String {
-    String(localized: "ios.chordDiagram.instrument", defaultValue: "Instrument", bundle: .module)
+    L10n.Ios.ChordDiagram.instrument
   }
   static var guitar: String {
-    String(localized: "ios.chordDiagram.guitar", defaultValue: "Guitar", bundle: .module)
+    L10n.Ios.ChordDiagram.guitar
   }
   static var ukulele: String {
-    String(localized: "ios.chordDiagram.ukulele", defaultValue: "Ukulele", bundle: .module)
+    L10n.Ios.ChordDiagram.ukulele
   }
   static var muted: String {
-    String(localized: "ios.chordDiagram.muted", defaultValue: "muted", bundle: .module)
+    L10n.Ios.ChordDiagram.muted
   }
   static var open: String {
-    String(localized: "ios.chordDiagram.open", defaultValue: "open", bundle: .module)
+    L10n.Ios.ChordDiagram.`open`
   }
   static var previous: String {
-    String(localized: "ios.chordDiagram.previous", defaultValue: "Previous position", bundle: .module)
+    L10n.Ios.ChordDiagram.previous
   }
   static var next: String {
-    String(localized: "ios.chordDiagram.next", defaultValue: "Next position", bundle: .module)
+    L10n.Ios.ChordDiagram.next
   }
   static func position(_ n: Int, of total: Int) -> String {
-    let format = String(
-      localized: "ios.chordDiagram.position", defaultValue: "Position %lld of %lld", bundle: .module)
-    return String(format: format, n, total)
+    L10n.Ios.ChordDiagram.position(n: String(n), total: String(total))
   }
 }

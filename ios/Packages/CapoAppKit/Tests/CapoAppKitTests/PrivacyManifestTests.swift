@@ -19,7 +19,8 @@ import Testing
   }
 
   @Test func declaresUserDefaultsReason() throws {
-    let types = try #require(try manifest()["NSPrivacyAccessedAPITypes"] as? [[String: Any]])
+    let plist = try manifest()
+    let types = try #require(plist["NSPrivacyAccessedAPITypes"] as? [[String: Any]])
     let defaults = types.first {
       $0["NSPrivacyAccessedAPIType"] as? String == "NSPrivacyAccessedAPICategoryUserDefaults"
     }

@@ -138,3 +138,43 @@ import Testing
     #endif
   }
 }
+
+@MainActor
+@Suite struct PanelLayoutTests {
+  @Test func defaultsToThirtyFiveSixtyFive() {
+    #expect(SplitLayout().listWidth(total: 1000) == 350)
+  }
+
+  @Test func clampsToMinimumListWidth() {
+    #expect(SplitLayout().listWidth(total: 600) == 280)
+    var layout = SplitLayout()
+    layout.setListWidth(50, total: 1000)
+    #expect(layout.listWidth(total: 1000) == 280)
+  }
+
+  @Test func keepsDetailAtLeastItsMinimum() {
+    var layout = SplitLayout()
+    layout.setListWidth(990, total: 1000)
+    #expect(layout.listWidth(total: 1000) == 640)
+  }
+
+  @Test func collapsedHasNoListWidth() {
+    var layout = SplitLayout()
+    layout.toggleList()
+    #expect(layout.listWidth(total: 1000) == 0)
+    layout.toggleList()
+    #expect(layout.listWidth(total: 1000) == 350)
+  }
+
+  @Test func roundTripsThroughRawValue() {
+    var layout = SplitLayout(listFraction: 0.42)
+    layout.toggleList()
+    #expect(SplitLayout(rawValue: layout.rawValue) == layout)
+    #expect(SplitLayout(rawValue: "garbage") == nil)
+  }
+
+  @Test func sidebarWidths() {
+    #expect(SidebarMetrics.width(collapsed: true) == 84)
+    #expect(SidebarMetrics.width(collapsed: false) == 264)
+  }
+}

@@ -11,11 +11,13 @@ public struct SongEditorView: View {
   @Environment(\.appContext) private var context
   @Environment(\.currentTeamRole) private var role
   @State private var model = SongEditorModel()
-  @State private var page: Page = .details
   @State private var confirmDelete = false
   @State private var confirmDiscard = false
-
-  enum Page: Hashable { case details, lyrics, preview }
+  @State private var panel = PreviewPanelLayout.load()
+  @State private var showChords = true
+  @State private var showExtras = false
+  @State private var showPreviewSheet = false
+  @Environment(\.horizontalSizeClass) private var sizeClass
 
   public init(request: SongEditorRequest, onFinish: @escaping (SongID?) -> Void) {
     self.request = request
@@ -25,11 +27,20 @@ public struct SongEditorView: View {
   private var isViewer: Bool { role == .viewer }
 
   public var body: some View {
-    NavigationStack {
+    VStack(spacing: 0) {
+      header
       content
-        .navigationTitle(request == .create ? EditorStrings.newSong : EditorStrings.editSong)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar { toolbarContent }
+    }
+    .capoTheme()
+    .sheet(isPresented: $showPreviewSheet) {
+      VStack {
+        LivePreviewPanel(rendered: renderedPreview, showChords: $showChords) {
+          showPreviewSheet = false
+        }
+        .padding(20)
+      }
+      .capoTheme()
+      .presentationDetents([.medium, .large])
     }
     .task { await model.load(request, songs: services.songs) }
     .interactiveDismissDisabled(model.isDirty)
@@ -70,72 +81,240 @@ public struct SongEditorView: View {
       case .missing:
         EmptyStateView(title: EditorStrings.notFound, message: nil, systemImage: "music.note")
       case .ready:
-        VStack(spacing: 0) {
-          Picker("", selection: $page) {
-            Text(EditorStrings.details).tag(Page.details)
-            Text(EditorStrings.lyrics).tag(Page.lyrics)
-            Text(EditorStrings.preview).tag(Page.preview)
-          }
-          .pickerStyle(.segmented)
-          .padding([.horizontal, .top])
-          .padding(.bottom, 8)
-          .accessibilityIdentifier("editor.pagePicker")
-          switch page {
-          case .details: detailsForm
-          case .lyrics: LyricsTextView(text: $model.form.lyrics)
-          case .preview: preview
-          }
+        GeometryReader { geo in
+          if sizeClass == .regular { regularLayout(containerWidth: geo.size.width) } else { editorColumn }
         }
       }
     }
   }
 
-  private var detailsForm: some View {
-    Form {
-      Section {
-        TextField(EditorStrings.title, text: $model.form.title)
-          .accessibilityIdentifier("editor.title")
-        if model.form.issues.contains(.titleRequired) && model.isDirty {
-          Text(EditorStrings.titleRequired).font(.footnote).foregroundStyle(.red)
+  // MARK: Layout
+
+  private func regularLayout(containerWidth: CGFloat) -> some View {
+    HStack(spacing: 0) {
+      editorColumn
+      if !panel.isCollapsed {
+        PreviewResizeHandle(layout: $panel, containerWidth: containerWidth)
+        VStack(spacing: 14) {
+          LivePreviewPanel(rendered: renderedPreview, showChords: $showChords) { setCollapsed(true) }
+          if model.isEditing { deleteButton }
         }
-        TextField(EditorStrings.artist, text: $model.form.artist)
+        .padding(20)
+        .frame(width: panel.resolvedWidth(containerWidth: containerWidth))
+        .background(CapoTheme.background)
+      }
+    }
+  }
+
+  private func setCollapsed(_ collapsed: Bool) {
+    withAnimation(.easeInOut(duration: 0.2)) { panel.isCollapsed = collapsed }
+    panel.save()
+  }
+
+  private var editorColumn: some View {
+    VStack(spacing: 0) {
+      metadata
+      Divider().overlay(CapoTheme.border)
+      LyricsTextView(text: $model.form.lyrics, songKey: model.form.key)
+    }
+  }
+
+  private var showDeleteInExtras: Bool {
+    model.isEditing && (sizeClass != .regular || panel.isCollapsed)
+  }
+
+  private var header: some View {
+    HStack(spacing: 12) {
+      Button(EditorStrings.cancel) {
+        if model.isDirty { confirmDiscard = true } else { onFinish(nil) }
+      }
+      .font(.system(size: 17, weight: .semibold))
+      .foregroundStyle(CapoTheme.info)
+      .frame(minHeight: CapoMetrics.minTouchTarget)
+      .accessibilityIdentifier("editor.cancel")
+      Spacer(minLength: 0)
+      VStack(spacing: 2) {
+        Text(request == .create ? EditorStrings.newSong : EditorStrings.editSong)
+          .font(.system(size: 18, weight: .bold))
+        HStack(spacing: 6) {
+          Circle().fill(CapoTheme.primary).frame(width: 8, height: 8)
+          Text(EditorStrings.savedLocally)
+            .font(.system(size: 13))
+            .foregroundStyle(CapoTheme.subtext)
+            .lineLimit(1)
+        }
+      }
+      Spacer(minLength: 0)
+      if !isViewer, model.loadState == .ready {
+        previewToggle
+        Button(EditorStrings.save) {
+          Task {
+            if let id = await model.save(songs: services.songs, context: context) { onFinish(id) }
+          }
+        }
+        .buttonStyle(CapoPrimaryButtonStyle())
+        .opacity(model.canSave ? 1 : 0.4)
+        .disabled(!model.canSave)
+        .accessibilityIdentifier("editor.save")
+      }
+    }
+    .padding(.horizontal, 20).padding(.vertical, 8)
+    .background(CapoTheme.sidebar)
+    .overlay(alignment: .bottom) { Rectangle().fill(CapoTheme.border).frame(height: 1) }
+  }
+
+  @ViewBuilder private var previewToggle: some View {
+    if sizeClass == .regular {
+      Button { setCollapsed(!panel.isCollapsed) } label: {
+        Image(systemName: "sidebar.trailing")
+      }
+      .buttonStyle(CapoIconButtonStyle())
+      .accessibilityLabel(panel.isCollapsed ? EditorStrings.showPreview : EditorStrings.hidePreview)
+      .accessibilityIdentifier("editor.preview.toggle")
+    } else {
+      Button { showPreviewSheet = true } label: { Image(systemName: "eye") }
+        .buttonStyle(CapoIconButtonStyle())
+        .accessibilityLabel(EditorStrings.showPreview)
+        .accessibilityIdentifier("editor.preview.toggle")
+    }
+  }
+
+  // MARK: Metadata
+
+  private var metadata: some View {
+    VStack(spacing: 12) {
+      TextField(EditorStrings.title, text: $model.form.title)
+        .font(.system(size: 22, weight: .bold))
+        .padding(.horizontal, 16).frame(height: 52)
+        .fieldChrome(radius: CapoRadius.medium + 2)
+        .accessibilityIdentifier("editor.title")
+      if model.form.issues.contains(.titleRequired) && model.isDirty {
+        errorText(EditorStrings.titleRequired)
+      }
+      if sizeClass == .regular {
+        HStack(alignment: .bottom, spacing: 10) {
+          artistField.frame(maxWidth: .infinity)
+          keyField.frame(width: 110)
+          bpmField.frame(width: 110)
+          capoField.frame(width: 110)
+        }
+      } else {
+        artistField
+        HStack(alignment: .bottom, spacing: 10) {
+          keyField; bpmField; capoField
+        }
+      }
+      if model.form.issues.contains(.bpmInvalid) { errorText(EditorStrings.bpmInvalid) }
+      DisclosureGroup(isExpanded: $showExtras) {
+        extras.padding(.top, 8)
+      } label: {
+        Text(EditorStrings.moreOptions)
+          .font(.system(size: 14, weight: .semibold))
+          .foregroundStyle(CapoTheme.subtext)
+          .frame(minHeight: 36, alignment: .leading)
+      }
+      .tint(CapoTheme.subtext)
+    }
+    .padding(.horizontal, 20).padding(.vertical, 14)
+    .background(CapoTheme.background)
+  }
+
+  private func errorText(_ text: String) -> some View {
+    Text(text).font(.footnote).foregroundStyle(CapoTheme.destructive)
+      .frame(maxWidth: .infinity, alignment: .leading)
+  }
+
+  private func labeled<Content: View>(_ label: String, @ViewBuilder _ content: () -> Content)
+    -> some View
+  {
+    VStack(alignment: .leading, spacing: 4) {
+      Text(label.uppercased())
+        .font(.system(size: 12, weight: .semibold)).tracking(1)
+        .foregroundStyle(CapoTheme.subtext)
+      content()
+        .font(.system(size: 17, weight: .medium))
+        .padding(.horizontal, 14).frame(height: 46)
+        .fieldChrome(radius: CapoRadius.medium)
+    }
+  }
+
+  private var artistField: some View {
+    labeled(EditorStrings.artist) {
+      TextField(EditorStrings.artist, text: $model.form.artist).accessibilityIdentifier("editor.artist")
+    }
+  }
+
+  private var keyField: some View {
+    labeled(EditorStrings.key) {
+      Menu {
         Picker(EditorStrings.key, selection: $model.form.key) {
           Text(EditorStrings.noKey).tag("")
           ForEach(EditorForm.keys, id: \.self) { Text($0).tag($0) }
         }
-        TextField(EditorStrings.bpm, text: $model.form.bpm)
-          .keyboardType(.numberPad)
-        if model.form.issues.contains(.bpmInvalid) {
-          Text(EditorStrings.bpmInvalid).font(.footnote).foregroundStyle(.red)
-        }
+      } label: {
+        menuLabel(model.form.key.isEmpty ? "—" : model.form.key)
       }
-      Section {
-        Stepper(value: $model.form.transpose, in: EffectiveSongSettings.transposeRange) {
-          LabeledContent(EditorStrings.transpose, value: signed(model.form.transpose))
-        }
-        Stepper(value: $model.form.capo, in: EffectiveSongSettings.capoRange) {
-          LabeledContent(EditorStrings.capo, value: "\(model.form.capo)")
-        }
-      }
-      Section(EditorStrings.notes) {
-        TextField(EditorStrings.notes, text: $model.form.notes, axis: .vertical)
-          .lineLimit(2...8)
-      }
-      if model.isEditing {
-        Section {
-          Button(EditorStrings.delete, role: .destructive) { confirmDelete = true }
-            .accessibilityIdentifier("editor.delete")
-        }
-      }
+      .accessibilityIdentifier("editor.key")
     }
   }
 
-  private var preview: some View {
-    ScrollView {
-      ChordProContentView(rendered: renderedPreview, style: SongRenderStyle())
-        .padding()
-        .frame(maxWidth: .infinity, alignment: .leading)
+  private var bpmField: some View {
+    labeled(EditorStrings.bpm) {
+      TextField(EditorStrings.bpm, text: $model.form.bpm).keyboardType(.numberPad)
+        .accessibilityIdentifier("editor.bpm")
     }
+  }
+
+  private var capoField: some View {
+    labeled(EditorStrings.capo) {
+      Menu {
+        Picker(EditorStrings.capo, selection: $model.form.capo) {
+          ForEach(Array(EffectiveSongSettings.capoRange), id: \.self) { Text("\($0)").tag($0) }
+        }
+      } label: {
+        menuLabel("\(model.form.capo)")
+      }
+      .accessibilityIdentifier("editor.capo")
+    }
+  }
+
+  private func menuLabel(_ value: String) -> some View {
+    HStack {
+      Text(value).foregroundStyle(CapoTheme.text)
+      Spacer(minLength: 4)
+      Image(systemName: "chevron.down").font(.system(size: 13, weight: .bold))
+        .foregroundStyle(CapoTheme.subtext)
+    }
+    .frame(maxWidth: .infinity, minHeight: CapoMetrics.minTouchTarget)
+    .contentShape(Rectangle())
+  }
+
+  private var extras: some View {
+    VStack(spacing: 12) {
+      Stepper(value: $model.form.transpose, in: EffectiveSongSettings.transposeRange) {
+        LabeledContent(EditorStrings.transpose, value: signed(model.form.transpose))
+      }
+      .frame(minHeight: CapoMetrics.minTouchTarget)
+      TextField(EditorStrings.notes, text: $model.form.notes, axis: .vertical)
+        .lineLimit(2...6)
+        .padding(14)
+        .fieldChrome(radius: CapoRadius.medium)
+      if showDeleteInExtras { deleteButton }
+    }
+  }
+
+  private var deleteButton: some View {
+    Button { confirmDelete = true } label: {
+      Label(EditorStrings.deleteSong, systemImage: "trash")
+        .font(.system(size: 16, weight: .semibold))
+        .foregroundStyle(CapoTheme.destructive)
+        .frame(maxWidth: .infinity, minHeight: 52)
+        .overlay(
+          RoundedRectangle(cornerRadius: CapoRadius.medium + 2, style: .continuous)
+            .strokeBorder(CapoTheme.destructive, lineWidth: 1))
+    }
+    .buttonStyle(.plain)
+    .accessibilityIdentifier("editor.delete")
   }
 
   private var renderedPreview: RenderedSong {
@@ -153,23 +332,14 @@ public struct SongEditorView: View {
   }
 
   private func signed(_ value: Int) -> String { value > 0 ? "+\(value)" : "\(value)" }
+}
 
-  @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-    ToolbarItem(placement: .cancellationAction) {
-      Button(EditorStrings.cancel) {
-        if model.isDirty { confirmDiscard = true } else { onFinish(nil) }
-      }
-    }
-    if !isViewer {
-      ToolbarItem(placement: .confirmationAction) {
-        Button(EditorStrings.save) {
-          Task {
-            if let id = await model.save(songs: services.songs, context: context) { onFinish(id) }
-          }
-        }
-        .disabled(!model.canSave)
-        .accessibilityIdentifier("editor.save")
-      }
-    }
+private extension View {
+  /// Card-coloured input box with a border, as in the web editor's fields.
+  func fieldChrome(radius: CGFloat) -> some View {
+    background(CapoTheme.card, in: RoundedRectangle(cornerRadius: radius, style: .continuous))
+      .overlay(
+        RoundedRectangle(cornerRadius: radius, style: .continuous)
+          .strokeBorder(CapoTheme.border, lineWidth: 1))
   }
 }

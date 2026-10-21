@@ -155,3 +155,62 @@ private func song(
     #expect(fields.allSatisfy { $0.theirs == nil && !$0.differs })
   }
 }
+
+@MainActor @Suite struct PreviewPanelLayoutTests {
+  @Test func clampsToRangeAndContainer() {
+    #expect(PreviewPanelLayout.clamp(100, containerWidth: 1180) == 280)
+    #expect(PreviewPanelLayout.clamp(900, containerWidth: 1180) == 640)
+    #expect(PreviewPanelLayout.clamp(600, containerWidth: 800) == 440)  // 800 - 360
+    #expect(PreviewPanelLayout.clamp(400, containerWidth: 500) == 280)  // container too small
+  }
+
+  @Test func persistsWidthAndCollapse() throws {
+    let defaults = try #require(UserDefaults(suiteName: "preview-panel-\(UUID().uuidString)"))
+    #expect(PreviewPanelLayout.load(from: defaults) == PreviewPanelLayout())
+    PreviewPanelLayout(width: 500, isCollapsed: true).save(to: defaults)
+    let loaded = PreviewPanelLayout.load(from: defaults)
+    #expect(loaded.width == 500)
+    #expect(loaded.isCollapsed)
+  }
+
+  @Test func storedWidthIsClamped() throws {
+    let defaults = try #require(UserDefaults(suiteName: "preview-panel-\(UUID().uuidString)"))
+    defaults.set(5000.0, forKey: "editor.previewPanel.width")
+    #expect(PreviewPanelLayout.load(from: defaults).width == 640)
+  }
+}
+
+@MainActor @Suite struct AccessoryChipTests {
+  @Test func insertsSnippetsWithCaret() {
+    let chip = AccessoryChip.fixed.first { $0.label == "{c:}" }!
+    let r = chip.resolved()
+    let out = insertText(r.text, caretOffset: r.caretOffset, into: "ab", selection: NSRange(location: 1, length: 0))
+    #expect(out.text == "a{c: }b")
+    #expect(out.selection.location == 5)
+  }
+
+  @Test func chordChipWrapsInBrackets() {
+    let r = AccessoryChip.chord("Em").resolved()
+    #expect(r.text == "[Em]")
+    #expect(r.caretOffset == 4)
+  }
+
+  @Test func quickChordsFollowKey() {
+    #expect(QuickChords.chords(forKey: "G") == ["G", "C", "D", "Em", "Am"])
+    #expect(QuickChords.chords(forKey: "F") == ["F", "Bb", "C", "Dm", "Gm"])
+    #expect(QuickChords.chords(forKey: "Am") == ["Am", "Dm", "Em", "F", "C"])
+    #expect(QuickChords.chords(forKey: "") == QuickChords.fallback)
+  }
+
+  @Test func sectionNameRanges() {
+    func name(_ s: String) -> String? {
+      LyricsHighlighter.sectionNameRange(inDirective: s).map {
+        (s as NSString).substring(with: NSRange(location: $0.lowerBound, length: $0.count))
+      }
+    }
+    #expect(name("{sov: Verse 1}") == "Verse 1")
+    #expect(name("{repeat: Verse 1, 2}") == "Verse 1")
+    #expect(name("{c: hello}") == nil)
+    #expect(name("{sov}") == nil)
+  }
+}

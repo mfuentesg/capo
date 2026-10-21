@@ -89,7 +89,10 @@ struct SongPerformanceScreen: View {
         .presentationDragIndicator(.visible)
     }
     .onAppear { UIApplication.shared.isIdleTimerDisabled = true }
+    .onChange(of: published) { _, snapshot in CurrentPerformance.shared.snapshot = snapshot }
+    .onAppear { CurrentPerformance.shared.snapshot = published }
     .onDisappear {
+      CurrentPerformance.shared.snapshot = nil
       UIApplication.shared.isIdleTimerDisabled = false
       model.isAutoScrolling = false
       Task { await model.flushPendingSave() }
@@ -118,6 +121,13 @@ struct SongPerformanceScreen: View {
           .frame(maxWidth: .infinity, alignment: .leading)
       }
     }
+  }
+
+  private var published: CurrentPerformance.Snapshot? {
+    guard let song = model.song else { return nil }
+    return CurrentPerformance.Snapshot(
+      title: song.title, subtitle: song.artist, rendered: model.rendered,
+      fontScale: model.settings.fontSize, showChords: model.showChords)
   }
 
   private var style: SongRenderStyle {
@@ -164,6 +174,7 @@ private struct PerformanceHeader: View {
       HStack(alignment: .firstTextBaseline) {
         VStack(alignment: .leading, spacing: 2) {
           Text(song.title).font(.title2.weight(.semibold)).lineLimit(1)
+            .accessibilityAddTraits(.isHeader)
           if let subtitle { Text(subtitle).font(.subheadline).foregroundStyle(.secondary).lineLimit(1) }
         }
         Spacer()
@@ -172,6 +183,7 @@ private struct PerformanceHeader: View {
         }
         if canEdit {
           Button(L10n.Common.edit, systemImage: "pencil", action: onEdit).labelStyle(.iconOnly)
+            .frame(minWidth: 44, minHeight: 44)
         }
       }
       ScrollView(.horizontal, showsIndicators: false) {
@@ -244,8 +256,10 @@ private struct PerformanceHeader: View {
           model.isAutoScrolling ? L10n.Songs.Lyrics.AutoScroll.stop : L10n.Songs.Lyrics.AutoScroll.start,
           systemImage: model.isAutoScrolling ? "pause.fill" : "play.fill")
       }
+      .frame(minHeight: 44)
       Button(L10n.Songs.Lyrics.AutoScroll.decreaseSpeed, systemImage: "tortoise") { model.scrollSlower() }
         .labelStyle(.iconOnly)
+        .frame(minWidth: 44, minHeight: 44)
         .disabled(model.scrollSpeed <= AutoScrollSpeed.minimum)
       Text("\(model.scrollSpeed)")
         .font(.subheadline.monospacedDigit())
@@ -253,6 +267,7 @@ private struct PerformanceHeader: View {
         .accessibilityLabel("\(L10n.Songs.Lyrics.AutoScroll.speed) \(model.scrollSpeed)")
       Button(L10n.Songs.Lyrics.AutoScroll.increaseSpeed, systemImage: "hare") { model.scrollFaster() }
         .labelStyle(.iconOnly)
+        .frame(minWidth: 44, minHeight: 44)
         .disabled(model.scrollSpeed >= AutoScrollSpeed.maximum)
     }
   }
@@ -261,9 +276,11 @@ private struct PerformanceHeader: View {
     HStack(spacing: 8) {
       Button(L10n.Ios.Performance.previousSong, systemImage: "chevron.left") { navigation.onPrevious?() }
         .labelStyle(.iconOnly)
+        .frame(minWidth: 44, minHeight: 44)
         .disabled(navigation.onPrevious == nil)
       Button(L10n.Ios.Performance.nextSong, systemImage: "chevron.right") { navigation.onNext?() }
         .labelStyle(.iconOnly)
+        .frame(minWidth: 44, minHeight: 44)
         .disabled(navigation.onNext == nil)
     }
   }
@@ -281,15 +298,26 @@ private struct Stepper: View {
   var body: some View {
     HStack(spacing: 6) {
       Text(label).font(.caption).foregroundStyle(.secondary)
-      Button(action: decrement) { Image(systemName: "minus") }
+      Button(action: decrement) { Image(systemName: "minus").frame(minWidth: 28, minHeight: 28) }
         .disabled(!canDecrement)
-        .accessibilityLabel("\(label) −")
+        .frame(minWidth: 44, minHeight: 44)
       Text(value).font(.subheadline.monospacedDigit()).frame(minWidth: 44)
-      Button(action: increment) { Image(systemName: "plus") }
+      Button(action: increment) { Image(systemName: "plus").frame(minWidth: 28, minHeight: 28) }
         .disabled(!canIncrement)
-        .accessibilityLabel("\(label) +")
+        .frame(minWidth: 44, minHeight: 44)
     }
     .buttonStyle(.bordered)
     .controlSize(.small)
+    // One adjustable element for VoiceOver: swipe up/down changes the value.
+    .accessibilityElement(children: .ignore)
+    .accessibilityLabel(label)
+    .accessibilityValue(value)
+    .accessibilityAdjustableAction { direction in
+      switch direction {
+      case .increment: if canIncrement { increment() }
+      case .decrement: if canDecrement { decrement() }
+      @unknown default: break
+      }
+    }
   }
 }

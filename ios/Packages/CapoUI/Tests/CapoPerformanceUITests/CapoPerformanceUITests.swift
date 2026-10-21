@@ -69,6 +69,12 @@ import UIKit
 }
 
 @Suite struct ScrollMathTests {
+  @Test func reduceMotionStepsInHalfViewports() {
+    #expect(ScrollMath.steppedOffset(position: 499, viewport: 1000, maxOffset: 4000) == 0)
+    #expect(ScrollMath.steppedOffset(position: 501, viewport: 1000, maxOffset: 4000) == 500)
+    #expect(ScrollMath.steppedOffset(position: 4700, viewport: 1000, maxOffset: 4000) == 4000)
+  }
+
   @Test func pagesBy85PercentAndStopsAtEnds() {
     #expect(ScrollMath.pageDown(offset: 0, viewport: 1000, content: 5000) == 850)
     #expect(ScrollMath.pageDown(offset: 3900, viewport: 1000, content: 5000) == 4000)

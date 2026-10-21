@@ -51,7 +51,13 @@ final class AutoScrollController {
       position += speed * (link.timestamp - lastTimestamp)
       let maxOffset = ScrollMath.maxOffset(
         viewport: scrollView.bounds.height, content: scrollView.contentSize.height)
-      scrollView.contentOffset.y = min(position, maxOffset)
+      if UIAccessibility.isReduceMotionEnabled {
+        let stepped = ScrollMath.steppedOffset(
+          position: position, viewport: scrollView.bounds.height, maxOffset: maxOffset)
+        if stepped != scrollView.contentOffset.y { scrollView.contentOffset.y = stepped }
+      } else {
+        scrollView.contentOffset.y = min(position, maxOffset)
+      }
     }
     lastTimestamp = link.timestamp
   }
@@ -208,7 +214,8 @@ final class PerformanceScrollViewController: UIViewController {
       down
       ? ScrollMath.pageDown(offset: offset, viewport: viewport, content: content)
       : ScrollMath.pageUp(offset: offset, viewport: viewport)
-    scrollView.setContentOffset(CGPoint(x: 0, y: target), animated: true)
+    scrollView.setContentOffset(
+      CGPoint(x: 0, y: target), animated: !UIAccessibility.isReduceMotionEnabled)
     return true
   }
 

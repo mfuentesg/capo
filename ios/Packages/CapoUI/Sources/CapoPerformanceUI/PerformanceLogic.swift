@@ -89,6 +89,14 @@ nonisolated enum ScrollMath {
     offset + viewport >= content - bottomTolerance
   }
 
+  /// Reduce Motion: the continuous position snaps down to a multiple of half a viewport, so
+  /// auto-scroll advances in discrete steps at the same average speed.
+  static func steppedOffset(position: Double, viewport: Double, maxOffset: Double) -> Double {
+    let step = viewport * 0.5
+    guard step > 0 else { return min(position, maxOffset) }
+    return min((position / step).rounded(.down) * step, maxOffset)
+  }
+
   static func pageDown(offset: Double, viewport: Double, content: Double) -> Double {
     min(offset + viewport * pageFraction, maxOffset(viewport: viewport, content: content))
   }

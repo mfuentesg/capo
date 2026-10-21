@@ -179,6 +179,8 @@ struct PairColumn: View {
           .fixedSize()
       }
     }
+    // VoiceOver reads the chord, then the lyric under it.
+    .accessibilityElement(children: .combine)
   }
 
   private var chordBadge: some View {
@@ -192,6 +194,7 @@ struct PairColumn: View {
       .contentShape(Rectangle())
       .onTapGesture { context.onChordTap?(pair.chord) }
       .accessibilityLabel(pair.chord)
+      .accessibilityAddTraits(context.onChordTap == nil ? [] : .isButton)
   }
 }
 
@@ -286,8 +289,7 @@ struct SegmentView: View {
     if found {
       block(title: title, sectionType: sectionType, icon: symbol, flags: flags, body: body)
     } else {
-      let notFound = String(
-        localized: "chords.notFound", defaultValue: "not found", bundle: .capoDesign)  // TODO(i18n)
+      let notFound = L10n.Chords.notFound
       SectionHeaderView(
         title: "\(title) (\(notFound))", accent: SectionAccent.color(for: accentType),
         icon: nil, flags: [], pointSize: context.pointSize, isCollapsed: false, onToggle: nil

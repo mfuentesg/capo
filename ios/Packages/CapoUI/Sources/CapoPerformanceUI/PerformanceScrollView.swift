@@ -105,6 +105,9 @@ struct PerformanceScrollView<Content: View>: UIViewControllerRepresentable {
   let onAction: (PerformanceAction) -> Void
   let onAutoScrollStopped: () -> Void
   let onContentMeasured: (Double) -> Void
+  var onMetrics: ((StageScrollMetrics) -> Void)?
+  var onTap: (() -> Void)?
+  var onDoubleTap: (() -> Void)?
   @ViewBuilder let content: () -> Content
 
   func makeUIViewController(context: Context) -> PerformanceScrollViewController {
@@ -123,6 +126,9 @@ struct PerformanceScrollView<Content: View>: UIViewControllerRepresentable {
   private func update(_ controller: PerformanceScrollViewController) {
     controller.onAction = onAction
     controller.onContentMeasured = onContentMeasured
+    controller.onMetrics = onMetrics
+    controller.onTap = onTap
+    controller.onDoubleTap = onDoubleTap
     controller.autoScroll.onStop = onAutoScrollStopped
     controller.autoScroll.speed = Double(speed)
     if isAutoScrolling { controller.autoScroll.start() } else { controller.autoScroll.stop() }
@@ -133,12 +139,18 @@ struct PerformanceScrollView<Content: View>: UIViewControllerRepresentable {
   }
 }
 
-final class PerformanceScrollViewController: UIViewController {
+final class PerformanceScrollViewController: UIViewController, UIScrollViewDelegate,
+  UIGestureRecognizerDelegate
+{
   let scrollView = UIScrollView()
   let autoScroll = AutoScrollController()
   var onAction: ((PerformanceAction) -> Void)?
   var onContentMeasured: ((Double) -> Void)?
+  var onMetrics: ((StageScrollMetrics) -> Void)?
+  var onTap: (() -> Void)?
+  var onDoubleTap: (() -> Void)?
 
+  private var lastMetrics: StageScrollMetrics?
   private let hosting: UIHostingController<AnyView>
   private var lastReportedHeight: Double?
 
@@ -176,6 +188,38 @@ final class PerformanceScrollViewController: UIViewController {
       hosting.view.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
     ])
     autoScroll.scrollView = scrollView
+    scrollView.delegate = self
+    scrollView.showsVerticalScrollIndicator = false
+
+    let double = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap))
+    double.numberOfTapsRequired = 2
+    double.cancelsTouchesInView = false
+    double.delegate = self
+    let single = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+    single.cancelsTouchesInView = false
+    single.delegate = self
+    scrollView.addGestureRecognizer(double)
+    scrollView.addGestureRecognizer(single)
+  }
+
+  @objc private func handleTap() { onTap?() }
+  @objc private func handleDoubleTap() { onDoubleTap?() }
+
+  func gestureRecognizer(
+    _ gestureRecognizer: UIGestureRecognizer,
+    shouldRecognizeSimultaneouslyWith other: UIGestureRecognizer
+  ) -> Bool { true }
+
+  func scrollViewDidScroll(_ scrollView: UIScrollView) { reportMetrics() }
+
+  private func reportMetrics() {
+    let metrics = StageScrollMetrics(
+      offset: Double(scrollView.contentOffset.y),
+      viewport: Double(scrollView.bounds.height),
+      content: Double(scrollView.contentSize.height))
+    guard metrics != lastMetrics else { return }
+    lastMetrics = metrics
+    onMetrics?(metrics)
   }
 
   func setRootView(_ rootView: AnyView) {
@@ -184,6 +228,7 @@ final class PerformanceScrollViewController: UIViewController {
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
+    reportMetrics()
     let scrollable = Double(scrollView.contentSize.height - scrollView.bounds.height)
     guard scrollView.contentSize.height > 0, scrollable != lastReportedHeight else { return }
     lastReportedHeight = scrollable

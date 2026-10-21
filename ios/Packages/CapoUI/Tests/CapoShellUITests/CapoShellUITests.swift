@@ -1,4 +1,5 @@
 import CapoDesign
+import CapoSettingsUI
 import Foundation
 import Testing
 @testable import CapoShellUI
@@ -100,5 +101,40 @@ import Testing
     #expect(personal.allSatisfy { $0.teamID == nil })
     #expect(team.allSatisfy { $0.teamID != nil })
     #expect(Set(personal.map(\.id)).isDisjoint(with: Set(team.map(\.id))))
+  }
+}
+
+@MainActor
+@Suite struct ShellSettingsTests {
+  private func make(allow: Bool, delete: (@Sendable () async throws -> Void)?) async throws -> SettingsContext {
+    let deps = DemoSupport.dependencies
+    let session = try #require(await deps.auth.currentSession())
+    var services = try await deps.makeUserServices(session)
+    services.deleteAccount = delete
+    return ShellSettings.context(
+      session: session, services: services, config: nil, isDemo: true,
+      allowsAccountDeletion: allow, signOut: { _ in })
+  }
+
+  @Test func deleteAccountIsHiddenUnlessAllowedAndAvailable() async throws {
+    #expect(try await make(allow: false, delete: {}).deleteAccount == nil)
+    #expect(try await make(allow: true, delete: nil).deleteAccount == nil)
+    #expect(try await make(allow: true, delete: {}).deleteAccount != nil)
+  }
+
+  @Test func allowedDeleteInvokesTheServiceClosureOnly() async throws {
+    final class Calls: @unchecked Sendable { var count = 0 }
+    let calls = Calls()
+    let context = try await make(allow: true, delete: { calls.count += 1 })
+    try await context.deleteAccount?()
+    #expect(calls.count == 1)
+  }
+
+  @Test func releaseBuildsKeepDeletionHidden() {
+    #if DEBUG
+      #expect(ShellSettings.allowsAccountDeletion)
+    #else
+      #expect(!ShellSettings.allowsAccountDeletion)
+    #endif
   }
 }

@@ -1,4 +1,5 @@
 import CapoDesign
+import CapoSettingsUI
 import Foundation
 import Observation
 
@@ -13,10 +14,15 @@ final class ShellModel {
   var syncStatus = SyncStatus(phase: .idle, lastSuccessAt: nil, pendingOperations: 0, conflicts: 0, failedOperations: 0)
   var conflictCount = 0
   var theme: AppTheme?
+  let settingsContext: SettingsContext
 
-  init(session: AuthSession, services: UserServices, defaults: UserDefaults = .standard) {
+  init(
+    session: AuthSession, services: UserServices, settingsContext: SettingsContext = .empty,
+    defaults: UserDefaults = .standard
+  ) {
     self.session = session
     self.services = services
+    self.settingsContext = settingsContext
     contextStore = ContextStore(userID: session.userID, defaults: defaults)
   }
 

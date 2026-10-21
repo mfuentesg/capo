@@ -59,7 +59,13 @@ private struct SignedInView: View {
   init(store: SessionStore, active: SessionStore.Active) {
     self.store = store
     self.active = active
-    _model = State(initialValue: ShellModel(session: active.session, services: active.services))
+    let settings = ShellSettings.context(
+      session: active.session, services: active.services, config: store.dependencies.config,
+      isDemo: store.dependencies.isDemo,
+      signOut: { erase in Task { await store.signOut(erase: erase) } })
+    _model = State(
+      initialValue: ShellModel(
+        session: active.session, services: active.services, settingsContext: settings))
   }
 
   var body: some View {

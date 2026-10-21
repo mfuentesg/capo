@@ -1,4 +1,5 @@
 import CapoDesign
+import CapoSettingsUI
 import SwiftUI
 
 /// Injects services, context, role and actions. Applied to the main content and to every
@@ -11,6 +12,7 @@ struct ShellEnvironment: ViewModifier {
       .environment(\.userServices, model.services)
       .environment(\.appContext, model.context)
       .environment(\.currentTeamRole, model.contextStore.role)
+      .environment(\.settingsContext, model.settingsContext)
       .environment(\.capoActions, model.navigation.makeActions())
       .preferredColorScheme(model.theme.flatMap(Self.scheme))
   }

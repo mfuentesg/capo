@@ -31,7 +31,8 @@ public nonisolated enum CapoComposition {
       teams: SupabaseTeamsRemote(client: client, webBaseURL: config.webBaseURL),
       syncSource: SupabaseRemoteSyncSource(client: client),
       writer: SupabaseRemoteWriter(client: client),
-      realtime: SupabaseRealtimeNotifier(client: client))
+      realtime: SupabaseRealtimeNotifier(client: client),
+      account: SupabaseAccountRemote(client: client))
     return AppDependencies(
       config: config, isDemo: false, auth: auth,
       makeUserServices: { session in
@@ -45,6 +46,7 @@ public nonisolated enum CapoComposition {
     var syncSource: any RemoteSyncSource
     var writer: any RemoteWriter
     var realtime: any RealtimeNotifier
+    var account: SupabaseAccountRemote?
   }
 
   static func databaseDirectory() throws -> URL {
@@ -70,6 +72,10 @@ public nonisolated enum CapoComposition {
       remote: remotes.syncSource, writer: remotes.writer, realtime: remotes.realtime,
       reachability: reachability ?? NWReachabilityMonitor())
     syncBox.engine = engine
+    var deleteAccount: (@Sendable () async throws -> Void)?
+    if let account = remotes.account {
+      deleteAccount = { try await account.deleteAccount(userID: userID) }
+    }
     logger.info("Opened local database for user \(userID.uuidString, privacy: .private)")
 
     return UserServices(
@@ -92,7 +98,8 @@ public nonisolated enum CapoComposition {
         } catch {
           logger.error("Erasing local data failed: \(error.localizedDescription, privacy: .public)")
         }
-      })
+      },
+      deleteAccount: deleteAccount)
   }
 }
 

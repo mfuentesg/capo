@@ -139,7 +139,8 @@ private func firstStatus(
       try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0)
         .write(to: directory.appendingPathComponent("DevSession.plist"))
 
-      let session = try #require(DevSession.load(from: try #require(Bundle(url: directory))))
+      let bundle = try #require(Bundle(url: directory))
+      let session = try #require(DevSession.load(from: bundle))
       #expect(session.accessToken == "access")
       #expect(session.refreshToken == "refresh")
     }

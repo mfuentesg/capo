@@ -120,12 +120,16 @@ public struct UserServices: Sendable {
   public var conflicts: any ConflictRepository
   public var sync: any SyncService
   public var tearDown: @Sendable (_ eraseLocalData: Bool) async -> Void
+  /// Permanently deletes the signed-in account (`delete_user_account` RPC). nil when unavailable
+  /// (demo mode, fakes); the shell additionally hides it in release builds.
+  public var deleteAccount: (@Sendable () async throws -> Void)?
 
   public init(
     userID: UserID, songs: any SongRepository, tags: any TagRepository,
     playlists: any PlaylistRepository, settings: any SettingsRepository,
     teams: any TeamRepository, sharing: any SharingService, conflicts: any ConflictRepository,
-    sync: any SyncService, tearDown: @escaping @Sendable (_ eraseLocalData: Bool) async -> Void
+    sync: any SyncService, tearDown: @escaping @Sendable (_ eraseLocalData: Bool) async -> Void,
+    deleteAccount: (@Sendable () async throws -> Void)? = nil
   ) {
     self.userID = userID
     self.songs = songs
@@ -137,6 +141,7 @@ public struct UserServices: Sendable {
     self.conflicts = conflicts
     self.sync = sync
     self.tearDown = tearDown
+    self.deleteAccount = deleteAccount
   }
 }
 

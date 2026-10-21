@@ -43,6 +43,7 @@ struct SongPerformanceScreen: View {
   let navigation: PerformanceNavigation
   @State private var model: SongPerformanceModel
   @State private var scrollProxy = PerformanceScrollProxy()
+  @State private var diagramChord: DiagramChord?
   @Environment(\.currentTeamRole) private var role
   @Environment(\.capoActions) private var actions
 
@@ -82,6 +83,11 @@ struct SongPerformanceScreen: View {
     .task {
       for await preferences in services.settings.preferences() { model.apply(preferences: preferences) }
     }
+    .sheet(item: $diagramChord) { chord in
+      ChordDiagramView(chordName: chord.name)
+        .presentationDetents([.medium])
+        .presentationDragIndicator(.visible)
+    }
     .onAppear { UIApplication.shared.isIdleTimerDisabled = true }
     .onDisappear {
       UIApplication.shared.isIdleTimerDisabled = false
@@ -103,7 +109,10 @@ struct SongPerformanceScreen: View {
         onAutoScrollStopped: { model.isAutoScrolling = false },
         onContentMeasured: { model.contentMeasured(scrollableHeight: $0) }
       ) {
-        ChordProContentView(rendered: model.rendered, style: style)
+        ChordProContentView(
+          rendered: model.rendered, style: style,
+          onChordTap: { diagramChord = DiagramChord(name: $0) }
+        )
           .padding(.horizontal, 20)
           .padding(.vertical, 16)
           .frame(maxWidth: .infinity, alignment: .leading)
@@ -135,6 +144,11 @@ struct SongPerformanceScreen: View {
     case .decreaseFont: model.change { $0.fontDown() }
     }
   }
+}
+
+private struct DiagramChord: Identifiable {
+  let name: String
+  var id: String { name }
 }
 
 /// Title, key info and the control bar.

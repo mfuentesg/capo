@@ -36,6 +36,7 @@ let package = Package(
     .target(
       name: "CapoRendering",
       dependencies: ["CapoDesign", .product(name: "CapoChordPro", package: "CapoCore")],
+      resources: [.process("Resources")],
       swiftSettings: mainActorByDefault
     ),
     .target(name: "CapoAuthUI", dependencies: ["CapoDesign"], swiftSettings: mainActorByDefault),

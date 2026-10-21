@@ -153,12 +153,14 @@ public actor SyncEngine: SyncService {
     }
     await loadMetadataIfNeeded()
     var firstError: String?
+    var lostConnection = false
 
     await publish(.pushing)
     do {
       try await push()
     } catch {
       firstError = describe(error)
+      lostConnection = lostConnection || Self.isConnectivityError(error)
     }
 
     await publish(.pulling)
@@ -166,6 +168,17 @@ public actor SyncEngine: SyncService {
       try await pull()
     } catch {
       firstError = firstError ?? describe(error)
+      lostConnection = lostConnection || Self.isConnectivityError(error)
+    }
+
+    // A cold start can sync before the first reachability event; a transport failure then means
+    // offline, not a sync error.
+    if lostConnection {
+      var metadata = (try? await store.syncMetadata()) ?? SyncMetadata()
+      metadata.lastError = nil
+      try? await store.saveSyncMetadata(metadata)
+      await publish(.offline)
+      return
     }
 
     var metadata = (try? await store.syncMetadata()) ?? SyncMetadata()
@@ -194,6 +207,18 @@ public actor SyncEngine: SyncService {
       SyncStatus(
         phase: phase, lastSuccessAt: lastSuccessAt, pendingOperations: counts.pending,
         conflicts: counts.conflicts, failedOperations: counts.failed))
+  }
+
+  static func isConnectivityError(_ error: Error) -> Bool {
+    if let error = error as? CapoError { return error == .offlineUnavailable }
+    guard let urlError = error as? URLError else { return false }
+    switch urlError.code {
+    case .notConnectedToInternet, .networkConnectionLost, .dataNotAllowed, .internationalRoamingOff,
+      .cannotConnectToHost, .cannotFindHost, .dnsLookupFailed, .timedOut:
+      return true
+    default:
+      return false
+    }
   }
 
   private func describe(_ error: Error) -> String {

@@ -61,6 +61,7 @@ final class StubRemote: RemoteSyncSource {
     var fetchedPlaylistIDs: [[PlaylistID]] = []
     var callCount = 0
     var failing = false
+    var failureError: (any Error & Sendable)?
   }
 
   struct Offline: Error {}
@@ -73,7 +74,7 @@ final class StubRemote: RemoteSyncSource {
   private func read<T: Sendable>(_ body: @Sendable (inout State) -> T) throws -> T {
     try state.withLock { s in
       s.callCount += 1
-      if s.failing { throw Offline() }
+      if s.failing { throw s.failureError ?? Offline() }
       return body(&s)
     }
   }

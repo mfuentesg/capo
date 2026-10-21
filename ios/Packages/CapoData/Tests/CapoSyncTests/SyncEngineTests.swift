@@ -326,6 +326,35 @@ private struct Harness {
   }
 }
 
+extension SyncEngineTests {
+  /// Cold start offline: `syncNow` can run before the first reachability event, so the engine still
+  /// believes it is online and the transport error must be reported as offline, not as a failure.
+  @Test func transportFailureBeforeFirstReachabilityEventIsOffline() async throws {
+    let h = Harness()
+    h.remote.mutate {
+      $0.failing = true
+      $0.failureError = URLError(.notConnectedToInternet)
+    }
+    await h.engine.syncNow(reason: .appLaunch)
+    let status = await h.engine.currentStatus()
+    #expect(status.phase == .offline)
+    #expect(h.store.snapshot.meta.lastError == nil)
+  }
+
+  @Test func nonTransportFailureStillReportsError() async throws {
+    let h = Harness()
+    h.remote.mutate {
+      $0.failing = true
+      $0.failureError = URLError(.badServerResponse)
+    }
+    await h.engine.syncNow(reason: .manual)
+    guard case .error = await h.engine.currentStatus().phase else {
+      Issue.record("expected error phase")
+      return
+    }
+  }
+}
+
 extension SyncEngine {
   func currentStatus() async -> SyncStatus {
     for await s in status() { return s }

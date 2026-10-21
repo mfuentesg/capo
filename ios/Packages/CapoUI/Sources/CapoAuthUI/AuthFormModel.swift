@@ -68,15 +68,15 @@ public final class AuthFormModel {
   static func message(for error: Error) -> String {
     switch error as? CapoError {
     case .offlineUnavailable:
-      return String(localized: "ios.auth.error.offline", defaultValue: "You are offline. Connect to sign in.", bundle: .capoDesign)  // TODO(i18n)
+      return L10n.Ios.Auth.Error.offline
     case .invalidInput:
-      return String(localized: "ios.auth.error.invalid", defaultValue: "Check your email and password.", bundle: .capoDesign)  // TODO(i18n)
+      return L10n.Ios.Auth.Error.invalid
     case .permissionDenied:
-      return String(localized: "ios.auth.error.denied", defaultValue: "This action is not allowed.", bundle: .capoDesign)  // TODO(i18n)
+      return L10n.Ios.Auth.Error.denied
     default:
       let text = error.localizedDescription
       return text.isEmpty
-        ? String(localized: "ios.auth.error.generic", defaultValue: "Sign in failed. Try again.", bundle: .capoDesign)  // TODO(i18n)
+        ? L10n.Ios.Auth.Error.generic
         : text
     }
   }

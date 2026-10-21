@@ -19,6 +19,11 @@ struct SetlistRun: Identifiable {
   var id: PlaylistID { playlistID }
 }
 
+struct PendingShare: Identifiable {
+  let playlistID: PlaylistID
+  var id: PlaylistID { playlistID }
+}
+
 struct PendingAdd: Identifiable {
   let songIDs: [SongID]
   let id = UUID()
@@ -35,6 +40,7 @@ final class ShellNavigation {
   var editor: EditorItem?
   var setlistRun: SetlistRun?
   var pendingAdd: PendingAdd?
+  var pendingShare: PendingShare?
   var showConflicts = false
   var showTeams = false
   var showInvitations = false
@@ -57,6 +63,7 @@ final class ShellNavigation {
       openEditor: { [self] request in editor = EditorItem(request: request) },
       performSetlist: { [self] id, index in setlistRun = SetlistRun(playlistID: id, startIndex: index) },
       addSongsToPlaylist: { [self] ids in pendingAdd = PendingAdd(songIDs: ids) },
-      showConflicts: { [self] in showConflicts = true })
+      showConflicts: { [self] in showConflicts = true },
+      sharePlaylist: { [self] id in pendingShare = PendingShare(playlistID: id) })
   }
 }

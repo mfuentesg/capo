@@ -41,7 +41,7 @@ public struct AuthView: View {
         .accessibilityHidden(true)
       Text("Capo")
         .font(.largeTitle.bold())
-      Text(String(localized: "ios.auth.tagline", defaultValue: "Your songs and setlists, ready on stage.", bundle: .capoDesign))  // TODO(i18n)
+      Text(L10n.Ios.Auth.tagline)
         .font(.subheadline)
         .foregroundStyle(.secondary)
         .multilineTextAlignment(.center)
@@ -53,7 +53,7 @@ public struct AuthView: View {
       Task { await model.signInWithGoogle(with: actions) }
     } label: {
       Label(
-        String(localized: "ios.auth.google", defaultValue: "Continue with Google", bundle: .capoDesign),  // TODO(i18n)
+        L10n.Ios.Auth.google,
         systemImage: "globe"
       )
       .font(.headline)
@@ -66,7 +66,7 @@ public struct AuthView: View {
   private var divider: some View {
     HStack {
       Rectangle().fill(.separator).frame(height: 1)
-      Text(String(localized: "ios.auth.or", defaultValue: "or", bundle: .capoDesign))  // TODO(i18n)
+      Text(L10n.Ios.Auth.or)
         .font(.footnote)
         .foregroundStyle(.secondary)
       Rectangle().fill(.separator).frame(height: 1)
@@ -76,7 +76,7 @@ public struct AuthView: View {
   private var form: some View {
     VStack(spacing: 12) {
       TextField(
-        String(localized: "ios.auth.email", defaultValue: "Email", bundle: .capoDesign),  // TODO(i18n)
+        L10n.Ios.Auth.email,
         text: $model.email
       )
       .textContentType(.emailAddress)
@@ -89,7 +89,7 @@ public struct AuthView: View {
       .fieldStyle()
 
       SecureField(
-        String(localized: "ios.auth.password", defaultValue: "Password", bundle: .capoDesign),  // TODO(i18n)
+        L10n.Ios.Auth.password,
         text: $model.password
       )
       .textContentType(model.mode == .signUp ? .newPassword : .password)
@@ -105,8 +105,8 @@ public struct AuthView: View {
           } else {
             Text(
               model.mode == .signIn
-                ? String(localized: "ios.auth.signIn", defaultValue: "Sign in", bundle: .capoDesign)  // TODO(i18n)
-                : String(localized: "ios.auth.signUp", defaultValue: "Create account", bundle: .capoDesign)  // TODO(i18n)
+                ? L10n.Ios.Auth.signIn
+                : L10n.Ios.Auth.signUp
             )
             .font(.headline)
           }
@@ -120,8 +120,8 @@ public struct AuthView: View {
         Button(action: model.toggleMode) {
           Text(
             model.mode == .signIn
-              ? String(localized: "ios.auth.toSignUp", defaultValue: "No account? Create one", bundle: .capoDesign)  // TODO(i18n)
-              : String(localized: "ios.auth.toSignIn", defaultValue: "Have an account? Sign in", bundle: .capoDesign)  // TODO(i18n)
+              ? L10n.Ios.Auth.toSignUp
+              : L10n.Ios.Auth.toSignIn
           )
           .font(.subheadline)
           .frame(minHeight: CapoMetrics.minTouchTarget)

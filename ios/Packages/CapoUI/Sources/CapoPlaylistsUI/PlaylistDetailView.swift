@@ -124,7 +124,9 @@ public struct PlaylistDetailView: View {
         ) {
           Task { try? await services.playlists.setPinned(!detail.isPinned, playlistID: playlistID) }
         }
-        Button(PlaylistStrings.share, systemImage: "square.and.arrow.up") { showShare = true }
+        Button(PlaylistStrings.share, systemImage: "square.and.arrow.up") {
+          if let share = actions.sharePlaylist { share(playlistID) } else { showShare = true }
+        }
           .disabled(isOffline)
         if canEdit {
           Button(

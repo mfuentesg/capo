@@ -1,115 +1,78 @@
+import CapoDesign
 import Foundation
 
-/// Setlist copy. `L10n` has no setlist keys yet; see WP6 notes for why there is no `bundle:`.
+/// Setlist copy; thin wrappers over the generated `L10n.Ios.Playlists`.
 enum PlaylistStrings {
-  // TODO(i18n)
-  static var title: String { String(localized: "ios.playlists.title", defaultValue: "Setlists") }
-  // TODO(i18n)
-  static var active: String { String(localized: "ios.playlists.active", defaultValue: "Active") }
-  // TODO(i18n)
-  static var archived: String { String(localized: "ios.playlists.archived", defaultValue: "Archived") }
-  // TODO(i18n)
+  static var title: String { L10n.Ios.Playlists.title }
+  static var active: String { L10n.Ios.Playlists.active }
+  static var archived: String { L10n.Ios.Playlists.archived }
   static var newSetlist: String {
-    String(localized: "ios.playlists.new", defaultValue: "New setlist")
+    L10n.Ios.Playlists.new
   }
-  // TODO(i18n)
   static var editDetails: String {
-    String(localized: "ios.playlists.editDetails", defaultValue: "Edit details")
+    L10n.Ios.Playlists.editDetails
   }
-  // TODO(i18n)
-  static var name: String { String(localized: "ios.playlists.name", defaultValue: "Name") }
-  // TODO(i18n)
+  static var name: String { L10n.Ios.Playlists.name }
   static var descriptionLabel: String {
-    String(localized: "ios.playlists.description", defaultValue: "Description")
+    L10n.Ios.Playlists.description
   }
-  // TODO(i18n)
-  static var hasDate: String { String(localized: "ios.playlists.hasDate", defaultValue: "Set a date") }
-  // TODO(i18n)
-  static var date: String { String(localized: "ios.playlists.date", defaultValue: "Date") }
-  // TODO(i18n)
-  static var save: String { String(localized: "ios.playlists.save", defaultValue: "Save") }
-  // TODO(i18n)
-  static var create: String { String(localized: "ios.playlists.create", defaultValue: "Create") }
-  // TODO(i18n)
-  static var cancel: String { String(localized: "ios.playlists.cancel", defaultValue: "Cancel") }
-  // TODO(i18n)
-  static var delete: String { String(localized: "ios.playlists.delete", defaultValue: "Delete") }
-  // TODO(i18n)
-  static var remove: String { String(localized: "ios.playlists.remove", defaultValue: "Remove") }
-  // TODO(i18n)
-  static var archive: String { String(localized: "ios.playlists.archive", defaultValue: "Archive") }
-  // TODO(i18n)
+  static var hasDate: String { L10n.Ios.Playlists.hasDate }
+  static var date: String { L10n.Ios.Playlists.date }
+  static var save: String { L10n.Ios.Playlists.save }
+  static var create: String { L10n.Ios.Playlists.create }
+  static var cancel: String { L10n.Ios.Playlists.cancel }
+  static var delete: String { L10n.Ios.Playlists.delete }
+  static var remove: String { L10n.Ios.Playlists.remove }
+  static var archive: String { L10n.Ios.Playlists.archive }
   static var unarchive: String {
-    String(localized: "ios.playlists.unarchive", defaultValue: "Unarchive")
+    L10n.Ios.Playlists.unarchive
   }
-  // TODO(i18n)
   static var pin: String {
-    String(localized: "ios.playlists.pin", defaultValue: "Keep available offline")
+    L10n.Ios.Playlists.pin
   }
-  // TODO(i18n)
-  static var unpin: String { String(localized: "ios.playlists.unpin", defaultValue: "Remove offline copy") }
-  // TODO(i18n)
+  static var unpin: String { L10n.Ios.Playlists.unpin }
   static var offlineReady: String {
-    String(localized: "ios.playlists.offlineReady", defaultValue: "Ready offline")
+    L10n.Ios.Playlists.offlineReady
   }
-  // TODO(i18n)
-  static var pinned: String { String(localized: "ios.playlists.pinned", defaultValue: "Pinned") }
-  // TODO(i18n)
-  static var share: String { String(localized: "ios.playlists.share", defaultValue: "Share") }
-  // TODO(i18n)
+  static var pinned: String { L10n.Ios.Playlists.pinned }
+  static var share: String { L10n.Ios.Playlists.share }
   static var shareOffline: String {
-    String(localized: "ios.playlists.shareOffline", defaultValue: "Sharing needs a connection")
+    L10n.Ios.Playlists.shareOffline
   }
-  // TODO(i18n)
-  static var copyLink: String { String(localized: "ios.playlists.copyLink", defaultValue: "Copy link") }
-  // TODO(i18n)
-  static var perform: String { String(localized: "ios.playlists.perform", defaultValue: "Perform") }
-  // TODO(i18n)
-  static var addSongs: String { String(localized: "ios.playlists.addSongs", defaultValue: "Add songs") }
-  // TODO(i18n)
-  static var reorder: String { String(localized: "ios.playlists.reorder", defaultValue: "Reorder") }
-  // TODO(i18n)
-  static var done: String { String(localized: "ios.playlists.done", defaultValue: "Done") }
-  // TODO(i18n)
-  static var close: String { String(localized: "ios.playlists.close", defaultValue: "Close") }
-  // TODO(i18n)
+  static var copyLink: String { L10n.Ios.Playlists.copyLink }
+  static var perform: String { L10n.Ios.Playlists.perform }
+  static var addSongs: String { L10n.Ios.Playlists.addSongs }
+  static var reorder: String { L10n.Ios.Playlists.reorder }
+  static var done: String { L10n.Ios.Playlists.done }
+  static var close: String { L10n.Ios.Playlists.close }
   static var emptyTitle: String {
-    String(localized: "ios.playlists.emptyTitle", defaultValue: "No setlists yet")
+    L10n.Ios.Playlists.emptyTitle
   }
-  // TODO(i18n)
   static var emptyMessage: String {
-    String(localized: "ios.playlists.emptyMessage", defaultValue: "Create a setlist to plan your next service or gig.")
+    L10n.Ios.Playlists.emptyMessage
   }
-  // TODO(i18n)
   static var emptyArchived: String {
-    String(localized: "ios.playlists.emptyArchived", defaultValue: "No archived setlists")
+    L10n.Ios.Playlists.emptyArchived
   }
-  // TODO(i18n)
   static var emptySongsTitle: String {
-    String(localized: "ios.playlists.emptySongsTitle", defaultValue: "This setlist is empty")
+    L10n.Ios.Playlists.emptySongsTitle
   }
-  // TODO(i18n)
   static var emptySongsMessage: String {
-    String(localized: "ios.playlists.emptySongsMessage", defaultValue: "Add songs from your library.")
+    L10n.Ios.Playlists.emptySongsMessage
   }
-  // TODO(i18n)
   static var notFound: String {
-    String(localized: "ios.playlists.notFound", defaultValue: "Setlist not found")
+    L10n.Ios.Playlists.notFound
   }
-  // TODO(i18n)
   static var chooseSetlist: String {
-    String(localized: "ios.playlists.chooseSetlist", defaultValue: "Add to setlist")
+    L10n.Ios.Playlists.chooseSetlist
   }
-  // TODO(i18n)
   static func songCount(_ n: Int) -> String {
-    String(localized: "ios.playlists.songCount", defaultValue: "\(n) songs")
+    L10n.Ios.Playlists.songCount(n: String(n))
   }
-  // TODO(i18n)
   static func nextSong(_ title: String) -> String {
-    String(localized: "ios.playlists.nextSong", defaultValue: "Next: \(title)")
+    L10n.Ios.Playlists.nextSong(title: String(title))
   }
-  // TODO(i18n)
   static func deleteConfirm(_ name: String) -> String {
-    String(localized: "ios.playlists.deleteConfirm", defaultValue: "Delete \"\(name)\"? This can't be undone.")
+    L10n.Ios.Playlists.deleteConfirm(name: String(name))
   }
 }

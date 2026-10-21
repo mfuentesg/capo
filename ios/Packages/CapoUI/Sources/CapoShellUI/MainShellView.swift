@@ -47,7 +47,11 @@ struct MainShellView: View {
       .shellEnvironment(model)
     }
     .sheet(item: $nav.pendingAdd) { pending in
-      AddToSetlistSheet(songIDs: pending.songIDs).shellEnvironment(model)
+      AddToPlaylistView(songIDs: pending.songIDs) { model.navigation.pendingAdd = nil }
+        .shellEnvironment(model)
+    }
+    .sheet(item: $nav.pendingShare) { share in
+      PlaylistShareSheet(playlistID: share.playlistID).shellEnvironment(model)
     }
     .sheet(isPresented: $nav.showConflicts) {
       NavigationStack {
@@ -68,16 +72,16 @@ struct MainShellView: View {
       .shellEnvironment(model)
     }
     .confirmationDialog(
-      String(localized: "ios.shell.signOut.title", defaultValue: "Sign out of Capo?", bundle: .capoDesign),  // TODO(i18n)
+      L10n.Ios.Shell.SignOut.title,
       isPresented: $nav.showSignOut, titleVisibility: .visible
     ) {
-      Button(String(localized: "ios.shell.signOut.keep", defaultValue: "Sign out and keep offline data", bundle: .capoDesign)) {  // TODO(i18n)
+      Button(L10n.Ios.Shell.SignOut.keep) {
         onSignOut(false)
       }
-      Button(String(localized: "ios.shell.signOut.erase", defaultValue: "Sign out and erase offline data", bundle: .capoDesign), role: .destructive) {  // TODO(i18n)
+      Button(L10n.Ios.Shell.SignOut.erase, role: .destructive) {
         onSignOut(true)
       }
-      Button(String(localized: "ios.shell.cancel", defaultValue: "Cancel", bundle: .capoDesign), role: .cancel) {}  // TODO(i18n)
+      Button(L10n.Ios.Shell.cancel, role: .cancel) {}
     } message: {
       Text(signOutMessage)
     }
@@ -86,11 +90,9 @@ struct MainShellView: View {
   private var signOutMessage: String {
     let pending = model.syncStatus.pendingOperations
     guard pending > 0 else {
-      return String(localized: "ios.shell.signOut.message", defaultValue: "Erasing removes the songs stored on this device.", bundle: .capoDesign)  // TODO(i18n)
+      return L10n.Ios.Shell.SignOut.message
     }
-    return String(
-      format: String(localized: "ios.shell.signOut.pending", defaultValue: "%d changes have not synced yet and will be lost if you erase offline data.", bundle: .capoDesign),  // TODO(i18n)
-      pending)
+    return L10n.Ios.Shell.SignOut.pending(count: String(pending))
   }
 
   private func doneButton(_ action: @escaping () -> Void) -> some ToolbarContent {
@@ -132,6 +134,7 @@ private struct CompactShell: View {
         SettingsView().toolbar { shellToolbar }
       }
       .tabItem { Label(ContextStrings.settings, systemImage: "gearshape") }
+      .badge(model.conflictCount)
       .tag(CompactTab.settings)
     }
   }
@@ -175,13 +178,13 @@ private struct RegularShell: View {
       if let id = nav.songSelection {
         NavigationStack { SongPerformanceView(songID: id).id(id) }
       } else {
-        placeholder("music.note", String(localized: "ios.shell.selectSong", defaultValue: "Select a song", bundle: .capoDesign))  // TODO(i18n)
+        placeholder("music.note", L10n.Ios.Shell.selectSong)
       }
     case .setlists:
       if let id = nav.playlistSelection {
         NavigationStack { PlaylistDetailView(playlistID: id).id(id) }
       } else {
-        placeholder("list.bullet.rectangle", String(localized: "ios.shell.selectSetlist", defaultValue: "Select a setlist", bundle: .capoDesign))  // TODO(i18n)
+        placeholder("list.bullet.rectangle", L10n.Ios.Shell.selectSetlist)
       }
     case .teams, .conflicts, .settings:
       placeholder("guitars", "Capo")
@@ -207,7 +210,7 @@ private struct SidebarView: View {
             [entry.team.icon, entry.team.name].compactMap { $0 }.joined(separator: " "), "person.2")
         }
       } header: {
-        Text(String(localized: "ios.shell.contextHeader", defaultValue: "Context", bundle: .capoDesign))  // TODO(i18n)
+        Text(L10n.Ios.Shell.contextHeader)
       }
       Section {
         row(.library, ContextStrings.library, "music.note.list")
@@ -216,7 +219,7 @@ private struct SidebarView: View {
         row(.conflicts, ContextStrings.conflicts, "exclamationmark.triangle", badge: model.conflictCount)
         row(.settings, ContextStrings.settings, "gearshape")
       } header: {
-        Text(String(localized: "ios.shell.navigateHeader", defaultValue: "Capo", bundle: .capoDesign))  // TODO(i18n)
+        Text(L10n.Ios.Shell.navigateHeader)
       }
     }
     .navigationTitle("Capo")

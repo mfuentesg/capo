@@ -6,7 +6,7 @@ import Foundation
 /// fallbacks until the generator learns them.
 enum TeamsStrings {
   static var title: String { L10n.Teams.title }
-  static var roleOwner: String { String(localized: "ios.teams.roleOwner", defaultValue: "Owner") }  // TODO(i18n)
+  static var roleOwner: String { L10n.Ios.Teams.roleOwner }
 
   static func roleName(_ role: TeamRole) -> String {
     switch role {
@@ -17,28 +17,25 @@ enum TeamsStrings {
     }
   }
 
-  static var offline: String {  // TODO(i18n)
-    String(
-      localized: "ios.teams.offline", defaultValue: "You are offline. Team changes need a connection.")
+  static var offline: String {
+    L10n.Ios.Teams.offline
   }
-  static var icon: String { String(localized: "ios.teams.icon", defaultValue: "Icon (emoji)") }  // TODO(i18n)
-  static var email: String { String(localized: "ios.teams.email", defaultValue: "Email") }  // TODO(i18n)
-  static var role: String { String(localized: "ios.teams.role", defaultValue: "Role") }  // TODO(i18n)
-  static var noInvitations: String {  // TODO(i18n)
-    String(localized: "ios.teams.noInvitations", defaultValue: "No pending invitations")
+  static var icon: String { L10n.Ios.Teams.icon }
+  static var email: String { L10n.Ios.Teams.email }
+  static var role: String { L10n.Ios.Teams.role }
+  static var noInvitations: String {
+    L10n.Ios.Teams.noInvitations
   }
-  static var decline: String { String(localized: "ios.teams.decline", defaultValue: "Decline") }  // TODO(i18n)
-  static var shareTitle: String {  // TODO(i18n)
-    String(localized: "ios.teams.shareTitle", defaultValue: "Share setlist")
+  static var decline: String { L10n.Ios.Teams.decline }
+  static var shareTitle: String {
+    L10n.Ios.Teams.shareTitle
   }
-  static var shareHint: String {  // TODO(i18n)
-    String(
-      localized: "ios.teams.shareHint",
-      defaultValue: "Anyone with this link can view the setlist.")
+  static var shareHint: String {
+    L10n.Ios.Teams.shareHint
   }
-  static var shareLink: String {  // TODO(i18n)
-    String(localized: "ios.teams.shareLink", defaultValue: "Share link")
+  static var shareLink: String {
+    L10n.Ios.Teams.shareLink
   }
-  static var retry: String { String(localized: "ios.teams.retry", defaultValue: "Try again") }  // TODO(i18n)
+  static var retry: String { L10n.Ios.Teams.retry }
   static var cancel: String { L10n.Common.cancel }
 }

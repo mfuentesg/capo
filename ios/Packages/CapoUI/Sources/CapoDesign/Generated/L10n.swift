@@ -381,6 +381,56 @@ public nonisolated enum L10n {
     public static var welcome: String { String(localized: "invitations.welcome", bundle: .module) }
   }
   public nonisolated enum Ios {
+    public nonisolated enum Auth {
+      public nonisolated enum Error {
+        /// This action is not allowed.
+        public static var denied: String { String(localized: "ios.auth.error.denied", bundle: .module) }
+        /// Sign in failed. Try again.
+        public static var generic: String { String(localized: "ios.auth.error.generic", bundle: .module) }
+        /// Check your email and password.
+        public static var invalid: String { String(localized: "ios.auth.error.invalid", bundle: .module) }
+        /// You are offline. Connect to sign in.
+        public static var offline: String { String(localized: "ios.auth.error.offline", bundle: .module) }
+      }
+      /// Email
+      public static var email: String { String(localized: "ios.auth.email", bundle: .module) }
+      /// Continue with Google
+      public static var google: String { String(localized: "ios.auth.google", bundle: .module) }
+      /// or
+      public static var or: String { String(localized: "ios.auth.or", bundle: .module) }
+      /// Password
+      public static var password: String { String(localized: "ios.auth.password", bundle: .module) }
+      /// Sign in
+      public static var signIn: String { String(localized: "ios.auth.signIn", bundle: .module) }
+      /// Create account
+      public static var signUp: String { String(localized: "ios.auth.signUp", bundle: .module) }
+      /// Your songs and setlists, ready on stage.
+      public static var tagline: String { String(localized: "ios.auth.tagline", bundle: .module) }
+      /// Have an account? Sign in
+      public static var toSignIn: String { String(localized: "ios.auth.toSignIn", bundle: .module) }
+      /// No account? Create one
+      public static var toSignUp: String { String(localized: "ios.auth.toSignUp", bundle: .module) }
+    }
+    public nonisolated enum ChordDiagram {
+      /// Guitar
+      public static var guitar: String { String(localized: "ios.chordDiagram.guitar", bundle: .module) }
+      /// Instrument
+      public static var instrument: String { String(localized: "ios.chordDiagram.instrument", bundle: .module) }
+      /// muted
+      public static var muted: String { String(localized: "ios.chordDiagram.muted", bundle: .module) }
+      /// Next position
+      public static var next: String { String(localized: "ios.chordDiagram.next", bundle: .module) }
+      /// open
+      public static var `open`: String { String(localized: "ios.chordDiagram.open", bundle: .module) }
+      /// Position {n} of {total}
+      public static func position(n: String, total: String) -> String {
+        String(format: String(localized: "ios.chordDiagram.position", bundle: .module), n, total)
+      }
+      /// Previous position
+      public static var previous: String { String(localized: "ios.chordDiagram.previous", bundle: .module) }
+      /// Ukulele
+      public static var ukulele: String { String(localized: "ios.chordDiagram.ukulele", bundle: .module) }
+    }
     public nonisolated enum Conflict {
       /// {title} (copy)
       public static func copyTitle(title: String) -> String {
@@ -415,6 +465,94 @@ public nonisolated enum L10n {
       /// Use demo
       public static var use: String { String(localized: "ios.demo.use", bundle: .module) }
     }
+    public nonisolated enum Editor {
+      public nonisolated enum Conflicts {
+        /// This song was deleted on the server.
+        public static var deletedRemotely: String { String(localized: "ios.editor.conflicts.deletedRemotely", bundle: .module) }
+        /// Differs
+        public static var differs: String { String(localized: "ios.editor.conflicts.differs", bundle: .module) }
+        /// (empty)
+        public static var empty: String { String(localized: "ios.editor.conflicts.empty", bundle: .module) }
+        /// Everything you edited offline has been synced.
+        public static var emptyMessage: String { String(localized: "ios.editor.conflicts.emptyMessage", bundle: .module) }
+        /// No conflicts
+        public static var emptyTitle: String { String(localized: "ios.editor.conflicts.emptyTitle", bundle: .module) }
+        /// Keep both
+        public static var keepBoth: String { String(localized: "ios.editor.conflicts.keepBoth", bundle: .module) }
+        /// Keep mine
+        public static var keepMine: String { String(localized: "ios.editor.conflicts.keepMine", bundle: .module) }
+        /// Keep server version
+        public static var keepTheirs: String { String(localized: "ios.editor.conflicts.keepTheirs", bundle: .module) }
+        /// Mine
+        public static var mine: String { String(localized: "ios.editor.conflicts.mine", bundle: .module) }
+        /// Couldn't resolve the conflict
+        public static var resolveFailed: String { String(localized: "ios.editor.conflicts.resolveFailed", bundle: .module) }
+        /// Server
+        public static var theirs: String { String(localized: "ios.editor.conflicts.theirs", bundle: .module) }
+        /// Sync conflicts
+        public static var title: String { String(localized: "ios.editor.conflicts.title", bundle: .module) }
+      }
+      /// Artist
+      public static var artist: String { String(localized: "ios.editor.artist", bundle: .module) }
+      /// Tempo (BPM)
+      public static var bpm: String { String(localized: "ios.editor.bpm", bundle: .module) }
+      /// Tempo must be between 1 and 400
+      public static var bpmInvalid: String { String(localized: "ios.editor.bpmInvalid", bundle: .module) }
+      /// Cancel
+      public static var cancel: String { String(localized: "ios.editor.cancel", bundle: .module) }
+      /// Capo
+      public static var capo: String { String(localized: "ios.editor.capo", bundle: .module) }
+      /// Comment
+      public static var comment: String { String(localized: "ios.editor.comment", bundle: .module) }
+      /// Delete song
+      public static var delete: String { String(localized: "ios.editor.delete", bundle: .module) }
+      /// It will be removed from your library and from any setlists.
+      public static var deleteConfirmMessage: String { String(localized: "ios.editor.deleteConfirmMessage", bundle: .module) }
+      /// Delete this song?
+      public static var deleteConfirmTitle: String { String(localized: "ios.editor.deleteConfirmTitle", bundle: .module) }
+      /// Details
+      public static var details: String { String(localized: "ios.editor.details", bundle: .module) }
+      /// Discard
+      public static var discard: String { String(localized: "ios.editor.discard", bundle: .module) }
+      /// Discard changes?
+      public static var discardTitle: String { String(localized: "ios.editor.discardTitle", bundle: .module) }
+      /// Hide keyboard
+      public static var dismissKeyboard: String { String(localized: "ios.editor.dismissKeyboard", bundle: .module) }
+      /// Edit
+      public static var edit: String { String(localized: "ios.editor.edit", bundle: .module) }
+      /// Edit song
+      public static var editSong: String { String(localized: "ios.editor.editSong", bundle: .module) }
+      /// Insert directive
+      public static var insertDirective: String { String(localized: "ios.editor.insertDirective", bundle: .module) }
+      /// Keep editing
+      public static var keepEditing: String { String(localized: "ios.editor.keepEditing", bundle: .module) }
+      /// Key
+      public static var key: String { String(localized: "ios.editor.key", bundle: .module) }
+      /// Lyrics (ChordPro)
+      public static var lyrics: String { String(localized: "ios.editor.lyrics", bundle: .module) }
+      /// New song
+      public static var newSong: String { String(localized: "ios.editor.newSong", bundle: .module) }
+      /// None
+      public static var noKey: String { String(localized: "ios.editor.noKey", bundle: .module) }
+      /// This song is no longer available.
+      public static var notFound: String { String(localized: "ios.editor.notFound", bundle: .module) }
+      /// Notes
+      public static var notes: String { String(localized: "ios.editor.notes", bundle: .module) }
+      /// Preview
+      public static var preview: String { String(localized: "ios.editor.preview", bundle: .module) }
+      /// Save
+      public static var save: String { String(localized: "ios.editor.save", bundle: .module) }
+      /// Couldn't save the song
+      public static var saveFailed: String { String(localized: "ios.editor.saveFailed", bundle: .module) }
+      /// Title
+      public static var title: String { String(localized: "ios.editor.title", bundle: .module) }
+      /// A title is required
+      public static var titleRequired: String { String(localized: "ios.editor.titleRequired", bundle: .module) }
+      /// Transpose
+      public static var transpose: String { String(localized: "ios.editor.transpose", bundle: .module) }
+      /// Viewers can't edit songs in this team.
+      public static var viewerNotice: String { String(localized: "ios.editor.viewerNotice", bundle: .module) }
+    }
     public nonisolated enum EraseData {
       /// Erase
       public static var confirm: String { String(localized: "ios.eraseData.confirm", bundle: .module) }
@@ -426,6 +564,102 @@ public nonisolated enum L10n {
       }
       /// Erase offline data
       public static var title: String { String(localized: "ios.eraseData.title", bundle: .module) }
+    }
+    public nonisolated enum Library {
+      public nonisolated enum Bpm {
+        /// Fast (> 120)
+        public static var fast: String { String(localized: "ios.library.bpm.fast", bundle: .module) }
+        /// Medium (90–120)
+        public static var medium: String { String(localized: "ios.library.bpm.medium", bundle: .module) }
+        /// Slow (< 90)
+        public static var slow: String { String(localized: "ios.library.bpm.slow", bundle: .module) }
+      }
+      public nonisolated enum Sort {
+        /// Artist
+        public static var artist: String { String(localized: "ios.library.sort.artist", bundle: .module) }
+        /// Recently added
+        public static var recent: String { String(localized: "ios.library.sort.recent", bundle: .module) }
+        /// Relevance
+        public static var relevance: String { String(localized: "ios.library.sort.relevance", bundle: .module) }
+        /// Title
+        public static var title: String { String(localized: "ios.library.sort.title", bundle: .module) }
+      }
+      public nonisolated enum Status {
+        /// Archived
+        public static var archived: String { String(localized: "ios.library.status.archived", bundle: .module) }
+        /// Draft
+        public static var draft: String { String(localized: "ios.library.status.draft", bundle: .module) }
+        /// Published
+        public static var published: String { String(localized: "ios.library.status.published", bundle: .module) }
+      }
+      /// Add ({count})
+      public static func addCount(count: String) -> String {
+        String(format: String(localized: "ios.library.addCount", bundle: .module), count)
+      }
+      /// Add to setlist
+      public static var addToSetlist: String { String(localized: "ios.library.addToSetlist", bundle: .module) }
+      /// Assign tags
+      public static var assignTags: String { String(localized: "ios.library.assignTags", bundle: .module) }
+      /// {value} BPM
+      public static func bpmValue(value: String) -> String {
+        String(format: String(localized: "ios.library.bpmValue", bundle: .module), value)
+      }
+      /// Cancel
+      public static var cancel: String { String(localized: "ios.library.cancel", bundle: .module) }
+      /// Color
+      public static var color: String { String(localized: "ios.library.color", bundle: .module) }
+      /// Create
+      public static var create: String { String(localized: "ios.library.create", bundle: .module) }
+      /// Delete
+      public static var delete: String { String(localized: "ios.library.delete", bundle: .module) }
+      /// Done
+      public static var done: String { String(localized: "ios.library.done", bundle: .module) }
+      /// Edit
+      public static var editSong: String { String(localized: "ios.library.editSong", bundle: .module) }
+      /// Songs you add will show up here, ready offline.
+      public static var emptyMessage: String { String(localized: "ios.library.emptyMessage", bundle: .module) }
+      /// No songs yet
+      public static var emptyTitle: String { String(localized: "ios.library.emptyTitle", bundle: .module) }
+      /// Filters
+      public static var filters: String { String(localized: "ios.library.filters", bundle: .module) }
+      /// Manage tags
+      public static var manageTags: String { String(localized: "ios.library.manageTags", bundle: .module) }
+      /// +{count}
+      public static func moreTags(count: String) -> String {
+        String(format: String(localized: "ios.library.moreTags", bundle: .module), count)
+      }
+      /// New song
+      public static var newSong: String { String(localized: "ios.library.newSong", bundle: .module) }
+      /// New tag
+      public static var newTag: String { String(localized: "ios.library.newTag", bundle: .module) }
+      /// Try a different search or clear the filters.
+      public static var noResultsMessage: String { String(localized: "ios.library.noResultsMessage", bundle: .module) }
+      /// No matching songs
+      public static var noResultsTitle: String { String(localized: "ios.library.noResultsTitle", bundle: .module) }
+      /// No tags yet
+      public static var noTags: String { String(localized: "ios.library.noTags", bundle: .module) }
+      /// Create a tag to organize your songs.
+      public static var noTagsHint: String { String(localized: "ios.library.noTagsHint", bundle: .module) }
+      /// Not synced yet
+      public static var pendingChanges: String { String(localized: "ios.library.pendingChanges", bundle: .module) }
+      /// Add songs
+      public static var pickerTitle: String { String(localized: "ios.library.pickerTitle", bundle: .module) }
+      /// Reset filters
+      public static var resetFilters: String { String(localized: "ios.library.resetFilters", bundle: .module) }
+      /// Search title, artist, lyrics
+      public static var searchPrompt: String { String(localized: "ios.library.searchPrompt", bundle: .module) }
+      /// Sort
+      public static var sortLabel: String { String(localized: "ios.library.sortLabel", bundle: .module) }
+      /// Status
+      public static var statusLabel: String { String(localized: "ios.library.statusLabel", bundle: .module) }
+      /// Tag name
+      public static var tagName: String { String(localized: "ios.library.tagName", bundle: .module) }
+      /// Tags
+      public static var tags: String { String(localized: "ios.library.tags", bundle: .module) }
+      /// Tempo
+      public static var tempo: String { String(localized: "ios.library.tempo", bundle: .module) }
+      /// Library
+      public static var title: String { String(localized: "ios.library.title", bundle: .module) }
     }
     public nonisolated enum Offline {
       /// Available offline
@@ -465,6 +699,90 @@ public nonisolated enum L10n {
       /// Toggle auto-scroll
       public static var toggleAutoScroll: String { String(localized: "ios.performance.toggleAutoScroll", bundle: .module) }
     }
+    public nonisolated enum Playlists {
+      /// Active
+      public static var active: String { String(localized: "ios.playlists.active", bundle: .module) }
+      /// Add songs
+      public static var addSongs: String { String(localized: "ios.playlists.addSongs", bundle: .module) }
+      /// Archive
+      public static var archive: String { String(localized: "ios.playlists.archive", bundle: .module) }
+      /// Archived
+      public static var archived: String { String(localized: "ios.playlists.archived", bundle: .module) }
+      /// Cancel
+      public static var cancel: String { String(localized: "ios.playlists.cancel", bundle: .module) }
+      /// Add to setlist
+      public static var chooseSetlist: String { String(localized: "ios.playlists.chooseSetlist", bundle: .module) }
+      /// Close
+      public static var close: String { String(localized: "ios.playlists.close", bundle: .module) }
+      /// Copy link
+      public static var copyLink: String { String(localized: "ios.playlists.copyLink", bundle: .module) }
+      /// Create
+      public static var create: String { String(localized: "ios.playlists.create", bundle: .module) }
+      /// Date
+      public static var date: String { String(localized: "ios.playlists.date", bundle: .module) }
+      /// Delete
+      public static var delete: String { String(localized: "ios.playlists.delete", bundle: .module) }
+      /// Delete "{name}"? This can't be undone.
+      public static func deleteConfirm(name: String) -> String {
+        String(format: String(localized: "ios.playlists.deleteConfirm", bundle: .module), name)
+      }
+      /// Description
+      public static var description: String { String(localized: "ios.playlists.description", bundle: .module) }
+      /// Done
+      public static var done: String { String(localized: "ios.playlists.done", bundle: .module) }
+      /// Edit details
+      public static var editDetails: String { String(localized: "ios.playlists.editDetails", bundle: .module) }
+      /// No archived setlists
+      public static var emptyArchived: String { String(localized: "ios.playlists.emptyArchived", bundle: .module) }
+      /// Create a setlist to plan your next service or gig.
+      public static var emptyMessage: String { String(localized: "ios.playlists.emptyMessage", bundle: .module) }
+      /// Add songs from your library.
+      public static var emptySongsMessage: String { String(localized: "ios.playlists.emptySongsMessage", bundle: .module) }
+      /// This setlist is empty
+      public static var emptySongsTitle: String { String(localized: "ios.playlists.emptySongsTitle", bundle: .module) }
+      /// No setlists yet
+      public static var emptyTitle: String { String(localized: "ios.playlists.emptyTitle", bundle: .module) }
+      /// Set a date
+      public static var hasDate: String { String(localized: "ios.playlists.hasDate", bundle: .module) }
+      /// Name
+      public static var name: String { String(localized: "ios.playlists.name", bundle: .module) }
+      /// New setlist
+      public static var new: String { String(localized: "ios.playlists.new", bundle: .module) }
+      /// Next: {title}
+      public static func nextSong(title: String) -> String {
+        String(format: String(localized: "ios.playlists.nextSong", bundle: .module), title)
+      }
+      /// Setlist not found
+      public static var notFound: String { String(localized: "ios.playlists.notFound", bundle: .module) }
+      /// Ready offline
+      public static var offlineReady: String { String(localized: "ios.playlists.offlineReady", bundle: .module) }
+      /// Perform
+      public static var perform: String { String(localized: "ios.playlists.perform", bundle: .module) }
+      /// Keep available offline
+      public static var pin: String { String(localized: "ios.playlists.pin", bundle: .module) }
+      /// Pinned
+      public static var pinned: String { String(localized: "ios.playlists.pinned", bundle: .module) }
+      /// Remove
+      public static var remove: String { String(localized: "ios.playlists.remove", bundle: .module) }
+      /// Reorder
+      public static var reorder: String { String(localized: "ios.playlists.reorder", bundle: .module) }
+      /// Save
+      public static var save: String { String(localized: "ios.playlists.save", bundle: .module) }
+      /// Share
+      public static var share: String { String(localized: "ios.playlists.share", bundle: .module) }
+      /// Sharing needs a connection
+      public static var shareOffline: String { String(localized: "ios.playlists.shareOffline", bundle: .module) }
+      /// {n} songs
+      public static func songCount(n: String) -> String {
+        String(format: String(localized: "ios.playlists.songCount", bundle: .module), n)
+      }
+      /// Setlists
+      public static var title: String { String(localized: "ios.playlists.title", bundle: .module) }
+      /// Unarchive
+      public static var unarchive: String { String(localized: "ios.playlists.unarchive", bundle: .module) }
+      /// Remove offline copy
+      public static var unpin: String { String(localized: "ios.playlists.unpin", bundle: .module) }
+    }
     public nonisolated enum Server {
       /// Environment
       public static var environment: String { String(localized: "ios.server.environment", bundle: .module) }
@@ -482,6 +800,102 @@ public nonisolated enum L10n {
       public static func position(current: String, total: String) -> String {
         String(format: String(localized: "ios.setlist.position", bundle: .module), current, total)
       }
+    }
+    public nonisolated enum Settings {
+      /// About
+      public static var about: String { String(localized: "ios.settings.about", bundle: .module) }
+      /// Account
+      public static var account: String { String(localized: "ios.settings.account", bundle: .module) }
+      /// Data on this device
+      public static var data: String { String(localized: "ios.settings.data", bundle: .module) }
+      /// Default layout
+      public static var defaultColumns: String { String(localized: "ios.settings.defaultColumns", bundle: .module) }
+      /// Could not delete the account. Try again.
+      public static var deleteFailed: String { String(localized: "ios.settings.deleteFailed", bundle: .module) }
+      /// Erase local data and sign out
+      public static var eraseAndSignOut: String { String(localized: "ios.settings.eraseAndSignOut", bundle: .module) }
+      /// Last sync
+      public static var lastSync: String { String(localized: "ios.settings.lastSync", bundle: .module) }
+      /// Lyrics
+      public static var lyrics: String { String(localized: "ios.settings.lyrics", bundle: .module) }
+      /// Change in iOS Settings
+      public static var openLanguageSettings: String { String(localized: "ios.settings.openLanguageSettings", bundle: .module) }
+      /// Pending changes
+      public static var pendingChanges: String { String(localized: "ios.settings.pendingChanges", bundle: .module) }
+      /// Sign out
+      public static var signOut: String { String(localized: "ios.settings.signOut", bundle: .module) }
+      /// Your songs stay on this device and sync again when you sign back in.
+      public static var signOutMessage: String { String(localized: "ios.settings.signOutMessage", bundle: .module) }
+      /// Sign out of Capo?
+      public static var signOutTitle: String { String(localized: "ios.settings.signOutTitle", bundle: .module) }
+      /// Status
+      public static var status: String { String(localized: "ios.settings.status", bundle: .module) }
+      /// Sync
+      public static var sync: String { String(localized: "ios.settings.sync", bundle: .module) }
+      /// Version
+      public static var version: String { String(localized: "ios.settings.version", bundle: .module) }
+      /// Review conflicts
+      public static var viewConflicts: String { String(localized: "ios.settings.viewConflicts", bundle: .module) }
+    }
+    public nonisolated enum Shell {
+      public nonisolated enum Config {
+        /// Use demo mode
+        public static var demo: String { String(localized: "ios.shell.config.demo", bundle: .module) }
+        /// This build has no Supabase configuration (Secrets.plist). You can explore the app with sample data.
+        public static var message: String { String(localized: "ios.shell.config.message", bundle: .module) }
+        /// Server not configured
+        public static var title: String { String(localized: "ios.shell.config.title", bundle: .module) }
+      }
+      public nonisolated enum Context {
+        /// Personal
+        public static var personal: String { String(localized: "ios.shell.context.personal", bundle: .module) }
+      }
+      public nonisolated enum SignOut {
+        /// Sign out and erase offline data
+        public static var erase: String { String(localized: "ios.shell.signOut.erase", bundle: .module) }
+        /// Sign out and keep offline data
+        public static var keep: String { String(localized: "ios.shell.signOut.keep", bundle: .module) }
+        /// Erasing removes the songs stored on this device.
+        public static var message: String { String(localized: "ios.shell.signOut.message", bundle: .module) }
+        /// {count} changes have not synced yet and will be lost if you erase offline data.
+        public static func pending(count: String) -> String {
+          String(format: String(localized: "ios.shell.signOut.pending", bundle: .module), count)
+        }
+        /// Sign out of Capo?
+        public static var title: String { String(localized: "ios.shell.signOut.title", bundle: .module) }
+      }
+      /// Cancel
+      public static var cancel: String { String(localized: "ios.shell.cancel", bundle: .module) }
+      /// Conflicts
+      public static var conflicts: String { String(localized: "ios.shell.conflicts", bundle: .module) }
+      /// Context
+      public static var contextHeader: String { String(localized: "ios.shell.contextHeader", bundle: .module) }
+      /// Done
+      public static var done: String { String(localized: "ios.shell.done", bundle: .module) }
+      /// Could not open your library
+      public static var failed: String { String(localized: "ios.shell.failed", bundle: .module) }
+      /// Invitations
+      public static var invitations: String { String(localized: "ios.shell.invitations", bundle: .module) }
+      /// Library
+      public static var library: String { String(localized: "ios.shell.library", bundle: .module) }
+      /// Capo
+      public static var navigateHeader: String { String(localized: "ios.shell.navigateHeader", bundle: .module) }
+      /// Try again
+      public static var retry: String { String(localized: "ios.shell.retry", bundle: .module) }
+      /// Select a setlist
+      public static var selectSetlist: String { String(localized: "ios.shell.selectSetlist", bundle: .module) }
+      /// Select a song
+      public static var selectSong: String { String(localized: "ios.shell.selectSong", bundle: .module) }
+      /// Setlists
+      public static var setlists: String { String(localized: "ios.shell.setlists", bundle: .module) }
+      /// Settings
+      public static var settings: String { String(localized: "ios.shell.settings", bundle: .module) }
+      /// Sign out
+      public static var signOutButton: String { String(localized: "ios.shell.signOutButton", bundle: .module) }
+      /// Sync now
+      public static var syncNow: String { String(localized: "ios.shell.syncNow", bundle: .module) }
+      /// Teams
+      public static var teams: String { String(localized: "ios.shell.teams", bundle: .module) }
     }
     public nonisolated enum Sync {
       /// Conflicts: {count}
@@ -504,6 +918,8 @@ public nonisolated enum L10n {
       public static var never: String { String(localized: "ios.sync.never", bundle: .module) }
       /// Offline
       public static var offline: String { String(localized: "ios.sync.offline", bundle: .module) }
+      /// Waiting to sync
+      public static var pending: String { String(localized: "ios.sync.pending", bundle: .module) }
       /// Pending changes: {count}
       public static func pendingChanges(count: String) -> String {
         String(format: String(localized: "ios.sync.pendingChanges", bundle: .module), count)
@@ -516,6 +932,32 @@ public nonisolated enum L10n {
       public static var syncNow: String { String(localized: "ios.sync.syncNow", bundle: .module) }
       /// Syncing…
       public static var syncing: String { String(localized: "ios.sync.syncing", bundle: .module) }
+      /// Up to date
+      public static var upToDate: String { String(localized: "ios.sync.upToDate", bundle: .module) }
+    }
+    public nonisolated enum Teams {
+      /// Decline
+      public static var decline: String { String(localized: "ios.teams.decline", bundle: .module) }
+      /// Email
+      public static var email: String { String(localized: "ios.teams.email", bundle: .module) }
+      /// Icon (emoji)
+      public static var icon: String { String(localized: "ios.teams.icon", bundle: .module) }
+      /// No pending invitations
+      public static var noInvitations: String { String(localized: "ios.teams.noInvitations", bundle: .module) }
+      /// You are offline. Team changes need a connection.
+      public static var offline: String { String(localized: "ios.teams.offline", bundle: .module) }
+      /// Try again
+      public static var retry: String { String(localized: "ios.teams.retry", bundle: .module) }
+      /// Role
+      public static var role: String { String(localized: "ios.teams.role", bundle: .module) }
+      /// Owner
+      public static var roleOwner: String { String(localized: "ios.teams.roleOwner", bundle: .module) }
+      /// Anyone with this link can view the setlist.
+      public static var shareHint: String { String(localized: "ios.teams.shareHint", bundle: .module) }
+      /// Share link
+      public static var shareLink: String { String(localized: "ios.teams.shareLink", bundle: .module) }
+      /// Share setlist
+      public static var shareTitle: String { String(localized: "ios.teams.shareTitle", bundle: .module) }
     }
   }
   public nonisolated enum Landing {

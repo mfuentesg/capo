@@ -1,130 +1,91 @@
 import CapoDesign
 import Foundation
 
-/// Library copy. `L10n` has no library keys yet, so each string is declared once here with its
-/// English default; WP12 harvests the `ios.library.*` keys in Wave 3.
-/// No `bundle:` argument: CapoLibraryUI has no resources, so there is no `Bundle.module`.
+/// Library copy; thin wrappers over the generated `L10n.Ios.Library`.
 enum LibraryStrings {
-  // TODO(i18n)
-  static var title: String { String(localized: "ios.library.title", defaultValue: "Library") }
-  // TODO(i18n)
+  static var title: String { L10n.Ios.Library.title }
   static var searchPrompt: String {
-    String(localized: "ios.library.searchPrompt", defaultValue: "Search title, artist, lyrics")
+    L10n.Ios.Library.searchPrompt
   }
-  // TODO(i18n)
   static var pickerTitle: String {
-    String(localized: "ios.library.pickerTitle", defaultValue: "Add songs")
+    L10n.Ios.Library.pickerTitle
   }
-  // TODO(i18n)
-  static var filters: String { String(localized: "ios.library.filters", defaultValue: "Filters") }
-  // TODO(i18n)
-  static var sort: String { String(localized: "ios.library.sort", defaultValue: "Sort") }
-  // TODO(i18n)
-  static var status: String { String(localized: "ios.library.status", defaultValue: "Status") }
-  // TODO(i18n)
-  static var tempo: String { String(localized: "ios.library.tempo", defaultValue: "Tempo") }
-  // TODO(i18n)
+  static var filters: String { L10n.Ios.Library.filters }
+  static var sort: String { L10n.Ios.Library.sortLabel }
+  static var status: String { L10n.Ios.Library.statusLabel }
+  static var tempo: String { L10n.Ios.Library.tempo }
   static var resetFilters: String {
-    String(localized: "ios.library.resetFilters", defaultValue: "Reset filters")
+    L10n.Ios.Library.resetFilters
   }
-  // TODO(i18n)
   static var manageTags: String {
-    String(localized: "ios.library.manageTags", defaultValue: "Manage tags")
+    L10n.Ios.Library.manageTags
   }
-  // TODO(i18n)
-  static var tags: String { String(localized: "ios.library.tags", defaultValue: "Tags") }
-  // TODO(i18n)
+  static var tags: String { L10n.Ios.Library.tags }
   static var assignTags: String {
-    String(localized: "ios.library.assignTags", defaultValue: "Assign tags")
+    L10n.Ios.Library.assignTags
   }
-  // TODO(i18n)
-  static var newSong: String { String(localized: "ios.library.newSong", defaultValue: "New song") }
-  // TODO(i18n)
-  static var editSong: String { String(localized: "ios.library.editSong", defaultValue: "Edit") }
-  // TODO(i18n)
+  static var newSong: String { L10n.Ios.Library.newSong }
+  static var editSong: String { L10n.Ios.Library.editSong }
   static var addToSetlist: String {
-    String(localized: "ios.library.addToSetlist", defaultValue: "Add to setlist")
+    L10n.Ios.Library.addToSetlist
   }
-  // TODO(i18n)
   static var pendingChanges: String {
-    String(localized: "ios.library.pendingChanges", defaultValue: "Not synced yet")
+    L10n.Ios.Library.pendingChanges
   }
-  // TODO(i18n)
-  static var done: String { String(localized: "ios.library.done", defaultValue: "Done") }
-  // TODO(i18n)
-  static var cancel: String { String(localized: "ios.library.cancel", defaultValue: "Cancel") }
-  // TODO(i18n)
-  static var delete: String { String(localized: "ios.library.delete", defaultValue: "Delete") }
-  // TODO(i18n)
-  static var create: String { String(localized: "ios.library.create", defaultValue: "Create") }
-  // TODO(i18n)
-  static var newTag: String { String(localized: "ios.library.newTag", defaultValue: "New tag") }
-  // TODO(i18n)
-  static var tagName: String { String(localized: "ios.library.tagName", defaultValue: "Tag name") }
-  // TODO(i18n)
-  static var color: String { String(localized: "ios.library.color", defaultValue: "Color") }
-  // TODO(i18n)
+  static var done: String { L10n.Ios.Library.done }
+  static var cancel: String { L10n.Ios.Library.cancel }
+  static var delete: String { L10n.Ios.Library.delete }
+  static var create: String { L10n.Ios.Library.create }
+  static var newTag: String { L10n.Ios.Library.newTag }
+  static var tagName: String { L10n.Ios.Library.tagName }
+  static var color: String { L10n.Ios.Library.color }
   static var noTags: String {
-    String(localized: "ios.library.noTags", defaultValue: "No tags yet")
+    L10n.Ios.Library.noTags
   }
-  // TODO(i18n)
   static var noTagsHint: String {
-    String(localized: "ios.library.noTagsHint", defaultValue: "Create a tag to organize your songs.")
+    L10n.Ios.Library.noTagsHint
   }
-  // TODO(i18n)
   static var emptyTitle: String {
-    String(localized: "ios.library.emptyTitle", defaultValue: "No songs yet")
+    L10n.Ios.Library.emptyTitle
   }
-  // TODO(i18n)
   static var emptyMessage: String {
-    String(localized: "ios.library.emptyMessage", defaultValue: "Songs you add will show up here, ready offline.")
+    L10n.Ios.Library.emptyMessage
   }
-  // TODO(i18n)
   static var noResultsTitle: String {
-    String(localized: "ios.library.noResultsTitle", defaultValue: "No matching songs")
+    L10n.Ios.Library.noResultsTitle
   }
-  // TODO(i18n)
   static var noResultsMessage: String {
-    String(localized: "ios.library.noResultsMessage", defaultValue: "Try a different search or clear the filters.")
+    L10n.Ios.Library.noResultsMessage
   }
-  // TODO(i18n)
   static func addCount(_ count: Int) -> String {
-    String(localized: "ios.library.addCount", defaultValue: "Add (\(count))")
+    L10n.Ios.Library.addCount(count: String(count))
   }
-  // TODO(i18n)
   static func moreTags(_ count: Int) -> String {
-    String(localized: "ios.library.moreTags", defaultValue: "+\(count)")
+    L10n.Ios.Library.moreTags(count: String(count))
   }
-  // TODO(i18n)
   static func bpm(_ value: Int) -> String {
-    String(localized: "ios.library.bpm", defaultValue: "\(value) BPM")
+    L10n.Ios.Library.bpmValue(value: String(value))
   }
-
-  // TODO(i18n)
   static func sortName(_ sort: SongSort) -> String {
     switch sort {
-    case .recent: String(localized: "ios.library.sort.recent", defaultValue: "Recently added")
-    case .title: String(localized: "ios.library.sort.title", defaultValue: "Title")
-    case .artist: String(localized: "ios.library.sort.artist", defaultValue: "Artist")
-    case .relevance: String(localized: "ios.library.sort.relevance", defaultValue: "Relevance")
+    case .recent: L10n.Ios.Library.Sort.recent
+    case .title: L10n.Ios.Library.Sort.title
+    case .artist: L10n.Ios.Library.Sort.artist
+    case .relevance: L10n.Ios.Library.Sort.relevance
     }
   }
-
-  // TODO(i18n)
   static func bucketName(_ bucket: BPMBucket) -> String {
     switch bucket {
-    case .slow: String(localized: "ios.library.bpm.slow", defaultValue: "Slow (< 90)")
-    case .medium: String(localized: "ios.library.bpm.medium", defaultValue: "Medium (90–120)")
-    case .fast: String(localized: "ios.library.bpm.fast", defaultValue: "Fast (> 120)")
+    case .slow: L10n.Ios.Library.Bpm.slow
+    case .medium: L10n.Ios.Library.Bpm.medium
+    case .fast: L10n.Ios.Library.Bpm.fast
     }
   }
-
-  // TODO(i18n)
   static func statusName(_ status: SongStatus) -> String {
     switch status {
-    case .published: String(localized: "ios.library.status.published", defaultValue: "Published")
-    case .draft: String(localized: "ios.library.status.draft", defaultValue: "Draft")
-    case .archived: String(localized: "ios.library.status.archived", defaultValue: "Archived")
+    case .published: L10n.Ios.Library.Status.published
+    case .draft: L10n.Ios.Library.Status.draft
+    case .archived: L10n.Ios.Library.Status.archived
     }
   }
 }

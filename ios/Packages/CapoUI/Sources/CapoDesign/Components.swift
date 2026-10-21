@@ -147,14 +147,14 @@ public struct SyncStatusBadge: View {
     switch status.phase {
     case .idle:
       status.pendingOperations > 0
-        ? String(localized: "ios.sync.pending", defaultValue: "Waiting to sync", bundle: .module)  // TODO(i18n)
-        : String(localized: "ios.sync.upToDate", defaultValue: "Up to date", bundle: .module)  // TODO(i18n)
+        ? L10n.Ios.Sync.pending
+        : L10n.Ios.Sync.upToDate
     case .pushing, .pulling:
-      String(localized: "ios.sync.syncing", defaultValue: "Syncing", bundle: .module)  // TODO(i18n)
+      L10n.Ios.Sync.syncing
     case .offline:
-      String(localized: "ios.sync.offline", defaultValue: "Offline", bundle: .module)  // TODO(i18n)
+      L10n.Ios.Sync.offline
     case .error:
-      String(localized: "ios.sync.error", defaultValue: "Sync error", bundle: .module)  // TODO(i18n)
+      L10n.Ios.Sync.error
     }
   }
 

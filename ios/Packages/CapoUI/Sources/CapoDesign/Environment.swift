@@ -14,19 +14,23 @@ public nonisolated struct CapoActions: Sendable {
   public var performSetlist: @MainActor (PlaylistID, Int) -> Void
   public var addSongsToPlaylist: @MainActor ([SongID]) -> Void
   public var showConflicts: @MainActor () -> Void
+  /// nil = the screen presents its own share sheet.
+  public var sharePlaylist: (@MainActor (PlaylistID) -> Void)?
 
   public init(
     openSong: @escaping @MainActor (SongID) -> Void = { _ in },
     openEditor: @escaping @MainActor (SongEditorRequest) -> Void = { _ in },
     performSetlist: @escaping @MainActor (PlaylistID, Int) -> Void = { _, _ in },
     addSongsToPlaylist: @escaping @MainActor ([SongID]) -> Void = { _ in },
-    showConflicts: @escaping @MainActor () -> Void = {}
+    showConflicts: @escaping @MainActor () -> Void = {},
+    sharePlaylist: (@MainActor (PlaylistID) -> Void)? = nil
   ) {
     self.openSong = openSong
     self.openEditor = openEditor
     self.performSetlist = performSetlist
     self.addSongsToPlaylist = addSongsToPlaylist
     self.showConflicts = showConflicts
+    self.sharePlaylist = sharePlaylist
   }
 
   public static let noop = CapoActions()

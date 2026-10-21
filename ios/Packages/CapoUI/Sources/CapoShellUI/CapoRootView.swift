@@ -38,9 +38,9 @@ public struct CapoRootView: View {
     case .failed(let message):
       VStack(spacing: 16) {
         EmptyStateView(
-          title: String(localized: "ios.shell.failed", defaultValue: "Could not open your library", bundle: .capoDesign),  // TODO(i18n)
+          title: L10n.Ios.Shell.failed,
           message: message, systemImage: "exclamationmark.triangle")
-        Button(String(localized: "ios.shell.retry", defaultValue: "Try again", bundle: .capoDesign)) {  // TODO(i18n)
+        Button(L10n.Ios.Shell.retry) {
           Task { await store.retry() }
         }
         .buttonStyle(.borderedProminent)
@@ -76,11 +76,11 @@ private struct ConfigurationMissingView: View {
   var body: some View {
     VStack(spacing: 20) {
       EmptyStateView(
-        title: String(localized: "ios.shell.config.title", defaultValue: "Server not configured", bundle: .capoDesign),  // TODO(i18n)
-        message: String(localized: "ios.shell.config.message", defaultValue: "This build has no Supabase configuration (Secrets.plist). You can explore the app with sample data.", bundle: .capoDesign),  // TODO(i18n)
+        title: L10n.Ios.Shell.Config.title,
+        message: L10n.Ios.Shell.Config.message,
         systemImage: "gearshape.2")
       Button(action: useDemo) {
-        Text(String(localized: "ios.shell.config.demo", defaultValue: "Use demo mode", bundle: .capoDesign))  // TODO(i18n)
+        Text(L10n.Ios.Shell.Config.demo)
           .font(.headline)
           .frame(minHeight: CapoMetrics.minTouchTarget)
           .padding(.horizontal, 24)

@@ -33,34 +33,34 @@ struct ContextRows: View {
 
 enum ContextStrings {
   static var personal: String {
-    String(localized: "ios.shell.context.personal", defaultValue: "Personal", bundle: .capoDesign)  // TODO(i18n)
+    L10n.Ios.Shell.Context.personal
   }
   static var teams: String {
-    String(localized: "ios.shell.teams", defaultValue: "Teams", bundle: .capoDesign)  // TODO(i18n)
+    L10n.Ios.Shell.teams
   }
   static var invitations: String {
-    String(localized: "ios.shell.invitations", defaultValue: "Invitations", bundle: .capoDesign)  // TODO(i18n)
+    L10n.Ios.Shell.invitations
   }
   static var conflicts: String {
-    String(localized: "ios.shell.conflicts", defaultValue: "Conflicts", bundle: .capoDesign)  // TODO(i18n)
+    L10n.Ios.Shell.conflicts
   }
   static var signOut: String {
-    String(localized: "ios.shell.signOut", defaultValue: "Sign out", bundle: .capoDesign)  // TODO(i18n)
+    L10n.Ios.Shell.signOutButton
   }
   static var library: String {
-    String(localized: "ios.shell.library", defaultValue: "Library", bundle: .capoDesign)  // TODO(i18n)
+    L10n.Ios.Shell.library
   }
   static var setlists: String {
-    String(localized: "ios.shell.setlists", defaultValue: "Setlists", bundle: .capoDesign)  // TODO(i18n)
+    L10n.Ios.Shell.setlists
   }
   static var settings: String {
-    String(localized: "ios.shell.settings", defaultValue: "Settings", bundle: .capoDesign)  // TODO(i18n)
+    L10n.Ios.Shell.settings
   }
   static var done: String {
-    String(localized: "ios.shell.done", defaultValue: "Done", bundle: .capoDesign)  // TODO(i18n)
+    L10n.Ios.Shell.done
   }
   static func syncNow() -> String {
-    String(localized: "ios.shell.syncNow", defaultValue: "Sync now", bundle: .capoDesign)  // TODO(i18n)
+    L10n.Ios.Shell.syncNow
   }
 }
 

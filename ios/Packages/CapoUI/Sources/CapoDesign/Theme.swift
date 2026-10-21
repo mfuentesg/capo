@@ -1,3 +1,4 @@
+import CoreText
 import SwiftUI
 import UIKit
 
@@ -114,6 +115,7 @@ private struct CapoThemeModifier: ViewModifier {
   func body(content: Content) -> some View {
     content
       .tint(CapoTheme.primary)
+      .font(CapoFont.style(.body))
       .foregroundStyle(CapoTheme.text)
       .background(CapoTheme.background.ignoresSafeArea())
   }
@@ -124,22 +126,18 @@ extension View {
   public func capoTheme() -> some View { modifier(CapoThemeModifier()) }
 }
 
-// MARK: - Fonts
+// MARK: - Font registration
 
-#if canImport(CoreText)
-import CoreText
-#endif
+public enum CapoFonts {
+  private static let registered: Bool = {
+    let urls = Bundle.module.urls(forResourcesWithExtension: "ttf", subdirectory: nil) ?? []
+    for url in urls { CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil) }
+    return !urls.isEmpty
+  }()
 
-public enum CapoFontRegistration {
-  /// Registers bundled fonts. Geist ships only as woff2 in the web app, which iOS cannot load,
-  /// so the app currently uses SF; any .ttf/.otf dropped in Resources is picked up here.
-  public static func registerBundledFonts() {
-    for ext in ["ttf", "otf"] {
-      for url in Bundle.module.urls(forResourcesWithExtension: ext, subdirectory: nil) ?? [] {
-        CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
-      }
-    }
-  }
+  /// Registers the bundled Geist fonts with CoreText. Idempotent; returns whether any font was found.
+  @discardableResult
+  public static func register() -> Bool { registered }
 }
 
 // MARK: - Key badge
@@ -151,7 +149,7 @@ public struct KeyBadge: View {
 
   public var body: some View {
     Text(key)
-      .font(.system(size: 14, weight: .bold, design: .monospaced))
+      .font(CapoFont.mono(14, weight: .bold, relativeTo: .subheadline))
       .foregroundStyle(CapoTheme.chord)
       .padding(.horizontal, 10)
       .frame(minWidth: 40, minHeight: 28)

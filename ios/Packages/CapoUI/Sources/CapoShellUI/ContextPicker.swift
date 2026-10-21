@@ -87,9 +87,9 @@ struct ContextPill: View {
       HStack(spacing: 6) {
         Image(systemName: model.context.teamID == nil ? "person.fill" : "person.2.fill")
         Text(model.contextStore.selectedTeam?.name ?? ContextStrings.personal)
-          .font(.subheadline.weight(.semibold))
+          .font(CapoFont.style(.subheadline, weight: .semibold))
           .lineLimit(1)
-        Image(systemName: "chevron.up.chevron.down").font(.caption2)
+        Image(systemName: "chevron.up.chevron.down").font(CapoFont.style(.caption2))
       }
       .frame(minHeight: CapoMetrics.minTouchTarget)
     }

@@ -11,26 +11,26 @@ struct SongRow: View {
     HStack(spacing: 12) {
       if showsSelection {
         Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-          .font(.title3)
+          .font(CapoFont.style(.title3))
           .foregroundStyle(isSelected ? CapoTheme.primary : CapoTheme.subtext)
       }
       VStack(alignment: .leading, spacing: 3) {
         HStack(spacing: 8) {
-          Text(item.title).font(.system(size: 17, weight: .semibold)).lineLimit(1)
+          Text(item.title).font(CapoFont.ui(17, weight: .semibold)).lineLimit(1)
           if item.hasPendingChanges {
             Circle().fill(CapoTheme.primary).frame(width: 8, height: 8)
               .accessibilityLabel(LibraryStrings.pendingChanges)
           }
         }
         if let artist = item.artist, !artist.isEmpty {
-          Text(artist).font(.system(size: 14)).foregroundStyle(CapoTheme.subtext).lineLimit(1)
+          Text(artist).font(CapoFont.ui(14)).foregroundStyle(CapoTheme.subtext).lineLimit(1)
         }
         if !item.tags.isEmpty {
           HStack(spacing: 5) {
             ForEach(item.tags.prefix(3)) { SongRowTag(name: $0.name, colorHex: $0.color) }
             if item.tags.count > 3 {
               Text(LibraryStrings.moreTags(item.tags.count - 3))
-                .font(.caption).foregroundStyle(CapoTheme.subtext)
+                .font(CapoFont.style(.caption)).foregroundStyle(CapoTheme.subtext)
             }
           }
         }
@@ -39,7 +39,7 @@ struct SongRow: View {
       VStack(alignment: .trailing, spacing: 6) {
         if let key = item.key, !key.isEmpty { KeyBadge(key) }
         if let bpm = item.bpm, bpm > 0 {
-          Text(LibraryStrings.bpm(bpm)).font(.system(size: 13)).foregroundStyle(CapoTheme.subtext)
+          Text(LibraryStrings.bpm(bpm)).font(CapoFont.ui(13)).foregroundStyle(CapoTheme.subtext)
         }
       }
     }
@@ -70,7 +70,7 @@ struct SongRowTag: View {
       Circle().fill(color).frame(width: 7, height: 7)
       Text(name).lineLimit(1)
     }
-    .font(.system(size: 11, weight: .medium))
+    .font(CapoFont.ui(11, weight: .medium))
     .foregroundStyle(CapoTheme.text)
     .padding(.horizontal, 8)
     .frame(height: 20)

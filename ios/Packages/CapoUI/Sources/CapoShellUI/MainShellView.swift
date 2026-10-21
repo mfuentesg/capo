@@ -264,7 +264,7 @@ private struct ResizableSplit<List: View, Detail: View>: View {
         layout.toggleList()
       } label: {
         Image(systemName: "chevron.left")
-          .font(.system(size: 13, weight: .bold))
+          .font(CapoFont.ui(13, weight: .bold))
           .foregroundStyle(CapoTheme.subtext)
           .frame(width: 30, height: 30)
           .background(CapoTheme.card, in: Circle())
@@ -301,7 +301,7 @@ private struct ResizableSplit<List: View, Detail: View>: View {
       layout.toggleList()
     } label: {
       Image(systemName: "chevron.right")
-        .font(.system(size: 14, weight: .bold))
+        .font(CapoFont.ui(14, weight: .bold))
         .foregroundStyle(CapoTheme.subtext)
         .frame(width: 28, height: 72)
         .background(
@@ -363,7 +363,7 @@ private struct SidebarView: View {
       collapsed.toggle()
     } label: {
       Image(systemName: "sidebar.leading")
-        .font(.system(size: 20, weight: .semibold))
+        .font(CapoFont.ui(20, weight: .semibold))
         .frame(width: collapsed ? 56 : CapoMetrics.minTouchTarget, height: collapsed ? 56 : CapoMetrics.minTouchTarget)
         .foregroundStyle(collapsed ? CapoTheme.onPrimary : CapoTheme.text)
         .background(
@@ -376,7 +376,7 @@ private struct SidebarView: View {
   private var header: some View {
     HStack {
       if !collapsed {
-        Text("Capo").font(.title2.weight(.bold)).foregroundStyle(CapoTheme.text)
+        Text("Capo").font(CapoFont.style(.title2, weight: .bold)).foregroundStyle(CapoTheme.text)
         Spacer()
       }
       toggleButton
@@ -394,7 +394,7 @@ private struct SidebarView: View {
     } label: {
       if collapsed {
         Image(systemName: symbol)
-          .font(.system(size: 22))
+          .font(CapoFont.ui(22))
           .frame(width: 56, height: 56)
           .foregroundStyle(CapoTheme.text)
           .background(CapoTheme.card, in: Circle())
@@ -404,9 +404,9 @@ private struct SidebarView: View {
           Image(systemName: symbol)
             .frame(width: 32, height: 32)
             .background(CapoTheme.surface, in: Circle())
-          Text(label).font(.body.weight(.semibold)).lineLimit(1)
+          Text(label).font(CapoFont.style(.body, weight: .semibold)).lineLimit(1)
           Spacer(minLength: 0)
-          Image(systemName: "chevron.up.chevron.down").font(.caption).foregroundStyle(CapoTheme.subtext)
+          Image(systemName: "chevron.up.chevron.down").font(CapoFont.style(.caption)).foregroundStyle(CapoTheme.subtext)
         }
         .foregroundStyle(CapoTheme.text)
         .padding(.horizontal, 12)
@@ -428,7 +428,7 @@ private struct SidebarView: View {
     } label: {
       if collapsed {
         Image(systemName: symbol)
-          .font(.system(size: 22))
+          .font(CapoFont.ui(22))
           .frame(width: 56, height: 56)
           .foregroundStyle(selected ? CapoTheme.primary : CapoTheme.subtext)
           .background(
@@ -439,7 +439,7 @@ private struct SidebarView: View {
       } else {
         HStack(spacing: 12) {
           Image(systemName: symbol)
-            .font(.system(size: 20))
+            .font(CapoFont.ui(20))
             .frame(width: 28)
             .foregroundStyle(selected ? CapoTheme.primary : CapoTheme.subtext)
           Text(title(item)).font(.body.weight(selected ? .semibold : .medium))
@@ -463,7 +463,7 @@ private struct SidebarView: View {
   private func badgeView(_ count: Int) -> some View {
     if count > 0 {
       Text("\(count)")
-        .font(.system(size: 11, weight: .bold))
+        .font(CapoFont.ui(11, weight: .bold))
         .foregroundStyle(CapoTheme.card)
         .padding(.horizontal, 5)
         .frame(minWidth: 18, minHeight: 18)
@@ -486,7 +486,7 @@ private struct SidebarView: View {
           SyncButton(model: model)
           VStack(alignment: .leading, spacing: 2) {
             Text(SyncStatusBadge.label(for: status))
-              .font(.subheadline.weight(.semibold)).foregroundStyle(CapoTheme.text)
+              .font(CapoFont.style(.subheadline, weight: .semibold)).foregroundStyle(CapoTheme.text)
             if status.pendingOperations > 0 {
               Text("\(status.pendingOperations)")
                 .font(.caption.monospacedDigit()).foregroundStyle(CapoTheme.subtext)

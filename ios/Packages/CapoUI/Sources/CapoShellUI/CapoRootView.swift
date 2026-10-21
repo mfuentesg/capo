@@ -7,6 +7,7 @@ public struct CapoRootView: View {
   @State private var store: SessionStore
 
   public init(dependencies: AppDependencies) {
+    CapoFonts.register()
     _store = State(initialValue: SessionStore(dependencies: dependencies))
   }
 
@@ -87,7 +88,7 @@ private struct ConfigurationMissingView: View {
         systemImage: "gearshape.2")
       Button(action: useDemo) {
         Text(L10n.Ios.Shell.Config.demo)
-          .font(.headline)
+          .font(CapoFont.style(.headline))
           .frame(minHeight: CapoMetrics.minTouchTarget)
           .padding(.horizontal, 24)
       }

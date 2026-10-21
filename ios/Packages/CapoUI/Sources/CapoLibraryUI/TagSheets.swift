@@ -50,7 +50,7 @@ struct TagManagementView: View {
           }
           Button(LibraryStrings.create, action: create)
             .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
-          if let errorText { Text(errorText).font(.footnote).foregroundStyle(.red) }
+          if let errorText { Text(errorText).font(CapoFont.style(.footnote)).foregroundStyle(.red) }
         }
         Section(LibraryStrings.tags) {
           if tags.isEmpty {

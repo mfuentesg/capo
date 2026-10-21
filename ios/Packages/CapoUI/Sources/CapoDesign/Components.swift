@@ -66,7 +66,7 @@ public struct FlagBadge: View {
       (isDark ? style.darkForeground : style.lightForeground).flatMap { Color(hex: $0) }
       ?? CapoTheme.subtext
     Text(style.label)
-      .font(.system(size: 11, weight: .bold))
+      .font(CapoFont.ui(11, weight: .bold, relativeTo: .caption2))
       .italic(style.italic)
       .textCase(.uppercase)
       .tracking(0.4)
@@ -97,7 +97,7 @@ public struct TagChip: View {
       Circle().fill(color).frame(width: 8, height: 8)
       Text(name).lineLimit(1)
     }
-    .font(.footnote.weight(.medium))
+    .font(CapoFont.style(.footnote, weight: .medium))
     .foregroundStyle(isSelected ? (HexColor.isLight(colorHex) ? Color.black : Color.white) : CapoTheme.text)
     .padding(.horizontal, 10)
     .padding(.vertical, 6)
@@ -189,13 +189,55 @@ public struct EmptyStateView: View {
 public enum CapoFont {
   public static let baseLyricsPointSize: CGFloat = 16
 
+  static func postScriptName(_ weight: Font.Weight, mono: Bool = false) -> String {
+    if mono { return weight == .bold || weight == .semibold || weight == .heavy ? "GeistMono-Bold" : "GeistMono-Regular" }
+    switch weight {
+    case .medium: return "Geist-Medium"
+    case .semibold: return "Geist-SemiBold"
+    case .bold, .heavy, .black: return "Geist-Bold"
+    default: return "Geist-Regular"
+    }
+  }
+
+  /// Geist at `size`, scaling with Dynamic Type relative to `textStyle`.
+  public static func ui(_ size: CGFloat, weight: Font.Weight = .regular, relativeTo textStyle: Font.TextStyle = .body) -> Font {
+    CapoFonts.register()
+    return .custom(postScriptName(weight), size: size, relativeTo: textStyle)
+  }
+
+  /// Geist Mono at `size`, scaling with Dynamic Type.
+  public static func mono(_ size: CGFloat, weight: Font.Weight = .regular, relativeTo textStyle: Font.TextStyle = .body) -> Font {
+    CapoFonts.register()
+    return .custom(postScriptName(weight, mono: true), size: size, relativeTo: textStyle)
+  }
+
+  /// Geist equivalent of a system text style (same point sizes).
+  public static func style(_ textStyle: Font.TextStyle, weight: Font.Weight? = nil) -> Font {
+    let (size, defaultWeight): (CGFloat, Font.Weight) = switch textStyle {
+    case .largeTitle: (34, .bold)
+    case .title: (28, .bold)
+    case .title2: (22, .bold)
+    case .title3: (20, .semibold)
+    case .headline: (17, .semibold)
+    case .callout: (16, .regular)
+    case .subheadline: (15, .regular)
+    case .footnote: (13, .regular)
+    case .caption: (12, .regular)
+    case .caption2: (11, .regular)
+    default: (17, .regular)
+    }
+    return ui(size, weight: weight ?? defaultWeight, relativeTo: textStyle)
+  }
+
   /// Lyrics are 16pt x scale and ignore Dynamic Type, like the web.
   public static func lyrics(scale: Double) -> Font {
-    .system(size: baseLyricsPointSize * scale)
+    CapoFonts.register()
+    return .custom("Geist-Regular", fixedSize: baseLyricsPointSize * scale)
   }
 
   public static func chord(scale: Double) -> Font {
-    .system(size: baseLyricsPointSize * scale, weight: .bold, design: .monospaced)
+    CapoFonts.register()
+    return .custom("GeistMono-Bold", fixedSize: baseLyricsPointSize * scale)
   }
 }
 

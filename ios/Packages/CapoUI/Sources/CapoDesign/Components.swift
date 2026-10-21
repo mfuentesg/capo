@@ -9,25 +9,11 @@ import UIKit
 /// Section accent per section type, taken from the `--section-accent` rules in `app/globals.css`
 /// (default palette), light and dark.
 public enum SectionAccent {
-  private static let palette: [String: (light: OKLCH, dark: OKLCH)] = [
-    "verse": (OKLCH(0.48, 0.16, 248), OKLCH(0.7, 0.15, 248)),
-    "chorus": (OKLCH(0.5, 0.17, 288), OKLCH(0.72, 0.16, 288)),
-    "bridge": (OKLCH(0.5, 0.16, 350), OKLCH(0.7, 0.16, 350)),
-    "comment": (OKLCH(0.55, 0.12, 195), OKLCH(0.68, 0.12, 195)),
-    "repeat": (OKLCH(0.5, 0.16, 65), OKLCH(0.75, 0.16, 65)),
-    "tab": (OKLCH(0.5, 0.01, 280), OKLCH(0.65, 0.01, 280)),
-    "grid": (OKLCH(0.5, 0.01, 280), OKLCH(0.65, 0.01, 280)),
-    "intro": (OKLCH(0.52, 0.15, 145), OKLCH(0.72, 0.14, 145)),
-    "outro": (OKLCH(0.5, 0.14, 200), OKLCH(0.7, 0.13, 200)),
-    "pre_chorus": (OKLCH(0.5, 0.15, 310), OKLCH(0.72, 0.14, 310))
-  ]
-
   public static func color(for sectionType: String) -> Color {
-    guard let entry = palette[sectionType] else { return .secondary }
-    return OKLCH.dynamic(light: entry.light, dark: entry.dark)
+    CapoTheme.accent(for: sectionType)
   }
 
-  /// Section background tint (6% light, 12% dark in the web CSS).
+  /// Section background tint.
   public static func background(for sectionType: String) -> Color {
     color(for: sectionType).opacity(0.1)
   }
@@ -75,10 +61,10 @@ public struct FlagBadge: View {
     let isDark = scheme == .dark
     let background: Color =
       (isDark ? style.darkBackground : style.lightBackground).flatMap { Color(hex: $0) }
-      .map { isDark ? $0.opacity(0.4) : $0 } ?? Color(.tertiarySystemFill)
+      .map { isDark ? $0.opacity(0.4) : $0 } ?? CapoTheme.surface
     let foreground: Color =
       (isDark ? style.darkForeground : style.lightForeground).flatMap { Color(hex: $0) }
-      ?? .secondary
+      ?? CapoTheme.subtext
     Text(style.label)
       .font(.system(size: 11, weight: .bold))
       .italic(style.italic)
@@ -112,7 +98,7 @@ public struct TagChip: View {
       Text(name).lineLimit(1)
     }
     .font(.footnote.weight(.medium))
-    .foregroundStyle(isSelected ? (HexColor.isLight(colorHex) ? Color.black : Color.white) : Color.primary)
+    .foregroundStyle(isSelected ? (HexColor.isLight(colorHex) ? Color.black : Color.white) : CapoTheme.text)
     .padding(.horizontal, 10)
     .padding(.vertical, 6)
     .frame(minHeight: 32)
@@ -218,7 +204,7 @@ public enum CapoFont {
 public enum CapoMetrics {
   /// Minimum touch target; the app is used on stage, so this is above Apple's 44pt minimum.
   public static let minTouchTarget: CGFloat = 48
-  public static let cornerRadius: CGFloat = 12
+  public static let cornerRadius: CGFloat = CapoRadius.medium
 }
 
 /// Placeholder text shared by the WP0 entry-view stubs.

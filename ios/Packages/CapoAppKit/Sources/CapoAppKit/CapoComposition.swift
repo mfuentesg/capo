@@ -33,11 +33,19 @@ public nonisolated enum CapoComposition {
       writer: SupabaseRemoteWriter(client: client),
       realtime: SupabaseRealtimeNotifier(client: client),
       account: SupabaseAccountRemote(client: client))
+    #if DEBUG
+      let devSignIn: (@Sendable () async throws -> Void)? = {
+        try await DevSession.signIn(client: client)
+      }
+    #else
+      let devSignIn: (@Sendable () async throws -> Void)? = nil
+    #endif
     return AppDependencies(
       config: config, isDemo: false, auth: auth,
       makeUserServices: { session in
         try makeUserServices(session: session, remotes: remotes, config: config)
-      })
+      },
+      devSignIn: devSignIn)
   }
 
   /// The Supabase-backed remotes shared by every session of this app run.

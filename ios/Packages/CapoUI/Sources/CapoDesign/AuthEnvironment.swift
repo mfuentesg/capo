@@ -8,13 +8,17 @@ public struct AuthActions: Sendable {
   public var signUp: @Sendable (_ email: String, _ password: String) async throws -> Void
   /// Sign-up is offered only when the environment is not production.
   public var allowsSignUp: Bool
+  /// DEBUG builds only: sign in with the bundled local dev session.
+  public var devSignIn: (@Sendable () async throws -> Void)?
 
   public init(
     signInWithGoogle: @escaping @Sendable () async throws -> Void = {},
     signIn: @escaping @Sendable (String, String) async throws -> Void = { _, _ in },
     signUp: @escaping @Sendable (String, String) async throws -> Void = { _, _ in },
-    allowsSignUp: Bool = false
+    allowsSignUp: Bool = false,
+    devSignIn: (@Sendable () async throws -> Void)? = nil
   ) {
+    self.devSignIn = devSignIn
     self.signInWithGoogle = signInWithGoogle
     self.signIn = signIn
     self.signUp = signUp

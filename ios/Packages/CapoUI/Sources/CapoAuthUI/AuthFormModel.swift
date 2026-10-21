@@ -52,7 +52,7 @@ public final class AuthFormModel {
     await run { try await actions.signInWithGoogle() }
   }
 
-  private func run(_ work: () async throws -> Void) async {
+  func run(_ work: () async throws -> Void) async {
     isBusy = true
     errorMessage = nil
     defer { isBusy = false }

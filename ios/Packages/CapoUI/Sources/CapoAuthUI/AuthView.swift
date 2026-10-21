@@ -18,6 +18,7 @@ public struct AuthView: View {
         header
         VStack(spacing: 16) {
           googleButton
+          devSessionButton
           divider
           form
         }
@@ -61,6 +62,21 @@ public struct AuthView: View {
     }
     .buttonStyle(.borderedProminent)
     .disabled(model.isBusy)
+  }
+
+  @ViewBuilder private var devSessionButton: some View {
+    if let devSignIn = actions.devSignIn {
+      // DEBUG builds only (the closure is nil in Release). Plain English on purpose: not user-facing.
+      Button {
+        Task { await model.run { try await devSignIn() } }
+      } label: {
+        Label("Use dev session (local)", systemImage: "hammer")
+          .font(.headline)
+          .frame(maxWidth: .infinity, minHeight: CapoMetrics.minTouchTarget)
+      }
+      .buttonStyle(.bordered)
+      .disabled(model.isBusy)
+    }
   }
 
   private var divider: some View {

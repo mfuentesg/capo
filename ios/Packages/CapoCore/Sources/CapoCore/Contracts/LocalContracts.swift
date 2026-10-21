@@ -150,11 +150,15 @@ public struct AppDependencies: Sendable {
   public var isDemo: Bool
   public var auth: any AuthService
   public var makeUserServices: @Sendable (AuthSession) async throws -> UserServices
+  /// DEBUG builds only: signs in with the bundled local dev session (nil everywhere else).
+  public var devSignIn: (@Sendable () async throws -> Void)?
 
   public init(
     config: AppConfig?, isDemo: Bool, auth: any AuthService,
-    makeUserServices: @escaping @Sendable (AuthSession) async throws -> UserServices
+    makeUserServices: @escaping @Sendable (AuthSession) async throws -> UserServices,
+    devSignIn: (@Sendable () async throws -> Void)? = nil
   ) {
+    self.devSignIn = devSignIn
     self.config = config
     self.isDemo = isDemo
     self.auth = auth

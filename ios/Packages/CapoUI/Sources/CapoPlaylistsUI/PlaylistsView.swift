@@ -29,10 +29,12 @@ public struct PlaylistsView: View {
         }
         .pickerStyle(.segmented)
         .listRowBackground(Color.clear)
+        .listRowSeparator(.hidden)
       }
       ForEach(visible) { summary in
         PlaylistRow(summary: summary)
           .tag(summary.id)
+          .capoCardRow()
           .swipeActions(edge: .trailing) {
             if canEdit {
               Button(PlaylistStrings.delete, role: .destructive) { pendingDelete = summary }
@@ -41,11 +43,12 @@ public struct PlaylistsView: View {
               } label: {
                 Text(showArchived ? PlaylistStrings.unarchive : PlaylistStrings.archive)
               }
-              .tint(.orange)
+              .tint(CapoTheme.warning)
             }
           }
       }
     }
+    .capoList()
     .overlay {
       if loaded && visible.isEmpty {
         EmptyStateView(
@@ -96,22 +99,22 @@ struct PlaylistRow: View {
   var body: some View {
     HStack(spacing: 8) {
       VStack(alignment: .leading, spacing: 4) {
-        Text(summary.playlist.name).font(.headline).lineLimit(1)
+        Text(summary.playlist.name).font(.headline).foregroundStyle(CapoTheme.text).lineLimit(1)
         HStack(spacing: 6) {
           if let date = PlaylistDate.display(summary.playlist.date) { Text(date) }
           Text(PlaylistStrings.songCount(summary.songCount))
         }
-        .font(.subheadline).foregroundStyle(.secondary)
+        .font(.subheadline).foregroundStyle(CapoTheme.subtext)
       }
       Spacer(minLength: 8)
       if summary.isPinned {
         Image(systemName: summary.isFullyAvailableOffline ? "checkmark.circle.fill" : "pin.fill")
-          .foregroundStyle(summary.isFullyAvailableOffline ? Color.green : Color.secondary)
+          .foregroundStyle(summary.isFullyAvailableOffline ? CapoTheme.success : CapoTheme.subtext)
           .accessibilityLabel(
             summary.isFullyAvailableOffline ? PlaylistStrings.offlineReady : PlaylistStrings.pinned)
       }
     }
-    .frame(minHeight: 56)
+    .frame(minHeight: 60)
     .contentShape(Rectangle())
   }
 }

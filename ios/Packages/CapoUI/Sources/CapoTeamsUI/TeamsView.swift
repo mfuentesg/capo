@@ -19,8 +19,10 @@ public struct TeamsView: View {
         } label: {
           TeamRowView(item: item)
         }
+        .capoRowBackground()
       }
     }
+    .capoList()
     .overlay {
       if model.loaded && model.teams.isEmpty {
         EmptyStateView(
@@ -55,12 +57,11 @@ struct TeamRowView: View {
   var body: some View {
     HStack(spacing: 12) {
       Text(item.team.icon ?? "👥").font(.title2).frame(width: 36)
-      VStack(alignment: .leading, spacing: 2) {
-        Text(item.team.name).font(.headline).lineLimit(1)
-        Text(TeamsStrings.roleName(item.role)).font(.subheadline).foregroundStyle(.secondary)
-      }
+      Text(item.team.name).font(.headline).foregroundStyle(CapoTheme.text).lineLimit(1)
+      Spacer(minLength: 8)
+      RoleBadge(role: item.role)
     }
-    .frame(minHeight: 48)
+    .frame(minHeight: 56)
     .accessibilityElement(children: .combine)
   }
 }
@@ -69,7 +70,7 @@ struct OfflineBanner: View {
   var body: some View {
     Label(TeamsStrings.offline, systemImage: "wifi.slash")
       .font(.subheadline)
-      .foregroundStyle(.secondary)
+      .foregroundStyle(CapoTheme.subtext)
       .listRowBackground(Color.clear)
   }
 }
@@ -90,7 +91,9 @@ struct CreateTeamSheet: View {
             .textInputAutocapitalization(.words)
           TextField(TeamsStrings.icon, text: $icon)
         }
+        .capoRowBackground()
       }
+      .capoList()
       .navigationTitle(L10n.Teams.createNewTeam)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
@@ -101,6 +104,7 @@ struct CreateTeamSheet: View {
           Button(L10n.Teams.createTeam) {
             Task { if await model.create(services.teams, name: name, icon: icon) { dismiss() } }
           }
+          .font(.body.weight(.bold))
           .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty || model.isBusy)
         }
       }

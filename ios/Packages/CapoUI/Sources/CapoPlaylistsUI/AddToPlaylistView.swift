@@ -23,16 +23,20 @@ public struct AddToPlaylistView: View {
     NavigationStack {
       List {
         Button { showCreate = true } label: {
-          Label(PlaylistStrings.newSetlist, systemImage: "plus.circle.fill").frame(minHeight: 44)
+          Label(PlaylistStrings.newSetlist, systemImage: "plus.circle.fill")
+            .foregroundStyle(CapoTheme.primary).frame(minHeight: 48)
         }
+        .capoCardRow()
         ForEach(playlists) { summary in
           Button { add(to: summary.id) } label: {
             PlaylistRow(summary: summary)
           }
           .buttonStyle(.plain)
+          .capoCardRow()
         }
-        if let errorText { Text(errorText).foregroundStyle(.red).font(.footnote) }
+        if let errorText { Text(errorText).foregroundStyle(CapoTheme.destructive).font(.footnote) }
       }
+      .capoList()
       .navigationTitle(PlaylistStrings.chooseSetlist)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {

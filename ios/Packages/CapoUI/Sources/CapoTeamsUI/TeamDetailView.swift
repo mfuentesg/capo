@@ -34,6 +34,7 @@ struct TeamDetailView: View {
       if permissions.canManageMembers { invitationsSection }
       dangerSection
     }
+    .capoList()
     .navigationTitle(team.name)
     .toolbar {
       if permissions.canManageMembers {
@@ -61,9 +62,9 @@ struct TeamDetailView: View {
   // MARK: Sections
 
   private var membersSection: some View {
-    Section(L10n.Teams.members) {
+    Section {
       if model.loaded && model.members.isEmpty {
-        Text(L10n.Teams.noMembersYet).foregroundStyle(.secondary)
+        Text(L10n.Teams.noMembersYet).foregroundStyle(CapoTheme.subtext).capoRowBackground()
       }
       ForEach(model.members) { member in
         MemberRow(
@@ -77,7 +78,10 @@ struct TeamDetailView: View {
           }
         }
         .contextMenu { memberMenu(member) }
+        .capoRowBackground()
       }
+    } header: {
+      Text(L10n.Teams.members.uppercased()).capoSectionHeader()
     }
   }
 
@@ -102,21 +106,26 @@ struct TeamDetailView: View {
   }
 
   private var invitationsSection: some View {
-    Section(L10n.Teams.pendingInvitations) {
+    Section {
       if model.loaded && model.invitations.isEmpty {
-        Text(TeamsStrings.noInvitations).foregroundStyle(.secondary)
+        Text(TeamsStrings.noInvitations).foregroundStyle(CapoTheme.subtext).capoRowBackground()
       }
       ForEach(model.invitations) { invitation in
-        VStack(alignment: .leading, spacing: 2) {
-          Text(invitation.email).lineLimit(1)
-          Text(TeamsStrings.roleName(invitation.role)).font(.subheadline).foregroundStyle(.secondary)
+        HStack {
+          Text(invitation.email).foregroundStyle(CapoTheme.text).lineLimit(1)
+          Spacer(minLength: 8)
+          RoleBadge(role: invitation.role)
         }
+        .frame(minHeight: 48)
         .swipeActions(edge: .trailing) {
           Button(L10n.Teams.cancelInvitation, role: .destructive) {
             Task { await model.revoke(services.teams, teamID: team.id, invitation: invitation) }
           }
         }
+        .capoRowBackground()
       }
+    } header: {
+      Text(L10n.Teams.pendingInvitations.uppercased()).capoSectionHeader()
     }
   }
 
@@ -124,11 +133,14 @@ struct TeamDetailView: View {
     Section {
       if permissions.canLeave {
         Button(L10n.Teams.leaveTeam, role: .destructive) { confirm = .leave }
+          .frame(minHeight: 48).capoRowBackground()
       } else {
-        Text(L10n.Teams.leaveAsOwner).font(.footnote).foregroundStyle(.secondary)
+        Text(L10n.Teams.leaveAsOwner).font(.footnote).foregroundStyle(CapoTheme.subtext)
+          .capoRowBackground()
       }
       if permissions.canDeleteTeam {
         Button(L10n.Teams.deleteTeam, role: .destructive) { confirm = .delete }
+          .frame(minHeight: 48).capoRowBackground()
       }
     }
   }
@@ -177,13 +189,15 @@ struct MemberRow: View {
   var body: some View {
     HStack {
       VStack(alignment: .leading, spacing: 2) {
-        Text(name).font(.headline).lineLimit(1)
-        if let email, email != name { Text(email).font(.caption).foregroundStyle(.secondary).lineLimit(1) }
+        Text(name).font(.headline).foregroundStyle(CapoTheme.text).lineLimit(1)
+        if let email, email != name {
+          Text(email).font(.caption).foregroundStyle(CapoTheme.subtext).lineLimit(1)
+        }
       }
       Spacer(minLength: 8)
-      Text(TeamsStrings.roleName(role)).font(.subheadline).foregroundStyle(.secondary)
+      RoleBadge(role: role)
     }
-    .frame(minHeight: 48)
+    .frame(minHeight: 56)
     .accessibilityElement(children: .combine)
   }
 }
@@ -211,6 +225,7 @@ struct InviteSheet: View {
           ForEach(roles, id: \.self) { Text(TeamsStrings.roleName($0)).tag($0) }
         }
       }
+      .capoList()
       .navigationTitle(L10n.Teams.inviteMember)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
@@ -223,6 +238,7 @@ struct InviteSheet: View {
               }
             }
           }
+          .font(.body.weight(.bold))
           .disabled(!email.contains("@") || model.isBusy)
         }
       }

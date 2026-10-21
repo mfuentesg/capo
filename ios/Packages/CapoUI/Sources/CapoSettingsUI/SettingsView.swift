@@ -18,16 +18,20 @@ public struct SettingsView: View {
 
   public var body: some View {
     Form {
-      accountSection
-      appearanceSection
-      lyricsSection
-      languageSection
-      syncSection
-      environmentSection
-      dataSection
-      if context.deleteAccount != nil { dangerSection }
-      aboutSection
+      accountSection.listRowBackground(CapoTheme.card)
+      appearanceSection.listRowBackground(CapoTheme.card)
+      lyricsSection.listRowBackground(CapoTheme.card)
+      languageSection.listRowBackground(CapoTheme.card)
+      syncSection.listRowBackground(CapoTheme.card)
+      environmentSection.listRowBackground(CapoTheme.card)
+      dataSection.listRowBackground(CapoTheme.card)
+      if context.deleteAccount != nil { dangerSection.listRowBackground(CapoTheme.card) }
+      aboutSection.listRowBackground(CapoTheme.card)
     }
+    .scrollContentBackground(.hidden)
+    .background(CapoTheme.background)
+    .tint(CapoTheme.primary)
+    .environment(\.defaultMinListRowHeight, CapoMetrics.minTouchTarget)
     .navigationTitle(L10n.Settings.title)
     .capoToast($toast)
     .task(id: services.userID) { await model.observePreferences(services.settings) }
@@ -61,18 +65,19 @@ public struct SettingsView: View {
       HStack(spacing: 12) {
         avatar
         VStack(alignment: .leading, spacing: 2) {
-          Text(context.fullName ?? context.email ?? "—").font(.headline)
+          Text(context.fullName ?? context.email ?? "—").font(.headline).foregroundStyle(CapoTheme.text)
           if context.fullName != nil, let email = context.email {
-            Text(email).font(.subheadline).foregroundStyle(.secondary)
+            Text(email).font(.subheadline).foregroundStyle(CapoTheme.subtext)
           }
           if let provider = context.provider {
             Text(L10n.Settings.connectedVia(provider: provider.capitalized))
-              .font(.caption).foregroundStyle(.secondary)
+              .font(.caption).foregroundStyle(CapoTheme.subtext)
           }
         }
       }
       .accessibilityElement(children: .combine)
       Button(SettingsStrings.signOut, role: .destructive) { confirmSignOut = true }
+        .foregroundStyle(CapoTheme.destructive)
     }
   }
 
@@ -82,13 +87,13 @@ public struct SettingsView: View {
       AsyncImage(url: url) { image in
         image.resizable().scaledToFill()
       } placeholder: {
-        Image(systemName: "person.crop.circle.fill").resizable().foregroundStyle(.secondary)
+        Image(systemName: "person.crop.circle.fill").resizable().foregroundStyle(CapoTheme.subtext)
       }
       .frame(width: 48, height: 48)
       .clipShape(Circle())
     } else {
       Image(systemName: "person.crop.circle.fill")
-        .resizable().frame(width: 48, height: 48).foregroundStyle(.secondary)
+        .resizable().frame(width: 48, height: 48).foregroundStyle(CapoTheme.subtext)
     }
   }
 
@@ -160,7 +165,7 @@ public struct SettingsView: View {
         }
         if let url = context.serverURL {
           LabeledContent(L10n.Ios.Server.url) {
-            Text(url.absoluteString).font(.footnote).foregroundStyle(.secondary).textSelection(.enabled)
+            Text(url.absoluteString).font(.footnote).foregroundStyle(CapoTheme.subtext).textSelection(.enabled)
           }
         }
       }
@@ -170,6 +175,7 @@ public struct SettingsView: View {
   private var dataSection: some View {
     Section(SettingsStrings.data) {
       Button(SettingsStrings.eraseAndSignOut, role: .destructive) { confirmErase = true }
+        .foregroundStyle(CapoTheme.destructive)
     }
   }
 
@@ -178,9 +184,10 @@ public struct SettingsView: View {
       Button(model.isDeleting ? L10n.Settings.deleteAccountPending : L10n.Settings.deleteAccount, role: .destructive) {
         confirmDelete = true
       }
+      .foregroundStyle(CapoTheme.destructive)
       .disabled(model.isDeleting)
     } header: {
-      Text(L10n.Settings.dangerZone)
+      Text(L10n.Settings.dangerZone).foregroundStyle(CapoTheme.destructive)
     } footer: {
       Text(L10n.Settings.dangerZoneDescription)
     }

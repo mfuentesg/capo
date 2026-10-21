@@ -15,29 +15,31 @@ public struct PendingInvitationsView: View {
       ForEach(model.items) { item in
         VStack(alignment: .leading, spacing: 10) {
           VStack(alignment: .leading, spacing: 2) {
-            Text(item.teamName).font(.headline)
+            Text(item.teamName).font(.headline).foregroundStyle(CapoTheme.text)
             if let inviter = item.inviterName {
               Text(L10n.Invitations.invitationFrom(name: inviter))
-                .font(.subheadline).foregroundStyle(.secondary)
+                .font(.subheadline).foregroundStyle(CapoTheme.subtext)
             }
-            Text(TeamsStrings.roleName(item.invitation.role))
-              .font(.caption).foregroundStyle(.secondary)
+            RoleBadge(role: item.invitation.role).padding(.top, 4)
           }
           HStack {
             Button(L10n.Invitations.accept) {
               Task { await model.accept(services.teams, item) }
             }
-            .buttonStyle(.borderedProminent)
+            .buttonStyle(CapoPrimaryButtonStyle())
             Button(TeamsStrings.decline, role: .destructive) {
               Task { await model.decline(services.teams, item) }
             }
-            .buttonStyle(.bordered)
+            .buttonStyle(CapoSecondaryButtonStyle())
+            .foregroundStyle(CapoTheme.destructive)
           }
           .disabled(model.isBusy)
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, 6)
+        .capoRowBackground()
       }
     }
+    .capoList()
     .overlay {
       if model.loaded && model.items.isEmpty {
         EmptyStateView(

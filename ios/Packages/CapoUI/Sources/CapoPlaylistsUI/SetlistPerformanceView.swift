@@ -296,30 +296,17 @@ public struct SetlistPerformanceView: View {
   }
 }
 
-/// Copy specific to the setlist run.
-// TODO(i18n): move to the shared catalog (`ios.setlist.*`).
+/// Copy specific to the setlist run; wrappers over the generated `L10n.Ios.Setlist`.
 enum SetlistStrings {
   static func savedOnDevice(_ device: String) -> String {
-    String(
-      localized: "ios.setlist.savedOnDevice",
-      defaultValue: "Saved on this \(device) · screen stays on")
+    L10n.Ios.Setlist.savedOnDevice(device: device)
   }
-  static var next: String { String(localized: "ios.setlist.next", defaultValue: "Next") }
-  static var end: String { String(localized: "ios.setlist.end", defaultValue: "End") }
-  static var finish: String { String(localized: "ios.setlist.finish", defaultValue: "Finish setlist") }
-  static var previous: String {
-    String(localized: "ios.setlist.previous", defaultValue: "Previous song")
-  }
-  static func previousSong(_ title: String) -> String {
-    String(localized: "ios.setlist.previousSong", defaultValue: "Previous song: \(title)")
-  }
-  static var bpm: String { String(localized: "ios.setlist.bpm", defaultValue: "BPM") }
-  static var changeHint: String {
-    String(
-      localized: "ios.setlist.changeHint",
-      defaultValue: "Swipe, tap the buttons, or use your pedal to change song")
-  }
-  static var enterFullscreen: String {
-    String(localized: "ios.setlist.enterFullscreen", defaultValue: "Enter full screen")
-  }
+  static var next: String { L10n.Ios.Setlist.nextLabel }
+  static var end: String { L10n.Ios.Setlist.end }
+  static var finish: String { L10n.Ios.Setlist.finish }
+  static var previous: String { L10n.Ios.Setlist.previous }
+  static func previousSong(_ title: String) -> String { L10n.Ios.Setlist.previousSong(title: title) }
+  static var bpm: String { L10n.Ios.Setlist.bpm }
+  static var changeHint: String { L10n.Ios.Setlist.changeHint }
+  static var enterFullscreen: String { L10n.Ios.Setlist.enterFullscreen }
 }

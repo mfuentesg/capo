@@ -32,6 +32,7 @@ public struct PlaylistDetailView: View {
                 SetlistSongRow(index: index, song: song)
               }
               .buttonStyle(.plain)
+              .capoCardRow()
             }
             .onMove { move(from: $0, to: $1) }
             .onDelete { delete(at: $0) }
@@ -41,6 +42,7 @@ public struct PlaylistDetailView: View {
             header(detail.playlist)
           }
         }
+        .capoList()
         .overlay {
           if songs.isEmpty {
             EmptyStateView(
@@ -91,7 +93,7 @@ public struct PlaylistDetailView: View {
       if let date = PlaylistDate.display(playlist.date) { Text(date) }
       if let text = playlist.description, !text.isEmpty { Text(text) }
     }
-    .font(.subheadline).textCase(nil)
+    .font(.subheadline).foregroundStyle(CapoTheme.subtext).textCase(nil)
   }
 
   @ToolbarContentBuilder private func toolbar(_ detail: PlaylistDetail) -> some ToolbarContent {
@@ -169,22 +171,21 @@ struct SetlistSongRow: View {
 
   var body: some View {
     HStack(spacing: 12) {
-      Text("\(index + 1)").font(.subheadline.monospacedDigit()).foregroundStyle(.secondary)
+      Text("\(index + 1)").font(.subheadline.monospacedDigit().weight(.semibold))
+        .foregroundStyle(CapoTheme.subtext)
         .frame(minWidth: 24)
       VStack(alignment: .leading, spacing: 2) {
-        Text(song.title).font(.headline).lineLimit(1)
+        Text(song.title).font(.headline).foregroundStyle(CapoTheme.text).lineLimit(1)
         if let artist = song.artist, !artist.isEmpty {
-          Text(artist).font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
+          Text(artist).font(.subheadline).foregroundStyle(CapoTheme.subtext).lineLimit(1)
         }
       }
       Spacer(minLength: 8)
       if let key = song.key, !key.isEmpty {
-        Text(key).font(.subheadline.weight(.semibold).monospaced())
-          .padding(.horizontal, 8).padding(.vertical, 2)
-          .background(.quaternary, in: RoundedRectangle(cornerRadius: 6))
+        KeyBadge(key)
       }
     }
-    .frame(minHeight: 52)
+    .frame(minHeight: 56)
     .contentShape(Rectangle())
   }
 }
@@ -203,18 +204,20 @@ struct ShareSheetView: View {
         if let url {
           Text(url.absoluteString).font(.callout).textSelection(.enabled).multilineTextAlignment(.center)
           ShareLink(item: url) { Label(PlaylistStrings.share, systemImage: "square.and.arrow.up") }
-            .buttonStyle(.borderedProminent)
+            .buttonStyle(CapoPrimaryButtonStyle())
           Button(PlaylistStrings.copyLink, systemImage: "doc.on.doc") {
             UIPasteboard.general.url = url
           }
         } else if let errorText {
-          Text(errorText).foregroundStyle(.red)
+          Text(errorText).foregroundStyle(CapoTheme.destructive)
         } else {
           ProgressView()
         }
       }
       .padding()
       .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .background(CapoTheme.background)
+      .tint(CapoTheme.primary)
       .navigationTitle(PlaylistStrings.share)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {

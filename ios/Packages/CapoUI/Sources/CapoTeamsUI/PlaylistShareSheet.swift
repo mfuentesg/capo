@@ -18,9 +18,9 @@ public struct PlaylistShareSheet: View {
         if let url = model.url {
           Text(url.absoluteString).font(.callout.monospaced()).textSelection(.enabled)
             .multilineTextAlignment(.center)
-          Text(TeamsStrings.shareHint).font(.footnote).foregroundStyle(.secondary)
+          Text(TeamsStrings.shareHint).font(.footnote).foregroundStyle(CapoTheme.subtext)
           ShareLink(item: url) { Label(TeamsStrings.shareLink, systemImage: "square.and.arrow.up") }
-            .buttonStyle(.borderedProminent)
+            .buttonStyle(CapoPrimaryButtonStyle())
         } else if model.isOffline {
           Label(TeamsStrings.offline, systemImage: "wifi.slash").foregroundStyle(.secondary)
           Button(TeamsStrings.retry) { Task { await load() } }
@@ -31,6 +31,9 @@ public struct PlaylistShareSheet: View {
         }
       }
       .padding()
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .background(CapoTheme.background)
+      .tint(CapoTheme.primary)
       .navigationTitle(TeamsStrings.shareTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {

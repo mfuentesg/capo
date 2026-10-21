@@ -26,14 +26,19 @@ struct PlaylistFormView: View {
           TextField(PlaylistStrings.descriptionLabel, text: $details, axis: .vertical)
             .lineLimit(1...4)
         }
+        .listRowBackground(CapoTheme.card)
         Section {
-          Toggle(PlaylistStrings.hasDate, isOn: $hasDate)
+          Toggle(PlaylistStrings.hasDate, isOn: $hasDate).tint(CapoTheme.primary)
           if hasDate {
             DatePicker(PlaylistStrings.date, selection: $date, displayedComponents: .date)
           }
         }
-        if let errorText { Text(errorText).font(.footnote).foregroundStyle(.red) }
+        .listRowBackground(CapoTheme.card)
+        if let errorText { Text(errorText).font(.footnote).foregroundStyle(CapoTheme.destructive) }
       }
+      .scrollContentBackground(.hidden)
+      .background(CapoTheme.background)
+      .tint(CapoTheme.primary)
       .navigationTitle(isCreate ? PlaylistStrings.newSetlist : PlaylistStrings.editDetails)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
@@ -42,6 +47,7 @@ struct PlaylistFormView: View {
         }
         ToolbarItem(placement: .confirmationAction) {
           Button(isCreate ? PlaylistStrings.create : PlaylistStrings.save, action: save)
+            .font(.body.weight(.bold))
             .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
         }
       }

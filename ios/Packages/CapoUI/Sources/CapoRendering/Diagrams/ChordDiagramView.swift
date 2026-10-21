@@ -5,10 +5,13 @@ import SwiftUI
 public struct FretboardView: View {
   let position: ChordPosition
   let layout: FretboardLayout
+  let accent: Color?
 
-  public init(position: ChordPosition) {
+  /// `accent` colours the finger dots and barres (the stage uses the chord mauve).
+  public init(position: ChordPosition, accent: Color? = nil) {
     self.position = position
     layout = FretboardLayout(position: position)
+    self.accent = accent
   }
 
   public var body: some View {
@@ -17,7 +20,7 @@ public struct FretboardView: View {
       let left: CGFloat = layout.fretLabel == nil ? 8 : 28
       let board = CGRect(
         x: left, y: marker + 6, width: size.width - left - 8, height: size.height - marker - 12)
-      let ink = Color.primary
+      let ink = CapoTheme.text
       var lines = Path()
       for string in 0..<layout.stringCount {
         let x = board.minX + layout.stringX(string, width: board.width)
@@ -29,26 +32,27 @@ public struct FretboardView: View {
         lines.move(to: CGPoint(x: board.minX, y: y))
         lines.addLine(to: CGPoint(x: board.maxX, y: y))
       }
-      context.stroke(lines, with: .color(ink.opacity(0.45)), lineWidth: 1)
+      context.stroke(lines, with: .color(CapoTheme.subtext.opacity(0.7)), lineWidth: 1)
       if layout.baseFret == 1 {
         context.fill(
           Path(CGRect(x: board.minX, y: board.minY - 2, width: board.width, height: 4)),
           with: .color(ink))
       }
+      let fingers = accent ?? ink
       let radius = min(board.width / CGFloat(max(layout.stringCount - 1, 1)) * 0.36, 11)
       for barre in layout.barres {
         let y = board.minY + layout.rowY(barre.row, height: board.height)
         let x1 = board.minX + layout.stringX(barre.fromString, width: board.width)
         let x2 = board.minX + layout.stringX(barre.toString, width: board.width)
         let rect = CGRect(x: x1 - radius, y: y - radius, width: x2 - x1 + radius * 2, height: radius * 2)
-        context.fill(Path(roundedRect: rect, cornerRadius: radius), with: .color(ink))
+        context.fill(Path(roundedRect: rect, cornerRadius: radius), with: .color(fingers))
       }
       for dot in layout.dots {
         let x = board.minX + layout.stringX(dot.string, width: board.width)
         let y = board.minY + layout.rowY(dot.row, height: board.height)
         context.fill(
           Path(ellipseIn: CGRect(x: x - radius, y: y - radius, width: radius * 2, height: radius * 2)),
-          with: .color(ink))
+          with: .color(fingers))
       }
       for string in layout.openStrings {
         let x = board.minX + layout.stringX(string, width: board.width)
@@ -67,7 +71,7 @@ public struct FretboardView: View {
       }
       if let label = layout.fretLabel {
         context.draw(
-          Text("\(label)").font(.caption.monospacedDigit()).foregroundStyle(.secondary),
+          Text("\(label)").font(.caption.monospacedDigit()).foregroundStyle(CapoTheme.subtext),
           at: CGPoint(x: board.minX - 14, y: board.minY + layout.rowY(0, height: board.height)))
       }
     }
@@ -95,18 +99,19 @@ public struct ChordDiagramView: View {
 
   public var body: some View {
     let positions = positions
-    VStack(spacing: 12) {
-      Text(chordName).font(.title2.weight(.semibold))
-      Picker(ChordDiagramStrings.instrument, selection: $instrument) {
-        Text(ChordDiagramStrings.guitar).tag(ChordInstrument.guitar)
-        Text(ChordDiagramStrings.ukulele).tag(ChordInstrument.ukulele)
+    VStack(spacing: 14) {
+      HStack {
+        Text(chordName)
+          .font(.system(size: 28, weight: .bold))
+          .foregroundStyle(CapoTheme.chord)
+        Spacer()
+        instrumentSwitch
       }
-      .pickerStyle(.segmented)
       if positions.isEmpty {
-        Text(L10n.Chords.notFound).foregroundStyle(.secondary).padding(.vertical, 24)
+        Text(L10n.Chords.notFound).foregroundStyle(CapoTheme.subtext).padding(.vertical, 24)
       } else {
         let current = positions[min(index, positions.count - 1)]
-        FretboardView(position: current)
+        FretboardView(position: current, accent: CapoTheme.chord)
           .frame(maxWidth: 200)
           .accessibilityElement(children: .ignore)
           .accessibilityLabel(
@@ -115,23 +120,67 @@ public struct ChordDiagramView: View {
                 of: current, muted: ChordDiagramStrings.muted, open: ChordDiagramStrings.open)
           )
         HStack {
-          Button(ChordDiagramStrings.previous, systemImage: "chevron.left") { step(-1, count: positions.count) }
-            .labelStyle(.iconOnly)
-            .frame(minWidth: 44, minHeight: 44)
-            .disabled(positions.count < 2)
+          pagerButton("chevron.left", ChordDiagramStrings.previous, count: positions.count) {
+            step(-1, count: positions.count)
+          }
+          Spacer()
           Text(ChordDiagramStrings.position(min(index, positions.count - 1) + 1, of: positions.count))
-            .font(.subheadline.monospacedDigit())
-            .foregroundStyle(.secondary)
-          Button(ChordDiagramStrings.next, systemImage: "chevron.right") { step(1, count: positions.count) }
-            .labelStyle(.iconOnly)
-            .frame(minWidth: 44, minHeight: 44)
-            .disabled(positions.count < 2)
+            .font(.system(size: 14, weight: .semibold).monospacedDigit())
+            .foregroundStyle(CapoTheme.subtext)
+          Spacer()
+          pagerButton("chevron.right", ChordDiagramStrings.next, count: positions.count) {
+            step(1, count: positions.count)
+          }
         }
       }
     }
     .padding(20)
     .onChange(of: instrument) { index = 0 }
     .onChange(of: chordName) { index = 0 }
+  }
+
+  /// Guitar / Ukulele pill switch on the dark inset.
+  private var instrumentSwitch: some View {
+    HStack(spacing: 0) {
+      ForEach([ChordInstrument.guitar, .ukulele], id: \.self) { option in
+        Button {
+          instrument = option
+        } label: {
+          Text(option == .guitar ? ChordDiagramStrings.guitar : ChordDiagramStrings.ukulele)
+            .font(.system(size: 14, weight: .semibold))
+            .foregroundStyle(instrument == option ? CapoTheme.text : CapoTheme.subtext)
+            .padding(.horizontal, 12)
+            .frame(minHeight: 44)
+            .background(
+              instrument == option ? CapoTheme.surfaceStrong : Color.clear,
+              in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(instrument == option ? .isSelected : [])
+      }
+    }
+    .padding(3)
+    .background(CapoTheme.background, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
+    .accessibilityElement(children: .contain)
+    .accessibilityLabel(ChordDiagramStrings.instrument)
+  }
+
+  private func pagerButton(
+    _ symbol: String, _ label: String, count: Int, action: @escaping () -> Void
+  ) -> some View {
+    Button(action: action) {
+      Image(systemName: symbol)
+        .font(.system(size: 16, weight: .bold))
+        .foregroundStyle(CapoTheme.text)
+        .frame(width: 56, height: 44)
+        .background(CapoTheme.surfaceStrong, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .contentShape(Rectangle())
+    }
+    .buttonStyle(.plain)
+    .opacity(count < 2 ? 0.35 : 1)
+    .disabled(count < 2)
+    .accessibilityLabel(label)
   }
 
   private func step(_ delta: Int, count: Int) {

@@ -18,7 +18,7 @@ struct RenderContext {
 }
 
 enum RenderPalette {
-  static let chord = OKLCH.dynamic(light: OKLCH(0.495, 0.265, 295), dark: OKLCH(0.749, 0.16, 298))
+  static let chord = CapoTheme.chord
   static let comment = OKLCH.dynamic(light: OKLCH(0.55, 0.12, 195), dark: OKLCH(0.68, 0.12, 195))
   static let note = OKLCH.dynamic(light: OKLCH(0.58, 0.13, 65), dark: OKLCH(0.78, 0.12, 65))
 }
@@ -188,8 +188,12 @@ struct PairColumn: View {
       .font(CapoFont.chord(scale: context.style.fontScale))
       .foregroundStyle(context.chordColor)
       .fixedSize()
-      .padding(.horizontal, 3)
-      .background(context.chordColor.opacity(0.12), in: RoundedRectangle(cornerRadius: 3))
+      .padding(.horizontal, context.pointSize * 0.28)
+      .padding(.vertical, 1)
+      .background(
+        context.chordColor.opacity(0.14),
+        in: RoundedRectangle(cornerRadius: context.pointSize * 0.26, style: .continuous)
+      )
       .padding(.horizontal, 1)
       .contentShape(Rectangle())
       .onTapGesture { context.onChordTap?(pair.chord) }
@@ -248,8 +252,6 @@ struct SegmentView: View {
   let isCollapsed: Bool
   let onToggle: (() -> Void)?
 
-  @Environment(\.colorScheme) private var colorScheme
-
   var body: some View {
     switch segment {
     case .normal(let body):
@@ -263,16 +265,16 @@ struct SegmentView: View {
         LineView(line: .label(name), context: context)
       } else {
         block(
-          title: Self.title(name, count), sectionType: sectionType, icon: nil, flags: flags,
+          title: name, count: count, sectionType: sectionType, icon: nil, flags: flags,
           body: body)
       }
     case .repeatRef(let name, let displayLabel, let count, let body, let found, let type, let flags):
       referenceBlock(
-        title: Self.title(displayLabel ?? name, count), found: found, sectionType: type,
+        title: displayLabel ?? name, count: count, found: found, sectionType: type,
         symbol: "repeat", flags: flags, body: body, accentType: found ? type : "repeat")
     case .extend(let name, let displayLabel, let count, let body, let found, let type, let flags):
       referenceBlock(
-        title: Self.title(displayLabel ?? name, count), found: found, sectionType: type,
+        title: displayLabel ?? name, count: count, found: found, sectionType: type,
         symbol: "square.3.layers.3d", flags: flags, body: body, accentType: found ? type : "repeat")
     }
   }
@@ -283,15 +285,17 @@ struct SegmentView: View {
 
   @ViewBuilder
   private func referenceBlock(
-    title: String, found: Bool, sectionType: String, symbol: String, flags: [SectionFlag],
-    body: SongBody, accentType: String
+    title: String, count: Int, found: Bool, sectionType: String, symbol: String,
+    flags: [SectionFlag], body: SongBody, accentType: String
   ) -> some View {
     if found {
-      block(title: title, sectionType: sectionType, icon: symbol, flags: flags, body: body)
+      block(
+        title: title, count: count, sectionType: sectionType, icon: symbol, flags: flags,
+        body: body)
     } else {
       let notFound = L10n.Chords.notFound
       SectionHeaderView(
-        title: "\(title) (\(notFound))", accent: SectionAccent.color(for: accentType),
+        title: "\(Self.title(title, count)) (\(notFound))", count: 0, accent: SectionAccent.color(for: accentType),
         icon: nil, flags: [], pointSize: context.pointSize, isCollapsed: false, onToggle: nil
       )
       .opacity(0.5)
@@ -299,23 +303,20 @@ struct SegmentView: View {
   }
 
   private func block(
-    title: String, sectionType: String, icon: String?, flags: [SectionFlag], body: SongBody
+    title: String, count: Int, sectionType: String, icon: String?, flags: [SectionFlag],
+    body: SongBody
   ) -> some View {
     let accent = SectionAccent.color(for: sectionType)
     return VStack(alignment: .leading, spacing: 0) {
       SectionHeaderView(
-        title: title, accent: accent, icon: icon, flags: flags, pointSize: context.pointSize,
+        title: title, count: count, accent: accent, icon: icon, flags: flags, pointSize: context.pointSize,
         isCollapsed: isCollapsed, onToggle: onToggle)
       if !isCollapsed {
         LinesView(lines: body.lines, context: context.inSection(accent))
-          .padding(.leading, 16)
-          .padding(.trailing, 16)
-          .padding(.top, 8)
-          .padding(.bottom, 10)
+          .padding(.leading, 14)
+          .padding(.top, 6)
+          .padding(.bottom, 4)
           .frame(maxWidth: .infinity, alignment: .leading)
-          .background(accent.opacity(colorScheme == .dark ? 0.12 : 0.06))
-          .clipShape(UnevenRoundedRectangle(bottomTrailingRadius: 10, topTrailingRadius: 10))
-          .overlay(alignment: .leading) { Rectangle().fill(accent).frame(width: 2) }
       }
     }
   }
@@ -323,6 +324,8 @@ struct SegmentView: View {
 
 struct SectionHeaderView: View {
   let title: String
+  /// Repeat count; shown as a "×N" badge from 2.
+  let count: Int
   let accent: Color
   let icon: String?
   let flags: [SectionFlag]
@@ -342,18 +345,26 @@ struct SectionHeaderView: View {
 
   private var row: some View {
     HStack(spacing: 10) {
+      RoundedRectangle(cornerRadius: 2, style: .continuous)
+        .fill(accent)
+        .frame(width: 4, height: max(20, pointSize * 0.8))
       if let icon {
         Image(systemName: icon).font(.system(size: 11)).foregroundStyle(accent)
-      } else {
-        Circle().fill(accent).frame(width: 6, height: 6)
-          .padding(2)
-          .background(accent.opacity(0.25), in: Circle())
       }
       Text(title.uppercased())
-        .font(.system(size: max(12, pointSize * 0.75), weight: .bold))
-        .tracking(max(12, pointSize * 0.75) * 0.18)
+        .font(.system(size: max(13, pointSize * 0.6), weight: .bold))
+        .tracking(max(13, pointSize * 0.6) * 0.08)
         .foregroundStyle(accent)
         .fixedSize(horizontal: false, vertical: true)
+      if count > 1 {
+        Text("×\(count)")
+          .font(.system(size: max(12, pointSize * 0.5), weight: .bold).monospacedDigit())
+          .foregroundStyle(CapoTheme.warning)
+          .padding(.horizontal, 9)
+          .frame(minHeight: 24)
+          .background(CapoTheme.warning.opacity(0.16), in: Capsule())
+          .accessibilityLabel("× \(count)")
+      }
       ForEach(flags.filter { $0 != .inline && $0 != .label }, id: \.self) { FlagBadge($0) }
       Spacer(minLength: 0)
       if onToggle != nil {

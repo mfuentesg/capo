@@ -12,7 +12,7 @@ struct LivePreviewPanel: View {
     VStack(alignment: .leading, spacing: 14) {
       HStack {
         Text(EditorStrings.livePreview.uppercased())
-          .font(.system(size: 13, weight: .bold))
+          .font(CapoFont.ui(13, weight: .bold))
           .tracking(1)
           .foregroundStyle(CapoTheme.subtext)
         Spacer()
@@ -53,7 +53,7 @@ struct LivePreviewPanel: View {
   private func segment(_ title: String, selected: Bool, action: @escaping () -> Void) -> some View {
     Button(action: action) {
       Text(title)
-        .font(.system(size: 14, weight: .semibold))
+        .font(CapoFont.ui(14, weight: .semibold))
         .foregroundStyle(selected ? CapoTheme.text : CapoTheme.subtext)
         .padding(.horizontal, 14).frame(minHeight: 36)
         .background(

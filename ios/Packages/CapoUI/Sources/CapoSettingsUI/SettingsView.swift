@@ -65,13 +65,13 @@ public struct SettingsView: View {
       HStack(spacing: 12) {
         avatar
         VStack(alignment: .leading, spacing: 2) {
-          Text(context.fullName ?? context.email ?? "—").font(.headline).foregroundStyle(CapoTheme.text)
+          Text(context.fullName ?? context.email ?? "—").font(CapoFont.style(.headline)).foregroundStyle(CapoTheme.text)
           if context.fullName != nil, let email = context.email {
-            Text(email).font(.subheadline).foregroundStyle(CapoTheme.subtext)
+            Text(email).font(CapoFont.style(.subheadline)).foregroundStyle(CapoTheme.subtext)
           }
           if let provider = context.provider {
             Text(L10n.Settings.connectedVia(provider: provider.capitalized))
-              .font(.caption).foregroundStyle(CapoTheme.subtext)
+              .font(CapoFont.style(.caption)).foregroundStyle(CapoTheme.subtext)
           }
         }
       }
@@ -165,7 +165,7 @@ public struct SettingsView: View {
         }
         if let url = context.serverURL {
           LabeledContent(L10n.Ios.Server.url) {
-            Text(url.absoluteString).font(.footnote).foregroundStyle(CapoTheme.subtext).textSelection(.enabled)
+            Text(url.absoluteString).font(CapoFont.style(.footnote)).foregroundStyle(CapoTheme.subtext).textSelection(.enabled)
           }
         }
       }

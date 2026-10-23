@@ -93,7 +93,7 @@ public struct PlaylistDetailView: View {
       if let date = PlaylistDate.display(playlist.date) { Text(date) }
       if let text = playlist.description, !text.isEmpty { Text(text) }
     }
-    .font(.subheadline).foregroundStyle(CapoTheme.subtext).textCase(nil)
+    .font(CapoFont.style(.subheadline)).foregroundStyle(CapoTheme.subtext).textCase(nil)
   }
 
   @ToolbarContentBuilder private func toolbar(_ detail: PlaylistDetail) -> some ToolbarContent {
@@ -171,13 +171,13 @@ struct SetlistSongRow: View {
 
   var body: some View {
     HStack(spacing: 12) {
-      Text("\(index + 1)").font(.subheadline.monospacedDigit().weight(.semibold))
+      Text("\(index + 1)").font(CapoFont.style(.subheadline, weight: .semibold).monospacedDigit())
         .foregroundStyle(CapoTheme.subtext)
         .frame(minWidth: 24)
       VStack(alignment: .leading, spacing: 2) {
-        Text(song.title).font(.headline).foregroundStyle(CapoTheme.text).lineLimit(1)
+        Text(song.title).font(CapoFont.style(.headline)).foregroundStyle(CapoTheme.text).lineLimit(1)
         if let artist = song.artist, !artist.isEmpty {
-          Text(artist).font(.subheadline).foregroundStyle(CapoTheme.subtext).lineLimit(1)
+          Text(artist).font(CapoFont.style(.subheadline)).foregroundStyle(CapoTheme.subtext).lineLimit(1)
         }
       }
       Spacer(minLength: 8)
@@ -202,7 +202,7 @@ struct ShareSheetView: View {
     NavigationStack {
       VStack(spacing: 20) {
         if let url {
-          Text(url.absoluteString).font(.callout).textSelection(.enabled).multilineTextAlignment(.center)
+          Text(url.absoluteString).font(CapoFont.style(.callout)).textSelection(.enabled).multilineTextAlignment(.center)
           ShareLink(item: url) { Label(PlaylistStrings.share, systemImage: "square.and.arrow.up") }
             .buttonStyle(CapoPrimaryButtonStyle())
           Button(PlaylistStrings.copyLink, systemImage: "doc.on.doc") {

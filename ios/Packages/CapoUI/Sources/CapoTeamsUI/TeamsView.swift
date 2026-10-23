@@ -56,8 +56,8 @@ struct TeamRowView: View {
 
   var body: some View {
     HStack(spacing: 12) {
-      Text(item.team.icon ?? "👥").font(.title2).frame(width: 36)
-      Text(item.team.name).font(.headline).foregroundStyle(CapoTheme.text).lineLimit(1)
+      Text(item.team.icon ?? "👥").font(CapoFont.style(.title2)).frame(width: 36)
+      Text(item.team.name).font(CapoFont.style(.headline)).foregroundStyle(CapoTheme.text).lineLimit(1)
       Spacer(minLength: 8)
       RoleBadge(role: item.role)
     }
@@ -69,7 +69,7 @@ struct TeamRowView: View {
 struct OfflineBanner: View {
   var body: some View {
     Label(TeamsStrings.offline, systemImage: "wifi.slash")
-      .font(.subheadline)
+      .font(CapoFont.style(.subheadline))
       .foregroundStyle(CapoTheme.subtext)
       .listRowBackground(Color.clear)
   }
@@ -104,7 +104,7 @@ struct CreateTeamSheet: View {
           Button(L10n.Teams.createTeam) {
             Task { if await model.create(services.teams, name: name, icon: icon) { dismiss() } }
           }
-          .font(.body.weight(.bold))
+          .font(CapoFont.style(.body, weight: .bold))
           .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty || model.isBusy)
         }
       }

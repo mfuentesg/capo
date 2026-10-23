@@ -30,6 +30,7 @@ struct MainShellView: View {
     .task { await model.observeTeams() }
     .task { await model.observeSync() }
     .task { await model.observeConflicts() }
+    .task(id: model.context) { await model.observeSongCount() }
     .task { await model.observePreferences() }
     .onChange(of: scenePhase) { _, phase in
       if phase == .active { model.syncNow(.foreground) }
@@ -442,7 +443,7 @@ private struct SidebarView: View {
             .font(CapoFont.ui(20))
             .frame(width: 28)
             .foregroundStyle(selected ? CapoTheme.primary : CapoTheme.subtext)
-          Text(title(item)).font(.body.weight(selected ? .semibold : .medium))
+          Text(title(item)).font(CapoFont.style(.body, weight: selected ? .semibold : .medium))
           Spacer(minLength: 0)
           badgeView(badge)
         }
@@ -487,10 +488,12 @@ private struct SidebarView: View {
           VStack(alignment: .leading, spacing: 2) {
             Text(SyncStatusBadge.label(for: status))
               .font(CapoFont.style(.subheadline, weight: .semibold)).foregroundStyle(CapoTheme.text)
-            if status.pendingOperations > 0 {
-              Text("\(status.pendingOperations)")
-                .font(.caption.monospacedDigit()).foregroundStyle(CapoTheme.subtext)
-            }
+            Text(status.pendingOperations > 0
+              ? L10n.Ios.Sync.pendingChanges(count: String(status.pendingOperations))
+              : L10n.Ios.Shell.songsSaved(
+                count: String(model.songCount),
+                device: UIDevice.current.userInterfaceIdiom == .pad ? "iPad" : "iPhone"))
+              .font(CapoFont.style(.caption).monospacedDigit()).foregroundStyle(CapoTheme.subtext)
           }
           Spacer(minLength: 0)
         }

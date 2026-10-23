@@ -32,7 +32,7 @@ struct RoleBadge: View {
 
   var body: some View {
     Text(TeamsStrings.roleName(role))
-      .font(.system(size: 13, weight: .semibold))
+      .font(CapoFont.ui(13, weight: .semibold))
       .foregroundStyle(color)
       .padding(.horizontal, 10).frame(minHeight: 28)
       .background(color.opacity(0.16), in: Capsule())

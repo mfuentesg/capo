@@ -71,7 +71,7 @@ public struct FretboardView: View {
       }
       if let label = layout.fretLabel {
         context.draw(
-          Text("\(label)").font(.caption.monospacedDigit()).foregroundStyle(CapoTheme.subtext),
+          Text("\(label)").font(CapoFont.style(.caption).monospacedDigit()).foregroundStyle(CapoTheme.subtext),
           at: CGPoint(x: board.minX - 14, y: board.minY + layout.rowY(0, height: board.height)))
       }
     }
@@ -102,7 +102,7 @@ public struct ChordDiagramView: View {
     VStack(spacing: 14) {
       HStack {
         Text(chordName)
-          .font(.system(size: 28, weight: .bold))
+          .font(CapoFont.ui(28, weight: .bold))
           .foregroundStyle(CapoTheme.chord)
         Spacer()
         instrumentSwitch
@@ -125,7 +125,7 @@ public struct ChordDiagramView: View {
           }
           Spacer()
           Text(ChordDiagramStrings.position(min(index, positions.count - 1) + 1, of: positions.count))
-            .font(.system(size: 14, weight: .semibold).monospacedDigit())
+            .font(CapoFont.ui(14, weight: .semibold).monospacedDigit())
             .foregroundStyle(CapoTheme.subtext)
           Spacer()
           pagerButton("chevron.right", ChordDiagramStrings.next, count: positions.count) {
@@ -147,7 +147,7 @@ public struct ChordDiagramView: View {
           instrument = option
         } label: {
           Text(option == .guitar ? ChordDiagramStrings.guitar : ChordDiagramStrings.ukulele)
-            .font(.system(size: 14, weight: .semibold))
+            .font(CapoFont.ui(14, weight: .semibold))
             .foregroundStyle(instrument == option ? CapoTheme.text : CapoTheme.subtext)
             .padding(.horizontal, 12)
             .frame(minHeight: 44)
@@ -171,7 +171,7 @@ public struct ChordDiagramView: View {
   ) -> some View {
     Button(action: action) {
       Image(systemName: symbol)
-        .font(.system(size: 16, weight: .bold))
+        .font(CapoFont.ui(16, weight: .bold))
         .foregroundStyle(CapoTheme.text)
         .frame(width: 56, height: 44)
         .background(CapoTheme.surfaceStrong, in: RoundedRectangle(cornerRadius: 12, style: .continuous))

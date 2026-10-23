@@ -153,7 +153,7 @@ public struct SyncStatusBadge: View {
         .symbolEffect(.pulse, isActive: status.phase == .pushing || status.phase == .pulling)
       if status.pendingOperations > 0 {
         Text("\(status.pendingOperations)")
-          .font(.caption2.monospacedDigit().weight(.semibold))
+          .font(CapoFont.style(.caption2, weight: .semibold).monospacedDigit())
           .foregroundStyle(.secondary)
       }
     }

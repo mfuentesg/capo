@@ -13,9 +13,9 @@ public struct ExternalDisplayView: View {
     Group {
       if let snapshot = performance.snapshot {
         VStack(alignment: .leading, spacing: 16) {
-          Text(snapshot.title).font(.system(size: 56, weight: .bold)).lineLimit(1)
+          Text(snapshot.title).font(CapoFont.ui(56, weight: .bold)).lineLimit(1)
           if let subtitle = snapshot.subtitle {
-            Text(subtitle).font(.system(size: 28)).foregroundStyle(.secondary).lineLimit(1)
+            Text(subtitle).font(CapoFont.ui(28)).foregroundStyle(.secondary).lineLimit(1)
           }
           ChordProContentView(rendered: snapshot.rendered, style: style(snapshot))
           Spacer(minLength: 0)
@@ -23,7 +23,7 @@ public struct ExternalDisplayView: View {
         .padding(48)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
       } else {
-        Image(systemName: "music.note").font(.system(size: 120)).foregroundStyle(.secondary)
+        Image(systemName: "music.note").font(CapoFont.ui(120)).foregroundStyle(.secondary)
       }
     }
     .background(Color(uiColor: .systemBackground))

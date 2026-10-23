@@ -88,14 +88,14 @@ private struct ConflictCard: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: 12) {
-      Text(conflict.local.title).font(.headline)
+      Text(conflict.local.title).font(CapoFont.style(.headline))
       if conflict.server == nil {
         Label(EditorStrings.deletedRemotely, systemImage: "trash")
-          .font(.subheadline).foregroundStyle(.orange)
+          .font(CapoFont.style(.subheadline)).foregroundStyle(.orange)
       }
       HStack(alignment: .top, spacing: 12) {
-        Text(EditorStrings.mine).font(.caption.weight(.semibold)).frame(maxWidth: .infinity, alignment: .leading)
-        Text(EditorStrings.theirs).font(.caption.weight(.semibold)).frame(maxWidth: .infinity, alignment: .leading)
+        Text(EditorStrings.mine).font(CapoFont.style(.caption, weight: .semibold)).frame(maxWidth: .infinity, alignment: .leading)
+        Text(EditorStrings.theirs).font(CapoFont.style(.caption, weight: .semibold)).frame(maxWidth: .infinity, alignment: .leading)
       }
       .foregroundStyle(.secondary)
       ForEach(ConflictComparison.fields(local: conflict.local, server: conflict.server)) { field in
@@ -121,9 +121,9 @@ private struct ConflictCard: View {
   private func fieldRow(_ field: ConflictField) -> some View {
     VStack(alignment: .leading, spacing: 4) {
       HStack {
-        Text(field.label).font(.caption).foregroundStyle(.secondary)
+        Text(field.label).font(CapoFont.style(.caption)).foregroundStyle(.secondary)
         if field.differs {
-          Text(EditorStrings.differs).font(.caption2.weight(.bold)).foregroundStyle(.orange)
+          Text(EditorStrings.differs).font(CapoFont.style(.caption2, weight: .bold)).foregroundStyle(.orange)
         }
       }
       HStack(alignment: .top, spacing: 12) {

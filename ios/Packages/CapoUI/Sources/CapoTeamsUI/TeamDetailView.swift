@@ -135,7 +135,7 @@ struct TeamDetailView: View {
         Button(L10n.Teams.leaveTeam, role: .destructive) { confirm = .leave }
           .frame(minHeight: 48).capoRowBackground()
       } else {
-        Text(L10n.Teams.leaveAsOwner).font(.footnote).foregroundStyle(CapoTheme.subtext)
+        Text(L10n.Teams.leaveAsOwner).font(CapoFont.style(.footnote)).foregroundStyle(CapoTheme.subtext)
           .capoRowBackground()
       }
       if permissions.canDeleteTeam {
@@ -189,9 +189,9 @@ struct MemberRow: View {
   var body: some View {
     HStack {
       VStack(alignment: .leading, spacing: 2) {
-        Text(name).font(.headline).foregroundStyle(CapoTheme.text).lineLimit(1)
+        Text(name).font(CapoFont.style(.headline)).foregroundStyle(CapoTheme.text).lineLimit(1)
         if let email, email != name {
-          Text(email).font(.caption).foregroundStyle(CapoTheme.subtext).lineLimit(1)
+          Text(email).font(CapoFont.style(.caption)).foregroundStyle(CapoTheme.subtext).lineLimit(1)
         }
       }
       Spacer(minLength: 8)
@@ -238,7 +238,7 @@ struct InviteSheet: View {
               }
             }
           }
-          .font(.body.weight(.bold))
+          .font(CapoFont.style(.body, weight: .bold))
           .disabled(!email.contains("@") || model.isBusy)
         }
       }

@@ -99,12 +99,12 @@ struct PlaylistRow: View {
   var body: some View {
     HStack(spacing: 8) {
       VStack(alignment: .leading, spacing: 4) {
-        Text(summary.playlist.name).font(.headline).foregroundStyle(CapoTheme.text).lineLimit(1)
+        Text(summary.playlist.name).font(CapoFont.style(.headline)).foregroundStyle(CapoTheme.text).lineLimit(1)
         HStack(spacing: 6) {
           if let date = PlaylistDate.display(summary.playlist.date) { Text(date) }
           Text(PlaylistStrings.songCount(summary.songCount))
         }
-        .font(.subheadline).foregroundStyle(CapoTheme.subtext)
+        .font(CapoFont.style(.subheadline)).foregroundStyle(CapoTheme.subtext)
       }
       Spacer(minLength: 8)
       if summary.isPinned {

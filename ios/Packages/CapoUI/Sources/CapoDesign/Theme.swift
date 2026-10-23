@@ -66,7 +66,7 @@ public struct CapoPrimaryButtonStyle: ButtonStyle {
   public init() {}
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .font(.body.weight(.semibold))
+      .font(CapoFont.style(.body, weight: .semibold))
       .foregroundStyle(CapoTheme.onPrimary)
       .padding(.horizontal, 18)
       .frame(minHeight: CapoMetrics.minTouchTarget)
@@ -81,7 +81,7 @@ public struct CapoSecondaryButtonStyle: ButtonStyle {
   public init() {}
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .font(.body.weight(.medium))
+      .font(CapoFont.style(.body, weight: .medium))
       .foregroundStyle(CapoTheme.text)
       .padding(.horizontal, 18)
       .frame(minHeight: CapoMetrics.minTouchTarget)

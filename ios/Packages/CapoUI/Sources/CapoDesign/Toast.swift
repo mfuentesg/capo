@@ -10,7 +10,7 @@ private struct ToastModifier: ViewModifier {
       .overlay(alignment: .bottom) {
         if let message {
           Label(message, systemImage: "exclamationmark.triangle.fill")
-            .font(.subheadline.weight(.medium))
+            .font(CapoFont.style(.subheadline, weight: .medium))
             .foregroundStyle(.white)
             .padding(.horizontal, 16)
             .padding(.vertical, 12)

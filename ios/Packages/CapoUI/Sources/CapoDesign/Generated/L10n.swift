@@ -502,6 +502,8 @@ public nonisolated enum L10n {
       public static var cancel: String { String(localized: "ios.editor.cancel", bundle: .module) }
       /// Capo
       public static var capo: String { String(localized: "ios.editor.capo", bundle: .module) }
+      /// Chords
+      public static var chordsMode: String { String(localized: "ios.editor.chordsMode", bundle: .module) }
       /// Comment
       public static var comment: String { String(localized: "ios.editor.comment", bundle: .module) }
       /// Delete song
@@ -510,6 +512,8 @@ public nonisolated enum L10n {
       public static var deleteConfirmMessage: String { String(localized: "ios.editor.deleteConfirmMessage", bundle: .module) }
       /// Delete this song?
       public static var deleteConfirmTitle: String { String(localized: "ios.editor.deleteConfirmTitle", bundle: .module) }
+      /// Delete song
+      public static var deleteSong: String { String(localized: "ios.editor.deleteSong", bundle: .module) }
       /// Details
       public static var details: String { String(localized: "ios.editor.details", bundle: .module) }
       /// Discard
@@ -522,14 +526,20 @@ public nonisolated enum L10n {
       public static var edit: String { String(localized: "ios.editor.edit", bundle: .module) }
       /// Edit song
       public static var editSong: String { String(localized: "ios.editor.editSong", bundle: .module) }
+      /// Hide preview
+      public static var hidePreview: String { String(localized: "ios.editor.hidePreview", bundle: .module) }
       /// Insert directive
       public static var insertDirective: String { String(localized: "ios.editor.insertDirective", bundle: .module) }
       /// Keep editing
       public static var keepEditing: String { String(localized: "ios.editor.keepEditing", bundle: .module) }
       /// Key
       public static var key: String { String(localized: "ios.editor.key", bundle: .module) }
+      /// Live preview
+      public static var livePreview: String { String(localized: "ios.editor.livePreview", bundle: .module) }
       /// Lyrics (ChordPro)
       public static var lyrics: String { String(localized: "ios.editor.lyrics", bundle: .module) }
+      /// Transpose & notes
+      public static var moreOptions: String { String(localized: "ios.editor.moreOptions", bundle: .module) }
       /// New song
       public static var newSong: String { String(localized: "ios.editor.newSong", bundle: .module) }
       /// None
@@ -540,10 +550,16 @@ public nonisolated enum L10n {
       public static var notes: String { String(localized: "ios.editor.notes", bundle: .module) }
       /// Preview
       public static var preview: String { String(localized: "ios.editor.preview", bundle: .module) }
+      /// Resize preview
+      public static var resizePreview: String { String(localized: "ios.editor.resizePreview", bundle: .module) }
       /// Save
       public static var save: String { String(localized: "ios.editor.save", bundle: .module) }
       /// Couldn't save the song
       public static var saveFailed: String { String(localized: "ios.editor.saveFailed", bundle: .module) }
+      /// Saved on this device · will sync when online
+      public static var savedLocally: String { String(localized: "ios.editor.savedLocally", bundle: .module) }
+      /// Show preview
+      public static var showPreview: String { String(localized: "ios.editor.showPreview", bundle: .module) }
       /// Title
       public static var title: String { String(localized: "ios.editor.title", bundle: .module) }
       /// A title is required
@@ -888,12 +904,20 @@ public nonisolated enum L10n {
       }
       /// Cancel
       public static var cancel: String { String(localized: "ios.shell.cancel", bundle: .module) }
+      /// Collapse list
+      public static var collapseList: String { String(localized: "ios.shell.collapseList", bundle: .module) }
+      /// Collapse sidebar
+      public static var collapseSidebar: String { String(localized: "ios.shell.collapseSidebar", bundle: .module) }
       /// Conflicts
       public static var conflicts: String { String(localized: "ios.shell.conflicts", bundle: .module) }
       /// Context
       public static var contextHeader: String { String(localized: "ios.shell.contextHeader", bundle: .module) }
       /// Done
       public static var done: String { String(localized: "ios.shell.done", bundle: .module) }
+      /// Expand list
+      public static var expandList: String { String(localized: "ios.shell.expandList", bundle: .module) }
+      /// Expand sidebar
+      public static var expandSidebar: String { String(localized: "ios.shell.expandSidebar", bundle: .module) }
       /// Could not open your library
       public static var failed: String { String(localized: "ios.shell.failed", bundle: .module) }
       /// Invitations
@@ -914,6 +938,10 @@ public nonisolated enum L10n {
       public static var settings: String { String(localized: "ios.shell.settings", bundle: .module) }
       /// Sign out
       public static var signOutButton: String { String(localized: "ios.shell.signOutButton", bundle: .module) }
+      /// {count} songs saved on this {device}
+      public static func songsSaved(count: String, device: String) -> String {
+        String(format: String(localized: "ios.shell.songsSaved", bundle: .module), count, device)
+      }
       /// Sync now
       public static var syncNow: String { String(localized: "ios.shell.syncNow", bundle: .module) }
       /// Teams

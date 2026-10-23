@@ -74,7 +74,7 @@ public struct SetlistPerformanceView: View {
       HStack(spacing: 8) {
         Button(action: onClose) {
           Image(systemName: "xmark")
-            .font(.system(size: 20, weight: .bold))
+            .font(CapoFont.ui(20, weight: .bold))
             .foregroundStyle(CapoTheme.text)
             .frame(width: 48, height: 48)
             .background(CapoTheme.surface, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
@@ -83,9 +83,9 @@ public struct SetlistPerformanceView: View {
         .buttonStyle(.plain)
         .accessibilityLabel(PlaylistStrings.close)
         VStack(alignment: .leading, spacing: 1) {
-          Text(name).font(.system(size: 18, weight: .bold)).lineLimit(1)
+          Text(name).font(CapoFont.ui(18, weight: .bold)).lineLimit(1)
           Label(SetlistStrings.savedOnDevice(device), systemImage: "arrow.down.to.line")
-            .font(.system(size: 13, weight: .semibold))
+            .font(CapoFont.ui(13, weight: .semibold))
             .foregroundStyle(CapoTheme.success)
             .lineLimit(1)
         }
@@ -96,7 +96,7 @@ public struct SetlistPerformanceView: View {
             withAnimation(.easeInOut(duration: 0.22)) { chrome.isFullscreen = true }
           } label: {
             Image(systemName: "arrow.up.left.and.arrow.down.right")
-              .font(.system(size: 20, weight: .bold))
+              .font(CapoFont.ui(20, weight: .bold))
               .foregroundStyle(CapoTheme.onPrimary)
               .frame(width: 48, height: 48)
               .background(CapoTheme.primary, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
@@ -120,10 +120,10 @@ public struct SetlistPerformanceView: View {
   private var positionPill: some View {
     HStack(spacing: 3) {
       Text("\(index + 1)").foregroundStyle(CapoTheme.text)
-      Text("/").font(.system(size: 17, weight: .medium)).foregroundStyle(CapoTheme.subtext)
+      Text("/").font(CapoFont.ui(17, weight: .medium)).foregroundStyle(CapoTheme.subtext)
       Text("\(songs.count)").foregroundStyle(CapoTheme.text)
     }
-    .font(.system(size: 17, weight: .bold).monospacedDigit())
+    .font(CapoFont.ui(17, weight: .bold).monospacedDigit())
     .padding(.horizontal, 14)
     .frame(height: 40)
     .background(CapoTheme.surface, in: Capsule())
@@ -202,14 +202,14 @@ public struct SetlistPerformanceView: View {
       Button { go(to: next) } label: {
         VStack(alignment: .leading, spacing: 6) {
           Text(SetlistStrings.next.uppercased())
-            .font(.system(size: 11, weight: .bold)).tracking(0.9)
+            .font(CapoFont.ui(11, weight: .bold)).tracking(0.9)
             .foregroundStyle(CapoTheme.subtext)
-          Text(song.title).font(.system(size: 17, weight: .bold)).lineLimit(3)
+          Text(song.title).font(CapoFont.ui(17, weight: .bold)).lineLimit(3)
             .multilineTextAlignment(.leading)
           if let detail = SetlistProgress.peekDetail(
             key: song.key, bpm: song.bpm, bpmLabel: SetlistStrings.bpm)
           {
-            Text(detail).font(.system(size: 13)).foregroundStyle(CapoTheme.subtext)
+            Text(detail).font(CapoFont.ui(13)).foregroundStyle(CapoTheme.subtext)
           }
         }
         .foregroundStyle(CapoTheme.text)
@@ -233,7 +233,7 @@ public struct SetlistPerformanceView: View {
   private var bottomBar: some View {
     VStack(spacing: 10) {
       Label(SetlistStrings.changeHint, systemImage: "dot.radiowaves.left.and.right")
-        .font(.system(size: 13))
+        .font(CapoFont.ui(13))
         .foregroundStyle(CapoTheme.subtext)
         .lineLimit(1)
         .minimumScaleFactor(0.8)
@@ -242,7 +242,7 @@ public struct SetlistPerformanceView: View {
           if let target = SetlistMath.previous(index) { go(to: target) }
         } label: {
           Image(systemName: "chevron.left")
-            .font(.system(size: 24, weight: .bold))
+            .font(CapoFont.ui(24, weight: .bold))
             .foregroundStyle(CapoTheme.text)
             .frame(width: 84, height: 64)
             .background(CapoTheme.surfaceStrong, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
@@ -276,13 +276,13 @@ public struct SetlistPerformanceView: View {
       HStack {
         VStack(alignment: .leading, spacing: 1) {
           Text((next == nil ? SetlistStrings.end : SetlistStrings.next).uppercased())
-            .font(.system(size: 11, weight: .bold)).tracking(0.9).opacity(0.75)
+            .font(CapoFont.ui(11, weight: .bold)).tracking(0.9).opacity(0.75)
           Text(next.map { songs[$0].title } ?? SetlistStrings.finish)
-            .font(.system(size: 18, weight: .bold)).lineLimit(1)
+            .font(CapoFont.ui(18, weight: .bold)).lineLimit(1)
         }
         Spacer(minLength: 8)
         Image(systemName: next == nil ? "checkmark" : "chevron.right")
-          .font(.system(size: 24, weight: .bold))
+          .font(CapoFont.ui(24, weight: .bold))
       }
       .foregroundStyle(CapoTheme.onPrimary)
       .padding(.horizontal, 20)

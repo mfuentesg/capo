@@ -62,7 +62,7 @@ struct LineView: View {
         bodyText: text, content: nil)
     case .label(let text):
       Text(text.uppercased())
-        .font(.system(size: context.pointSize * 0.68, weight: .bold))
+        .font(CapoFont.ui(context.pointSize * 0.68, weight: .bold))
         .tracking(context.pointSize * 0.68 * 0.12)
         .foregroundStyle(context.accent ?? RenderPalette.comment)
         .padding(.horizontal, 10)
@@ -74,12 +74,12 @@ struct LineView: View {
         .padding(.vertical, 6)
     case .performanceNote(let text):
       Text("(\u{00A0}\(text)\u{00A0})")
-        .font(.system(size: context.pointSize * 0.82).italic())
+        .font(CapoFont.ui(context.pointSize * 0.82).italic())
         .foregroundStyle(RenderPalette.note)
         .opacity(0.88)
     case .sectionLabel(_, let label):
       Text(label.uppercased())
-        .font(.system(size: context.pointSize, weight: .bold))
+        .font(CapoFont.ui(context.pointSize, weight: .bold))
         .tracking(context.pointSize * 0.08)
         .foregroundStyle(.secondary)
     case .volta(let label, let body):
@@ -108,7 +108,7 @@ struct CardView: View {
     VStack(alignment: .leading, spacing: 0) {
       if !label.isEmpty {
         Text(label.uppercased())
-          .font(.system(size: size * 0.68, weight: .bold))
+          .font(CapoFont.ui(size * 0.68, weight: .bold))
           .tracking(size * 0.68 * 0.12)
           .foregroundStyle(color)
           .padding(.horizontal, 10)
@@ -119,7 +119,7 @@ struct CardView: View {
       }
       if let bodyText {
         Text(bodyText)
-          .font(.system(size: size * 0.85))
+          .font(CapoFont.ui(size * 0.85))
           .foregroundStyle(color)
           .fixedSize(horizontal: false, vertical: true)
           .padding(.horizontal, 10)
@@ -349,16 +349,16 @@ struct SectionHeaderView: View {
         .fill(accent)
         .frame(width: 4, height: max(20, pointSize * 0.8))
       if let icon {
-        Image(systemName: icon).font(.system(size: 11)).foregroundStyle(accent)
+        Image(systemName: icon).font(CapoFont.ui(11)).foregroundStyle(accent)
       }
       Text(title.uppercased())
-        .font(.system(size: max(13, pointSize * 0.6), weight: .bold))
+        .font(CapoFont.ui(max(13, pointSize * 0.6), weight: .bold))
         .tracking(max(13, pointSize * 0.6) * 0.08)
         .foregroundStyle(accent)
         .fixedSize(horizontal: false, vertical: true)
       if count > 1 {
         Text("×\(count)")
-          .font(.system(size: max(12, pointSize * 0.5), weight: .bold).monospacedDigit())
+          .font(CapoFont.ui(max(12, pointSize * 0.5), weight: .bold).monospacedDigit())
           .foregroundStyle(CapoTheme.warning)
           .padding(.horizontal, 9)
           .frame(minHeight: 24)
@@ -369,7 +369,7 @@ struct SectionHeaderView: View {
       Spacer(minLength: 0)
       if onToggle != nil {
         Image(systemName: "chevron.down")
-          .font(.system(size: 12, weight: .semibold))
+          .font(CapoFont.ui(12, weight: .semibold))
           .foregroundStyle(.secondary)
           .rotationEffect(.degrees(isCollapsed ? -90 : 0))
           .animation(.easeInOut(duration: 0.15), value: isCollapsed)

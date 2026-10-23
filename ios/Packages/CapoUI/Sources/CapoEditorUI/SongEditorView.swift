@@ -128,18 +128,18 @@ public struct SongEditorView: View {
       Button(EditorStrings.cancel) {
         if model.isDirty { confirmDiscard = true } else { onFinish(nil) }
       }
-      .font(.system(size: 17, weight: .semibold))
+      .font(CapoFont.ui(17, weight: .semibold))
       .foregroundStyle(CapoTheme.info)
       .frame(minHeight: CapoMetrics.minTouchTarget)
       .accessibilityIdentifier("editor.cancel")
       Spacer(minLength: 0)
       VStack(spacing: 2) {
         Text(request == .create ? EditorStrings.newSong : EditorStrings.editSong)
-          .font(.system(size: 18, weight: .bold))
+          .font(CapoFont.ui(18, weight: .bold))
         HStack(spacing: 6) {
           Circle().fill(CapoTheme.primary).frame(width: 8, height: 8)
           Text(EditorStrings.savedLocally)
-            .font(.system(size: 13))
+            .font(CapoFont.ui(13))
             .foregroundStyle(CapoTheme.subtext)
             .lineLimit(1)
         }
@@ -184,7 +184,7 @@ public struct SongEditorView: View {
   private var metadata: some View {
     VStack(spacing: 12) {
       TextField(EditorStrings.title, text: $model.form.title)
-        .font(.system(size: 22, weight: .bold))
+        .font(CapoFont.ui(22, weight: .bold))
         .padding(.horizontal, 16).frame(height: 52)
         .fieldChrome(radius: CapoRadius.medium + 2)
         .accessibilityIdentifier("editor.title")
@@ -209,7 +209,7 @@ public struct SongEditorView: View {
         extras.padding(.top, 8)
       } label: {
         Text(EditorStrings.moreOptions)
-          .font(.system(size: 14, weight: .semibold))
+          .font(CapoFont.ui(14, weight: .semibold))
           .foregroundStyle(CapoTheme.subtext)
           .frame(minHeight: 36, alignment: .leading)
       }
@@ -220,7 +220,7 @@ public struct SongEditorView: View {
   }
 
   private func errorText(_ text: String) -> some View {
-    Text(text).font(.footnote).foregroundStyle(CapoTheme.destructive)
+    Text(text).font(CapoFont.style(.footnote)).foregroundStyle(CapoTheme.destructive)
       .frame(maxWidth: .infinity, alignment: .leading)
   }
 
@@ -229,10 +229,10 @@ public struct SongEditorView: View {
   {
     VStack(alignment: .leading, spacing: 4) {
       Text(label.uppercased())
-        .font(.system(size: 12, weight: .semibold)).tracking(1)
+        .font(CapoFont.ui(12, weight: .semibold)).tracking(1)
         .foregroundStyle(CapoTheme.subtext)
       content()
-        .font(.system(size: 17, weight: .medium))
+        .font(CapoFont.ui(17, weight: .medium))
         .padding(.horizontal, 14).frame(height: 46)
         .fieldChrome(radius: CapoRadius.medium)
     }
@@ -282,7 +282,7 @@ public struct SongEditorView: View {
     HStack {
       Text(value).foregroundStyle(CapoTheme.text)
       Spacer(minLength: 4)
-      Image(systemName: "chevron.down").font(.system(size: 13, weight: .bold))
+      Image(systemName: "chevron.down").font(CapoFont.ui(13, weight: .bold))
         .foregroundStyle(CapoTheme.subtext)
     }
     .frame(maxWidth: .infinity, minHeight: CapoMetrics.minTouchTarget)
@@ -306,7 +306,7 @@ public struct SongEditorView: View {
   private var deleteButton: some View {
     Button { confirmDelete = true } label: {
       Label(EditorStrings.deleteSong, systemImage: "trash")
-        .font(.system(size: 16, weight: .semibold))
+        .font(CapoFont.ui(16, weight: .semibold))
         .foregroundStyle(CapoTheme.destructive)
         .frame(maxWidth: .infinity, minHeight: 52)
         .overlay(

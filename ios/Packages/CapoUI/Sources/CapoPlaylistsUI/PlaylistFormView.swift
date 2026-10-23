@@ -34,7 +34,7 @@ struct PlaylistFormView: View {
           }
         }
         .listRowBackground(CapoTheme.card)
-        if let errorText { Text(errorText).font(.footnote).foregroundStyle(CapoTheme.destructive) }
+        if let errorText { Text(errorText).font(CapoFont.style(.footnote)).foregroundStyle(CapoTheme.destructive) }
       }
       .scrollContentBackground(.hidden)
       .background(CapoTheme.background)
@@ -47,7 +47,7 @@ struct PlaylistFormView: View {
         }
         ToolbarItem(placement: .confirmationAction) {
           Button(isCreate ? PlaylistStrings.create : PlaylistStrings.save, action: save)
-            .font(.body.weight(.bold))
+            .font(CapoFont.style(.body, weight: .bold))
             .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
         }
       }

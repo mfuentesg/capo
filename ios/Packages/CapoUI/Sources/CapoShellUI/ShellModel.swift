@@ -13,6 +13,7 @@ final class ShellModel {
   let navigation = ShellNavigation()
   var syncStatus = SyncStatus(phase: .idle, lastSuccessAt: nil, pendingOperations: 0, conflicts: 0, failedOperations: 0)
   var conflictCount = 0
+  var songCount = 0
   var theme: AppTheme?
   let settingsContext: SettingsContext
 
@@ -48,6 +49,12 @@ final class ShellModel {
 
   func observeConflicts() async {
     for await list in services.conflicts.conflicts() { conflictCount = list.count }
+  }
+
+  /// Songs saved on this device for the current context, for the sidebar footer.
+  func observeSongCount() async {
+    let query = SongQuery(context: context, statuses: Set(SongStatus.allCases))
+    for await items in services.songs.songs(query) { songCount = items.count }
   }
 
   func observePreferences() async {

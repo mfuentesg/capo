@@ -36,14 +36,14 @@ public struct AuthView: View {
   private var header: some View {
     VStack(spacing: 10) {
       Image(systemName: "guitars.fill")
-        .font(.system(size: 52))
+        .font(CapoFont.ui(52))
         .foregroundStyle(.tint)
         .padding(.top, 32)
         .accessibilityHidden(true)
       Text("Capo")
-        .font(.largeTitle.bold())
+        .font(CapoFont.style(.largeTitle, weight: .bold))
       Text(L10n.Ios.Auth.tagline)
-        .font(.subheadline)
+        .font(CapoFont.style(.subheadline))
         .foregroundStyle(.secondary)
         .multilineTextAlignment(.center)
     }
@@ -57,7 +57,7 @@ public struct AuthView: View {
         L10n.Ios.Auth.google,
         systemImage: "globe"
       )
-      .font(.headline)
+      .font(CapoFont.style(.headline))
       .frame(maxWidth: .infinity, minHeight: CapoMetrics.minTouchTarget)
     }
     .buttonStyle(.borderedProminent)
@@ -71,7 +71,7 @@ public struct AuthView: View {
         Task { await model.run { try await devSignIn() } }
       } label: {
         Label("Use dev session (local)", systemImage: "hammer")
-          .font(.headline)
+          .font(CapoFont.style(.headline))
           .frame(maxWidth: .infinity, minHeight: CapoMetrics.minTouchTarget)
       }
       .buttonStyle(.bordered)
@@ -83,7 +83,7 @@ public struct AuthView: View {
     HStack {
       Rectangle().fill(.separator).frame(height: 1)
       Text(L10n.Ios.Auth.or)
-        .font(.footnote)
+        .font(CapoFont.style(.footnote))
         .foregroundStyle(.secondary)
       Rectangle().fill(.separator).frame(height: 1)
     }
@@ -124,7 +124,7 @@ public struct AuthView: View {
                 ? L10n.Ios.Auth.signIn
                 : L10n.Ios.Auth.signUp
             )
-            .font(.headline)
+            .font(CapoFont.style(.headline))
           }
         }
         .frame(maxWidth: .infinity, minHeight: CapoMetrics.minTouchTarget)
@@ -139,7 +139,7 @@ public struct AuthView: View {
               ? L10n.Ios.Auth.toSignUp
               : L10n.Ios.Auth.toSignIn
           )
-          .font(.subheadline)
+          .font(CapoFont.style(.subheadline))
           .frame(minHeight: CapoMetrics.minTouchTarget)
         }
       }

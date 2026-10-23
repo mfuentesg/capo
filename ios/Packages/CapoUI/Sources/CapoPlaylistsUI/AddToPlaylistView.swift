@@ -34,7 +34,7 @@ public struct AddToPlaylistView: View {
           .buttonStyle(.plain)
           .capoCardRow()
         }
-        if let errorText { Text(errorText).foregroundStyle(CapoTheme.destructive).font(.footnote) }
+        if let errorText { Text(errorText).foregroundStyle(CapoTheme.destructive).font(CapoFont.style(.footnote)) }
       }
       .capoList()
       .navigationTitle(PlaylistStrings.chooseSetlist)

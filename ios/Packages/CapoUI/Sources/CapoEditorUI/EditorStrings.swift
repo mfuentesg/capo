@@ -90,20 +90,13 @@ enum EditorStrings {
   }
 }
 
-/// Strings added with the visual redesign. The generated catalog lives in CapoDesign (not
-/// editable from this package), so these pick English/Spanish locally until harvested.
 extension EditorStrings {
-  private static var isSpanish: Bool { Locale.current.language.languageCode?.identifier == "es" }
-  private static func pick(_ en: String, _ es: String) -> String { isSpanish ? es : en }
-
-  static var livePreview: String { pick("Live preview", "Vista previa") }
-  static var chordsMode: String { pick("Chords", "Acordes") }
-  static var showPreview: String { pick("Show preview", "Mostrar vista previa") }
-  static var hidePreview: String { pick("Hide preview", "Ocultar vista previa") }
-  static var resizePreview: String { pick("Resize preview", "Cambiar tamaño de la vista previa") }
-  static var savedLocally: String {
-    pick("Saved on this device · will sync when online", "Guardado en este dispositivo · se sincronizará con conexión")
-  }
-  static var deleteSong: String { pick("Delete song", "Eliminar canción") }
-  static var moreOptions: String { pick("Transpose & notes", "Transposición y notas") }
+  static var livePreview: String { L10n.Ios.Editor.livePreview }
+  static var chordsMode: String { L10n.Ios.Editor.chordsMode }
+  static var showPreview: String { L10n.Ios.Editor.showPreview }
+  static var hidePreview: String { L10n.Ios.Editor.hidePreview }
+  static var resizePreview: String { L10n.Ios.Editor.resizePreview }
+  static var savedLocally: String { L10n.Ios.Editor.savedLocally }
+  static var deleteSong: String { L10n.Ios.Editor.deleteSong }
+  static var moreOptions: String { L10n.Ios.Editor.moreOptions }
 }

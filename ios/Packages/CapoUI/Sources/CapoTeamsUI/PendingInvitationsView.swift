@@ -15,10 +15,10 @@ public struct PendingInvitationsView: View {
       ForEach(model.items) { item in
         VStack(alignment: .leading, spacing: 10) {
           VStack(alignment: .leading, spacing: 2) {
-            Text(item.teamName).font(.headline).foregroundStyle(CapoTheme.text)
+            Text(item.teamName).font(CapoFont.style(.headline)).foregroundStyle(CapoTheme.text)
             if let inviter = item.inviterName {
               Text(L10n.Invitations.invitationFrom(name: inviter))
-                .font(.subheadline).foregroundStyle(CapoTheme.subtext)
+                .font(CapoFont.style(.subheadline)).foregroundStyle(CapoTheme.subtext)
             }
             RoleBadge(role: item.invitation.role).padding(.top, 4)
           }

@@ -38,7 +38,7 @@ struct TagManagementView: View {
                   Circle().fill(color(fromHex: hex)).frame(width: 32, height: 32)
                     .overlay {
                       if hex == colorHex {
-                        Image(systemName: "checkmark").font(.caption.bold()).foregroundStyle(.white)
+                        Image(systemName: "checkmark").font(CapoFont.style(.caption, weight: .bold)).foregroundStyle(.white)
                       }
                     }
                     .frame(width: 44, height: 44)

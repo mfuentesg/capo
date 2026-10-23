@@ -1,3 +1,4 @@
+import CapoDesign
 import CoreGraphics
 import Foundation
 
@@ -52,9 +53,8 @@ enum SidebarMetrics {
 
 /// Strings for the collapsible panels (en/es). Kept local to avoid regenerating the shared catalog.
 enum PanelStrings {
-  private static var isSpanish: Bool { Locale.current.language.languageCode?.identifier == "es" }
-  static var collapseSidebar: String { isSpanish ? "Contraer barra lateral" : "Collapse sidebar" }
-  static var expandSidebar: String { isSpanish ? "Expandir barra lateral" : "Expand sidebar" }
-  static var collapseList: String { isSpanish ? "Contraer lista" : "Collapse list" }
-  static var expandList: String { isSpanish ? "Expandir lista" : "Expand list" }
+  static var collapseSidebar: String { L10n.Ios.Shell.collapseSidebar }
+  static var expandSidebar: String { L10n.Ios.Shell.expandSidebar }
+  static var collapseList: String { L10n.Ios.Shell.collapseList }
+  static var expandList: String { L10n.Ios.Shell.expandList }
 }

@@ -16,9 +16,9 @@ public struct PlaylistShareSheet: View {
     NavigationStack {
       VStack(spacing: 16) {
         if let url = model.url {
-          Text(url.absoluteString).font(.callout.monospaced()).textSelection(.enabled)
+          Text(url.absoluteString).font(CapoFont.mono(16)).textSelection(.enabled)
             .multilineTextAlignment(.center)
-          Text(TeamsStrings.shareHint).font(.footnote).foregroundStyle(CapoTheme.subtext)
+          Text(TeamsStrings.shareHint).font(CapoFont.style(.footnote)).foregroundStyle(CapoTheme.subtext)
           ShareLink(item: url) { Label(TeamsStrings.shareLink, systemImage: "square.and.arrow.up") }
             .buttonStyle(CapoPrimaryButtonStyle())
         } else if model.isOffline {

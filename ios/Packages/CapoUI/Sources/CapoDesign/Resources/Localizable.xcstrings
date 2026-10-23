@@ -3520,6 +3520,23 @@
         }
       }
     },
+    "ios.editor.chordsMode" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chords"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acordes"
+          }
+        }
+      }
+    },
     "ios.editor.comment" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3792,6 +3809,23 @@
         }
       }
     },
+    "ios.editor.deleteSong" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete song"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar canción"
+          }
+        }
+      }
+    },
     "ios.editor.details" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3894,6 +3928,23 @@
         }
       }
     },
+    "ios.editor.hidePreview" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide preview"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar vista previa"
+          }
+        }
+      }
+    },
     "ios.editor.insertDirective" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3945,6 +3996,23 @@
         }
       }
     },
+    "ios.editor.livePreview" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Live preview"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vista previa"
+          }
+        }
+      }
+    },
     "ios.editor.lyrics" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3958,6 +4026,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Letra (ChordPro)"
+          }
+        }
+      }
+    },
+    "ios.editor.moreOptions" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transpose & notes"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transposición y notas"
           }
         }
       }
@@ -4047,6 +4132,23 @@
         }
       }
     },
+    "ios.editor.resizePreview" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resize preview"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambiar tamaño de la vista previa"
+          }
+        }
+      }
+    },
     "ios.editor.save" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4077,6 +4179,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se pudo guardar la canción"
+          }
+        }
+      }
+    },
+    "ios.editor.savedLocally" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saved on this device · will sync when online"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardado en este dispositivo · se sincronizará con conexión"
+          }
+        }
+      }
+    },
+    "ios.editor.showPreview" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show preview"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar vista previa"
           }
         }
       }
@@ -6393,6 +6529,40 @@
         }
       }
     },
+    "ios.shell.collapseList" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collapse list"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraer lista"
+          }
+        }
+      }
+    },
+    "ios.shell.collapseSidebar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collapse sidebar"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraer barra lateral"
+          }
+        }
+      }
+    },
     "ios.shell.config.demo" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -6508,6 +6678,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Listo"
+          }
+        }
+      }
+    },
+    "ios.shell.expandList" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expand list"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expandir lista"
+          }
+        }
+      }
+    },
+    "ios.shell.expandSidebar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expand sidebar"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expandir barra lateral"
           }
         }
       }
@@ -6763,6 +6967,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cerrar sesión"
+          }
+        }
+      }
+    },
+    "ios.shell.songsSaved" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ songs saved on this %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ canciones guardadas en este %2$@"
           }
         }
       }

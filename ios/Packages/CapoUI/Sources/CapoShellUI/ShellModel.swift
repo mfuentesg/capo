@@ -14,6 +14,7 @@ final class ShellModel {
   var syncStatus = SyncStatus(phase: .idle, lastSuccessAt: nil, pendingOperations: 0, conflicts: 0, failedOperations: 0)
   var conflictCount = 0
   var songCount = 0
+  private var didDebugOpen = false
   var theme: AppTheme?
   let settingsContext: SettingsContext
 
@@ -54,7 +55,16 @@ final class ShellModel {
   /// Songs saved on this device for the current context, for the sidebar footer.
   func observeSongCount() async {
     let query = SongQuery(context: context, statuses: Set(SongStatus.allCases))
-    for await items in services.songs.songs(query) { songCount = items.count }
+    for await items in services.songs.songs(query) {
+      songCount = items.count
+      #if DEBUG
+        // Screenshot/validation hook: launch with `-CapoOpenFirstSong YES`.
+        if !didDebugOpen, UserDefaults.standard.bool(forKey: "CapoOpenFirstSong"), let first = items.first {
+          didDebugOpen = true
+          navigation.openSong(first.id)
+        }
+      #endif
+    }
   }
 
   func observePreferences() async {

@@ -82,7 +82,9 @@ struct SongPerformanceScreen: View {
 
   private var chrome: StageChrome { navigation.chrome ?? ownChrome }
   private var isFullscreen: Bool { chrome.isFullscreen }
-  private var compact: Bool { sizeClass == .compact }
+  /// Width of this pane; a narrow detail column (portrait iPad, collapsed split) gets the phone layout.
+  @State private var paneWidth: CGFloat = 1000
+  private var compact: Bool { sizeClass == .compact || paneWidth < 720 }
   /// A phone setlist and full screen both start from the pill; the persisted choice is for the
   /// plain stage.
   private var usesTransientDock: Bool { isFullscreen || (navigation.isEmbedded && compact) }
@@ -105,6 +107,16 @@ struct SongPerformanceScreen: View {
       shortcutHost
     }
     .toolbar(.hidden, for: .navigationBar)
+    .background {
+      GeometryReader { proxy in
+        Color.clear
+          .onAppear { paneWidth = proxy.size.width }
+          .onChange(of: proxy.size.width) { _, width in paneWidth = width }
+      }
+    }
+    .onChange(of: isFullscreen) { _, value in AppFullscreen.shared.isActive = value }
+    .onAppear { AppFullscreen.shared.isActive = isFullscreen }
+    .onDisappear { AppFullscreen.shared.isActive = false }
     .statusBarHidden(isFullscreen)
     .persistentSystemOverlays(isFullscreen ? .hidden : .automatic)
     .task(id: model.songID) {

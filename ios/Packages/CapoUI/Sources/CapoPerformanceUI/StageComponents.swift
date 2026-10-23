@@ -1,12 +1,27 @@
 import CapoCore
 import CapoDesign
+import Observation
 import SwiftUI
 
 /// Shared fullscreen flag, so a setlist can hide its own chrome together with the song's.
 @MainActor @Observable
 public final class StageChrome {
   public var isFullscreen = false
-  public init() {}
+  public init() {
+    #if DEBUG
+      // Screenshot/validation hook: launch with `-CapoStageFullscreen YES`.
+      isFullscreen = UserDefaults.standard.bool(forKey: "CapoStageFullscreen")
+    #endif
+  }
+}
+
+/// App-wide full-screen flag: the shell hides its sidebar and list while a song is full screen.
+@Observable
+@MainActor
+public final class AppFullscreen {
+  public static let shared = AppFullscreen()
+  public var isActive = false
+  private init() {}
 }
 
 // MARK: - Small controls

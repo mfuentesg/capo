@@ -6,6 +6,18 @@ import UIKit
 @testable import CapoRendering
 
 @Suite struct RenderUnitTests {
+  @Test func blankChordColumnsStayWithTheFollowingWord() {
+    let pairs = [
+      ChordLyricPair(chord: "G", lyrics: "Amazing "),
+      ChordLyricPair(chord: "Dm7", lyrics: " "),
+      ChordLyricPair(chord: "", lyrics: "está"),
+      ChordLyricPair(chord: "C", lyrics: "end")
+    ]
+    let units = ChordLyricsLineView.units(pairs)
+    #expect(units.map { $0.count } == [1, 2, 1])
+    #expect(units[1].map(\.lyrics) == [" ", "está"])
+  }
+
   @Test func normalSegmentSplitsAfterBlankLines() {
     let song = RenderedSong(segments: [
       .normal(SongBody(lines: [.text("a"), .text(""), .text("b"), .text("c"), .text(""), .text("d")]))

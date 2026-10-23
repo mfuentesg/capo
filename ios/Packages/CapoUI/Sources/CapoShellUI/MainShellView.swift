@@ -162,17 +162,41 @@ private struct RegularShell: View {
       set: { splitRaw = $0.rawValue })
   }
 
+  @State private var narrow = false
+  private var stage = AppFullscreen.shared
+  private static let narrowWidth: CGFloat = 900
+
   var body: some View {
     HStack(spacing: 0) {
-      SidebarView(model: model, collapsed: $sidebarCollapsed)
-        .frame(width: SidebarMetrics.width(collapsed: sidebarCollapsed))
-        .background(CapoTheme.sidebar.ignoresSafeArea())
-        .overlay(alignment: .trailing) { CapoTheme.border.frame(width: 1).ignoresSafeArea() }
+      if !stage.isActive {
+        SidebarView(model: model, collapsed: $sidebarCollapsed)
+          .frame(width: SidebarMetrics.width(collapsed: sidebarCollapsed))
+          .background(CapoTheme.sidebar.ignoresSafeArea())
+          .overlay(alignment: .trailing) { CapoTheme.border.frame(width: 1).ignoresSafeArea() }
+          .transition(.move(edge: .leading))
+      }
       mainArea
     }
     .animation(.snappy(duration: 0.28), value: sidebarCollapsed)
+    .animation(.snappy(duration: 0.28), value: stage.isActive)
     .background(CapoTheme.background.ignoresSafeArea())
     .background { shortcuts }
+    .background {
+      // Narrow windows (portrait iPad, Split View) start with the sidebar as a rail so the
+      // song detail keeps room; the user can still expand it.
+      GeometryReader { proxy in
+        Color.clear
+          .onAppear { updateNarrow(proxy.size.width) }
+          .onChange(of: proxy.size.width) { _, width in updateNarrow(width) }
+      }
+    }
+  }
+
+  private func updateNarrow(_ width: CGFloat) {
+    let isNarrow = width < Self.narrowWidth
+    guard isNarrow != narrow else { return }
+    narrow = isNarrow
+    if isNarrow { sidebarCollapsed = true }
   }
 
   /// Hidden buttons carrying the keyboard shortcuts.
@@ -197,7 +221,7 @@ private struct RegularShell: View {
     @Bindable var nav = model.navigation
     switch nav.sidebar ?? .library {
     case .library:
-      ResizableSplit(layout: split, collapseLabel: ContextStrings.library) {
+      ResizableSplit(layout: split, collapseLabel: ContextStrings.library, hideList: stage.isActive) {
         NavigationStack { LibraryView(selection: $nav.songSelection) }
       } detail: {
         if let id = nav.songSelection {
@@ -207,7 +231,7 @@ private struct RegularShell: View {
         }
       }
     case .setlists:
-      ResizableSplit(layout: split, collapseLabel: ContextStrings.setlists) {
+      ResizableSplit(layout: split, collapseLabel: ContextStrings.setlists, hideList: stage.isActive) {
         NavigationStack { PlaylistsView(selection: $nav.playlistSelection) }
       } detail: {
         if let id = nav.playlistSelection {
@@ -231,6 +255,7 @@ private struct RegularShell: View {
 private struct ResizableSplit<List: View, Detail: View>: View {
   @Binding var layout: SplitLayout
   let collapseLabel: String
+  var hideList = false
   @ViewBuilder let list: () -> List
   @ViewBuilder let detail: () -> Detail
 
@@ -242,7 +267,7 @@ private struct ResizableSplit<List: View, Detail: View>: View {
       let total = proxy.size.width
       let width = dragWidth ?? layout.listWidth(total: total)
       HStack(spacing: 0) {
-        if !layout.isListCollapsed {
+        if !layout.isListCollapsed && !hideList {
           list()
             .frame(width: width)
             .transition(.move(edge: .leading))
@@ -251,7 +276,7 @@ private struct ResizableSplit<List: View, Detail: View>: View {
         detail()
           .frame(maxWidth: .infinity)
           .overlay(alignment: .leading) {
-            if layout.isListCollapsed { expandTab }
+            if layout.isListCollapsed && !hideList { expandTab }
           }
       }
       .animation(dragWidth == nil ? .snappy(duration: 0.28) : nil, value: layout)
@@ -433,7 +458,7 @@ private struct SidebarView: View {
           .frame(width: 56, height: 56)
           .foregroundStyle(selected ? CapoTheme.primary : CapoTheme.subtext)
           .background(
-            selected ? CapoTheme.primary.opacity(0.16) : Color.clear,
+            selected ? CapoTheme.selection : Color.clear,
             in: RoundedRectangle(cornerRadius: CapoRadius.large, style: .continuous)
           )
           .overlay(alignment: .topTrailing) { badgeView(badge).offset(x: -6, y: 6) }
@@ -451,7 +476,7 @@ private struct SidebarView: View {
         .padding(.horizontal, 12)
         .frame(minHeight: 52)
         .background(
-          selected ? CapoTheme.primary.opacity(0.16) : Color.clear,
+          selected ? CapoTheme.selection : Color.clear,
           in: RoundedRectangle(cornerRadius: CapoRadius.medium, style: .continuous))
       }
     }

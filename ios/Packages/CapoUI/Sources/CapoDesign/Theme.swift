@@ -22,6 +22,8 @@ public enum CapoTheme {
   public static let surfaceStrong = adaptive(light: "#bcc0cc", dark: "#45475a")
   public static let border = adaptive(light: "#bcc0cc", dark: "#45475a")
   public static let primary = adaptive(light: "#fe640b", dark: "#fab387")
+  /// Selected row / nav item fill: a solid peach tint (a translucent peach over the sidebar reads muddy pink).
+  public static let selection = adaptive(light: "#f9d9c6", dark: "#3d3037")
   /// Text on a peach fill; always dark for contrast.
   public static let onPrimary = Color(uiColor: UIColor(hex: "#1e1e2e"))
   public static let chord = adaptive(light: "#8839ef", dark: "#cba6f7")
@@ -63,6 +65,7 @@ extension UIColor {
 // MARK: - Button styles
 
 public struct CapoPrimaryButtonStyle: ButtonStyle {
+  @Environment(\.isEnabled) private var isEnabled
   public init() {}
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label
@@ -71,13 +74,14 @@ public struct CapoPrimaryButtonStyle: ButtonStyle {
       .padding(.horizontal, 18)
       .frame(minHeight: CapoMetrics.minTouchTarget)
       .background(CapoTheme.primary, in: RoundedRectangle(cornerRadius: CapoRadius.medium, style: .continuous))
-      .opacity(configuration.isPressed ? 0.85 : 1)
+      .opacity(isEnabled ? (configuration.isPressed ? 0.85 : 1) : 0.45)
       .scaleEffect(configuration.isPressed ? 0.98 : 1)
       .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
   }
 }
 
 public struct CapoSecondaryButtonStyle: ButtonStyle {
+  @Environment(\.isEnabled) private var isEnabled
   public init() {}
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label
@@ -89,7 +93,7 @@ public struct CapoSecondaryButtonStyle: ButtonStyle {
       .overlay(
         RoundedRectangle(cornerRadius: CapoRadius.medium, style: .continuous)
           .strokeBorder(CapoTheme.border, lineWidth: 1))
-      .opacity(configuration.isPressed ? 0.8 : 1)
+      .opacity(isEnabled ? (configuration.isPressed ? 0.8 : 1) : 0.45)
       .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
   }
 }

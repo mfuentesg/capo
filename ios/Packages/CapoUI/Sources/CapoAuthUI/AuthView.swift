@@ -29,22 +29,24 @@ public struct AuthView: View {
     }
     .scrollBounceBehavior(.basedOnSize)
     .scrollDismissesKeyboard(.interactively)
-    .background(Color(.systemGroupedBackground).ignoresSafeArea())
+    .capoTheme()
     .capoToast($model.errorMessage)
   }
 
   private var header: some View {
     VStack(spacing: 10) {
-      Image(systemName: "guitars.fill")
-        .font(CapoFont.ui(52))
-        .foregroundStyle(.tint)
+      Image(systemName: "music.note")
+        .font(CapoFont.ui(34, weight: .bold))
+        .foregroundStyle(CapoTheme.onPrimary)
+        .frame(width: 76, height: 76)
+        .background(CapoTheme.primary, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
         .padding(.top, 32)
         .accessibilityHidden(true)
       Text("Capo")
         .font(CapoFont.style(.largeTitle, weight: .bold))
       Text(L10n.Ios.Auth.tagline)
         .font(CapoFont.style(.subheadline))
-        .foregroundStyle(.secondary)
+        .foregroundStyle(CapoTheme.subtext)
         .multilineTextAlignment(.center)
     }
   }
@@ -60,7 +62,7 @@ public struct AuthView: View {
       .font(CapoFont.style(.headline))
       .frame(maxWidth: .infinity, minHeight: CapoMetrics.minTouchTarget)
     }
-    .buttonStyle(.borderedProminent)
+    .buttonStyle(CapoPrimaryButtonStyle())
     .disabled(model.isBusy)
   }
 
@@ -74,7 +76,7 @@ public struct AuthView: View {
           .font(CapoFont.style(.headline))
           .frame(maxWidth: .infinity, minHeight: CapoMetrics.minTouchTarget)
       }
-      .buttonStyle(.bordered)
+      .buttonStyle(CapoSecondaryButtonStyle())
       .disabled(model.isBusy)
     }
   }
@@ -84,7 +86,7 @@ public struct AuthView: View {
       Rectangle().fill(.separator).frame(height: 1)
       Text(L10n.Ios.Auth.or)
         .font(CapoFont.style(.footnote))
-        .foregroundStyle(.secondary)
+        .foregroundStyle(CapoTheme.subtext)
       Rectangle().fill(.separator).frame(height: 1)
     }
   }
@@ -129,7 +131,7 @@ public struct AuthView: View {
         }
         .frame(maxWidth: .infinity, minHeight: CapoMetrics.minTouchTarget)
       }
-      .buttonStyle(.bordered)
+      .buttonStyle(CapoPrimaryButtonStyle())
       .disabled(!model.canSubmit)
 
       if actions.allowsSignUp {
@@ -156,6 +158,7 @@ private extension View {
   func fieldStyle() -> some View {
     padding(.horizontal, 14)
       .frame(minHeight: CapoMetrics.minTouchTarget)
-      .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: CapoMetrics.cornerRadius, style: .continuous))
+      .background(CapoTheme.card, in: RoundedRectangle(cornerRadius: CapoRadius.medium, style: .continuous))
+      .overlay(RoundedRectangle(cornerRadius: CapoRadius.medium, style: .continuous).strokeBorder(CapoTheme.border, lineWidth: 1))
   }
 }

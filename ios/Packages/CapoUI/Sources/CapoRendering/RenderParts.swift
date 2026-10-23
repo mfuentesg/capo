@@ -150,10 +150,31 @@ struct ChordLyricsLineView: View {
   var body: some View {
     let lineHasChords = context.style.showChords && pairs.contains { !$0.chord.isEmpty }
     ChordLyricsLineLayout(rowSpacing: 2) {
-      ForEach(Array(pairs.enumerated()), id: \.offset) { _, pair in
-        PairColumn(pair: pair, context: context, reserveChordRow: lineHasChords)
+      ForEach(Array(Self.units(pairs).enumerated()), id: \.offset) { _, unit in
+        // A chord over blank space stays on the same row as the word that follows it, so a
+        // wrapped line never strands a chord at the end of the previous row.
+        HStack(alignment: .top, spacing: 0) {
+          ForEach(Array(unit.enumerated()), id: \.offset) { _, pair in
+            PairColumn(pair: pair, context: context, reserveChordRow: lineHasChords)
+          }
+        }
       }
     }
+  }
+}
+
+extension ChordLyricsLineView {
+  /// Groups each whitespace-only pair with the pair after it (pure; unit-tested).
+  static func units(_ pairs: [ChordLyricPair]) -> [[ChordLyricPair]] {
+    var units: [[ChordLyricPair]] = []
+    var pending: [ChordLyricPair] = []
+    for pair in pairs {
+      pending.append(pair)
+      let blank = pair.lyrics.allSatisfy(\.isWhitespace)
+      if !blank { units.append(pending); pending = [] }
+    }
+    if !pending.isEmpty { units.append(pending) }
+    return units
   }
 }
 
@@ -167,6 +188,7 @@ struct PairColumn: View {
       if reserveChordRow {
         if pair.chord.isEmpty {
           Text("\u{200B}").font(CapoFont.chord(scale: context.style.fontScale))
+            .padding(.vertical, 1)
         } else {
           chordBadge
             // 0.5em gap after the chord so neighbouring badges never touch.

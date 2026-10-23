@@ -49,12 +49,21 @@
       }
     }
 
-    /// Applies the bundled session when nothing is stored yet, or always with `-CapoDevSession YES`.
-    /// Refresh tokens rotate, so once applied the Keychain session takes over on later launches.
+    private static let appliedKey = "CapoDevSession.appliedRefreshToken"
+
+    /// Applies the bundled session when this build carries a session
+    /// that has not been applied on this device before (each `mint-dev-session.sh` run is applied
+    /// once), or always with `-CapoDevSession YES`. Refresh tokens rotate, so after the first use
+    /// the Keychain session takes over; reusing a spent token would revoke the whole family.
     static func applyIfPresent(to client: SupabaseClient, bundle: Bundle = .main) {
-      guard load(from: bundle) != nil else { return }
-      let force = UserDefaults.standard.bool(forKey: "CapoDevSession")
-      guard force || client.auth.currentSession == nil else { return }
+      guard let session = load(from: bundle) else { return }
+      let defaults = UserDefaults.standard
+      let force = defaults.bool(forKey: "CapoDevSession")
+      let isNew = defaults.string(forKey: appliedKey) != session.refreshToken
+      // A spent token is never retried automatically (reuse would revoke the session family);
+      // after re-minting, or with the sign-in button, it applies again.
+      guard force || isNew else { return }
+      defaults.set(session.refreshToken, forKey: appliedKey)
       Task { try? await signIn(client: client, bundle: bundle) }
     }
   }

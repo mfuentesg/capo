@@ -51,7 +51,16 @@
     "setlist": {
       "position": "{current} / {total}",
       "next": "Siguiente: {title}",
-      "close": "Cerrar lista"
+      "close": "Cerrar lista",
+      "savedOnDevice": "Guardado en este {device} · la pantalla no se apaga",
+      "nextLabel": "Siguiente",
+      "end": "Fin",
+      "finish": "Terminar repertorio",
+      "previous": "Canción anterior",
+      "previousSong": "Canción anterior: {title}",
+      "bpm": "BPM",
+      "changeHint": "Desliza, toca los botones o usa tu pedal para cambiar de canción",
+      "enterFullscreen": "Entrar a pantalla completa"
     },
     "conflict": {
       "title": "Conflictos",
@@ -296,6 +305,29 @@
       "shareHint": "Cualquiera con este enlace puede ver la lista.",
       "shareLink": "Compartir enlace",
       "shareTitle": "Compartir lista"
+    },
+    "stage": {
+      "soundsIn": "Suena en",
+      "playShapesIn": "Toca las formas en",
+      "key": "Tono",
+      "scroll": "Desplazar",
+      "autoScroll": "Auto-desplazamiento",
+      "textSize": "Tamaño del texto",
+      "layout": "Diseño",
+      "next": "Siguiente",
+      "play": "Toca",
+      "back": "Volver",
+      "more": "Más",
+      "chords": "Mostrar acordes",
+      "columns": "Dos columnas",
+      "enterFullscreen": "Entrar a pantalla completa",
+      "exitFullscreen": "Salir de pantalla completa",
+      "collapseControls": "Contraer controles",
+      "showControls": "Mostrar controles",
+      "controlsToolbar": "Controles de la presentación",
+      "fromBPM": "desde {bpm}",
+      "nextSong": "Siguiente canción: {title}",
+      "capoShort": "cejilla {fret}"
     }
   }
 }

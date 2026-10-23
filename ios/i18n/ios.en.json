@@ -51,7 +51,16 @@
     "setlist": {
       "position": "{current} / {total}",
       "next": "Next: {title}",
-      "close": "Close setlist"
+      "close": "Close setlist",
+      "savedOnDevice": "Saved on this {device} · screen stays on",
+      "nextLabel": "Next",
+      "end": "End",
+      "finish": "Finish setlist",
+      "previous": "Previous song",
+      "previousSong": "Previous song: {title}",
+      "bpm": "BPM",
+      "changeHint": "Swipe, tap the buttons, or use your pedal to change song",
+      "enterFullscreen": "Enter full screen"
     },
     "conflict": {
       "title": "Conflicts",
@@ -296,6 +305,29 @@
       "shareHint": "Anyone with this link can view the setlist.",
       "shareLink": "Share link",
       "shareTitle": "Share setlist"
+    },
+    "stage": {
+      "soundsIn": "Sounds in",
+      "playShapesIn": "Play shapes in",
+      "key": "Key",
+      "scroll": "Scroll",
+      "autoScroll": "Auto-scroll",
+      "textSize": "Text size",
+      "layout": "Layout",
+      "next": "Next",
+      "play": "Play",
+      "back": "Back",
+      "more": "More",
+      "chords": "Show chords",
+      "columns": "Two columns",
+      "enterFullscreen": "Enter full screen",
+      "exitFullscreen": "Exit full screen",
+      "collapseControls": "Collapse controls",
+      "showControls": "Show controls",
+      "controlsToolbar": "Performance controls",
+      "fromBPM": "from {bpm}",
+      "nextSong": "Next song: {title}",
+      "capoShort": "capo {fret}"
     }
   }
 }

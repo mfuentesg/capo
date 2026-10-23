@@ -790,15 +790,37 @@ public nonisolated enum L10n {
       public static var url: String { String(localized: "ios.server.url", bundle: .module) }
     }
     public nonisolated enum Setlist {
+      /// BPM
+      public static var bpm: String { String(localized: "ios.setlist.bpm", bundle: .module) }
+      /// Swipe, tap the buttons, or use your pedal to change song
+      public static var changeHint: String { String(localized: "ios.setlist.changeHint", bundle: .module) }
       /// Close setlist
       public static var close: String { String(localized: "ios.setlist.close", bundle: .module) }
+      /// End
+      public static var end: String { String(localized: "ios.setlist.end", bundle: .module) }
+      /// Enter full screen
+      public static var enterFullscreen: String { String(localized: "ios.setlist.enterFullscreen", bundle: .module) }
+      /// Finish setlist
+      public static var finish: String { String(localized: "ios.setlist.finish", bundle: .module) }
       /// Next: {title}
       public static func next(title: String) -> String {
         String(format: String(localized: "ios.setlist.next", bundle: .module), title)
       }
+      /// Next
+      public static var nextLabel: String { String(localized: "ios.setlist.nextLabel", bundle: .module) }
       /// {current} / {total}
       public static func position(current: String, total: String) -> String {
         String(format: String(localized: "ios.setlist.position", bundle: .module), current, total)
+      }
+      /// Previous song
+      public static var previous: String { String(localized: "ios.setlist.previous", bundle: .module) }
+      /// Previous song: {title}
+      public static func previousSong(title: String) -> String {
+        String(format: String(localized: "ios.setlist.previousSong", bundle: .module), title)
+      }
+      /// Saved on this {device} · screen stays on
+      public static func savedOnDevice(device: String) -> String {
+        String(format: String(localized: "ios.setlist.savedOnDevice", bundle: .module), device)
       }
     }
     public nonisolated enum Settings {
@@ -896,6 +918,56 @@ public nonisolated enum L10n {
       public static var syncNow: String { String(localized: "ios.shell.syncNow", bundle: .module) }
       /// Teams
       public static var teams: String { String(localized: "ios.shell.teams", bundle: .module) }
+    }
+    public nonisolated enum Stage {
+      /// Auto-scroll
+      public static var autoScroll: String { String(localized: "ios.stage.autoScroll", bundle: .module) }
+      /// Back
+      public static var back: String { String(localized: "ios.stage.back", bundle: .module) }
+      /// capo {fret}
+      public static func capoShort(fret: String) -> String {
+        String(format: String(localized: "ios.stage.capoShort", bundle: .module), fret)
+      }
+      /// Show chords
+      public static var chords: String { String(localized: "ios.stage.chords", bundle: .module) }
+      /// Collapse controls
+      public static var collapseControls: String { String(localized: "ios.stage.collapseControls", bundle: .module) }
+      /// Two columns
+      public static var columns: String { String(localized: "ios.stage.columns", bundle: .module) }
+      /// Performance controls
+      public static var controlsToolbar: String { String(localized: "ios.stage.controlsToolbar", bundle: .module) }
+      /// Enter full screen
+      public static var enterFullscreen: String { String(localized: "ios.stage.enterFullscreen", bundle: .module) }
+      /// Exit full screen
+      public static var exitFullscreen: String { String(localized: "ios.stage.exitFullscreen", bundle: .module) }
+      /// from {bpm}
+      public static func fromBPM(bpm: String) -> String {
+        String(format: String(localized: "ios.stage.fromBPM", bundle: .module), bpm)
+      }
+      /// Key
+      public static var key: String { String(localized: "ios.stage.key", bundle: .module) }
+      /// Layout
+      public static var layout: String { String(localized: "ios.stage.layout", bundle: .module) }
+      /// More
+      public static var more: String { String(localized: "ios.stage.more", bundle: .module) }
+      /// Next
+      public static var next: String { String(localized: "ios.stage.next", bundle: .module) }
+      /// Next song: {title}
+      public static func nextSong(title: String) -> String {
+        String(format: String(localized: "ios.stage.nextSong", bundle: .module), title)
+      }
+      /// Play
+      public static var play: String { String(localized: "ios.stage.play", bundle: .module) }
+      /// Play shapes in
+      public static var playShapesIn: String { String(localized: "ios.stage.playShapesIn", bundle: .module) }
+      /// Scroll
+      public static var scroll: String { String(localized: "ios.stage.scroll", bundle: .module) }
+      /// Show controls
+      public static var showControls: String { String(localized: "ios.stage.showControls", bundle: .module) }
+      /// Sounds in
+      public static var soundsIn: String { String(localized: "ios.stage.soundsIn", bundle: .module) }
+      /// Text size
+      public static var textSize: String { String(localized: "ios.stage.textSize", bundle: .module) }
     }
     public nonisolated enum Sync {
       /// Conflicts: {count}

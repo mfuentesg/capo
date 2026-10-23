@@ -6,9 +6,13 @@ import UIKit
 
 public enum CapoTheme {
   static func adaptive(light: String, dark: String) -> Color {
-    Color(
-      uiColor: UIColor { traits in
-        UIColor(hex: traits.userInterfaceStyle == .dark ? dark : light)
+    // Resolve both colors up front: UIKit/SwiftUI call the provider off the main thread (async render),
+    // and this module defaults to MainActor isolation, which traps if the closure touches isolated state.
+    let lightColor = UIColor(hex: light)
+    let darkColor = UIColor(hex: dark)
+    return Color(
+      uiColor: UIColor { @Sendable traits in
+        traits.userInterfaceStyle == .dark ? darkColor : lightColor
       })
   }
 

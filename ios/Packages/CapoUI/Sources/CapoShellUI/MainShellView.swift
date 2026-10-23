@@ -117,6 +117,8 @@ private struct CompactShell: View {
           .toolbar { shellToolbar }
           .navigationDestination(item: $nav.songSelection) { id in
             SongPerformanceView(songID: id).id(id)
+              // The stage controls own the bottom edge; the tab bar returns when you go back.
+              .toolbar(.hidden, for: .tabBar)
           }
       }
       .tabItem { Label(ContextStrings.library, systemImage: "music.note.list") }

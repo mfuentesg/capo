@@ -156,6 +156,8 @@ struct StageStepper: View {
       Spacer(minLength: 0)
       VStack(spacing: 1) {
         StageCaption(label, size: 10)
+          .lineLimit(1)
+          .minimumScaleFactor(0.6)
         Text(value)
           .font(CapoFont.ui(24, weight: .bold).monospacedDigit())
           .foregroundStyle(valueColor)

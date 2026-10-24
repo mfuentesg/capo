@@ -130,6 +130,7 @@
         "theirs": "Servidor",
         "title": "Conflictos de sincronización"
       },
+      "copyExample": "Copiar ejemplo",
       "delete": "Eliminar canción",
       "deleteConfirmMessage": "Se quitará de tu biblioteca y de todas las listas.",
       "deleteConfirmTitle": "¿Eliminar esta canción?",
@@ -165,6 +166,10 @@
     "library": {
       "addCount": "Agregar ({count})",
       "addToSetlist": "Agregar a una lista",
+      "allBucketsShort": "Todo",
+      "cartAddCount": "Agregar {count} a una playlist",
+      "clearCart": "Quitar selección",
+      "removeFromCart": "Quitar de la playlist",
       "assignTags": "Asignar etiquetas",
       "bpm": {
         "fast": "Rápido (> 120)",
@@ -182,6 +187,7 @@
       "emptyTitle": "Aún no hay canciones",
       "filters": "Filtros",
       "manageTags": "Administrar etiquetas",
+      "meOwner": "Yo",
       "moreTags": "+{count}",
       "newSong": "Nueva canción",
       "newTag": "Nueva etiqueta",
@@ -261,6 +267,7 @@
       "lastSync": "Última sincronización",
       "lyrics": "Letra",
       "openLanguageSettings": "Cambiar en Ajustes de iOS",
+      "restartForLanguage": "Reinicia Capo para aplicar el nuevo idioma.",
       "pendingChanges": "Cambios pendientes",
       "signOut": "Cerrar sesión",
       "signOutMessage": "Tus canciones se quedan en este dispositivo y se sincronizan de nuevo cuando vuelvas a entrar.",
@@ -322,7 +329,14 @@
       "roleOwner": "Propietario",
       "shareHint": "Cualquiera con este enlace puede ver la lista.",
       "shareLink": "Compartir enlace",
-      "shareTitle": "Compartir lista"
+      "shareTitle": "Compartir lista",
+      "searchTeams": "Buscar equipos…",
+      "memberCount": "{count} miembros",
+      "memberCountOne": "1 miembro",
+      "iconPickerTitle": "Elige un ícono",
+      "inviteLinkCopy": "Copiar enlace de invitación",
+      "noTeamMatches": "Ningún equipo coincide con tu búsqueda",
+      "transferNoTeams": "No perteneces a ningún equipo que pueda recibir canciones."
     },
     "stage": {
       "soundsIn": "Suena en",
@@ -345,7 +359,9 @@
       "controlsToolbar": "Controles de la presentación",
       "fromBPM": "desde {bpm}",
       "nextSong": "Siguiente canción: {title}",
-      "capoShort": "cejilla {fret}"
+      "capoShort": "cejilla {fret}",
+      "decrease": "Disminuir",
+      "increase": "Aumentar"
     }
   }
 }

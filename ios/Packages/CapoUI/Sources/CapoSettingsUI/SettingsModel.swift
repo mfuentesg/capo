@@ -21,6 +21,24 @@ final class SettingsModel {
     for await status in sync.status() { self.status = status }
   }
 
+  /// The web's two locales (`lib/i18n/config.ts`, `language-settings.tsx`).
+  static let languages: [(code: String, name: String, flag: String)] = [
+    ("en", "English", "\u{1F1EC}\u{1F1E7}"), ("es", "Español", "\u{1F1EA}\u{1F1F8}")
+  ]
+
+  /// Language the running process localised to (changes only after a relaunch).
+  static var runningLanguageCode: String {
+    String((Bundle.main.preferredLocalizations.first ?? "en").prefix(2))
+  }
+
+  /// Stored `preferences.locale`, else the running language.
+  var currentLanguageCode: String { preferences.locale ?? Self.runningLanguageCode }
+
+  /// The in-app strings follow the process language, so the choice is stored for the next launch.
+  static func storeLanguage(_ code: String, defaults: UserDefaults = .standard) {
+    defaults.set([code], forKey: "AppleLanguages")
+  }
+
   static func currentLanguageName(locale: Locale = .current) -> String {
     let code = Bundle.main.preferredLocalizations.first ?? locale.identifier
     let name = locale.localizedString(forIdentifier: code) ?? code

@@ -512,6 +512,8 @@ public nonisolated enum L10n {
       public static var chordsMode: String { String(localized: "ios.editor.chordsMode", bundle: .module) }
       /// Comment
       public static var comment: String { String(localized: "ios.editor.comment", bundle: .module) }
+      /// Copy example
+      public static var copyExample: String { String(localized: "ios.editor.copyExample", bundle: .module) }
       /// Delete song
       public static var delete: String { String(localized: "ios.editor.delete", bundle: .module) }
       /// It will be removed from your library and from any setlists.
@@ -620,6 +622,8 @@ public nonisolated enum L10n {
       }
       /// Add to setlist
       public static var addToSetlist: String { String(localized: "ios.library.addToSetlist", bundle: .module) }
+      /// All
+      public static var allBucketsShort: String { String(localized: "ios.library.allBucketsShort", bundle: .module) }
       /// Assign tags
       public static var assignTags: String { String(localized: "ios.library.assignTags", bundle: .module) }
       /// {value} BPM
@@ -628,6 +632,12 @@ public nonisolated enum L10n {
       }
       /// Cancel
       public static var cancel: String { String(localized: "ios.library.cancel", bundle: .module) }
+      /// Add {count} to playlist
+      public static func cartAddCount(count: String) -> String {
+        String(format: String(localized: "ios.library.cartAddCount", bundle: .module), count)
+      }
+      /// Clear selection
+      public static var clearCart: String { String(localized: "ios.library.clearCart", bundle: .module) }
       /// Color
       public static var color: String { String(localized: "ios.library.color", bundle: .module) }
       /// Create
@@ -646,6 +656,8 @@ public nonisolated enum L10n {
       public static var filters: String { String(localized: "ios.library.filters", bundle: .module) }
       /// Manage tags
       public static var manageTags: String { String(localized: "ios.library.manageTags", bundle: .module) }
+      /// Me
+      public static var meOwner: String { String(localized: "ios.library.meOwner", bundle: .module) }
       /// +{count}
       public static func moreTags(count: String) -> String {
         String(format: String(localized: "ios.library.moreTags", bundle: .module), count)
@@ -666,6 +678,8 @@ public nonisolated enum L10n {
       public static var pendingChanges: String { String(localized: "ios.library.pendingChanges", bundle: .module) }
       /// Add songs
       public static var pickerTitle: String { String(localized: "ios.library.pickerTitle", bundle: .module) }
+      /// Remove from playlist
+      public static var removeFromCart: String { String(localized: "ios.library.removeFromCart", bundle: .module) }
       /// Reset filters
       public static var resetFilters: String { String(localized: "ios.library.resetFilters", bundle: .module) }
       /// Search title, artist, lyrics
@@ -866,6 +880,8 @@ public nonisolated enum L10n {
       public static var openLanguageSettings: String { String(localized: "ios.settings.openLanguageSettings", bundle: .module) }
       /// Pending changes
       public static var pendingChanges: String { String(localized: "ios.settings.pendingChanges", bundle: .module) }
+      /// Restart Capo to apply the new language.
+      public static var restartForLanguage: String { String(localized: "ios.settings.restartForLanguage", bundle: .module) }
       /// Sign out
       public static var signOut: String { String(localized: "ios.settings.signOut", bundle: .module) }
       /// Your songs stay on this device and sync again when you sign back in.
@@ -976,6 +992,8 @@ public nonisolated enum L10n {
       public static var columns: String { String(localized: "ios.stage.columns", bundle: .module) }
       /// Performance controls
       public static var controlsToolbar: String { String(localized: "ios.stage.controlsToolbar", bundle: .module) }
+      /// Decrease
+      public static var decrease: String { String(localized: "ios.stage.decrease", bundle: .module) }
       /// Enter full screen
       public static var enterFullscreen: String { String(localized: "ios.stage.enterFullscreen", bundle: .module) }
       /// Exit full screen
@@ -984,6 +1002,8 @@ public nonisolated enum L10n {
       public static func fromBPM(bpm: String) -> String {
         String(format: String(localized: "ios.stage.fromBPM", bundle: .module), bpm)
       }
+      /// Increase
+      public static var increase: String { String(localized: "ios.stage.increase", bundle: .module) }
       /// Key
       public static var key: String { String(localized: "ios.stage.key", bundle: .module) }
       /// Layout
@@ -1054,8 +1074,20 @@ public nonisolated enum L10n {
       public static var email: String { String(localized: "ios.teams.email", bundle: .module) }
       /// Icon (emoji)
       public static var icon: String { String(localized: "ios.teams.icon", bundle: .module) }
+      /// Choose an icon
+      public static var iconPickerTitle: String { String(localized: "ios.teams.iconPickerTitle", bundle: .module) }
+      /// Copy invite link
+      public static var inviteLinkCopy: String { String(localized: "ios.teams.inviteLinkCopy", bundle: .module) }
+      /// {count} Members
+      public static func memberCount(count: String) -> String {
+        String(format: String(localized: "ios.teams.memberCount", bundle: .module), count)
+      }
+      /// 1 Member
+      public static var memberCountOne: String { String(localized: "ios.teams.memberCountOne", bundle: .module) }
       /// No pending invitations
       public static var noInvitations: String { String(localized: "ios.teams.noInvitations", bundle: .module) }
+      /// No teams match your search
+      public static var noTeamMatches: String { String(localized: "ios.teams.noTeamMatches", bundle: .module) }
       /// You are offline. Team changes need a connection.
       public static var offline: String { String(localized: "ios.teams.offline", bundle: .module) }
       /// Try again
@@ -1064,12 +1096,16 @@ public nonisolated enum L10n {
       public static var role: String { String(localized: "ios.teams.role", bundle: .module) }
       /// Owner
       public static var roleOwner: String { String(localized: "ios.teams.roleOwner", bundle: .module) }
+      /// Search teams…
+      public static var searchTeams: String { String(localized: "ios.teams.searchTeams", bundle: .module) }
       /// Anyone with this link can view the setlist.
       public static var shareHint: String { String(localized: "ios.teams.shareHint", bundle: .module) }
       /// Share link
       public static var shareLink: String { String(localized: "ios.teams.shareLink", bundle: .module) }
       /// Share setlist
       public static var shareTitle: String { String(localized: "ios.teams.shareTitle", bundle: .module) }
+      /// You are not a member of any team that can receive songs.
+      public static var transferNoTeams: String { String(localized: "ios.teams.transferNoTeams", bundle: .module) }
     }
   }
   public nonisolated enum Landing {

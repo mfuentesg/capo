@@ -3792,6 +3792,23 @@
         }
       }
     },
+    "ios.editor.copyExample" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy example"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar ejemplo"
+          }
+        }
+      }
+    },
     "ios.editor.delete" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4421,6 +4438,23 @@
         }
       }
     },
+    "ios.library.allBucketsShort" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todo"
+          }
+        }
+      }
+    },
     "ios.library.assignTags" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4519,6 +4553,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancelar"
+          }
+        }
+      }
+    },
+    "ios.library.cartAddCount" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add %@ to playlist"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agregar %@ a una playlist"
+          }
+        }
+      }
+    },
+    "ios.library.clearCart" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear selection"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quitar selección"
           }
         }
       }
@@ -4676,6 +4744,23 @@
         }
       }
     },
+    "ios.library.meOwner" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Me"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yo"
+          }
+        }
+      }
+    },
     "ios.library.moreTags" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4825,6 +4910,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Agregar canciones"
+          }
+        }
+      }
+    },
+    "ios.library.removeFromCart" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove from playlist"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quitar de la playlist"
           }
         }
       }
@@ -6427,6 +6529,23 @@
         }
       }
     },
+    "ios.settings.restartForLanguage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restart Capo to apply the new language."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reinicia Capo para aplicar el nuevo idioma."
+          }
+        }
+      }
+    },
     "ios.settings.signOut" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7226,6 +7345,23 @@
         }
       }
     },
+    "ios.stage.decrease" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Decrease"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disminuir"
+          }
+        }
+      }
+    },
     "ios.stage.enterFullscreen" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7273,6 +7409,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "desde %@"
+          }
+        }
+      }
+    },
+    "ios.stage.increase" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Increase"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aumentar"
           }
         }
       }
@@ -7753,6 +7906,74 @@
         }
       }
     },
+    "ios.teams.iconPickerTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose an icon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige un ícono"
+          }
+        }
+      }
+    },
+    "ios.teams.inviteLinkCopy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy invite link"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar enlace de invitación"
+          }
+        }
+      }
+    },
+    "ios.teams.memberCount" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Members"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ miembros"
+          }
+        }
+      }
+    },
+    "ios.teams.memberCountOne" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 Member"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 miembro"
+          }
+        }
+      }
+    },
     "ios.teams.noInvitations" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7766,6 +7987,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No hay invitaciones pendientes"
+          }
+        }
+      }
+    },
+    "ios.teams.noTeamMatches" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No teams match your search"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ningún equipo coincide con tu búsqueda"
           }
         }
       }
@@ -7838,6 +8076,23 @@
         }
       }
     },
+    "ios.teams.searchTeams" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search teams…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar equipos…"
+          }
+        }
+      }
+    },
     "ios.teams.shareHint" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7885,6 +8140,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compartir lista"
+          }
+        }
+      }
+    },
+    "ios.teams.transferNoTeams" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are not a member of any team that can receive songs."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No perteneces a ningún equipo que pueda recibir canciones."
           }
         }
       }

@@ -16,6 +16,35 @@ import Testing
     #expect(await titles(env, query(.team(teamID: teamA))) == ["Team"])
   }
 
+  @Test func allContextCoversPersonalAndEveryTeamButNotOtherUsers() async throws {
+    let env = try Env()
+    let a = makeSong("Mine"), b = makeSong("Team", user: nil, team: teamA)
+    let c = makeSong("Other", user: otherUser)
+    try await env.repos.syncStore.apply(PullBatch(upsertSongs: [a, b, c]))
+    #expect(Set(await titles(env, query(.all(userID: me)))) == ["Mine", "Team"])
+  }
+
+  @Test func creatingInAllContextCreatesPersonalSong() async throws {
+    let env = try Env()
+    let song = try await env.repos.songs.create(SongDraft(title: "Fresh"), in: .all(userID: me))
+    #expect(song.userID == me && song.teamID == nil)
+  }
+
+  @Test func listItemsCarryPlayFrequency() async throws {
+    let env = try Env()
+    let ctx = AppContext.personal(userID: me)
+    let a = try await env.repos.songs.create(SongDraft(title: "Played"), in: ctx)
+    _ = try await env.repos.songs.create(SongDraft(title: "Idle"), in: ctx)
+    for name in ["One", "Two"] {
+      _ = try await env.repos.playlists.create(PlaylistDraft(name: name, songIDs: [a.id]), in: ctx)
+    }
+    let items = try #require(await first(env.repos.songs.songs(query(ctx))))
+    #expect(items.first { $0.title == "Played" }?.playCount == 2)
+    #expect(items.first { $0.title == "Played" }?.lastPlayed != nil)
+    #expect(items.first { $0.title == "Idle" }?.playCount == 0)
+    #expect(items.first { $0.title == "Idle" }?.lastPlayed == nil)
+  }
+
   @Test func ftsPrefixDiacriticsAndChordStripping() async throws {
     let env = try Env()
     let s = makeSong("Canción de cuna", lyrics: "[Am]Duerme {c: x} mi niño [G]hermoso")
@@ -66,6 +95,21 @@ import Testing
     #expect(try await env.repos.songs.fetchSong(id: s.id)?.title == "B")
   }
 
+  @Test func transferToTeamMovesSongLocallyAndQueuesUpdate() async throws {
+    let env = try Env()
+    let s = makeSong("A")
+    let team = UUID()
+    try await env.repos.syncStore.apply(PullBatch(upsertSongs: [s]))
+    try await env.repos.songs.update(id: s.id, SongPatch(teamID: team))
+    let moved = try await env.repos.songs.fetchSong(id: s.id)
+    #expect(moved?.teamID == team && moved?.userID == nil)
+    let ops = try await env.repos.syncStore.nextPendingOperations(limit: 10, now: .now)
+    guard ops.count == 1, case .updateSong(_, let patch, _) = ops[0].operation else {
+      Issue.record("expected one updateSong"); return
+    }
+    #expect(patch.teamID == team)
+  }
+
   @Test func inflightUpdateIsNotCoalesced() async throws {
     let env = try Env()
     let s = makeSong("A")
@@ -103,6 +147,22 @@ import Testing
       try await env.repos.settings.saveSongSettings(
         UserSongSettings(songID: id, transpose: 9, capo: 0, fontSize: nil, updatedAt: nil))
     }
+  }
+
+  @Test func paletteAndFontPatchesMergeIntoOneOperation() async throws {
+    let env = try Env()
+    try await env.repos.settings.updatePreferences(PreferencesPatch(palette: "nord"))
+    try await env.repos.settings.updatePreferences(PreferencesPatch(uiFont: "inter"))
+    try await env.repos.settings.updatePreferences(PreferencesPatch(palette: "dracula"))
+    let ops = try await env.repos.syncStore.nextPendingOperations(limit: 10, now: .now)
+    #expect(ops.count == 1)
+    if case .updatePreferences(let p, _) = ops.first?.operation {
+      #expect(p.palette == "dracula" && p.uiFont == "inter")
+    } else {
+      Issue.record("expected one updatePreferences")
+    }
+    let prefs = await first(env.repos.settings.preferences())
+    #expect(prefs?.palette == "dracula" && prefs?.uiFont == "inter")
   }
 
   @Test func deleteAfterCreateDropsBoth() async throws {

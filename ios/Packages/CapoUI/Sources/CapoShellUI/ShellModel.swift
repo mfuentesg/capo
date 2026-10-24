@@ -38,10 +38,25 @@ final class ShellModel {
     #endif
   }
 
-  /// Palettes arrive in a later wave; until then "Surprise me" stays hidden.
-  var hasPalettes: Bool { false }
+  var hasPalettes: Bool { true }
+  private var palette: String?
+  private var uiFont: String?
 
-  func surpriseMe() {}
+  /// Avatar-menu "Surprise me": random palette and font plus the opposite of light/dark (web
+  /// `profile-menu-actions.tsx`), applied now and saved to preferences.
+  func surpriseMe() {
+    var rng = SystemRandomNumberGenerator()
+    let pick = CapoAppearance.surprise(
+      palette: palette, font: uiFont, theme: theme, flipTheme: true, using: &rng)
+    palette = pick.palette.id
+    uiFont = pick.font.id
+    theme = pick.theme
+    CapoPaletteStore.shared.current = pick.palette
+    CapoPaletteStore.shared.uiFont = pick.font
+    let settings = services.settings
+    let patch = CapoAppearance.patch(palette: pick.palette, font: pick.font, theme: pick.theme)
+    Task { try? await settings.updatePreferences(patch) }
+  }
 
   func setTheme(_ newTheme: AppTheme) {
     theme = newTheme
@@ -89,7 +104,18 @@ final class ShellModel {
   }
 
   func observePreferences() async {
-    for await prefs in services.settings.preferences() { theme = prefs.theme }
+    for await prefs in services.settings.preferences() {
+      theme = prefs.theme
+      palette = prefs.palette
+      uiFont = prefs.uiFont
+      var paletteID = prefs.palette, fontID = prefs.uiFont
+      #if DEBUG
+        // Screenshot hook: `-CapoDebugPalette rose-pine -CapoDebugFont lato`.
+        paletteID = UserDefaults.standard.string(forKey: "CapoDebugPalette") ?? paletteID
+        fontID = UserDefaults.standard.string(forKey: "CapoDebugFont") ?? fontID
+      #endif
+      CapoPaletteStore.shared.apply(paletteID: paletteID, uiFontID: fontID)
+    }
   }
 
   func syncNow(_ reason: SyncReason) {

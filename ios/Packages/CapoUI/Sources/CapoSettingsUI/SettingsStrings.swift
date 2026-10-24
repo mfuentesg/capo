@@ -18,6 +18,7 @@ enum SettingsStrings {
   static var openLanguageSettings: String {
     L10n.Ios.Settings.openLanguageSettings
   }
+  static var restartForLanguage: String { L10n.Ios.Settings.restartForLanguage }
   static var sync: String { L10n.Ios.Settings.sync }
   static var status: String { L10n.Ios.Settings.status }
   static var lastSync: String {

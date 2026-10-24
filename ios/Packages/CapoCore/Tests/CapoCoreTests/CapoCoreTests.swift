@@ -156,6 +156,19 @@ private func roundTrip<T: Codable & Equatable>(_ value: T) throws {
     #expect(UserPreferences(json: ["chordHand": .string("bogus")]).resolvedChordHand == .left)
   }
 
+  @Test func paletteAndFontPatchesKeepUnknownKeys() throws {
+    let json = preferences.json(applying: PreferencesPatch(palette: "rose-pine", uiFont: "dm-sans"))
+    #expect(json["palette"] == .string("rose-pine"))
+    #expect(json["uiFont"] == .string("dm-sans"))
+    #expect(json["unknown"] == preferences.raw["unknown"])
+    let reread = UserPreferences(json: json)
+    #expect(reread.palette == "rose-pine" && reread.uiFont == "dm-sans")
+    // An empty patch leaves stored palette and font alone.
+    let untouched = reread.json(applying: PreferencesPatch(theme: .light))
+    #expect(untouched["palette"] == .string("rose-pine") && untouched["uiFont"] == .string("dm-sans"))
+    try roundTrip(PreferencesPatch(palette: "nord", uiFont: "lato"))
+  }
+
   @Test func patchMergeKeepsOlderFields() {
     let merged = SongPatch(title: "A", lyrics: "old").merged(with: SongPatch(lyrics: "new", capo: 2))
     #expect(merged == SongPatch(title: "A", lyrics: "new", capo: 2))

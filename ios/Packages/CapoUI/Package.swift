@@ -16,6 +16,7 @@ let package = Package(
     .library(name: "CapoPerformanceUI", targets: ["CapoPerformanceUI"]),
     .library(name: "CapoPlaylistsUI", targets: ["CapoPlaylistsUI"]),
     .library(name: "CapoEditorUI", targets: ["CapoEditorUI"]),
+    .library(name: "CapoChordsUI", targets: ["CapoChordsUI"]),
     .library(name: "CapoTeamsUI", targets: ["CapoTeamsUI"]),
     .library(name: "CapoSettingsUI", targets: ["CapoSettingsUI"]),
     .library(name: "CapoShellUI", targets: ["CapoShellUI"])
@@ -45,29 +46,39 @@ let package = Package(
       swiftSettings: mainActorByDefault
     ),
     .target(name: "CapoAuthUI", dependencies: ["CapoDesign"], swiftSettings: mainActorByDefault),
-    .target(name: "CapoLibraryUI", dependencies: ["CapoDesign"], swiftSettings: mainActorByDefault),
+    .target(name: "CapoLibraryUI", dependencies: ["CapoDesign", "CapoIcons"], swiftSettings: mainActorByDefault),
     .target(
       name: "CapoPerformanceUI",
-      dependencies: ["CapoDesign", "CapoRendering"],
+      dependencies: ["CapoDesign", "CapoIcons", "CapoRendering"],
       swiftSettings: mainActorByDefault
     ),
     .target(
       name: "CapoPlaylistsUI",
-      dependencies: ["CapoDesign", "CapoPerformanceUI", "CapoLibraryUI"],
+      dependencies: ["CapoDesign", "CapoIcons", "CapoPerformanceUI", "CapoLibraryUI"],
       swiftSettings: mainActorByDefault
     ),
     .target(
       name: "CapoEditorUI",
-      dependencies: ["CapoDesign", "CapoRendering"],
+      dependencies: [
+        "CapoDesign", "CapoRendering", "CapoIcons",
+        .product(name: "CapoChordPro", package: "CapoCore")
+      ],
       swiftSettings: mainActorByDefault
     ),
-    .target(name: "CapoTeamsUI", dependencies: ["CapoDesign"], swiftSettings: mainActorByDefault),
-    .target(name: "CapoSettingsUI", dependencies: ["CapoDesign"], swiftSettings: mainActorByDefault),
+    .target(
+      name: "CapoChordsUI",
+      dependencies: ["CapoDesign", "CapoIcons", "CapoRendering"],
+      swiftSettings: mainActorByDefault
+    ),
+    .target(
+      name: "CapoTeamsUI", dependencies: ["CapoDesign", "CapoIcons"], swiftSettings: mainActorByDefault
+    ),
+    .target(name: "CapoSettingsUI", dependencies: ["CapoDesign", "CapoIcons"], swiftSettings: mainActorByDefault),
     .target(
       name: "CapoShellUI",
       dependencies: [
-        "CapoDesign", "CapoRendering", "CapoAuthUI", "CapoLibraryUI", "CapoPerformanceUI",
-        "CapoPlaylistsUI", "CapoEditorUI", "CapoTeamsUI", "CapoSettingsUI"
+        "CapoDesign", "CapoIcons", "CapoRendering", "CapoAuthUI", "CapoLibraryUI", "CapoPerformanceUI",
+        "CapoPlaylistsUI", "CapoEditorUI", "CapoChordsUI", "CapoTeamsUI", "CapoSettingsUI"
       ],
       swiftSettings: mainActorByDefault
     ),
@@ -80,7 +91,8 @@ let package = Package(
     .testTarget(name: "CapoPerformanceUITests", dependencies: ["CapoPerformanceUI"]),
     .testTarget(name: "CapoPlaylistsUITests", dependencies: ["CapoPlaylistsUI"]),
     .testTarget(name: "CapoEditorUITests", dependencies: ["CapoEditorUI"]),
-    .testTarget(name: "CapoTeamsUITests", dependencies: ["CapoTeamsUI", "CapoDesign"])
+    .testTarget(name: "CapoChordsUITests", dependencies: ["CapoChordsUI", "CapoRendering"]),
+    .testTarget(name: "CapoTeamsUITests", dependencies: ["CapoTeamsUI", "CapoDesign", "CapoIcons"])
   ],
   swiftLanguageModes: [.v6]
 )

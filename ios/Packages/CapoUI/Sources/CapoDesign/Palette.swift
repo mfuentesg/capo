@@ -3,8 +3,8 @@ import SwiftUI
 import os
 
 /// A theme palette: one token set per appearance, holding the sRGB values the web actually renders
-/// (the `oklch(...)` values in `app/globals.css`, not the hexes in its comments). The other eleven web
-/// palettes (WEB_PARITY_ANALYSIS §5.4) can be added later as more `CapoPalette` values.
+/// (the `oklch(...)` values in `app/globals.css`, not the hexes in its comments). The twelve web palettes
+/// are generated into `Generated/PaletteTables.swift` by `ios/scripts/gen-palettes.mjs`.
 public nonisolated struct CapoPalette: Sendable, Equatable, Identifiable {
   /// The web's colour tokens for one appearance, as `#rrggbb`.
   public nonisolated struct Tokens: Sendable, Equatable {
@@ -39,46 +39,32 @@ public nonisolated struct CapoPalette: Sendable, Equatable, Identifiable {
     public var warning: String
   }
 
+  /// The hard-coded swatches the web's palette picker draws (`palette-settings.tsx`).
+  public nonisolated struct Preview: Sendable, Equatable {
+    public var background: String
+    public var primary: String
+    public var accent1: String
+    public var accent2: String
+  }
+
   public var id: String
+  /// Picker label and one-line description (web `PALETTE_LABELS`).
+  public var name: String
+  public var summary: String
+  public var preview: (light: Preview, dark: Preview)
   public var light: Tokens
   public var dark: Tokens
 
-  public func tokens(dark isDark: Bool) -> Tokens { isDark ? dark : light }
-}
+  public nonisolated static func == (lhs: CapoPalette, rhs: CapoPalette) -> Bool {
+    lhs.id == rhs.id && lhs.light == rhs.light && lhs.dark == rhs.dark
+  }
 
-extension CapoPalette {
-  /// The default web palette ("catppuccin"), rendered values from WEB_PARITY_ANALYSIS §5.4.
-  public nonisolated static let catppuccin = CapoPalette(
-    id: "catppuccin",
-    light: Tokens(
-      background: "#e3e4ea", foreground: "#393c4d", card: "#ededf2", popover: "#ededf2",
-      primary: "#eb5100", primaryForeground: "#ededf2", secondary: "#c8c9d0", muted: "#c8c9d0",
-      mutedForeground: "#5a5c6d", accent: "#c8c9d0", destructive: "#b30037", border: "#b6b8bf",
-      input: "#b6b8bf", ring: "#eb5100", chord: "#750fe3", accentSongs: "#0057d8",
-      accentPlaylists: "#750fe3", accentActivity: "#1f9240", sidebar: "#dadbe2",
-      sidebarAccent: "#c8c9d0", sidebarBorder: "#b6b8bf",
-      sectionAccents: [
-        "verse": "#005fb2", "chorus": "#624bbc", "bridge": "#a13170", "comment": "#008687",
-        "repeat": "#9e4800", "tab": "#626369", "grid": "#626369", "intro": "#1b7e2a",
-        "outro": "#007982", "pre_chorus": "#7d45a2"
-      ],
-      comment: "#008687", note: "#ae6700", warning: "#e17100"),
-    dark: Tokens(
-      background: "#080916", foreground: "#c5ceec", card: "#171928", popover: "#171928",
-      primary: "#fca463", primaryForeground: "#080916", secondary: "#2a2c3c", muted: "#171928",
-      mutedForeground: "#7983a1", accent: "#2a2c3c", destructive: "#f5789d", border: "#2a2c3c",
-      input: "#2a2c3c", ring: "#fca463", chord: "#bb95ff", accentSongs: "#70adff",
-      accentPlaylists: "#bb95ff", accentActivity: "#92e9aa", sidebar: "#04050f",
-      sidebarAccent: "#171928", sidebarBorder: "#171928",
-      sectionAccents: [
-        "verse": "#45a4f6", "chorus": "#a192ff", "bridge": "#e670ac", "comment": "#00afaf",
-        "repeat": "#f29520", "tab": "#8e8f95", "grid": "#8e8f95", "intro": "#67bb6b",
-        "outro": "#00b6be", "pre_chorus": "#bf8ae6"
-      ],
-      comment: "#00afaf", note: "#eca760", warning: "#ffb900"))
+  public nonisolated static let `default`: CapoPalette = .catppuccin
 
-  /// Palettes the app can currently select. Only the default exists so far.
-  public nonisolated static let all: [CapoPalette] = [.catppuccin]
+  /// The palette for a stored id; nil when unknown (callers fall back to the default).
+  public nonisolated static func named(_ id: String?) -> CapoPalette? { all.first { $0.id == id } }
+
+  public nonisolated func tokens(dark isDark: Bool) -> Tokens { isDark ? dark : light }
 }
 
 /// Process-wide current palette, readable from any thread. `UIColor` dynamic providers run off the main
@@ -92,17 +78,41 @@ nonisolated enum CapoPaletteStorage {
   }
 }
 
-/// Observable handle on the current palette. Setting `current` updates the storage the theme colours read
-/// and publishes the change to views that observe it or read `\.capoPalette`.
+/// Observable handle on the current palette and UI font. Setting either updates the storage the theme
+/// colours and `CapoFont` read and bumps `revision`. Colours are dynamic `UIColor`s and fonts are built in
+/// view bodies, so nothing re-renders by itself: `capoTheme()` keys the app root on `revision` (the "root
+/// refresh") and `\.capoPalette` publishes the palette to views that observe it.
 @MainActor @Observable
 public final class CapoPaletteStore {
   public static let shared = CapoPaletteStore()
 
   public var current: CapoPalette = CapoPaletteStorage.current {
-    didSet { CapoPaletteStorage.current = current }
+    didSet {
+      CapoPaletteStorage.current = current
+      if oldValue != current { revision += 1 }
+    }
   }
 
+  public var uiFont: CapoUIFont = CapoUIFontStorage.current {
+    didSet {
+      CapoUIFontStorage.current = uiFont
+      if oldValue != uiFont { revision += 1 }
+    }
+  }
+
+  /// Increments on every palette or font change; `capoTheme()` uses it as the root view identity.
+  public private(set) var revision = 0
+
   public init() {}
+
+  /// Applies the stored `preferences.palette` / `preferences.uiFont` ids; unknown or missing ids fall back
+  /// to the web defaults (catppuccin, geist).
+  public func apply(paletteID: String?, uiFontID: String?) {
+    let palette = CapoPalette.named(paletteID) ?? .default
+    let font = CapoUIFont.named(uiFontID) ?? .default
+    if palette != current { current = palette }
+    if font != uiFont { uiFont = font }
+  }
 }
 
 extension EnvironmentValues {

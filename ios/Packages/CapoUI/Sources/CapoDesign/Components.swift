@@ -226,18 +226,32 @@ public enum CapoFont {
   static func postScriptName(_ weight: Font.Weight, mono: Bool = false) -> String {
     // Only Regular and Bold ship for Geist Mono; medium maps to regular, semibold and above to bold.
     if mono { return weight == .bold || weight == .semibold || weight == .heavy || weight == .black ? "GeistMono-Bold" : "GeistMono-Regular" }
-    switch weight {
-    case .medium: return "Geist-Medium"
-    case .semibold: return "Geist-SemiBold"
-    case .bold, .heavy, .black: return "Geist-Bold"
-    default: return "Geist-Regular"
-    }
+    let font = CapoUIFontStorage.current
+    return font.staticPostScriptName(weight: CapoUIFontFactory.numericWeight(weight))
+      ?? CapoUIFont.geist.staticPostScriptName(weight: CapoUIFontFactory.numericWeight(weight)) ?? "Geist-Regular"
   }
 
-  /// Geist at `size`, scaling with Dynamic Type relative to `textStyle`.
+  /// The selected UI font (Geist by default) at `size`, scaling with Dynamic Type relative to `textStyle`.
   public static func ui(_ size: CGFloat, weight: Font.Weight = .regular, relativeTo textStyle: Font.TextStyle = .body) -> Font {
     CapoFonts.register()
+    let selected = CapoUIFontStorage.current
+    if let variable = selected.variablePostScriptName {
+      let scaled = UIFontMetrics(forTextStyle: textStyle.uiTextStyle).scaledValue(for: size)
+      return Font(
+        CapoUIFontFactory.variableFont(
+          postScriptName: variable, weight: CapoUIFontFactory.numericWeight(weight), size: scaled))
+    }
     return .custom(postScriptName(weight), size: size, relativeTo: textStyle)
+  }
+
+  /// `family` at a fixed `size`, regardless of the selected UI font (picker samples).
+  public static func font(_ family: CapoUIFont, size: CGFloat, weight: Font.Weight = .regular) -> Font {
+    CapoFonts.register()
+    let numeric = CapoUIFontFactory.numericWeight(weight)
+    if let variable = family.variablePostScriptName {
+      return Font(CapoUIFontFactory.variableFont(postScriptName: variable, weight: numeric, size: size))
+    }
+    return .custom(family.staticPostScriptName(weight: numeric) ?? "Geist-Regular", fixedSize: size)
   }
 
   /// Geist Mono at `size`, scaling with Dynamic Type.
@@ -246,7 +260,7 @@ public enum CapoFont {
     return .custom(postScriptName(weight, mono: true), size: size, relativeTo: textStyle)
   }
 
-  /// Geist equivalent of a system text style (same point sizes).
+  /// UI-font equivalent of a system text style (same point sizes).
   public static func style(_ textStyle: Font.TextStyle, weight: Font.Weight? = nil) -> Font {
     let (size, defaultWeight): (CGFloat, Font.Weight) = switch textStyle {
     case .largeTitle: (34, .bold)
@@ -293,5 +307,23 @@ public struct StubScreen: View {
 
   public var body: some View {
     EmptyStateView(title: name, message: "Coming soon", systemImage: "hammer")
+  }
+}
+
+extension Font.TextStyle {
+  var uiTextStyle: UIFont.TextStyle {
+    switch self {
+    case .largeTitle: .largeTitle
+    case .title: .title1
+    case .title2: .title2
+    case .title3: .title3
+    case .headline: .headline
+    case .subheadline: .subheadline
+    case .callout: .callout
+    case .footnote: .footnote
+    case .caption: .caption1
+    case .caption2: .caption2
+    default: .body
+    }
   }
 }

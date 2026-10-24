@@ -81,6 +81,8 @@ public struct UserPreferences: Hashable, Sendable, Codable {
     if let locale = patch.locale { result["locale"] = .string(locale) }
     if let theme = patch.theme { result["theme"] = .string(theme.rawValue) }
     if let hand = patch.chordHand { result["chordHand"] = .string(hand.rawValue) }
+    if let palette = patch.palette { result["palette"] = .string(palette) }
+    if let uiFont = patch.uiFont { result["uiFont"] = .string(uiFont) }
     return result
   }
 
@@ -92,15 +94,21 @@ public struct PreferencesPatch: Hashable, Sendable, Codable {
   public var locale: String?
   public var theme: AppTheme?
   public var chordHand: ChordHand?
+  /// Web `preferences.palette` id (`lib/palette.ts`), for example `"rose-pine"`.
+  public var palette: String?
+  /// Web `preferences.uiFont` id (`lib/font.ts`), for example `"dm-sans"`.
+  public var uiFont: String?
 
   public init(
     lyricsColumns: Int? = nil, locale: String? = nil, theme: AppTheme? = nil,
-    chordHand: ChordHand? = nil
+    chordHand: ChordHand? = nil, palette: String? = nil, uiFont: String? = nil
   ) {
     self.lyricsColumns = lyricsColumns
     self.locale = locale
     self.theme = theme
     self.chordHand = chordHand
+    self.palette = palette
+    self.uiFont = uiFont
   }
 }
 

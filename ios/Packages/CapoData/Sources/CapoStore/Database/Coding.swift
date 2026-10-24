@@ -102,6 +102,10 @@ extension Song {
     if let value = patch.transpose { transpose = value }
     if let value = patch.capo { capo = value }
     if let value = patch.status { status = value }
+    if let value = patch.teamID {
+      teamID = value
+      userID = nil
+    }
   }
 
   /// A patch that makes the server row equal to this song (used by "keep mine").
@@ -175,7 +179,8 @@ extension PreferencesPatch {
   func merged(with newer: PreferencesPatch) -> PreferencesPatch {
     PreferencesPatch(
       lyricsColumns: newer.lyricsColumns ?? lyricsColumns, locale: newer.locale ?? locale,
-      theme: newer.theme ?? theme, chordHand: newer.chordHand ?? chordHand)
+      theme: newer.theme ?? theme, chordHand: newer.chordHand ?? chordHand,
+      palette: newer.palette ?? palette, uiFont: newer.uiFont ?? uiFont)
   }
 }
 
@@ -190,6 +195,12 @@ enum ContextFilter {
       return ("\(prefix)user_id = ? AND \(prefix)team_id IS NULL", [userID.dbString])
     case .team(let teamID):
       return ("\(prefix)team_id = ? AND \(prefix)user_id IS NULL", [teamID.dbString])
+    case .all(let userID):
+      // The local store only holds rows the user can read, so every team row belongs to a bucket.
+      return (
+        "((\(prefix)user_id = ? AND \(prefix)team_id IS NULL) OR \(prefix)team_id IS NOT NULL)",
+        [userID.dbString]
+      )
     }
   }
 }

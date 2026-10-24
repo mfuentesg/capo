@@ -1,3 +1,5 @@
+import CapoCore
+import CoreText
 import Testing
 import SwiftUI
 import UIKit
@@ -136,5 +138,122 @@ import UIKit
     #expect(CapoPaletteStorage.current.id == "test")
     store.current = .catppuccin
     #expect(CapoPaletteStorage.current.id == "catppuccin")
+  }
+}
+
+@MainActor @Suite struct PaletteTableTests {
+  private static let hex = /^#[0-9a-f]{6}$/
+
+  @Test func twelveWebPalettesInWebOrder() {
+    #expect(CapoPalette.all.map(\.id) == [
+      "catppuccin", "aura", "nord", "rose-pine", "dracula", "one-dark-pro", "tokyo-night", "gruvbox",
+      "monokai", "night-owl", "horizon", "shades-of-purple"
+    ])
+    #expect(CapoUIFont.all.map(\.id) == [
+      "geist", "inter", "roboto", "poppins", "nunito", "outfit", "dm-sans", "plus-jakarta-sans",
+      "montserrat", "lato", "space-grotesk", "manrope"
+    ])
+  }
+
+  @Test func everyTokenIsAValidHex() {
+    for palette in CapoPalette.all {
+      for tokens in [palette.light, palette.dark] {
+        let values = [
+          tokens.background, tokens.foreground, tokens.card, tokens.popover, tokens.primary,
+          tokens.primaryForeground, tokens.secondary, tokens.muted, tokens.mutedForeground, tokens.accent,
+          tokens.destructive, tokens.border, tokens.input, tokens.ring, tokens.chord, tokens.accentSongs,
+          tokens.accentPlaylists, tokens.accentActivity, tokens.sidebar, tokens.sidebarAccent,
+          tokens.sidebarBorder
+        ] + Array(tokens.sectionAccents.values)
+        for value in values { #expect(value.wholeMatch(of: Self.hex) != nil, "\(palette.id) \(value)") }
+        #expect(tokens.sectionAccents.count == 10)
+      }
+    }
+  }
+
+  /// Spot checks against WEB_PARITY_ANALYSIS §5.4 for each non-default palette (light, dark).
+  @Test func renderedValuesMatchTheAnalysisTables() {
+    let expected: [(String, String, String, String, String)] = [
+      // id, light background, light primary, dark background, dark primary
+      ("aura", "#f1f2ff", "#673ad0", "#09071a", "#9d67ff"),
+      ("nord", "#e9f0f7", "#3d75a2", "#132331", "#79bccd"),
+      ("rose-pine", "#fcecdd", "#a2507a", "#120c22", "#e2699d"),
+      ("dracula", "#f7f7f2", "#7a59c3", "#19172b", "#b995ff"),
+      ("one-dark-pro", "#f3f5f8", "#0076b3", "#141a24", "#25b2e8"),
+      ("tokyo-night", "#dfe0e7", "#2d46a1", "#0b091e", "#729bf8"),
+      ("gruvbox", "#fff7d3", "#b01f00", "#161616", "#fd7920"),
+      ("monokai", "#f8f8f8", "#d10073", "#13130f", "#f2009d"),
+      ("night-owl", "#f9f9f9", "#266ed4", "#000b1b", "#9de05f"),
+      ("horizon", "#ffece7", "#d32579", "#0b0b13", "#ed428e"),
+      ("shades-of-purple", "#f2f0ff", "#673ad0", "#251347", "#ffd304")
+    ]
+    for (id, lightBg, lightPrimary, darkBg, darkPrimary) in expected {
+      let palette = CapoPalette.named(id)
+      #expect(palette?.light.background == lightBg, "\(id) light bg")
+      #expect(palette?.light.primary == lightPrimary, "\(id) light primary")
+      #expect(palette?.dark.background == darkBg, "\(id) dark bg")
+      #expect(palette?.dark.primary == darkPrimary, "\(id) dark primary")
+    }
+    #expect(CapoPalette.nord.dark.sidebarBorder == "#1f3245")
+    #expect(CapoPalette.horizon.dark.accentSongs == "#ed428e")
+  }
+
+  @Test func rosePineOverridesSectionAccentsOnly() {
+    #expect(CapoPalette.rosePine.light.sectionAccents["verse"] != CapoPalette.catppuccin.light.sectionAccents["verse"])
+    #expect(CapoPalette.rosePine.dark.sectionAccents["chorus"] == "#b7a1f5")
+    #expect(CapoPalette.rosePine.dark.sectionAccents["verse"] == "#8cd3e4")
+    #expect(CapoPalette.rosePine.light.sectionAccents["tab"] == CapoPalette.catppuccin.light.sectionAccents["tab"])
+    #expect(CapoPalette.dracula.dark.sectionAccents == CapoPalette.catppuccin.dark.sectionAccents)
+    #expect(CapoPalette.rosePine.light.comment == "#008687")
+  }
+
+  @Test func previewSwatchesComeFromThePicker() {
+    #expect(CapoPalette.catppuccin.preview.light.background == "#eff1f5")
+    #expect(CapoPalette.shadesOfPurple.preview.dark.primary == "#fad000")
+    #expect(CapoPalette.rosePine.name == "Rosé Pine")
+  }
+
+  @Test func unknownIdsFallBackToDefaults() {
+    #expect(CapoPalette.named("nope") == nil)
+    let store = CapoPaletteStore()
+    store.apply(paletteID: "nord", uiFontID: "lato")
+    #expect(store.current.id == "nord" && store.uiFont.id == "lato")
+    let revision = store.revision
+    store.apply(paletteID: "nord", uiFontID: "lato")
+    #expect(store.revision == revision)
+    store.apply(paletteID: "bogus", uiFontID: nil)
+    #expect(store.current.id == "catppuccin" && store.uiFont.id == "geist")
+    #expect(store.revision > revision)
+  }
+
+  @Test func staticFontsPickTheNearestWeight() {
+    #expect(CapoUIFont.lato.staticPostScriptName(weight: 500) == "Lato-Regular")
+    #expect(CapoUIFont.lato.staticPostScriptName(weight: 600) == "Lato-Bold")
+    #expect(CapoUIFont.poppins.staticPostScriptName(weight: 600) == "Poppins-SemiBold")
+    #expect(CapoUIFont.geist.staticPostScriptName(weight: 900) == "Geist-Bold")
+    #expect(CapoUIFont.inter.variablePostScriptName == "Inter-Variable")
+  }
+
+  @Test func bundledFontsResolveForEveryFamily() {
+    CapoFonts.register()
+    for font in CapoUIFont.all {
+      for name in font.postScriptNames {
+        let ct = CTFontCreateWithName(name as CFString, 16, nil)
+        #expect(CTFontCopyPostScriptName(ct) as String == name, "\(name) not registered")
+      }
+    }
+  }
+
+  @Test func surpriseMeNeverRepeatsCurrentChoices() {
+    var rng = SystemRandomNumberGenerator()
+    for _ in 0..<50 {
+      let result = CapoAppearance.surprise(
+        palette: "nord", font: "inter", theme: .light, flipTheme: true, using: &rng)
+      #expect(result.palette.id != "nord" && result.font.id != "inter")
+      #expect(result.theme == .dark)
+    }
+    let settingsVersion = CapoAppearance.surprise(
+      palette: nil, font: nil, theme: nil, flipTheme: false, using: &rng)
+    #expect(settingsVersion.theme == nil && settingsVersion.palette.id != "catppuccin")
   }
 }

@@ -130,6 +130,7 @@
         "theirs": "Server",
         "title": "Sync conflicts"
       },
+      "copyExample": "Copy example",
       "delete": "Delete song",
       "deleteConfirmMessage": "It will be removed from your library and from any setlists.",
       "deleteConfirmTitle": "Delete this song?",
@@ -165,6 +166,10 @@
     "library": {
       "addCount": "Add ({count})",
       "addToSetlist": "Add to setlist",
+      "allBucketsShort": "All",
+      "cartAddCount": "Add {count} to playlist",
+      "clearCart": "Clear selection",
+      "removeFromCart": "Remove from playlist",
       "assignTags": "Assign tags",
       "bpm": {
         "fast": "Fast (> 120)",
@@ -182,6 +187,7 @@
       "emptyTitle": "No songs yet",
       "filters": "Filters",
       "manageTags": "Manage tags",
+      "meOwner": "Me",
       "moreTags": "+{count}",
       "newSong": "New song",
       "newTag": "New tag",
@@ -261,6 +267,7 @@
       "lastSync": "Last sync",
       "lyrics": "Lyrics",
       "openLanguageSettings": "Change in iOS Settings",
+      "restartForLanguage": "Restart Capo to apply the new language.",
       "pendingChanges": "Pending changes",
       "signOut": "Sign out",
       "signOutMessage": "Your songs stay on this device and sync again when you sign back in.",
@@ -322,7 +329,14 @@
       "roleOwner": "Owner",
       "shareHint": "Anyone with this link can view the setlist.",
       "shareLink": "Share link",
-      "shareTitle": "Share setlist"
+      "shareTitle": "Share setlist",
+      "searchTeams": "Search teams…",
+      "memberCount": "{count} Members",
+      "memberCountOne": "1 Member",
+      "iconPickerTitle": "Choose an icon",
+      "inviteLinkCopy": "Copy invite link",
+      "noTeamMatches": "No teams match your search",
+      "transferNoTeams": "You are not a member of any team that can receive songs."
     },
     "stage": {
       "soundsIn": "Sounds in",
@@ -345,7 +359,9 @@
       "controlsToolbar": "Performance controls",
       "fromBPM": "from {bpm}",
       "nextSong": "Next song: {title}",
-      "capoShort": "capo {fret}"
+      "capoShort": "capo {fret}",
+      "decrease": "Decrease",
+      "increase": "Increase"
     }
   }
 }

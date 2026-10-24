@@ -235,10 +235,12 @@ private struct CapoWidthKey: PreferenceKey {
 
 private struct CapoThemeModifier: ViewModifier {
   @State private var width: CGFloat = 0
+  let refreshOnChange: Bool
   var palette: CapoPalette { CapoPaletteStore.shared.current }
 
   func body(content: Content) -> some View {
     content
+      .id(refreshOnChange ? CapoPaletteStore.shared.revision : 0)
       .environment(\.capoPalette, palette)
       .environment(\.capoUIScale, CapoScale.factor(forWidth: width))
       .tint(CapoTheme.primary)
@@ -253,7 +255,13 @@ private struct CapoThemeModifier: ViewModifier {
 extension View {
   /// Applies the palette tint, text colour, page background and the tablet UI scale (17px root at
   /// >= 768pt wide). Does not touch the colour scheme.
-  public func capoTheme() -> some View { modifier(CapoThemeModifier()) }
+  ///
+  /// A palette or UI-font change re-creates the content (root refresh). Pass `refreshOnChange: false` for a
+  /// screen that re-keys only part of itself on `CapoPaletteStore.shared.revision` (Settings keeps its
+  /// scroll position that way).
+  public func capoTheme(refreshOnChange: Bool = true) -> some View {
+    modifier(CapoThemeModifier(refreshOnChange: refreshOnChange))
+  }
 }
 
 // MARK: - Font registration

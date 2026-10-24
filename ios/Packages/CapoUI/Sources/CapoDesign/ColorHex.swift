@@ -10,9 +10,9 @@ extension Color {
 }
 
 public enum HexColor {
-  public static let fallback = "#6b7280"
+  public nonisolated static let fallback = "#6b7280"
 
-  public static func parse(_ hex: String) -> (red: Double, green: Double, blue: Double, alpha: Double)? {
+  public nonisolated static func parse(_ hex: String) -> (red: Double, green: Double, blue: Double, alpha: Double)? {
     var text = hex.trimmingCharacters(in: .whitespaces)
     if text.hasPrefix("#") { text.removeFirst() }
     if text.count == 3 { text = text.map { "\($0)\($0)" }.joined() }

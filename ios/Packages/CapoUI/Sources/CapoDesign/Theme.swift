@@ -2,9 +2,10 @@ import CoreText
 import SwiftUI
 import UIKit
 
-// Catppuccin Latte (light) / Mocha (dark), mirroring `app/globals.css`.
+// Colour tokens come from `CapoPalette` (the web's rendered values); see Palette.swift.
 
 public enum CapoTheme {
+  /// Fixed light/dark pair, independent of the current palette.
   static func adaptive(light: String, dark: String) -> Color {
     // Resolve both colors up front: UIKit/SwiftUI call the provider off the main thread (async render),
     // and this module defaults to MainActor isolation, which traps if the closure touches isolated state.
@@ -16,50 +17,106 @@ public enum CapoTheme {
       })
   }
 
-  public static let background = adaptive(light: "#e6e9ef", dark: "#1e1e2e")
-  public static let card = adaptive(light: "#eff1f5", dark: "#313244")
-  /// Sidebar / crust.
-  public static let sidebar = adaptive(light: "#dce0e8", dark: "#181825")
-  public static let text = adaptive(light: "#4c4f69", dark: "#cdd6f4")
-  public static let subtext = adaptive(light: "#6c6f85", dark: "#9399b2")
-  public static let surface = adaptive(light: "#ccd0da", dark: "#313244")
-  public static let surfaceStrong = adaptive(light: "#bcc0cc", dark: "#45475a")
-  public static let border = adaptive(light: "#bcc0cc", dark: "#45475a")
-  public static let primary = adaptive(light: "#fe640b", dark: "#fab387")
-  /// Selected row / nav item fill: a solid peach tint (a translucent peach over the sidebar reads muddy pink).
-  public static let selection = adaptive(light: "#f9d9c6", dark: "#3d3037")
-  /// Text on a peach fill; always dark for contrast.
-  public static let onPrimary = Color(uiColor: UIColor(hex: "#1e1e2e"))
-  public static let chord = adaptive(light: "#8839ef", dark: "#cba6f7")
-  public static let chordFill = chord.opacity(0.14)
-  public static let info = adaptive(light: "#1e66f5", dark: "#89b4fa")
-  public static let success = adaptive(light: "#40a02b", dark: "#a6e3a1")
-  public static let destructive = adaptive(light: "#d20f39", dark: "#f38ba8")
-  public static let warning = adaptive(light: "#df8e1d", dark: "#f9e2af")
+  /// A palette token that follows both the interface style and the current palette.
+  public static func token(_ keyPath: KeyPath<CapoPalette.Tokens, String> & Sendable) -> Color {
+    Color(uiColor: tokenUIColor(keyPath))
+  }
+
+  static func tokenUIColor(
+    _ keyPath: KeyPath<CapoPalette.Tokens, String> & Sendable, alpha: [Double] = [1, 1]
+  ) -> UIColor {
+    UIColor { @Sendable traits in
+      let isDark = traits.userInterfaceStyle == .dark
+      let tokens = CapoPaletteStorage.current.tokens(dark: isDark)
+      return UIColor(hex: tokens[keyPath: keyPath]).withAlphaComponent(alpha[isDark ? 1 : 0])
+    }
+  }
+
+  public static let background = token(\.background)
+  public static let card = token(\.card)
+  public static let popover = token(\.popover)
+  /// Sidebar (unused by the web layout; kept for the iOS sidebar).
+  public static let sidebar = token(\.sidebar)
+  public static let sidebarAccent = token(\.sidebarAccent)
+  public static let sidebarBorder = token(\.sidebarBorder)
+  /// `--foreground`.
+  public static let foreground = token(\.foreground)
+  /// Primary text (alias of `foreground`).
+  public static let text = foreground
+  /// `--muted-foreground`.
+  public static let mutedForeground = token(\.mutedForeground)
+  /// Secondary text (alias of `mutedForeground`).
+  public static let subtext = mutedForeground
+  /// `--secondary` (also `--accent` in the default palette): active nav fill, hover fills.
+  public static let secondary = token(\.secondary)
+  public static let muted = token(\.muted)
+  public static let accent = token(\.accent)
+  /// Alias of `secondary`.
+  public static let surface = secondary
+  /// Alias of `border`.
+  public static let surfaceStrong = token(\.border)
+  public static let border = token(\.border)
+  public static let input = token(\.input)
+  public static let ring = token(\.ring)
+  public static let primary = token(\.primary)
+  /// `--primary-foreground`: light in light mode, the dark background in dark mode.
+  public static let primaryForeground = token(\.primaryForeground)
+  /// Alias of `primaryForeground`.
+  public static let onPrimary = primaryForeground
+  /// Selected row / active nav item fill. The web uses `secondary` for active nav items.
+  public static let selection = secondary
+  public static let chord = token(\.chord)
+  /// `.clp-col .chord` badge background: chord colour at 12%.
+  public static let chordFill = chord.opacity(0.12)
+  /// `--accent-songs` (also the "info" tone).
+  public static let accentSongs = token(\.accentSongs)
+  public static let accentPlaylists = token(\.accentPlaylists)
+  public static let accentActivity = token(\.accentActivity)
+  public static let info = accentSongs
+  public static let success = accentActivity
+  public static let destructive = token(\.destructive)
+  public static let warning = token(\.warning)
 
   /// Per-section accent (light/dark pairs from the web).
   public static func accent(for sectionType: String) -> Color {
-    switch sectionType {
-    case "verse": adaptive(light: "#1e66f5", dark: "#89b4fa")
-    case "chorus": adaptive(light: "#8839ef", dark: "#cba6f7")
-    case "bridge": adaptive(light: "#ea76cb", dark: "#f5c2e7")
-    case "comment": adaptive(light: "#179299", dark: "#94e2d5")
-    case "repeat": adaptive(light: "#df8e1d", dark: "#f9e2af")
-    case "intro": adaptive(light: "#40a02b", dark: "#a6e3a1")
-    case "outro": adaptive(light: "#04a5e5", dark: "#89dceb")
-    case "pre_chorus": adaptive(light: "#ea76cb", dark: "#f5c2e7")
-    default: subtext
+    Color(uiColor: accentUIColor(for: sectionType, alpha: [1, 1]))
+  }
+
+  /// Section block background: the accent at 6% in light mode and 12% in dark mode.
+  public static func sectionBackground(for sectionType: String) -> Color {
+    Color(uiColor: accentUIColor(for: sectionType, alpha: [0.06, 0.12]))
+  }
+
+  private static func accentUIColor(for sectionType: String, alpha: [Double]) -> UIColor {
+    UIColor { @Sendable traits in
+      let isDark = traits.userInterfaceStyle == .dark
+      let tokens = CapoPaletteStorage.current.tokens(dark: isDark)
+      let hex = tokens.sectionAccents[sectionType] ?? tokens.mutedForeground
+      return UIColor(hex: hex).withAlphaComponent(alpha[isDark ? 1 : 0])
     }
   }
 }
 
+/// Radii from `--radius: 0.65rem` (phone px; the tablet root scale multiplies them by 1.0625).
 public enum CapoRadius {
-  public static let small: CGFloat = 8
-  public static let medium: CGFloat = 12
-  public static let large: CGFloat = 16
+  /// `rounded-sm` (r - 4).
+  public static let sm: CGFloat = 6.4
+  /// `rounded-md` (r - 2): buttons, inputs, menu items.
+  public static let md: CGFloat = 8.4
+  /// `rounded-lg` (r): cards, alerts, dialogs.
+  public static let base: CGFloat = 10.4
+  /// `rounded-xl` (r + 4): list rows, settings cards.
+  public static let xl: CGFloat = 14.4
+  /// `rounded-2xl`: panels, floating control bars.
+  public static let xxl: CGFloat = 16
+
+  /// Previous names, now mapped onto the web scale: small = md, medium = xl, large = 2xl.
+  public static let small: CGFloat = md
+  public static let medium: CGFloat = xl
+  public static let large: CGFloat = xxl
 }
 
-extension UIColor {
+nonisolated extension UIColor {
   convenience init(hex: String) {
     let c = HexColor.parse(hex) ?? (0.5, 0.5, 0.5, 1)
     self.init(red: c.red, green: c.green, blue: c.blue, alpha: c.alpha)
@@ -68,36 +125,88 @@ extension UIColor {
 
 // MARK: - Button styles
 
+/// Visual heights from `components/ui/button.tsx` (h-9, h-8, h-10). The hit area is always at least
+/// `CapoMetrics.minHitTarget` tall; the extra area is invisible.
+public enum CapoButtonSize: Sendable {
+  case regular, small, large
+
+  var height: CGFloat {
+    switch self {
+    case .regular: 36
+    case .small: 32
+    case .large: 40
+    }
+  }
+
+  var horizontalPadding: CGFloat { self == .large ? 24 : (self == .small ? 12 : 16) }
+}
+
+private struct CapoButtonChrome: ViewModifier {
+  @Environment(\.capoUIScale) private var scale
+  let size: CapoButtonSize
+
+  func body(content: Content) -> some View {
+    let height = size.height * scale
+    let extra = max(0, (CapoMetrics.minHitTarget - height) / 2)
+    content
+      .capoText(.sm, weight: .medium)
+      .lineLimit(1)
+      .padding(.horizontal, size.horizontalPadding * scale)
+      .frame(minHeight: height)
+      // Grow the hit area to 44pt without growing the layout.
+      .padding(.vertical, extra)
+      .contentShape(Rectangle())
+      .padding(.vertical, -extra)
+  }
+}
+
 public struct CapoPrimaryButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var isEnabled
-  public init() {}
+  @Environment(\.capoUIScale) private var scale
+  let size: CapoButtonSize
+  public init(size: CapoButtonSize = .regular) { self.size = size }
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .font(CapoFont.style(.body, weight: .semibold))
-      .foregroundStyle(CapoTheme.onPrimary)
-      .padding(.horizontal, 18)
-      .frame(minHeight: CapoMetrics.minTouchTarget)
-      .background(CapoTheme.primary, in: RoundedRectangle(cornerRadius: CapoRadius.medium, style: .continuous))
-      .opacity(isEnabled ? (configuration.isPressed ? 0.85 : 1) : 0.45)
+      .foregroundStyle(CapoTheme.primaryForeground)
+      .modifier(CapoButtonChrome(size: size))
+      .background(CapoTheme.primary, in: RoundedRectangle(cornerRadius: CapoRadius.md * scale, style: .continuous))
+      .opacity(isEnabled ? (configuration.isPressed ? 0.9 : 1) : 0.5)
       .scaleEffect(configuration.isPressed ? 0.98 : 1)
       .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
   }
 }
 
+/// The web's `outline` variant: background fill, 1px border, `shadow-xs`.
 public struct CapoSecondaryButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var isEnabled
-  public init() {}
+  @Environment(\.capoUIScale) private var scale
+  let size: CapoButtonSize
+  public init(size: CapoButtonSize = .regular) { self.size = size }
+  public func makeBody(configuration: Configuration) -> some View {
+    let shape = RoundedRectangle(cornerRadius: CapoRadius.md * scale, style: .continuous)
+    configuration.label
+      .foregroundStyle(CapoTheme.foreground)
+      .modifier(CapoButtonChrome(size: size))
+      .background(configuration.isPressed ? CapoTheme.accent : CapoTheme.background, in: shape)
+      .overlay(shape.strokeBorder(CapoTheme.input, lineWidth: 1))
+      .shadow(color: .black.opacity(0.05), radius: 1, y: 1)
+      .opacity(isEnabled ? 1 : 0.5)
+      .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
+  }
+}
+
+/// The web's `destructive` variant.
+public struct CapoDestructiveButtonStyle: ButtonStyle {
+  @Environment(\.isEnabled) private var isEnabled
+  @Environment(\.capoUIScale) private var scale
+  let size: CapoButtonSize
+  public init(size: CapoButtonSize = .regular) { self.size = size }
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .font(CapoFont.style(.body, weight: .medium))
-      .foregroundStyle(CapoTheme.text)
-      .padding(.horizontal, 18)
-      .frame(minHeight: CapoMetrics.minTouchTarget)
-      .background(CapoTheme.card, in: RoundedRectangle(cornerRadius: CapoRadius.medium, style: .continuous))
-      .overlay(
-        RoundedRectangle(cornerRadius: CapoRadius.medium, style: .continuous)
-          .strokeBorder(CapoTheme.border, lineWidth: 1))
-      .opacity(isEnabled ? (configuration.isPressed ? 0.8 : 1) : 0.45)
+      .foregroundStyle(Color.white)
+      .modifier(CapoButtonChrome(size: size))
+      .background(CapoTheme.destructive, in: RoundedRectangle(cornerRadius: CapoRadius.md * scale, style: .continuous))
+      .opacity(isEnabled ? (configuration.isPressed ? 0.9 : 1) : 0.5)
       .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
   }
 }
@@ -106,12 +215,12 @@ public struct CapoIconButtonStyle: ButtonStyle {
   public init() {}
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .foregroundStyle(CapoTheme.text)
-      .frame(minWidth: CapoMetrics.minTouchTarget, minHeight: CapoMetrics.minTouchTarget)
+      .foregroundStyle(CapoTheme.foreground)
+      .frame(minWidth: CapoMetrics.minHitTarget, minHeight: CapoMetrics.minHitTarget)
       .contentShape(Rectangle())
       .background(
-        configuration.isPressed ? CapoTheme.surface : Color.clear,
-        in: RoundedRectangle(cornerRadius: CapoRadius.medium, style: .continuous)
+        configuration.isPressed ? CapoTheme.accent : Color.clear,
+        in: RoundedRectangle(cornerRadius: CapoRadius.md, style: .continuous)
       )
       .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
   }
@@ -119,18 +228,31 @@ public struct CapoIconButtonStyle: ButtonStyle {
 
 // MARK: - Modifier
 
+private struct CapoWidthKey: PreferenceKey {
+  static let defaultValue: CGFloat = 0
+  static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = max(value, nextValue()) }
+}
+
 private struct CapoThemeModifier: ViewModifier {
+  @State private var width: CGFloat = 0
+  var palette: CapoPalette { CapoPaletteStore.shared.current }
+
   func body(content: Content) -> some View {
     content
+      .environment(\.capoPalette, palette)
+      .environment(\.capoUIScale, CapoScale.factor(forWidth: width))
       .tint(CapoTheme.primary)
       .font(CapoFont.style(.body))
-      .foregroundStyle(CapoTheme.text)
+      .foregroundStyle(CapoTheme.foreground)
+      .background(GeometryReader { Color.clear.preference(key: CapoWidthKey.self, value: $0.size.width) })
+      .onPreferenceChange(CapoWidthKey.self) { width = $0 }
       .background(CapoTheme.background.ignoresSafeArea())
   }
 }
 
 extension View {
-  /// Applies the Catppuccin tint, text colour and page background. Does not touch the colour scheme.
+  /// Applies the palette tint, text colour, page background and the tablet UI scale (17px root at
+  /// >= 768pt wide). Does not touch the colour scheme.
   public func capoTheme() -> some View { modifier(CapoThemeModifier()) }
 }
 
@@ -150,18 +272,19 @@ public enum CapoFonts {
 
 // MARK: - Key badge
 
-/// Song key pill: mauve text on a mauve 14% fill, like the web's chord pills.
+/// Song key pill (`lib/badge-colors.ts`): Geist Mono, `accent-songs` text on a 10% fill with a 30% border.
 public struct KeyBadge: View {
   let key: String
   public init(_ key: String) { self.key = key }
 
   public var body: some View {
     Text(key)
-      .font(CapoFont.mono(14, weight: .bold, relativeTo: .subheadline))
-      .foregroundStyle(CapoTheme.chord)
-      .padding(.horizontal, 10)
-      .frame(minWidth: 40, minHeight: 28)
-      .background(CapoTheme.chordFill, in: RoundedRectangle(cornerRadius: CapoRadius.small, style: .continuous))
+      .font(CapoFont.mono(12, weight: .medium, relativeTo: .caption))
+      .foregroundStyle(CapoTheme.accentSongs)
+      .padding(.horizontal, 8)
+      .frame(minWidth: 32, minHeight: 24)
+      .background(CapoTheme.accentSongs.opacity(0.10), in: Capsule())
+      .overlay(Capsule().strokeBorder(CapoTheme.accentSongs.opacity(0.30), lineWidth: 1))
       .accessibilityLabel(key)
   }
 }

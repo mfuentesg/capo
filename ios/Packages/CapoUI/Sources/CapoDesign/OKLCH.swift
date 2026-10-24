@@ -34,6 +34,13 @@ public struct OKLCH: Hashable, Sendable {
     return (encode(linear.0), encode(linear.1), encode(linear.2))
   }
 
+  /// `#rrggbb` of the clamped sRGB value.
+  public var hex: String {
+    let c = srgb
+    func byte(_ v: Double) -> Int { Int((v * 255).rounded()) }
+    return String(format: "#%02x%02x%02x", byte(c.red), byte(c.green), byte(c.blue))
+  }
+
   public var uiColor: UIColor {
     let c = srgb
     return UIColor(red: c.red, green: c.green, blue: c.blue, alpha: 1)

@@ -37,7 +37,10 @@ let package = Package(
     .target(name: "CapoIcons", swiftSettings: mainActorByDefault),
     .target(
       name: "CapoRendering",
-      dependencies: ["CapoDesign", .product(name: "CapoChordPro", package: "CapoCore")],
+      dependencies: [
+        "CapoDesign", .product(name: "CapoChordPro", package: "CapoCore"),
+        .product(name: "CapoCore", package: "CapoCore")
+      ],
       resources: [.process("Resources")],
       swiftSettings: mainActorByDefault
     ),

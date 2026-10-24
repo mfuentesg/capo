@@ -175,7 +175,7 @@ extension PreferencesPatch {
   func merged(with newer: PreferencesPatch) -> PreferencesPatch {
     PreferencesPatch(
       lyricsColumns: newer.lyricsColumns ?? lyricsColumns, locale: newer.locale ?? locale,
-      theme: newer.theme ?? theme)
+      theme: newer.theme ?? theme, chordHand: newer.chordHand ?? chordHand)
   }
 }
 

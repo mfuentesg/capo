@@ -42,6 +42,14 @@ public enum AppTheme: String, Codable, Sendable, CaseIterable {
   case light, dark, system
 }
 
+/// Chord diagram orientation (web `chordHand`): `left` draws the low string on the left, `right` mirrors.
+public enum ChordHand: String, Codable, Sendable, CaseIterable {
+  case left, right
+
+  /// Web default when nothing is stored.
+  public static let `default`: ChordHand = .left
+}
+
 public struct UserPreferences: Hashable, Sendable, Codable {
   public var lyricsColumns: Int  // 1|2; default 2 (web mapJsonToPreferences)
   public var locale: String?
@@ -63,12 +71,16 @@ public struct UserPreferences: Hashable, Sendable, Codable {
     uiFont = json["uiFont"]?.stringValue
   }
 
+  /// Stored hand, or the web default (`left`).
+  public var resolvedChordHand: ChordHand { chordHand.flatMap(ChordHand.init(rawValue:)) ?? .default }
+
   /// The full preferences JSON with the patch applied; unknown keys are kept.
   public func json(applying patch: PreferencesPatch) -> [String: JSONValue] {
     var result = raw
     if let columns = patch.lyricsColumns { result["lyricsColumns"] = .number(Double(columns)) }
     if let locale = patch.locale { result["locale"] = .string(locale) }
     if let theme = patch.theme { result["theme"] = .string(theme.rawValue) }
+    if let hand = patch.chordHand { result["chordHand"] = .string(hand.rawValue) }
     return result
   }
 
@@ -79,11 +91,16 @@ public struct PreferencesPatch: Hashable, Sendable, Codable {
   public var lyricsColumns: Int?
   public var locale: String?
   public var theme: AppTheme?
+  public var chordHand: ChordHand?
 
-  public init(lyricsColumns: Int? = nil, locale: String? = nil, theme: AppTheme? = nil) {
+  public init(
+    lyricsColumns: Int? = nil, locale: String? = nil, theme: AppTheme? = nil,
+    chordHand: ChordHand? = nil
+  ) {
     self.lyricsColumns = lyricsColumns
     self.locale = locale
     self.theme = theme
+    self.chordHand = chordHand
   }
 }
 

@@ -148,6 +148,12 @@ private func roundTrip<T: Codable & Equatable>(_ value: T) throws {
     #expect(json["lyricsColumns"] == .number(2))
     #expect(json["locale"] == .string("es"))
     #expect(json["unknown"] == preferences.raw["unknown"])
+    #expect(UserPreferences.default.resolvedChordHand == .left)
+    let handJSON = preferences.json(applying: PreferencesPatch(chordHand: .right))
+    #expect(handJSON["chordHand"] == .string("right"))
+    #expect(handJSON["unknown"] == preferences.raw["unknown"])
+    #expect(UserPreferences(json: handJSON).resolvedChordHand == .right)
+    #expect(UserPreferences(json: ["chordHand": .string("bogus")]).resolvedChordHand == .left)
   }
 
   @Test func patchMergeKeepsOlderFields() {

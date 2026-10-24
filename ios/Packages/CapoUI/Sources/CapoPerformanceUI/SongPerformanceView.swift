@@ -137,10 +137,13 @@ struct SongPerformanceScreen: View {
       animate { titlePillVisible = false }
     }
     .sheet(item: $diagramChord) { chord in
-      ChordDiagramView(chordName: chord.name)
-        .presentationDetents([.height(420), .large])
-        .presentationDragIndicator(.visible)
-        .presentationBackground(CapoTheme.surface)
+      ChordDiagramView(
+        chordName: chord.name, hand: model.chordHand,
+        onHandChange: { hand in Task { await model.setChordHand(hand) } }
+      )
+      .presentationDetents([.fraction(0.85), .large])
+      .presentationDragIndicator(.visible)
+      .presentationBackground(CapoTheme.background)
     }
     .onAppear { UIApplication.shared.isIdleTimerDisabled = true }
     .onChange(of: published) { _, snapshot in CurrentPerformance.shared.snapshot = snapshot }

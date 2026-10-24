@@ -12,6 +12,7 @@ final class SongPerformanceModel {
   private(set) var settings = PerformanceSettings()
   private(set) var rendered = RenderedSong(segments: [])
   var columns = UserPreferences.default.lyricsColumns
+  private(set) var chordHand = UserPreferences.default.resolvedChordHand
   var showChords = true
   var scrollSpeed = AutoScrollSpeed.fallback
   var isAutoScrolling = false
@@ -62,6 +63,7 @@ final class SongPerformanceModel {
 
   func apply(preferences: UserPreferences) {
     columns = preferences.lyricsColumns == 1 ? 1 : 2
+    chordHand = preferences.resolvedChordHand
   }
 
   private func resolveSettings() {
@@ -91,6 +93,12 @@ final class SongPerformanceModel {
     guard value != columns else { return }
     columns = value
     try? await settingsRepository.updatePreferences(PreferencesPatch(lyricsColumns: value))
+  }
+
+  func setChordHand(_ value: ChordHand) async {
+    guard value != chordHand else { return }
+    chordHand = value
+    try? await settingsRepository.updatePreferences(PreferencesPatch(chordHand: value))
   }
 
   func flushPendingSave() async {

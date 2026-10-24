@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 """Builds CapoRendering/Resources/chords.json from @tombatossals/chords-db (run from repo root).
 
-Compact shape: {instrument: {"strings": n, "chords": {key: {suffix: [[baseFret, [frets], [barres]], ...]}}}}
-Fingers, midi and the capo flag are dropped; at most 4 positions per chord are kept.
+Guitar only (the web has no other instrument).
+Compact shape: {"guitar": {"strings": n, "chords": {key: {suffix: [[baseFret, [frets], [barres], [fingers]], ...]}}}}
+Midi and the capo flag are dropped; every position is kept, as on the web.
 """
 import json, pathlib
 
 root = pathlib.Path("node_modules/@tombatossals/chords-db/lib")
 out = {}
-for name in ("guitar", "ukulele"):
+for name in ("guitar",):
     data = json.loads((root / f"{name}.json").read_text())
     chords = {}
     for key, variations in data["chords"].items():
         chords[key] = {
-            v["suffix"]: [[p["baseFret"], p["frets"], p["barres"]] for p in v["positions"][:4]]
+            v["suffix"]: [[p["baseFret"], p["frets"], p["barres"], p["fingers"]] for p in v["positions"]]
             for v in variations
         }
     out[name] = {"strings": data["main"]["strings"], "chords": chords}

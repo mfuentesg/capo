@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Transient error/info banner. Bind a message; it clears itself after `duration`.
+/// Transient error/info banner, bottom-center like the web's sonner toasts. Bind a message; it clears itself after `duration`.
 private struct ToastModifier: ViewModifier {
   @Binding var message: String?
   let duration: Duration
@@ -9,14 +9,25 @@ private struct ToastModifier: ViewModifier {
     content
       .overlay(alignment: .bottom) {
         if let message {
-          Label(message, systemImage: "exclamationmark.triangle.fill")
-            .font(CapoFont.style(.subheadline, weight: .medium))
-            .foregroundStyle(.white)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 12)
-            .background(Color.red.gradient, in: Capsule())
-            .padding(.bottom, 24)
-            .padding(.horizontal, 16)
+          // sonner: bottom-center, background + border + shadow-lg, 356pt wide at most.
+          Label {
+            Text(message).foregroundStyle(CapoTheme.foreground)
+          } icon: {
+            Image(systemName: "exclamationmark.circle").foregroundStyle(CapoTheme.destructive)
+          }
+          .font(CapoFont.web(.sm, weight: .medium))
+          .padding(16)
+          .frame(maxWidth: 356, alignment: .leading)
+          .background(
+            CapoTheme.background, in: RoundedRectangle(cornerRadius: CapoRadius.md, style: .continuous)
+          )
+          .overlay(
+            RoundedRectangle(cornerRadius: CapoRadius.md, style: .continuous)
+              .strokeBorder(CapoTheme.border, lineWidth: 1)
+          )
+          .shadow(color: .black.opacity(0.1), radius: 8, y: 6)
+          .padding(.bottom, 24)
+          .padding(.horizontal, 16)
             .transition(.move(edge: .bottom).combined(with: .opacity))
             .accessibilityAddTraits(.isStaticText)
             .onTapGesture { self.message = nil }

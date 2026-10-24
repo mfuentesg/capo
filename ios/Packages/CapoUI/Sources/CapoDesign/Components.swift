@@ -13,9 +13,9 @@ public enum SectionAccent {
     CapoTheme.accent(for: sectionType)
   }
 
-  /// Section background tint.
+  /// Section background tint: 6% in light mode, 12% in dark mode.
   public static func background(for sectionType: String) -> Color {
-    color(for: sectionType).opacity(0.1)
+    CapoTheme.sectionBackground(for: sectionType)
   }
 }
 
@@ -102,7 +102,7 @@ public struct TagChip: View {
     .padding(.horizontal, 10)
     .padding(.vertical, 6)
     .frame(minHeight: 32)
-    .background(isSelected ? color : color.opacity(0.14), in: Capsule())
+    .background(isSelected ? color : color.opacity(0.18), in: Capsule())
     .overlay(Capsule().strokeBorder(color.opacity(isSelected ? 0 : 0.35), lineWidth: 1))
     .accessibilityElement(children: .combine)
     .accessibilityAddTraits(isSelected ? .isSelected : [])
@@ -164,23 +164,57 @@ public struct SyncStatusBadge: View {
 
 // MARK: - Empty state
 
+/// The web's `Empty` block (`components/ui/empty.tsx`): a 40px tinted icon tile, a medium title and a
+/// muted description. `tint` colours the tile (default: muted); `bordered` adds the dashed outline.
 public struct EmptyStateView: View {
+  @Environment(\.capoUIScale) private var scale
   let title: String
   let message: String?
   let systemImage: String
+  let tint: Color?
+  let bordered: Bool
 
-  public init(title: String, message: String?, systemImage: String) {
+  public init(
+    title: String, message: String?, systemImage: String, tint: Color? = nil, bordered: Bool = false
+  ) {
     self.title = title
     self.message = message
     self.systemImage = systemImage
+    self.tint = tint
+    self.bordered = bordered
   }
 
   public var body: some View {
-    ContentUnavailableView {
-      Label(title, systemImage: systemImage)
-    } description: {
-      if let message { Text(message) }
+    let tile = RoundedRectangle(cornerRadius: CapoRadius.base * scale, style: .continuous)
+    VStack(spacing: 16) {
+      Image(systemName: systemImage)
+        .font(.system(size: 24 * scale, weight: .regular))
+        .foregroundStyle(tint ?? CapoTheme.foreground)
+        .frame(width: 40 * scale, height: 40 * scale)
+        .background(tint.map { $0.opacity(0.10) } ?? CapoTheme.muted, in: tile)
+        .overlay { if let tint { tile.strokeBorder(tint.opacity(0.20), lineWidth: 1) } }
+        .accessibilityHidden(true)
+      VStack(spacing: 4) {
+        Text(title)
+          .capoText(.lg, weight: .medium, tracking: -0.025)
+          .multilineTextAlignment(.center)
+        if let message {
+          Text(message)
+            .capoText(.sm)
+            .foregroundStyle(CapoTheme.mutedForeground)
+            .multilineTextAlignment(.center)
+        }
+      }
     }
+    .padding(24)
+    .frame(maxWidth: .infinity)
+    .overlay {
+      if bordered {
+        RoundedRectangle(cornerRadius: CapoRadius.base * scale, style: .continuous)
+          .strokeBorder(CapoTheme.border, style: StrokeStyle(lineWidth: 1, dash: [4, 3]))
+      }
+    }
+    .accessibilityElement(children: .combine)
   }
 }
 
@@ -190,7 +224,8 @@ public enum CapoFont {
   public static let baseLyricsPointSize: CGFloat = 16
 
   static func postScriptName(_ weight: Font.Weight, mono: Bool = false) -> String {
-    if mono { return weight == .bold || weight == .semibold || weight == .heavy ? "GeistMono-Bold" : "GeistMono-Regular" }
+    // Only Regular and Bold ship for Geist Mono; medium maps to regular, semibold and above to bold.
+    if mono { return weight == .bold || weight == .semibold || weight == .heavy || weight == .black ? "GeistMono-Bold" : "GeistMono-Regular" }
     switch weight {
     case .medium: return "Geist-Medium"
     case .semibold: return "Geist-SemiBold"
@@ -229,10 +264,10 @@ public enum CapoFont {
     return ui(size, weight: weight ?? defaultWeight, relativeTo: textStyle)
   }
 
-  /// Lyrics are 16pt x scale and ignore Dynamic Type, like the web.
+  /// Lyrics are Geist Mono (`<pre>` uses `--font-mono` on the web), 16pt x scale, ignoring Dynamic Type.
   public static func lyrics(scale: Double) -> Font {
     CapoFonts.register()
-    return .custom("Geist-Regular", fixedSize: baseLyricsPointSize * scale)
+    return .custom("GeistMono-Regular", fixedSize: baseLyricsPointSize * scale)
   }
 
   public static func chord(scale: Double) -> Font {
@@ -246,6 +281,8 @@ public enum CapoFont {
 public enum CapoMetrics {
   /// Minimum touch target; the app is used on stage, so this is above Apple's 44pt minimum.
   public static let minTouchTarget: CGFloat = 48
+  /// Hit area for controls whose visual size follows the web (h-8 / h-9 buttons).
+  public static let minHitTarget: CGFloat = 44
   public static let cornerRadius: CGFloat = CapoRadius.medium
 }
 

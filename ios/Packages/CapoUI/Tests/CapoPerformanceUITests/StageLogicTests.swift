@@ -119,3 +119,87 @@ import Testing
     #expect(StageAutoScrollLabel.signed(-3) == "-3")
   }
 }
+
+@Suite struct DisplaySettingsLogicTests {
+  private let defaults = PerformanceSettings(transpose: 0, capo: 0, fontSize: 1)
+
+  @Test func untouchedSettingsHaveNoChipsAndNoPing() {
+    #expect(DisplaySettingsLogic.chips(settings: defaults, defaults: defaults).isEmpty)
+    #expect(
+      !DisplaySettingsLogic.isModified(
+        settings: defaults, defaults: defaults, showChords: true, showLyrics: true))
+  }
+
+  @Test func chipsFollowTheWebOrderAndLabels() {
+    let settings = PerformanceSettings(transpose: -2, capo: 3, fontSize: 1.25)
+    let chips = DisplaySettingsLogic.chips(settings: settings, defaults: defaults)
+    #expect(chips.map(\.kind) == [.transpose, .capo, .fontSize])
+    #expect(chips.map(\.value) == ["-2", "3", "1.25"])
+  }
+
+  @Test func chipsAreRelativeToTheSongsAuthoredDefaults() {
+    let authored = PerformanceSettings(transpose: 2, capo: 0, fontSize: 1)
+    #expect(DisplaySettingsLogic.chips(settings: authored, defaults: authored).isEmpty)
+  }
+
+  @Test func hiddenChordsOrLyricsPing() {
+    #expect(
+      DisplaySettingsLogic.isModified(
+        settings: defaults, defaults: defaults, showChords: false, showLyrics: true))
+    #expect(
+      DisplaySettingsLogic.isModified(
+        settings: defaults, defaults: defaults, showChords: true, showLyrics: false))
+  }
+
+  @Test func resetRestoresOnlyThatSetting() {
+    var settings = PerformanceSettings(transpose: 4, capo: 2, fontSize: 1.5)
+    DisplaySettingsLogic.reset(.capo, in: &settings, to: defaults)
+    #expect(settings == PerformanceSettings(transpose: 4, capo: 0, fontSize: 1.5))
+  }
+
+  @Test func neverHidesBothChordsAndLyrics() {
+    #expect(!DisplaySettingsLogic.canHide(showChords: true, showLyrics: false, hiding: .chords))
+    #expect(DisplaySettingsLogic.canHide(showChords: true, showLyrics: true, hiding: .chords))
+    #expect(!DisplaySettingsLogic.canHide(showChords: false, showLyrics: true, hiding: .lyrics))
+  }
+
+  @Test func labels() {
+    #expect(DisplaySettingsLogic.fontLabel(1) == "1.00")
+    #expect(DisplaySettingsLogic.signed(2) == "+2")
+    #expect(DisplaySettingsLogic.signed(0) == "0")
+    #expect(DisplaySettingsLogic.Tempo(bpm: 72) == .slow)
+    #expect(DisplaySettingsLogic.Tempo(bpm: 120) == .medium)
+    #expect(DisplaySettingsLogic.Tempo(bpm: 121) == .fast)
+  }
+}
+
+@Suite struct ColumnFitTests {
+  @Test func roomyPaneKeepsTheFontScale() {
+    #expect(ColumnFit.scale(contentWidth: 900, columns: 2, fontScale: 1) == 1)
+  }
+
+  @Test func singleColumnNeverShrinks() {
+    #expect(ColumnFit.scale(contentWidth: 300, columns: 1, fontScale: 1) == 1)
+  }
+
+  @Test func narrowPaneShrinksTheTextToFitTwoColumns() {
+    // (500 - 40) / 2 = 230 available against 340 needed.
+    let scale = ColumnFit.scale(contentWidth: 500, columns: 2, fontScale: 1)
+    #expect(abs(scale - 230.0 / 340.0) < 0.0001)
+  }
+
+  @Test func neverShrinksBelowTheFloor() {
+    #expect(ColumnFit.scale(contentWidth: 250, columns: 2, fontScale: 1) == ColumnFit.minimumScale)
+  }
+
+  @Test func largerTextNeedsMoreRoom() {
+    #expect(
+      ColumnFit.scale(contentWidth: 700, columns: 2, fontScale: 1.5)
+        < ColumnFit.scale(contentWidth: 700, columns: 2, fontScale: 1))
+  }
+
+  @Test func phonesStayOnOneColumn() {
+    #expect(ColumnFit.minTwoColumnWidth(pane: 390) == .infinity)
+    #expect(ColumnFit.minTwoColumnWidth(pane: 520) == 0)
+  }
+}

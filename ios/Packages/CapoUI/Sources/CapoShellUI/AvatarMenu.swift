@@ -1,4 +1,5 @@
 import CapoDesign
+import CapoIcons
 import SwiftUI
 
 /// Avatar trigger plus the account popover (web `user-profile-menu.tsx`): profile header,
@@ -21,10 +22,7 @@ struct AvatarMenu: View {
   }
 
   private var avatar: some View {
-    InitialAvatar(
-      url: model.session.avatarURL, text: model.session.fullName ?? model.session.email ?? "?",
-      size: style == .compact ? 32 : 36, tinted: true
-    )
+    ProfileAvatar(url: model.session.avatarURL, teamIcon: nil, size: 36, ringed: true)
     .overlay(alignment: .topTrailing) {
       if model.conflictCount > 0 {
         Circle().fill(CapoTheme.destructive).frame(width: 10, height: 10).offset(x: 2, y: -2)
@@ -44,13 +42,13 @@ struct AvatarMenu: View {
         avatar
         VStack(alignment: .leading, spacing: 1) {
           Text(model.session.fullName ?? model.session.email ?? "")
-            .font(CapoFont.style(.subheadline, weight: .semibold)).lineLimit(1)
+            .capoText(.sm, weight: .semibold).lineLimit(1)
           if model.session.fullName != nil, let email = model.session.email {
-            Text(email).font(CapoFont.style(.caption)).foregroundStyle(CapoTheme.subtext).lineLimit(1)
+            Text(email).capoText(.xs).foregroundStyle(CapoTheme.mutedForeground).lineLimit(1)
           }
         }
         Spacer(minLength: 0)
-        Image(systemName: "chevron.up").font(CapoFont.style(.caption)).foregroundStyle(CapoTheme.subtext)
+        CapoIcon(.chevronUp, size: 12).foregroundStyle(CapoTheme.mutedForeground)
       }
       .foregroundStyle(CapoTheme.text)
       .padding(.horizontal, 8)
@@ -69,10 +67,10 @@ private struct AvatarMenuContent: View {
       header
       CapoTheme.border.frame(height: 1)
       VStack(spacing: 0) {
-        item("gearshape", ContextStrings.settings) { model.navigation.showSettings = true }
-        item("envelope", ContextStrings.invitations) { model.navigation.showInvitations = true }
+        item(.settings, ContextStrings.settings) { model.navigation.showSettings = true }
+        item(.mail, ContextStrings.invitations) { model.navigation.showInvitations = true }
         if model.conflictCount > 0 {
-          item("exclamationmark.triangle", "\(ContextStrings.conflicts) (\(model.conflictCount))") {
+          item(.alertCircle, "\(ContextStrings.conflicts) (\(model.conflictCount))") {
             model.navigation.showConflicts = true
           }
         }
@@ -81,25 +79,23 @@ private struct AvatarMenuContent: View {
       CapoTheme.border.frame(height: 1)
       themeRow
       CapoTheme.border.frame(height: 1)
-      item("rectangle.portrait.and.arrow.right", ContextStrings.signOut, destructive: true) {
+      item(.logOut, ContextStrings.signOut, destructive: true) {
         model.navigation.showSignOut = true
       }
       .padding(.vertical, 4)
     }
     .frame(width: 288)
-    .background(CapoTheme.card)
+    .background(CapoTheme.popover)
   }
 
   private var header: some View {
     HStack(spacing: 12) {
-      InitialAvatar(
-        url: model.session.avatarURL, text: model.session.fullName ?? model.session.email ?? "?",
-        size: 40, tinted: true)
+      ProfileAvatar(url: model.session.avatarURL, teamIcon: nil, size: 40)
       VStack(alignment: .leading, spacing: 1) {
         Text(model.session.fullName ?? model.session.email ?? "")
-          .font(CapoFont.style(.subheadline, weight: .semibold)).lineLimit(1)
+          .capoText(.sm, weight: .semibold).lineLimit(1)
         if model.session.fullName != nil, let email = model.session.email {
-          Text(email).font(CapoFont.style(.caption)).foregroundStyle(CapoTheme.subtext).lineLimit(1)
+          Text(email).capoText(.xs).foregroundStyle(CapoTheme.mutedForeground).lineLimit(1)
         }
       }
       Spacer(minLength: 0)
@@ -109,7 +105,7 @@ private struct AvatarMenuContent: View {
   }
 
   private func item(
-    _ symbol: String, _ title: String, destructive: Bool = false, action: @escaping () -> Void
+    _ icon: CapoIconName, _ title: String, destructive: Bool = false, action: @escaping () -> Void
   ) -> some View {
     Button {
       dismiss()
@@ -120,8 +116,8 @@ private struct AvatarMenuContent: View {
       }
     } label: {
       HStack(spacing: 12) {
-        Image(systemName: symbol).frame(width: 22)
-        Text(title).font(CapoFont.style(.subheadline, weight: .medium))
+        CapoIcon(icon, size: 16).frame(width: 22)
+        Text(title).capoText(.sm, weight: .medium)
         Spacer(minLength: 0)
       }
       .foregroundStyle(destructive ? CapoTheme.destructive : CapoTheme.text)
@@ -135,15 +131,15 @@ private struct AvatarMenuContent: View {
   private var themeRow: some View {
     HStack(spacing: 4) {
       Text(L10n.Settings.theme)
-        .font(CapoFont.style(.subheadline)).foregroundStyle(CapoTheme.subtext)
+        .capoText(.sm).foregroundStyle(CapoTheme.mutedForeground)
       Spacer(minLength: 0)
       ForEach(ThemeChoice.all, id: \.theme) { choice in
         let selected = (model.theme ?? .system) == choice.theme
         Button { model.setTheme(choice.theme) } label: {
-          Image(systemName: choice.symbol)
-            .frame(width: 36, height: 36)
-            .foregroundStyle(selected ? CapoTheme.primary : CapoTheme.subtext)
-            .background(selected ? CapoTheme.selection : Color.clear, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+          CapoIcon(choice.icon, size: 16)
+            .frame(width: 28, height: 28)
+            .foregroundStyle(selected ? CapoTheme.primary : CapoTheme.mutedForeground)
+            .background(selected ? CapoTheme.primary.opacity(0.10) : Color.clear, in: RoundedRectangle(cornerRadius: CapoRadius.md, style: .continuous))
             .frame(width: CapoMetrics.minTouchTarget, height: CapoMetrics.minTouchTarget)
             .contentShape(Rectangle())
         }
@@ -154,8 +150,8 @@ private struct AvatarMenuContent: View {
       if model.hasPalettes {
         CapoTheme.border.frame(width: 1, height: 20)
         Button { model.surpriseMe() } label: {
-          Image(systemName: "sparkles")
-            .foregroundStyle(CapoTheme.subtext)
+          CapoIcon(.sparkles, size: 16)
+            .foregroundStyle(CapoTheme.mutedForeground)
             .frame(width: CapoMetrics.minTouchTarget, height: CapoMetrics.minTouchTarget)
             .contentShape(Rectangle())
         }
@@ -169,15 +165,15 @@ private struct AvatarMenuContent: View {
 
 struct ThemeChoice {
   let theme: AppTheme
-  let symbol: String
+  let icon: CapoIconName
   let title: String
 
   /// Web order: Sun, Moon, Monitor.
   static var all: [ThemeChoice] {
     [
-      ThemeChoice(theme: .light, symbol: "sun.max", title: L10n.Settings.themeLight),
-      ThemeChoice(theme: .dark, symbol: "moon", title: L10n.Settings.themeDark),
-      ThemeChoice(theme: .system, symbol: "display", title: L10n.Settings.themeSystem)
+      ThemeChoice(theme: .light, icon: .sun, title: L10n.Settings.themeLight),
+      ThemeChoice(theme: .dark, icon: .moon, title: L10n.Settings.themeDark),
+      ThemeChoice(theme: .system, icon: .monitor, title: L10n.Settings.themeSystem)
     ]
   }
 }

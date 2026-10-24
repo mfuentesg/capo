@@ -12,6 +12,26 @@ final class LibraryModel {
   var songs: [SongListItem] = []
   var tags: [SongTag] = []
   var hasLoaded = false
+  /// Teams the user belongs to, sorted by name (bucket colours and names for the "All" view).
+  var teams: [Team] = []
+  /// Songs queued to add to a playlist (the web's draft cart), in tap order.
+  var cart: [SongID] = []
+
+  func toggleCart(_ id: SongID) {
+    if let index = cart.firstIndex(of: id) { cart.remove(at: index) } else { cart.append(id) }
+  }
+
+  /// Ownership chip for a row; only the "All" view shows it.
+  func ownership(for item: SongListItem, in context: AppContext) -> OwnershipChip? {
+    guard context.isAll else { return nil }
+    guard let teamID = item.teamID else {
+      return OwnershipChip(label: LibraryStrings.me, icon: nil, color: SongTone.bucket(.personal, teams: []))
+    }
+    let ids = teams.map(\.id)
+    let team = teams.first { $0.id == teamID }
+    return OwnershipChip(
+      label: team?.name ?? "", icon: team?.icon, color: SongTone.bucket(.team(teamID), teams: ids))
+  }
 
   func query(context: AppContext) -> SongQuery { filters.query(context: context) }
 

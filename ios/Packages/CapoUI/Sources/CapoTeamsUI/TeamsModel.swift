@@ -36,15 +36,50 @@ class OnlineActionModel {
 final class TeamsModel: OnlineActionModel {
   var teams: [TeamWithRole] = []
   var loaded = false
+  var search = ""
+  /// Member counts are online-only, so they fill in when reachable and stay blank otherwise.
+  var memberCounts: [TeamID: Int] = [:]
+  var pendingInvitationCount = 0
 
-  func create(_ repo: any TeamRepository, name: String, icon: String?) async -> Bool {
+  var filtered: [TeamWithRole] { Self.filter(teams, search: search) }
+
+  nonisolated static func filter(_ teams: [TeamWithRole], search: String) -> [TeamWithRole] {
+    let query = search.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !query.isEmpty else { return teams }
+    return teams.filter { $0.team.name.localizedCaseInsensitiveContains(query) }
+  }
+
+  func create(_ repo: any TeamRepository, name: String, icon: String?, isPublic: Bool = false) async
+    -> Bool
+  {
     let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
     guard !trimmed.isEmpty else { return false }
     let cleanIcon = icon?.trimmingCharacters(in: .whitespaces)
     return await perform(failure: L10n.Toasts.teamCreatedFailed) {
       _ = try await repo.createTeam(
-        name: trimmed, icon: (cleanIcon?.isEmpty ?? true) ? nil : cleanIcon, isPublic: false)
+        name: trimmed, icon: (cleanIcon?.isEmpty ?? true) ? nil : cleanIcon, isPublic: isPublic)
     }
+  }
+
+  func setIcon(_ repo: any TeamRepository, team: Team, icon: String) async {
+    await perform(failure: L10n.Toasts.error) {
+      try await repo.updateTeam(id: team.id, name: team.name, icon: icon)
+    }
+  }
+
+  func leave(_ repo: any TeamRepository, teamID: TeamID) async {
+    await perform(failure: L10n.Toasts.teamLeftFailed) { try await repo.leaveTeam(id: teamID) }
+  }
+
+  func delete(_ repo: any TeamRepository, teamID: TeamID) async {
+    await perform(failure: L10n.Toasts.teamDeletedFailed) { try await repo.deleteTeam(id: teamID) }
+  }
+
+  func loadCounts(_ repo: any TeamRepository) async {
+    for item in teams where memberCounts[item.id] == nil {
+      if let members = try? await repo.members(teamID: item.id) { memberCounts[item.id] = members.count }
+    }
+    if let pending = try? await repo.pendingInvitationsForMe() { pendingInvitationCount = pending.count }
   }
 }
 
@@ -115,6 +150,41 @@ final class TeamDetailModel: OnlineActionModel {
 
   func leave(_ repo: any TeamRepository, teamID: TeamID) async -> Bool {
     await perform(failure: L10n.Toasts.teamLeftFailed) { try await repo.leaveTeam(id: teamID) }
+  }
+
+  /// Hands ownership to `member`, then leaves (the previous owner would otherwise stay as admin).
+  func transferAndLeave(_ repo: any TeamRepository, teamID: TeamID, to member: TeamMember) async
+    -> Bool
+  {
+    let userID = member.membership.userID
+    return await perform(failure: L10n.Toasts.ownershipTransferFailed) {
+      try await repo.transferOwnership(teamID: teamID, to: userID)
+      try await repo.leaveTeam(id: teamID)
+    }
+  }
+
+  func rename(_ repo: any TeamRepository, team: Team, name: String, icon: String?) async -> Bool {
+    let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !trimmed.isEmpty else { return false }
+    return await perform(failure: L10n.Toasts.error) {
+      try await repo.updateTeam(id: team.id, name: trimmed, icon: icon)
+    }
+  }
+
+  /// The contract has no resend call: an expired invitation is replaced by a fresh one.
+  func resend(_ repo: any TeamRepository, teamID: TeamID, invitation: TeamInvitation) async {
+    let ok = await perform(failure: L10n.Toasts.error) {
+      try await repo.revokeInvitation(id: invitation.id)
+      _ = try await repo.invite(email: invitation.email, role: invitation.role, teamID: teamID)
+    }
+    if ok { await load(repo, teamID: teamID) }
+  }
+
+  var activeInvitations: [TeamInvitation] { invitations.filter { !Self.isExpired($0) } }
+  var expiredInvitations: [TeamInvitation] { invitations.filter { Self.isExpired($0) } }
+
+  nonisolated static func isExpired(_ invitation: TeamInvitation, now: Date = .now) -> Bool {
+    (invitation.expiresAt.date ?? .distantFuture) < now
   }
 
   func delete(_ repo: any TeamRepository, teamID: TeamID) async -> Bool {

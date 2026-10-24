@@ -1,4 +1,5 @@
 import CapoDesign
+import CapoIcons
 import SwiftUI
 
 enum ContextStrings {
@@ -13,6 +14,9 @@ enum ContextStrings {
 
 /// What the context pill shows for the current selection (web `context-pill.tsx`).
 struct ContextPillState: Equatable {
+  enum Kind: Equatable { case all, personal, team }
+
+  let kind: Kind
   let label: String
   /// A team is selected: the pill gets the accent tint, like the web's non-"All" state.
   let isFiltered: Bool
@@ -23,12 +27,15 @@ struct ContextPillState: Equatable {
 
   static func make(context: AppContext, team: Team?, personalName: String?) -> ContextPillState {
     switch context {
+    case .all:
+      return ContextPillState(kind: .all, label: L10n.Nav.viewAll, isFiltered: false, teamID: nil)
     case .personal:
       let name = personalName?.trimmingCharacters(in: .whitespacesAndNewlines)
       let label = (name?.isEmpty == false ? name : nil) ?? ContextStrings.personal
-      return ContextPillState(label: label, isFiltered: false, teamID: nil)
+      return ContextPillState(kind: .personal, label: label, isFiltered: true, teamID: nil)
     case .team(let id):
-      return ContextPillState(label: team?.name ?? ContextStrings.personal, isFiltered: true, teamID: id)
+      return ContextPillState(
+        kind: .team, label: team?.name ?? ContextStrings.personal, isFiltered: true, teamID: id)
     }
   }
 }
@@ -38,6 +45,8 @@ extension ShellModel {
     ContextPillState.make(
       context: context, team: contextStore.selectedTeam, personalName: session.fullName)
   }
+
+  var hasTeams: Bool { !contextStore.teams.isEmpty }
 }
 
 /// Context switcher. `compact` is the iPhone toolbar pill; `sidebar` fills the expanded sidebar;
@@ -60,117 +69,153 @@ struct ContextPill: View {
       }
   }
 
+  /// "All" with teams shows two overlapping 20 px avatars (user, first team); without teams the
+  /// Layers glyph. Otherwise one avatar.
+  @ViewBuilder
+  private func leading(_ state: ContextPillState, size: CGFloat) -> some View {
+    switch state.kind {
+    case .all where model.hasTeams:
+      HStack(spacing: -size * 0.3) {
+        ContextAvatar(model: model, teamID: nil, size: size)
+        ContextAvatar(model: model, teamID: model.contextStore.teams.first?.id, size: size)
+      }
+    case .all:
+      CapoIcon(.layers, size: 14).foregroundStyle(CapoTheme.foreground)
+        .frame(width: size, height: size)
+    default:
+      ContextAvatar(model: model, teamID: state.teamID, size: size)
+    }
+  }
+
   @ViewBuilder
   private func label(_ state: ContextPillState) -> some View {
     switch style {
     case .rail:
-      ContextAvatar(model: model, teamID: state.teamID, size: 36)
+      leading(state, size: state.kind == .all && model.hasTeams ? 24 : 36)
         .frame(width: 56, height: 56)
-        .background(state.isFiltered ? CapoTheme.selection : CapoTheme.card, in: Circle())
+        .background(state.isFiltered ? CapoTheme.accent.opacity(0.6) : CapoTheme.card, in: Circle())
         .overlay(Circle().strokeBorder(CapoTheme.border, lineWidth: 1))
     case .compact:
       HStack(spacing: 6) {
-        ContextAvatar(model: model, teamID: state.teamID, size: 22)
+        leading(state, size: 20)
         Text(state.label)
-          .font(CapoFont.style(.footnote, weight: .medium))
+          .capoText(.xs, weight: .medium)
           .lineLimit(1)
           .frame(maxWidth: ContextPillState.maxLabelWidth(compact: true), alignment: .leading)
-        Image(systemName: "chevron.down").font(CapoFont.style(.caption2)).foregroundStyle(CapoTheme.subtext)
+          .fixedSize(horizontal: true, vertical: false)
+        CapoIcon(.chevronDown, size: 12).foregroundStyle(CapoTheme.mutedForeground)
       }
-      .foregroundStyle(CapoTheme.text)
+      .foregroundStyle(CapoTheme.foreground)
       .padding(.horizontal, 10)
+      .frame(height: 32)
+      .background(state.isFiltered ? CapoTheme.accent.opacity(0.6) : Color.clear, in: Capsule())
       .frame(minHeight: CapoMetrics.minTouchTarget)
-      .background(state.isFiltered ? CapoTheme.selection : Color.clear, in: Capsule())
       .contentShape(Capsule())
     case .sidebar:
       HStack(spacing: 10) {
-        ContextAvatar(model: model, teamID: state.teamID, size: 28)
+        leading(state, size: 24)
         Text(state.label)
-          .font(CapoFont.style(.subheadline, weight: .medium))
+          .capoText(.sm, weight: .medium)
           .lineLimit(1)
           .truncationMode(.tail)
         Spacer(minLength: 0)
-        Image(systemName: "chevron.down").font(CapoFont.style(.caption)).foregroundStyle(CapoTheme.subtext)
+        CapoIcon(.chevronDown, size: 12).foregroundStyle(CapoTheme.mutedForeground)
       }
-      .foregroundStyle(CapoTheme.text)
+      .foregroundStyle(CapoTheme.foreground)
       .padding(.horizontal, 12)
       .frame(minHeight: CapoMetrics.minTouchTarget + 4)
       .background(
-        state.isFiltered ? CapoTheme.selection : CapoTheme.card,
-        in: RoundedRectangle(cornerRadius: CapoRadius.medium, style: .continuous)
+        state.isFiltered ? CapoTheme.accent.opacity(0.6) : CapoTheme.card,
+        in: RoundedRectangle(cornerRadius: CapoRadius.md, style: .continuous)
       )
       .overlay(
-        RoundedRectangle(cornerRadius: CapoRadius.medium, style: .continuous)
+        RoundedRectangle(cornerRadius: CapoRadius.md, style: .continuous)
           .strokeBorder(CapoTheme.border, lineWidth: 1))
-      .contentShape(RoundedRectangle(cornerRadius: CapoRadius.medium, style: .continuous))
+      .contentShape(RoundedRectangle(cornerRadius: CapoRadius.md, style: .continuous))
     }
   }
 }
 
-/// Avatar for personal (profile photo or initial) or a team (emoji icon or initial).
+/// Avatar for the user (photo or the web's `CircleUserRound` fallback) or a team (photo or its
+/// stored lucide icon on a primary tint). `teamID == nil` is the user.
 struct ContextAvatar: View {
   let model: ShellModel
   let teamID: TeamID?
   var size: CGFloat
+  /// The ring that separates overlapping avatars (`ring-2 ring-background`).
+  var ringed = true
 
   var body: some View {
     if let teamID, let team = model.contextStore.teams.first(where: { $0.id == teamID })?.team {
-      InitialAvatar(url: team.avatarURL.flatMap(URL.init(string:)), text: team.icon ?? team.name, size: size, tinted: true)
+      ProfileAvatar(
+        url: team.avatarURL.flatMap(URL.init(string:)), teamIcon: team.icon ?? "Users", size: size,
+        ringed: ringed)
     } else {
-      InitialAvatar(
-        url: model.session.avatarURL, text: model.session.fullName ?? model.session.email ?? "?",
-        size: size, tinted: false)
+      ProfileAvatar(url: model.session.avatarURL, teamIcon: nil, size: size, ringed: ringed)
     }
   }
 }
 
-struct InitialAvatar: View {
+/// Round avatar (web `Avatar`): image if any, else `CircleUserRound` on `primary/10` for users or
+/// the team's lucide icon on `primary/20` for teams.
+struct ProfileAvatar: View {
   let url: URL?
-  let text: String
+  /// Stored lucide name for team avatars; nil for the user.
+  let teamIcon: String?
   var size: CGFloat
-  var tinted: Bool
+  var ringed = false
 
   var body: some View {
     ZStack {
-      Circle().fill(tinted ? CapoTheme.primary.opacity(0.2) : CapoTheme.surface)
-      Text(Self.initial(text))
-        .font(CapoFont.ui(size * 0.45, weight: .semibold))
-        .foregroundStyle(tinted ? CapoTheme.primary : CapoTheme.subtext)
+      Circle().fill(CapoTheme.primary.opacity(teamIcon == nil ? 0.10 : 0.20))
+      if let teamIcon {
+        CapoIcon.named(teamIcon, size: max(12, size * 0.5)).foregroundStyle(CapoTheme.primary)
+      } else {
+        CapoIcon(.circleUserRound, size: size * 0.6).foregroundStyle(CapoTheme.foreground)
+      }
       if let url {
         AsyncImage(url: url) { image in image.resizable().scaledToFill() } placeholder: { Color.clear }
       }
     }
     .frame(width: size, height: size)
     .clipShape(Circle())
+    .overlay { if ringed { Circle().strokeBorder(CapoTheme.background, lineWidth: 2).padding(-1) } }
     .accessibilityHidden(true)
-  }
-
-  static func initial(_ text: String) -> String {
-    guard let first = text.trimmingCharacters(in: .whitespaces).first else { return "?" }
-    return String(first).uppercased()
   }
 }
 
-/// Popover content: "Filter view" caption, Personal and team rows, "Manage teams" footer.
+/// Popover content: "Filter view" caption, All / Personal / team rows, "Manage teams" footer.
 private struct ContextPopover: View {
   let model: ShellModel
   let dismiss: () -> Void
 
   var body: some View {
     let personal = AppContext.personal(userID: model.session.userID)
+    let all = AppContext.all(userID: model.session.userID)
     VStack(alignment: .leading, spacing: 2) {
       Text(L10n.Nav.filterContext)
-        .font(CapoFont.style(.caption, weight: .semibold))
-        .foregroundStyle(CapoTheme.subtext)
+        .capoText(.xs, weight: .semibold)
+        .foregroundStyle(CapoTheme.mutedForeground)
         .padding(.horizontal, 8).padding(.vertical, 4)
+      if model.hasTeams {
+        row(
+          avatar: AnyView(
+            CapoIcon(.layers, size: 16).foregroundStyle(CapoTheme.foreground)
+              .frame(width: 32, height: 32)
+              .background(CapoTheme.primary.opacity(0.10), in: Circle())),
+          title: L10n.Nav.viewAll, subtitle: L10n.Nav.viewAllDescription,
+          selected: model.context == all
+        ) { model.select(all) }
+      }
       row(
-        avatar: ContextAvatar(model: model, teamID: nil, size: 32), title: model.session.fullName ?? ContextStrings.personal,
+        avatar: AnyView(ContextAvatar(model: model, teamID: nil, size: 32, ringed: false)),
+        title: model.session.fullName ?? ContextStrings.personal,
         subtitle: L10n.Nav.personalAccount, selected: model.context == personal
       ) { model.select(personal) }
       ForEach(model.contextStore.teams) { entry in
         row(
-          avatar: ContextAvatar(model: model, teamID: entry.id, size: 32), title: entry.team.name,
-          subtitle: nil, selected: model.context.teamID == entry.id
+          avatar: AnyView(ContextAvatar(model: model, teamID: entry.id, size: 32, ringed: false)),
+          title: entry.team.name, subtitle: nil, selected: model.context.teamID == entry.id
         ) { model.select(.team(teamID: entry.id)) }
       }
       CapoTheme.border.frame(height: 1).padding(.top, 4)
@@ -179,8 +224,8 @@ private struct ContextPopover: View {
         dismiss()
       } label: {
         Text(L10n.Nav.manageTeams)
-          .font(CapoFont.style(.subheadline, weight: .medium))
-          .foregroundStyle(CapoTheme.text)
+          .capoText(.sm, weight: .medium)
+          .foregroundStyle(CapoTheme.foreground)
           .frame(maxWidth: .infinity, minHeight: CapoMetrics.minTouchTarget, alignment: .leading)
           .padding(.horizontal, 8)
           .contentShape(Rectangle())
@@ -188,12 +233,12 @@ private struct ContextPopover: View {
       .buttonStyle(.plain)
     }
     .padding(8)
-    .frame(width: 288)
-    .background(CapoTheme.card)
+    .frame(width: 256)
+    .background(CapoTheme.popover)
   }
 
   private func row(
-    avatar: ContextAvatar, title: String, subtitle: String?, selected: Bool, action: @escaping () -> Void
+    avatar: AnyView, title: String, subtitle: String?, selected: Bool, action: @escaping () -> Void
   ) -> some View {
     Button {
       action()
@@ -202,20 +247,20 @@ private struct ContextPopover: View {
       HStack(spacing: 12) {
         avatar
         VStack(alignment: .leading, spacing: 1) {
-          Text(title).font(CapoFont.style(.subheadline, weight: .medium)).lineLimit(1)
-          if let subtitle {
-            Text(subtitle).font(CapoFont.style(.caption)).foregroundStyle(CapoTheme.subtext).lineLimit(1)
+          HStack(spacing: 6) {
+            Text(title).capoText(.sm, weight: .medium).lineLimit(1)
+            if selected { CapoIcon(.check, size: 16).foregroundStyle(CapoTheme.primary) }
           }
-        }
-        if selected {
-          Image(systemName: "checkmark").font(CapoFont.ui(14, weight: .semibold)).foregroundStyle(CapoTheme.primary)
+          if let subtitle {
+            Text(subtitle).capoText(.xs).foregroundStyle(CapoTheme.mutedForeground).lineLimit(2)
+          }
         }
         Spacer(minLength: 0)
       }
-      .foregroundStyle(CapoTheme.text)
+      .foregroundStyle(CapoTheme.foreground)
       .padding(.horizontal, 8)
       .frame(minHeight: CapoMetrics.minTouchTarget + 4)
-      .background(selected ? CapoTheme.selection : Color.clear, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+      .background(selected ? CapoTheme.accent : Color.clear, in: RoundedRectangle(cornerRadius: CapoRadius.md, style: .continuous))
       .contentShape(Rectangle())
     }
     .buttonStyle(.plain)

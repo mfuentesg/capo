@@ -1,4 +1,5 @@
 import CapoDesign
+import CapoIcons
 import SwiftUI
 
 extension View {
@@ -13,28 +14,84 @@ extension View {
 
   /// Uppercase subtext section header.
   func capoSectionHeader() -> some View {
-    font(.system(size: 13, weight: .bold)).tracking(0.8).foregroundStyle(CapoTheme.subtext)
+    capoText(.px12, weight: .bold, tracking: 0.05).foregroundStyle(CapoTheme.subtext)
+  }
+
+  /// `rounded-2xl border bg-card p-6` surface used by the team detail sections.
+  func teamSurface(border: Color = CapoTheme.border, fill: Color = CapoTheme.card) -> some View {
+    padding(24)
+      .background(fill, in: RoundedRectangle(cornerRadius: CapoRadius.xxl, style: .continuous))
+      .overlay(
+        RoundedRectangle(cornerRadius: CapoRadius.xxl, style: .continuous).strokeBorder(border, lineWidth: 1))
   }
 }
 
-/// Role pill: owner peach, admin mauve, member blue, viewer grey.
-struct RoleBadge: View {
-  let role: TeamRole
-
-  private var color: Color {
-    switch role {
-    case .owner: CapoTheme.primary
-    case .admin: CapoTheme.chord
-    case .member: CapoTheme.info
-    case .viewer: CapoTheme.subtext
+extension TeamRole {
+  /// `features/teams/constants.ts`: owner UserLock, admin KeyRound, member User, viewer UserSearch.
+  var iconName: CapoIconName {
+    switch self {
+    case .owner: .userLock
+    case .admin: .keyRound
+    case .member: .user
+    case .viewer: .userSearch
     }
   }
 
+  /// Top bar / icon tint of the team card: owner primary, admin songs accent, the rest activity accent.
+  var cardAccent: Color {
+    switch self {
+    case .owner: CapoTheme.primary
+    case .admin: CapoTheme.accentSongs
+    case .member, .viewer: CapoTheme.accentActivity
+    }
+  }
+}
+
+/// Outline role pill: role icon + label, 10 px text (web `RoleBadge`).
+struct RoleBadge: View {
+  let role: TeamRole
+
   var body: some View {
-    Text(TeamsStrings.roleName(role))
-      .font(CapoFont.ui(13, weight: .semibold))
-      .foregroundStyle(color)
-      .padding(.horizontal, 10).frame(minHeight: 28)
-      .background(color.opacity(0.16), in: Capsule())
+    HStack(spacing: 4) {
+      CapoIcon(role.iconName, size: 12)
+      Text(TeamsStrings.roleName(role)).capoText(.px10, weight: .medium)
+    }
+    .foregroundStyle(CapoTheme.text)
+    .padding(.horizontal, 8).frame(height: 20)
+    .overlay(Capsule().strokeBorder(CapoTheme.border, lineWidth: 1))
+    .accessibilityElement(children: .combine)
+  }
+}
+
+/// Filled status pill (web `Badge` default / secondary): "Active", "Public", "Private".
+struct StatusPill: View {
+  let text: String
+  var prominent = false
+
+  var body: some View {
+    Text(text)
+      .capoText(.xs, weight: .medium)
+      .foregroundStyle(prominent ? CapoTheme.primaryForeground : CapoTheme.text)
+      .padding(.horizontal, 8).frame(height: 22)
+      .background(prominent ? CapoTheme.primary : CapoTheme.accent, in: Capsule())
+  }
+}
+
+/// Rounded tile with a team's stored lucide icon, tinted with the role colour.
+struct TeamIconTile: View {
+  let icon: String?
+  var tint: Color
+  var size: CGFloat = 36
+  var iconSize: CGFloat = 20
+  var ring = false
+
+  var body: some View {
+    let shape = RoundedRectangle(cornerRadius: CapoRadius.base, style: .continuous)
+    CapoIcon.named(icon, size: iconSize)
+      .foregroundStyle(CapoTheme.text)
+      .frame(width: size, height: size)
+      .background(tint.opacity(0.1), in: shape)
+      .overlay(shape.strokeBorder(tint.opacity(0.2), lineWidth: 1))
+      .overlay { if ring { shape.inset(by: -3).strokeBorder(tint.opacity(0.5), lineWidth: 3) } }
   }
 }

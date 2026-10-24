@@ -1,5 +1,6 @@
 import CapoChordPro
 import CapoDesign
+import CapoIcons
 import CapoRendering
 import SwiftUI
 
@@ -17,6 +18,10 @@ public struct SongEditorView: View {
   @State private var showChords = true
   @State private var showExtras = false
   @State private var showPreviewSheet = false
+  @State private var showCifra = false
+  @State private var showReference = false
+  @State private var notice: String?
+  @State private var controller = LyricsEditorController()
   @Environment(\.horizontalSizeClass) private var sizeClass
 
   public init(request: SongEditorRequest, onFinish: @escaping (SongID?) -> Void) {
@@ -42,6 +47,24 @@ public struct SongEditorView: View {
       .capoTheme()
       .presentationDetents([.medium, .large])
     }
+    .sheet(isPresented: $showCifra) {
+      CifraClubImportView(
+        mode: cifraMode,
+        onImported: { song in
+          model.apply(import: song)
+          notice = L10n.Toasts.cifraImportSuccess
+        },
+        onClose: { showCifra = false }
+      )
+      .capoTheme()
+      .presentationDetents([.height(260), .medium])
+    }
+    .sheet(isPresented: $showReference) {
+      ChordProReferenceView { showReference = false }
+        .capoTheme()
+        .presentationDetents([.large])
+    }
+    .capoToast($notice)
     .task { await model.load(request, songs: services.songs) }
     .interactiveDismissDisabled(model.isDirty)
     .confirmationDialog(
@@ -115,7 +138,10 @@ public struct SongEditorView: View {
     VStack(spacing: 0) {
       metadata
       Divider().overlay(CapoTheme.border)
-      LyricsTextView(text: $model.form.lyrics, songKey: model.form.key)
+      if controller.hasSelection {
+        SectionWrapToolbar { controller.wrap($0) }
+      }
+      LyricsTextView(text: $model.form.lyrics, songKey: model.form.key, controller: controller)
     }
   }
 
@@ -128,24 +154,25 @@ public struct SongEditorView: View {
       Button(EditorStrings.cancel) {
         if model.isDirty { confirmDiscard = true } else { onFinish(nil) }
       }
-      .font(CapoFont.ui(17, weight: .semibold))
+      .capoText(.base, weight: .semibold)
       .foregroundStyle(CapoTheme.info)
       .frame(minHeight: CapoMetrics.minTouchTarget)
       .accessibilityIdentifier("editor.cancel")
       Spacer(minLength: 0)
       VStack(spacing: 2) {
         Text(request == .create ? EditorStrings.newSong : EditorStrings.editSong)
-          .font(CapoFont.ui(18, weight: .bold))
+          .capoText(.lg, weight: .bold)
         HStack(spacing: 6) {
           Circle().fill(CapoTheme.primary).frame(width: 8, height: 8)
           Text(EditorStrings.savedLocally)
-            .font(CapoFont.ui(13))
+            .capoText(.xs)
             .foregroundStyle(CapoTheme.subtext)
             .lineLimit(1)
         }
       }
       Spacer(minLength: 0)
       if !isViewer, model.loadState == .ready {
+        extraActions
         previewToggle
         Button(EditorStrings.save) {
           Task {
@@ -163,16 +190,43 @@ public struct SongEditorView: View {
     .overlay(alignment: .bottom) { Rectangle().fill(CapoTheme.border).frame(height: 1) }
   }
 
+  private var cifraMode: CifraClubImportView.Mode {
+    request == .create && model.form.lyrics.isEmpty
+      ? .create
+      : .replaceLyrics(hasExistingLyrics: !model.form.lyrics.isEmpty)
+  }
+
+  /// Wand (parse chords), CifraClub import and the ChordPro reference.
+  private var extraActions: some View {
+    HStack(spacing: 0) {
+      Button {
+        notice = model.parseChords() == .converted
+          ? L10n.Toasts.lyricsConvertedToChordPro : L10n.Songs.Lyrics.parseChordsAlreadyChordPro
+      } label: { CapoIcon(.wand2, size: 18) }
+        .buttonStyle(CapoIconButtonStyle())
+        .accessibilityLabel(L10n.Songs.Lyrics.parseChords)
+        .accessibilityIdentifier("editor.parse")
+      Button { showCifra = true } label: { CapoIcon(.music4, size: 18) }
+        .buttonStyle(CapoIconButtonStyle())
+        .accessibilityLabel(L10n.Songs.Lyrics.importFromCifraClub)
+        .accessibilityIdentifier("editor.cifra")
+      Button { showReference = true } label: { CapoIcon(.bookOpen, size: 18) }
+        .buttonStyle(CapoIconButtonStyle())
+        .accessibilityLabel(L10n.Songs.Lyrics.chordproReference)
+        .accessibilityIdentifier("editor.reference")
+    }
+  }
+
   @ViewBuilder private var previewToggle: some View {
     if sizeClass == .regular {
       Button { setCollapsed(!panel.isCollapsed) } label: {
-        Image(systemName: "sidebar.trailing")
+        CapoIcon(.columns2, size: 18)
       }
       .buttonStyle(CapoIconButtonStyle())
       .accessibilityLabel(panel.isCollapsed ? EditorStrings.showPreview : EditorStrings.hidePreview)
       .accessibilityIdentifier("editor.preview.toggle")
     } else {
-      Button { showPreviewSheet = true } label: { Image(systemName: "eye") }
+      Button { showPreviewSheet = true } label: { CapoIcon(.eye, size: 18) }
         .buttonStyle(CapoIconButtonStyle())
         .accessibilityLabel(EditorStrings.showPreview)
         .accessibilityIdentifier("editor.preview.toggle")
@@ -184,7 +238,7 @@ public struct SongEditorView: View {
   private var metadata: some View {
     VStack(spacing: 12) {
       TextField(EditorStrings.title, text: $model.form.title)
-        .font(CapoFont.ui(22, weight: .bold))
+        .capoText(.xl, weight: .bold)
         .padding(.horizontal, 16).frame(height: 52)
         .fieldChrome(radius: CapoRadius.medium + 2)
         .accessibilityIdentifier("editor.title")
@@ -209,7 +263,7 @@ public struct SongEditorView: View {
         extras.padding(.top, 8)
       } label: {
         Text(EditorStrings.moreOptions)
-          .font(CapoFont.ui(14, weight: .semibold))
+          .capoText(.sm, weight: .semibold)
           .foregroundStyle(CapoTheme.subtext)
           .frame(minHeight: 36, alignment: .leading)
       }
@@ -220,7 +274,7 @@ public struct SongEditorView: View {
   }
 
   private func errorText(_ text: String) -> some View {
-    Text(text).font(CapoFont.style(.footnote)).foregroundStyle(CapoTheme.destructive)
+    Text(text).capoText(.xs).foregroundStyle(CapoTheme.destructive)
       .frame(maxWidth: .infinity, alignment: .leading)
   }
 
@@ -229,10 +283,10 @@ public struct SongEditorView: View {
   {
     VStack(alignment: .leading, spacing: 4) {
       Text(label.uppercased())
-        .font(CapoFont.ui(12, weight: .semibold)).tracking(1)
+        .capoText(.px12, weight: .semibold, tracking: 0.08)
         .foregroundStyle(CapoTheme.subtext)
       content()
-        .font(CapoFont.ui(17, weight: .medium))
+        .capoText(.base, weight: .medium)
         .padding(.horizontal, 14).frame(height: 46)
         .fieldChrome(radius: CapoRadius.medium)
     }
@@ -282,8 +336,7 @@ public struct SongEditorView: View {
     HStack {
       Text(value).foregroundStyle(CapoTheme.text)
       Spacer(minLength: 4)
-      Image(systemName: "chevron.down").font(CapoFont.ui(13, weight: .bold))
-        .foregroundStyle(CapoTheme.subtext)
+      CapoIcon(.chevronDown, size: 16).foregroundStyle(CapoTheme.subtext)
     }
     .frame(maxWidth: .infinity, minHeight: CapoMetrics.minTouchTarget)
     .contentShape(Rectangle())
@@ -305,9 +358,12 @@ public struct SongEditorView: View {
 
   private var deleteButton: some View {
     Button { confirmDelete = true } label: {
-      Label(EditorStrings.deleteSong, systemImage: "trash")
-        .font(CapoFont.ui(16, weight: .semibold))
-        .foregroundStyle(CapoTheme.destructive)
+      HStack(spacing: 8) {
+        CapoIcon(.trash2, size: 16)
+        Text(EditorStrings.deleteSong)
+      }
+      .capoText(.base, weight: .semibold)
+      .foregroundStyle(CapoTheme.destructive)
         .frame(maxWidth: .infinity, minHeight: 52)
         .overlay(
           RoundedRectangle(cornerRadius: CapoRadius.medium + 2, style: .continuous)

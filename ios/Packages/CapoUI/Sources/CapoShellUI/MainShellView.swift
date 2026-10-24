@@ -1,4 +1,6 @@
+import CapoChordsUI
 import CapoDesign
+import CapoIcons
 import CapoEditorUI
 import CapoLibraryUI
 import CapoPerformanceUI
@@ -121,7 +123,7 @@ private struct CompactShell: View {
               .toolbar(.hidden, for: .tabBar)
           }
       }
-      .tabItem { Label(SidebarItem.songs.title, systemImage: SidebarItem.songs.symbol) }
+      .tabItem { CapoIconLabel(SidebarItem.songs.title, icon: SidebarItem.songs.icon) }
       .tag(SidebarItem.songs)
 
       NavigationStack {
@@ -131,19 +133,19 @@ private struct CompactShell: View {
             PlaylistDetailView(playlistID: id).id(id)
           }
       }
-      .tabItem { Label(SidebarItem.playlists.title, systemImage: SidebarItem.playlists.symbol) }
+      .tabItem { CapoIconLabel(SidebarItem.playlists.title, icon: SidebarItem.playlists.icon) }
       .tag(SidebarItem.playlists)
 
       NavigationStack {
-        ChordsPlaceholderView().toolbar { shellToolbar }
+        ChordsView().toolbar { shellToolbar }
       }
-      .tabItem { Label(SidebarItem.chords.title, systemImage: SidebarItem.chords.symbol) }
+      .tabItem { CapoIconLabel(SidebarItem.chords.title, icon: SidebarItem.chords.icon) }
       .tag(SidebarItem.chords)
 
       NavigationStack {
         TeamsView().toolbar { shellToolbar }
       }
-      .tabItem { Label(SidebarItem.teams.title, systemImage: SidebarItem.teams.symbol) }
+      .tabItem { CapoIconLabel(SidebarItem.teams.title, icon: SidebarItem.teams.icon) }
       .tag(SidebarItem.teams)
     }
     .tint(CapoTheme.primary)
@@ -245,16 +247,16 @@ private struct RegularShell: View {
         if let id = nav.playlistSelection {
           NavigationStack { PlaylistDetailView(playlistID: id).id(id) }
         } else {
-          placeholder(SidebarItem.playlists.symbol, L10n.Playlists.selectPlaylist)
+          placeholder(SidebarItem.playlists.icon, L10n.Playlists.selectPlaylist)
         }
       }
-    case .chords: NavigationStack { ChordsPlaceholderView() }
+    case .chords: NavigationStack { ChordsView() }
     case .teams: NavigationStack { TeamsView() }
     }
   }
 
-  private func placeholder(_ symbol: String, _ title: String) -> some View {
-    EmptyStateView(title: title, message: nil, systemImage: symbol)
+  private func placeholder(_ icon: CapoIconName, _ title: String) -> some View {
+    ShellEmptyState(icon: icon, title: title, message: nil)
   }
 }
 
@@ -296,8 +298,7 @@ private struct ResizableSplit<List: View, Detail: View>: View {
       Button {
         layout.toggleList()
       } label: {
-        Image(systemName: "chevron.left")
-          .font(CapoFont.ui(13, weight: .bold))
+        CapoIcon(.chevronLeft, size: 16)
           .foregroundStyle(CapoTheme.subtext)
           .frame(width: 30, height: 30)
           .background(CapoTheme.card, in: Circle())
@@ -333,8 +334,7 @@ private struct ResizableSplit<List: View, Detail: View>: View {
     Button {
       layout.toggleList()
     } label: {
-      Image(systemName: "chevron.right")
-        .font(CapoFont.ui(14, weight: .bold))
+      CapoIcon(.chevronRight, size: 16)
         .foregroundStyle(CapoTheme.subtext)
         .frame(width: 28, height: 72)
         .background(
@@ -380,8 +380,7 @@ private struct SidebarView: View {
     Button {
       collapsed.toggle()
     } label: {
-      Image(systemName: "sidebar.leading")
-        .font(CapoFont.ui(20, weight: .semibold))
+      CapoIcon(.columns2, size: 20)
         .frame(width: collapsed ? 56 : CapoMetrics.minTouchTarget, height: collapsed ? 56 : CapoMetrics.minTouchTarget)
         .foregroundStyle(collapsed ? CapoTheme.onPrimary : CapoTheme.text)
         .background(
@@ -407,28 +406,25 @@ private struct SidebarView: View {
       model.navigation.open(item)
     } label: {
       if collapsed {
-        Image(systemName: item.symbol)
-          .font(CapoFont.ui(22))
+        CapoIcon(item.icon, size: 20)
           .frame(width: 56, height: 56)
-          .foregroundStyle(selected ? CapoTheme.primary : CapoTheme.subtext)
+          .foregroundStyle(selected ? CapoTheme.foreground : CapoTheme.mutedForeground)
           .background(
-            selected ? CapoTheme.selection : Color.clear,
-            in: RoundedRectangle(cornerRadius: CapoRadius.large, style: .continuous))
+            selected ? CapoTheme.secondary : Color.clear,
+            in: RoundedRectangle(cornerRadius: CapoRadius.md, style: .continuous))
       } else {
         HStack(spacing: 12) {
-          Image(systemName: item.symbol)
-            .font(CapoFont.ui(20))
+          CapoIcon(item.icon, size: 20)
             .frame(width: 28)
-            .foregroundStyle(selected ? CapoTheme.primary : CapoTheme.subtext)
-          Text(item.title).font(CapoFont.style(.body, weight: selected ? .semibold : .medium))
+          Text(item.title).capoText(.sm, weight: .medium)
           Spacer(minLength: 0)
         }
-        .foregroundStyle(CapoTheme.text)
+        .foregroundStyle(selected ? CapoTheme.foreground : CapoTheme.mutedForeground)
         .padding(.horizontal, 12)
-        .frame(minHeight: 52)
+        .frame(minHeight: 48)
         .background(
-          selected ? CapoTheme.selection : Color.clear,
-          in: RoundedRectangle(cornerRadius: CapoRadius.medium, style: .continuous))
+          selected ? CapoTheme.secondary : Color.clear,
+          in: RoundedRectangle(cornerRadius: CapoRadius.md, style: .continuous))
       }
     }
     .buttonStyle(.plain)

@@ -1,11 +1,24 @@
 import Foundation
 
 public enum AppContext: Hashable, Sendable, Codable {
-  case personal(userID: UserID), team(teamID: TeamID)
+  /// `all` is the web's default "All" view: personal items plus every team bucket. Reads only;
+  /// creating in `all` creates a personal item.
+  case all(userID: UserID), personal(userID: UserID), team(teamID: TeamID)
 
   public var teamID: TeamID? {
     if case .team(let teamID) = self { return teamID }
     return nil
+  }
+
+  public var isAll: Bool {
+    if case .all = self { return true }
+    return false
+  }
+
+  /// The context new items are created in: `all` falls back to personal.
+  public var creationContext: AppContext {
+    if case .all(let userID) = self { return .personal(userID: userID) }
+    return self
   }
 }
 

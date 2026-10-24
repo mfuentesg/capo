@@ -2,7 +2,8 @@ import CapoDesign
 import Foundation
 import Observation
 
-/// Personal-or-team selection for one signed-in user, persisted in UserDefaults per user.
+/// All / personal / team selection for one signed-in user, persisted in UserDefaults per user.
+/// Like the web, a user with no stored choice starts on "All".
 @Observable
 @MainActor
 final class ContextStore {
@@ -12,14 +13,19 @@ final class ContextStore {
   private(set) var context: AppContext
   /// A persisted team that is not confirmed yet because the teams stream has not emitted.
   private var unconfirmedTeamID: TeamID?
+  static let personalToken = "personal"
   private var hasLoadedTeams = false
 
   init(userID: UserID, defaults: UserDefaults = .standard) {
     self.userID = userID
     self.defaults = defaults
-    context = .personal(userID: userID)
-    if let stored = defaults.string(forKey: Self.key(for: userID)), let id = UUID(uuidString: stored) {
-      unconfirmedTeamID = id
+    context = .all(userID: userID)
+    if let stored = defaults.string(forKey: Self.key(for: userID)) {
+      if stored == Self.personalToken {
+        context = .personal(userID: userID)
+      } else if let id = UUID(uuidString: stored) {
+        unconfirmedTeamID = id
+      }
     }
   }
 
@@ -39,12 +45,14 @@ final class ContextStore {
     context = newContext
     unconfirmedTeamID = nil
     switch newContext {
-    case .personal: defaults.removeObject(forKey: Self.key(for: userID))
+    case .all: defaults.removeObject(forKey: Self.key(for: userID))
+    case .personal: defaults.set(Self.personalToken, forKey: Self.key(for: userID))
     case .team(let id): defaults.set(id.uuidString.lowercased(), forKey: Self.key(for: userID))
     }
   }
 
   func selectPersonal() { select(.personal(userID: userID)) }
+  func selectAll() { select(.all(userID: userID)) }
 
   /// Reconciles the selection with the latest team list (left a team, team deleted, restore).
   func update(teams newTeams: [TeamWithRole]) {
@@ -56,7 +64,7 @@ final class ContextStore {
       return
     }
     if let current = context.teamID, !teams.contains(where: { $0.id == current }) {
-      selectPersonal()
+      selectAll()
     }
   }
 }

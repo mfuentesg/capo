@@ -1,4 +1,5 @@
 import CapoDesign
+import CapoIcons
 import Foundation
 import Observation
 
@@ -7,13 +8,13 @@ import Observation
 enum SidebarItem: String, Hashable, CaseIterable {
   case songs, playlists, chords, teams
 
-  /// SF Symbol stand-in for the web's lucide icon; the single place to swap icons later.
-  var symbol: String {
+  /// The web navbar's lucide icon.
+  var icon: CapoIconName {
     switch self {
-    case .songs: "music.note"
-    case .playlists: "music.note.list"
-    case .chords: "guitars"
-    case .teams: "person.3"
+    case .songs: .music
+    case .playlists: .listMusic
+    case .chords: .guitar
+    case .teams: .users
     }
   }
 

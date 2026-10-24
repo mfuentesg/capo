@@ -72,6 +72,14 @@ import Testing
     #expect(body["transpose"] == .number(2))
     #expect(body["capo"] == nil && body["status"] == nil)
   }
+
+  @Test func songTransferPayloadSetsTeamAndClearsOwner() {
+    let team = UUID()
+    let body = SongRow.updatePayload(SongPatch(teamID: team))
+    #expect(body["team_id"] == .string(team.pg))
+    #expect(body["user_id"] == .null)
+    #expect(body.count == 2)
+  }
 }
 
 /// Fails when `lib/supabase/database.types.ts` and the hand-written DTOs disagree.

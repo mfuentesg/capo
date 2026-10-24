@@ -1,16 +1,42 @@
 import CapoDesign
 import Foundation
 
-/// BPM bucket: slow < 90, medium 90...120, fast > 120.
+/// BPM filter bucket with the thresholds the web filter actually applies (`song-list.tsx`):
+/// slow < 100, medium 100...140, fast > 140. (The web's help text says 90/120; its badges use 90/120/130.)
 nonisolated enum BPMBucket: String, CaseIterable, Hashable, Sendable {
   case slow, medium, fast
 
   var range: ClosedRange<Int> {
     switch self {
-    case .slow: 0...89
-    case .medium: 90...120
-    case .fast: 121...Int(Int32.max)
+    case .slow: 0...99
+    case .medium: 100...140
+    case .fast: 141...Int(Int32.max)
     }
+  }
+
+  /// Help text matching the applied thresholds.
+  static func description(slow: String, medium: String, fast: String) -> String {
+    "\(slow): <100 • \(medium): 100-140 • \(fast): >140"
+  }
+}
+
+/// Group-by option of the filters popover (web `groupBy`).
+nonisolated enum SongGrouping: String, CaseIterable, Hashable, Sendable {
+  case none, key, artist
+
+  /// Groups in the web order: keys sorted with `localeCompare`; songs missing the field go last.
+  static func groups(_ items: [SongListItem], by grouping: SongGrouping) -> [(title: String?, items: [SongListItem])] {
+    guard grouping != .none else { return [(nil, items)] }
+    var buckets: [String: [SongListItem]] = [:]
+    for item in items {
+      let value = (grouping == .key ? item.key : item.artist)?.trimmingCharacters(in: .whitespaces) ?? ""
+      buckets[value, default: []].append(item)
+    }
+    let titles = buckets.keys.sorted {
+      if $0.isEmpty != $1.isEmpty { return !$0.isEmpty }
+      return $0.localizedStandardCompare($1) == .orderedAscending
+    }
+    return titles.map { ($0.isEmpty ? "—" : $0, buckets[$0] ?? []) }
   }
 }
 
@@ -23,6 +49,7 @@ nonisolated struct LibraryFilters: Equatable, Sendable {
   var tagIDs: Set<TagID> = []
   var statuses: Set<SongStatus> = LibraryFilters.defaultStatuses
   var bpm: BPMBucket?
+  var grouping: SongGrouping = .none
   /// nil = automatic: relevance while searching, otherwise most recent.
   var sort: SongSort?
 
@@ -46,6 +73,7 @@ nonisolated struct LibraryFilters: Equatable, Sendable {
   /// Number of active non-search filters (badge on the filter button).
   var activeFilterCount: Int {
     (tagIDs.isEmpty ? 0 : 1) + (statuses == Self.defaultStatuses ? 0 : 1) + (bpm == nil ? 0 : 1)
+      + (grouping == .none ? 0 : 1)
   }
 
   var hasActiveFilters: Bool { activeFilterCount > 0 }
@@ -55,6 +83,7 @@ nonisolated struct LibraryFilters: Equatable, Sendable {
     tagIDs = []
     statuses = Self.defaultStatuses
     bpm = nil
+    grouping = .none
   }
 
   mutating func toggle(tag id: TagID) {

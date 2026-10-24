@@ -34,12 +34,10 @@ public struct SongPickerView: View {
       .listStyle(.plain)
       .overlay {
         if model.hasLoaded && visible.isEmpty {
-          EmptyStateView(
-            title: model.filters.isNarrowed
-              ? LibraryStrings.noResultsTitle : LibraryStrings.emptyTitle,
+          LibraryEmptyState(
+            title: model.filters.isNarrowed ? LibraryStrings.noSongs : LibraryStrings.emptyTitle,
             message: model.filters.isNarrowed
-              ? LibraryStrings.noResultsMessage : LibraryStrings.emptyMessage,
-            systemImage: model.filters.isNarrowed ? "magnifyingglass" : "music.note.list")
+              ? LibraryStrings.tryDifferentSearch : LibraryStrings.emptyMessage)
         }
       }
       .searchable(text: $model.searchInput, prompt: LibraryStrings.searchPrompt)

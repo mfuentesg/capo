@@ -1,7 +1,9 @@
 import CapoDesign
+import CapoIcons
 import SwiftUI
 
-/// Active / archived setlists with pin and offline-ready badges.
+/// Web playlists list: "Playlists · N" with a Create pill, client-side search, a visibility filter,
+/// card rows (archived ones dimmed) and swipe to delete.
 public struct PlaylistsView: View {
   @Binding var selection: PlaylistID?
   @Environment(\.userServices) private var services
@@ -9,7 +11,8 @@ public struct PlaylistsView: View {
   @Environment(\.currentTeamRole) private var role
   @State private var all: [PlaylistSummary] = []
   @State private var loaded = false
-  @State private var showArchived = false
+  @State private var query = ""
+  @State private var visibility = PlaylistLogic.Visibility.all
   @State private var showCreate = false
   @State private var pendingDelete: PlaylistSummary?
 
@@ -17,53 +20,47 @@ public struct PlaylistsView: View {
 
   private var canEdit: Bool { role?.canEditContent ?? true }
   private var visible: [PlaylistSummary] {
-    all.filter { ($0.playlist.archivedAt != nil) == showArchived }
+    PlaylistLogic.visible(all, query: query, visibility: visibility)
   }
 
   public var body: some View {
     List(selection: $selection) {
-      Section {
-        Picker("", selection: $showArchived) {
-          Text(PlaylistStrings.active).tag(false)
-          Text(PlaylistStrings.archived).tag(true)
-        }
-        .pickerStyle(.segmented)
-        .listRowBackground(Color.clear)
-        .listRowSeparator(.hidden)
-      }
       ForEach(visible) { summary in
-        PlaylistRow(summary: summary)
-          .tag(summary.id)
-          .capoCardRow()
-          .swipeActions(edge: .trailing) {
-            if canEdit {
-              Button(PlaylistStrings.delete, role: .destructive) { pendingDelete = summary }
-              Button {
-                Task { try? await services.playlists.setArchived(id: summary.id, !showArchived) }
-              } label: {
-                Text(showArchived ? PlaylistStrings.unarchive : PlaylistStrings.archive)
-              }
-              .tint(CapoTheme.warning)
-            }
+        PlaylistRow(
+          summary: summary, isSelected: selection == summary.id,
+          onToggleArchive: canEdit ? { toggleArchive(summary) } : nil
+        )
+        .tag(summary.id)
+        .capoCardRow()
+        .swipeActions(edge: .trailing) {
+          if canEdit {
+            Button(PlaylistStrings.delete, role: .destructive) { pendingDelete = summary }
           }
+        }
       }
     }
     .capoList()
     .overlay {
       if loaded && visible.isEmpty {
         EmptyStateView(
-          title: showArchived ? PlaylistStrings.emptyArchived : PlaylistStrings.emptyTitle,
-          message: showArchived ? nil : PlaylistStrings.emptyMessage,
+          title: all.isEmpty ? PlaylistStrings.emptyTitle : L10n.Playlists.noPlaylists,
+          message: all.isEmpty ? PlaylistStrings.emptyMessage : nil,
           systemImage: "music.note.list")
       }
     }
-    .navigationTitle(PlaylistStrings.title)
+    .searchable(text: $query, prompt: L10n.Playlists.searchPlaceholder)
+    .navigationTitle(loaded ? "\(PlaylistStrings.title) · \(visible.count)" : PlaylistStrings.title)
     .toolbar {
+      ToolbarItem(placement: .topBarTrailing) { filterMenu }
       if canEdit {
         ToolbarItem(placement: .topBarTrailing) {
           Button { showCreate = true } label: {
-            Label(PlaylistStrings.newSetlist, systemImage: "plus")
+            HStack(spacing: 6) {
+              CapoIcon(.plus, size: 16)
+              Text(L10n.Playlists.createPlaylist).lineLimit(1)
+            }
           }
+          .buttonStyle(CapoPrimaryButtonStyle(size: .small))
         }
       }
     }
@@ -91,30 +88,35 @@ public struct PlaylistsView: View {
       }
     }
   }
+
+  private var filterMenu: some View {
+    Menu {
+      Picker(L10n.Filters.visibility, selection: $visibility) {
+        Text(L10n.Songs.all).tag(PlaylistLogic.Visibility.all)
+        Text(L10n.Filters.public).tag(PlaylistLogic.Visibility.public)
+        Text(L10n.Filters.private).tag(PlaylistLogic.Visibility.private)
+      }
+    } label: {
+      CapoIcon(.settings2, size: 16)
+        .foregroundStyle(CapoTheme.foreground)
+        .frame(width: 36, height: 36)
+        .overlay(alignment: .topTrailing) {
+          if visibility != .all { PingDotMarker() }
+        }
+    }
+    .accessibilityLabel(L10n.Songs.filters)
+  }
+
+  private func toggleArchive(_ summary: PlaylistSummary) {
+    let archive = summary.playlist.archivedAt == nil
+    Task { try? await services.playlists.setArchived(id: summary.id, archive) }
+  }
 }
 
-struct PlaylistRow: View {
-  let summary: PlaylistSummary
-
+/// Filled 8 px dot that marks an active filter.
+private struct PingDotMarker: View {
   var body: some View {
-    HStack(spacing: 8) {
-      VStack(alignment: .leading, spacing: 4) {
-        Text(summary.playlist.name).font(CapoFont.style(.headline)).foregroundStyle(CapoTheme.text).lineLimit(1)
-        HStack(spacing: 6) {
-          if let date = PlaylistDate.display(summary.playlist.date) { Text(date) }
-          Text(PlaylistStrings.songCount(summary.songCount))
-        }
-        .font(CapoFont.style(.subheadline)).foregroundStyle(CapoTheme.subtext)
-      }
-      Spacer(minLength: 8)
-      if summary.isPinned {
-        Image(systemName: summary.isFullyAvailableOffline ? "checkmark.circle.fill" : "pin.fill")
-          .foregroundStyle(summary.isFullyAvailableOffline ? CapoTheme.success : CapoTheme.subtext)
-          .accessibilityLabel(
-            summary.isFullyAvailableOffline ? PlaylistStrings.offlineReady : PlaylistStrings.pinned)
-      }
-    }
-    .frame(minHeight: 60)
-    .contentShape(Rectangle())
+    Circle().fill(CapoTheme.primary).frame(width: 8, height: 8)
+      .offset(x: -2, y: 4).accessibilityHidden(true)
   }
 }

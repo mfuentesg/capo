@@ -1,5 +1,6 @@
 import CapoCore
 import CapoDesign
+import CapoIcons
 import Observation
 import SwiftUI
 
@@ -71,7 +72,7 @@ private struct StageCaption: View {
 
 /// 52pt "-" / "+" button with a light haptic on every step.
 private struct StepButton: View {
-  let systemImage: String
+  let icon: CapoIconName
   let label: String
   let isEnabled: Bool
   let trigger: Int
@@ -79,8 +80,7 @@ private struct StepButton: View {
 
   var body: some View {
     Button(action: action) {
-      Image(systemName: systemImage)
-        .font(CapoFont.ui(20, weight: .heavy))
+      CapoIcon(icon, size: 22, strokeWidth: 2.4)
         .foregroundStyle(CapoTheme.text)
         .frame(width: 52, height: 52)
         .background(CapoTheme.surfaceStrong, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
@@ -124,13 +124,13 @@ struct StageStepper: View {
 
   private var minus: some View {
     StepButton(
-      systemImage: "minus", label: label, isEnabled: canDecrement, trigger: trigger,
+      icon: .minus, label: label, isEnabled: canDecrement, trigger: trigger,
       action: decrement)
   }
 
   private var plus: some View {
     StepButton(
-      systemImage: "plus", label: label, isEnabled: canIncrement, trigger: trigger,
+      icon: .plus, label: label, isEnabled: canIncrement, trigger: trigger,
       action: increment)
   }
 
@@ -180,8 +180,7 @@ struct StagePlayButton: View {
 
   var body: some View {
     Button(action: action) {
-      Image(systemName: isPlaying ? "pause.fill" : "play.fill")
-        .font(CapoFont.ui(size * 0.42, weight: .bold))
+      CapoIcon(isPlaying ? .pause : .play, size: size * 0.4)
         .foregroundStyle(CapoTheme.onPrimary)
         .frame(width: size, height: size)
         .background(CapoTheme.primary, in: Circle())
@@ -351,9 +350,8 @@ struct StageDock: View {
     Button {
       Task { await model.setColumns(model.columns == 2 ? 1 : 2) }
     } label: {
-      Image(systemName: model.columns == 2 ? "rectangle.split.2x1" : "rectangle")
-        .font(CapoFont.ui(20, weight: .semibold))
-        .foregroundStyle(CapoTheme.primary)
+      CapoIcon(.columns2, size: 22)
+        .foregroundStyle(model.columns == 2 ? CapoTheme.primary : CapoTheme.subtext)
         .frame(width: width, height: 44)
         .contentShape(Rectangle())
     }
@@ -365,7 +363,7 @@ struct StageDock: View {
 
   private var autoScrollReadout: some View {
     HStack(spacing: 6) {
-      speedButton("tortoise", L10n.Songs.Lyrics.AutoScroll.decreaseSpeed) { model.scrollSlower() }
+      speedButton(.turtle, L10n.Songs.Lyrics.AutoScroll.decreaseSpeed) { model.scrollSlower() }
         .disabled(model.scrollSpeed <= AutoScrollSpeed.minimum)
       VStack(alignment: .trailing, spacing: 1) {
         StageCaption(StageStrings.autoScroll)
@@ -378,17 +376,16 @@ struct StageDock: View {
       .accessibilityElement(children: .ignore)
       .accessibilityLabel(L10n.Songs.Lyrics.AutoScroll.speed)
       .accessibilityValue(StageAutoScrollLabel.speed(model.scrollSpeed))
-      speedButton("hare", L10n.Songs.Lyrics.AutoScroll.increaseSpeed) { model.scrollFaster() }
+      speedButton(.rabbit, L10n.Songs.Lyrics.AutoScroll.increaseSpeed) { model.scrollFaster() }
         .disabled(model.scrollSpeed >= AutoScrollSpeed.maximum)
     }
   }
 
-  private func speedButton(_ symbol: String, _ label: String, action: @escaping () -> Void)
+  private func speedButton(_ icon: CapoIconName, _ label: String, action: @escaping () -> Void)
     -> some View
   {
     Button(action: action) {
-      Image(systemName: symbol)
-        .font(CapoFont.ui(16, weight: .semibold))
+      CapoIcon(icon, size: 18)
         .foregroundStyle(CapoTheme.text)
         .frame(width: 44, height: 44)
         .background(CapoTheme.surfaceStrong, in: Circle())
@@ -402,8 +399,7 @@ struct StageDock: View {
     Button {
       navigation.onPrevious?()
     } label: {
-      Image(systemName: "chevron.left")
-        .font(CapoFont.ui(20, weight: .bold))
+      CapoIcon(.chevronLeft, size: 22, strokeWidth: 2.4)
         .foregroundStyle(CapoTheme.text)
         .frame(width: 56, height: 72)
         .background(
@@ -424,7 +420,7 @@ struct StageDock: View {
             Text(title).font(CapoFont.ui(16, weight: .semibold)).lineLimit(1)
           }
         }
-        Image(systemName: "chevron.right").font(CapoFont.ui(18, weight: .bold))
+        CapoIcon(.chevronRight, size: 20, strokeWidth: 2.4)
       }
       .foregroundStyle(CapoTheme.text)
       .padding(.horizontal, 18)
@@ -463,8 +459,7 @@ struct StageDock: View {
           model.isAutoScrolling.toggle()
         } label: {
           HStack(spacing: 8) {
-            Image(systemName: model.isAutoScrolling ? "pause.fill" : "play.fill")
-              .font(CapoFont.ui(20, weight: .bold))
+            CapoIcon(model.isAutoScrolling ? .pause : .play, size: 20, strokeWidth: 2.4)
             Text("\(StageStrings.scroll) · \(StageAutoScrollLabel.speed(model.scrollSpeed))")
               .font(CapoFont.ui(17, weight: .bold).monospacedDigit())
               .lineLimit(1)
@@ -507,12 +502,12 @@ struct StageDock: View {
       HStack {
         StageCaption(L10n.Songs.Lyrics.AutoScroll.speed)
         Spacer()
-        speedButton("tortoise", L10n.Songs.Lyrics.AutoScroll.decreaseSpeed) { model.scrollSlower() }
+        speedButton(.turtle, L10n.Songs.Lyrics.AutoScroll.decreaseSpeed) { model.scrollSlower() }
           .disabled(model.scrollSpeed <= AutoScrollSpeed.minimum)
         Text(StageAutoScrollLabel.speed(model.scrollSpeed))
           .font(CapoFont.ui(17, weight: .bold).monospacedDigit())
           .frame(minWidth: 70)
-        speedButton("hare", L10n.Songs.Lyrics.AutoScroll.increaseSpeed) { model.scrollFaster() }
+        speedButton(.rabbit, L10n.Songs.Lyrics.AutoScroll.increaseSpeed) { model.scrollFaster() }
           .disabled(model.scrollSpeed >= AutoScrollSpeed.maximum)
       }
     }
@@ -546,8 +541,7 @@ struct StageCollapsedDock: View {
         model.isAutoScrolling.toggle()
       }
       Button(action: onExpand) {
-        Image(systemName: "chevron.up")
-          .font(CapoFont.ui(18, weight: .heavy))
+        CapoIcon(.chevronUp, size: 20, strokeWidth: 2.4)
           .foregroundStyle(CapoTheme.text)
           .frame(width: 52, height: 52)
           .background(CapoTheme.surfaceStrong, in: Circle())
@@ -578,8 +572,7 @@ struct StageDockHandle: View {
 
   var body: some View {
     Button(action: onTap) {
-      Image(systemName: "chevron.down")
-        .font(CapoFont.ui(14, weight: .heavy))
+      CapoIcon(.chevronDown, size: 16, strokeWidth: 2.4)
         .foregroundStyle(CapoTheme.subtext)
         .frame(width: 56, height: 28)
         .background(CapoTheme.surface, in: Capsule())
@@ -591,111 +584,7 @@ struct StageDockHandle: View {
   }
 }
 
-// MARK: - Header and full screen overlays
-
-struct StageHeader: View {
-  let song: Song
-  @Bindable var model: SongPerformanceModel
-  let navigation: PerformanceNavigation
-  let canEdit: Bool
-  let compact: Bool
-  let showsBack: Bool
-  let onBack: () -> Void
-  let onEdit: () -> Void
-  let onFullscreen: () -> Void
-
-  var body: some View {
-    HStack(spacing: compact ? 8 : 16) {
-      if showsBack {
-        StageIconButton(
-          systemImage: "chevron.left", label: StageStrings.back, size: compact ? 48 : 52,
-          radius: compact ? 14 : 16, action: onBack)
-      }
-      VStack(alignment: .leading, spacing: 2) {
-        Text(song.title)
-          .font(CapoFont.ui(compact ? 20 : 26, weight: .bold))
-          .lineLimit(1)
-          .accessibilityAddTraits(.isHeader)
-        Text(subtitle)
-          .font(CapoFont.ui(compact ? 13 : 15))
-          .foregroundStyle(CapoTheme.subtext)
-          .lineLimit(1)
-      }
-      if !compact, let info { keyChip(info) }
-      Spacer(minLength: 0)
-      if !compact, canEdit {
-        StageIconButton(
-          systemImage: "pencil", label: L10n.Common.edit, action: onEdit)
-      }
-      StageIconButton(
-        systemImage: "arrow.up.left.and.arrow.down.right", label: StageStrings.enterFullscreen,
-        filled: true, size: compact ? 48 : 52, radius: compact ? 14 : 16, action: onFullscreen)
-      menu
-    }
-    .padding(.horizontal, compact ? 12 : 24)
-    .padding(.vertical, compact ? 10 : 16)
-    .background(CapoTheme.sidebar.ignoresSafeArea(edges: .top))
-    .overlay(alignment: .bottom) { Rectangle().fill(CapoTheme.surface).frame(height: 1) }
-  }
-
-  private var menu: some View {
-    Menu {
-      if compact, canEdit {
-        Button(L10n.Common.edit, systemImage: "pencil", action: onEdit)
-      }
-      Button(L10n.Songs.reset, systemImage: "arrow.counterclockwise") { model.reset() }
-    } label: {
-      Image(systemName: "ellipsis")
-        .font(CapoFont.ui(compact ? 18 : 22, weight: .bold))
-        .foregroundStyle(CapoTheme.text)
-        .frame(width: compact ? 48 : 52, height: compact ? 48 : 52)
-        .background(
-          CapoTheme.surface, in: RoundedRectangle(cornerRadius: compact ? 14 : 16, style: .continuous))
-    }
-    .accessibilityLabel(StageStrings.more)
-  }
-
-  private var info: StageKeyInfo? {
-    StageKeyInfo(key: song.key, transpose: model.settings.transpose, capo: model.settings.capo)
-  }
-
-  private var subtitle: String {
-    if compact, let info {
-      let base = "\(StageStrings.soundsIn) \(info.soundsIn)"
-      return info.playShapesIn.map { "\(base) · \(StageStrings.playShapesIn.lowercased()) \($0)" }
-        ?? base
-    }
-    var parts: [String] = []
-    if let artist = song.artist, !artist.isEmpty { parts.append(artist) }
-    if let label = navigation.positionLabel { parts.append(label) }
-    if !compact, let bpm = song.bpm, bpm > 0 { parts.append("\(bpm) \(L10n.Songs.bpm)") }
-    return parts.joined(separator: " · ")
-  }
-
-  private func keyChip(_ info: StageKeyInfo) -> some View {
-    HStack(spacing: 10) {
-      chipLabel(StageStrings.soundsIn, info.soundsIn, color: CapoTheme.primary)
-      if let shapes = info.playShapesIn {
-        Rectangle().fill(CapoTheme.surfaceStrong).frame(width: 1, height: 22)
-        chipLabel(StageStrings.playShapesIn, shapes, color: CapoTheme.text)
-      }
-    }
-    .padding(.horizontal, 16)
-    .frame(height: 52)
-    .background(CapoTheme.surface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-    .accessibilityElement(children: .ignore)
-    .accessibilityLabel(
-      "\(StageStrings.soundsIn) \(info.soundsIn)"
-        + (info.playShapesIn.map { ", \(StageStrings.playShapesIn) \($0)" } ?? ""))
-  }
-
-  private func chipLabel(_ caption: String, _ value: String, color: Color) -> some View {
-    HStack(spacing: 10) {
-      StageCaption(caption, size: 13)
-      Text(value).font(CapoFont.ui(22, weight: .bold)).foregroundStyle(color)
-    }
-  }
-}
+// MARK: - Full screen overlays
 
 /// Centered title pill of the full-screen stage.
 struct StageTitlePill: View {
@@ -743,7 +632,7 @@ struct StageNextTab: View {
   var body: some View {
     Button(action: onNext) {
       VStack(spacing: 10) {
-        Image(systemName: "chevron.left").font(CapoFont.ui(18, weight: .heavy))
+        CapoIcon(.chevronLeft, size: 20, strokeWidth: 2.6)
         if let title {
           Text(title)
             .font(CapoFont.ui(14, weight: .semibold))

@@ -48,6 +48,10 @@ public struct FakeSongRepository: SongRepository {
       if let v = patch.transpose { song.transpose = v }
       if let v = patch.capo { song.capo = v }
       if let v = patch.status { song.status = v }
+      if let v = patch.teamID {
+        song.teamID = v
+        song.userID = nil
+      }
       song.updatedAt = .now()
       state.songs[index] = song
     }

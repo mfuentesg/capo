@@ -91,6 +91,7 @@ nonisolated final class CodeLayoutManager: NSLayoutManager {
 struct LyricsTextView: UIViewRepresentable {
   @Binding var text: String
   var songKey: String = ""
+  var controller: LyricsEditorController?
 
   func makeCoordinator() -> Coordinator { Coordinator(self) }
 
@@ -119,6 +120,7 @@ struct LyricsTextView: UIViewRepresentable {
     view.adjustsFontForContentSizeCategory = true
     view.accessibilityIdentifier = "editor.lyrics"
     context.coordinator.textView = view
+    controller?.textView = view
     context.coordinator.songKey = songKey
     view.inputAccessoryView = context.coordinator.makeAccessory(for: view)
     view.text = text
@@ -203,7 +205,12 @@ struct LyricsTextView: UIViewRepresentable {
       if parent.text != textView.text { parent.text = textView.text }
     }
 
-    func textViewDidChangeSelection(_ textView: UITextView) { updateCaret(textView) }
+    func textViewDidChangeSelection(_ textView: UITextView) {
+      updateCaret(textView)
+      let range = textView.selectedRange
+      let controller = parent.controller
+      DispatchQueue.main.async { controller?.selectionChanged(range) }  // never mid view update
+    }
 
     private func updateCaret(_ textView: UITextView) {
       guard let layout = textView.layoutManager as? CodeLayoutManager else { return }

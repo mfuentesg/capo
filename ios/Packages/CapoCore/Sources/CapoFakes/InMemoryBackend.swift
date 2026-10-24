@@ -53,6 +53,7 @@ public actor InMemoryBackend {
 extension BackendState {
   public func matches(_ context: AppContext, userID: UserID?, teamID: TeamID?) -> Bool {
     switch context {
+    case .all(let me): return (userID == me && teamID == nil) || teamID != nil
     case .personal(let me): return userID == me && teamID == nil
     case .team(let team): return teamID == team
     }
@@ -68,7 +69,14 @@ extension BackendState {
       id: song.id, title: song.title, artist: song.artist, key: song.key, bpm: song.bpm,
       status: song.status, teamID: song.teamID, hasLyrics: !(song.lyrics ?? "").isEmpty,
       tags: tags(forSong: song.id), hasPendingChanges: pendingSongIDs.contains(song.id),
-      createdAt: song.createdAt)
+      createdAt: song.createdAt, playCount: playedEntries(of: song.id).count,
+      lastPlayed: playedEntries(of: song.id).max())
+  }
+
+  /// Played dates of a song: each playlist's own date, else when the playlist was created.
+  func playedEntries(of songID: SongID) -> [String] {
+    let playlistIDs = Set(playlistEntries.filter { $0.songID == songID }.map(\.playlistID))
+    return playlists.filter { playlistIDs.contains($0.id) }.map { $0.date ?? $0.createdAt.raw }
   }
 
   public func songs(matching query: SongQuery) -> [SongListItem] {

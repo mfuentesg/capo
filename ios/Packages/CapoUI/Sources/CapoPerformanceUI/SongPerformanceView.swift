@@ -127,6 +127,9 @@ struct SongPerformanceScreen: View {
         model.apply(userSettings: settings)
       }
     }
+    .task(id: model.songID) {
+      for await tags in services.songs.tags(forSong: model.songID) { model.apply(tags: tags) }
+    }
     .task {
       for await preferences in services.settings.preferences() { model.apply(preferences: preferences) }
     }
@@ -161,7 +164,7 @@ struct SongPerformanceScreen: View {
   private func stage(_ song: Song) -> some View {
     VStack(spacing: 0) {
       if !isFullscreen && !showsInlineHeading {
-        StageHeader(
+        LyricsHeader(
           song: song, model: model, navigation: navigation,
           canEdit: role?.canEditContent ?? true, compact: compact,
           showsBack: !navigation.isEmbedded && isPresented, onBack: { dismiss() },
@@ -197,7 +200,7 @@ struct SongPerformanceScreen: View {
             rendered: model.rendered, style: style,
             onChordTap: { diagramChord = DiagramChord(name: $0) })
         }
-        .padding(.horizontal, isFullscreen ? 64 : (compact ? 18 : 40))
+        .padding(.horizontal, horizontalPadding)
         .padding(.top, isFullscreen ? 44 : 24)
         .padding(.bottom, dockReserve)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -205,6 +208,8 @@ struct SongPerformanceScreen: View {
       .ignoresSafeArea(.container, edges: isFullscreen ? [.top, .bottom] : .bottom)
     }
   }
+
+  private var horizontalPadding: CGFloat { isFullscreen ? 64 : (compact ? 18 : 40) }
 
   /// Space under the last line so the floating dock never hides it.
   private var dockReserve: CGFloat {
@@ -313,10 +318,16 @@ struct SongPerformanceScreen: View {
 
   private var style: SongRenderStyle {
     var style = SongRenderStyle()
-    style.fontScale = StageFullscreen.fontScale(
-      base: model.settings.fontSize, isFullscreen: isFullscreen)
+    let base = StageFullscreen.fontScale(base: model.settings.fontSize, isFullscreen: isFullscreen)
+    // Two columns stay on a narrow pane; the text shrinks until they fit.
+    let fit = ColumnFit.scale(
+      contentWidth: paneWidth - 2 * horizontalPadding,
+      columns: paneWidth >= ColumnFit.narrowestTwoColumnPane ? model.columns : 1, fontScale: base)
+    style.fontScale = base * fit
     style.columns = model.columns
+    style.minTwoColumnWidth = ColumnFit.minTwoColumnWidth(pane: paneWidth)
     style.showChords = model.showChords
+    style.showLyrics = model.showLyrics
     style.commentLabel = L10n.SongSections.comment
     return style
   }

@@ -1,4 +1,5 @@
 import CapoDesign
+import CapoIcons
 import CapoSettingsUI
 import Foundation
 import Testing
@@ -34,10 +35,22 @@ import Testing
 
     let other = ContextStore(userID: UUID(), defaults: d)
     other.update(teams: [t])
-    #expect(other.context.teamID == nil)
+    #expect(other.context == .all(userID: other.userID))
   }
 
-  @Test func removedTeamFallsBackToPersonal() {
+  @Test func defaultsToAllAndPersistsPersonalChoice() {
+    let d = defaults()
+    let user = UUID()
+    let a = ContextStore(userID: user, defaults: d)
+    #expect(a.context == .all(userID: user))
+    a.selectPersonal()
+    #expect(ContextStore(userID: user, defaults: d).context == .personal(userID: user))
+    a.selectAll()
+    #expect(ContextStore(userID: user, defaults: d).context == .all(userID: user))
+    #expect(d.string(forKey: ContextStore.key(for: user)) == nil)
+  }
+
+  @Test func removedTeamFallsBackToAll() {
     let d = defaults()
     let user = UUID()
     let t = team(2)
@@ -45,7 +58,7 @@ import Testing
     store.update(teams: [t])
     store.select(.team(teamID: t.id))
     store.update(teams: [])
-    #expect(store.context == .personal(userID: user))
+    #expect(store.context == .all(userID: user))
     #expect(d.string(forKey: ContextStore.key(for: user)) == nil)
   }
 
@@ -183,7 +196,7 @@ import Testing
 @Suite struct ShellNavigationTests {
   @Test func sidebarMatchesWebItemsInOrder() {
     #expect(SidebarItem.allCases == [.songs, .playlists, .chords, .teams])
-    #expect(Set(SidebarItem.allCases.map(\.symbol)).count == 4)
+    #expect(Set(SidebarItem.allCases.map(\.icon.rawValue)).count == 4)
   }
 
   @Test func debugLaunchArgumentParsesDestinations() {
@@ -206,9 +219,16 @@ import Testing
     let user = UUID()
     let named = ContextPillState.make(context: .personal(userID: user), team: nil, personalName: " Ana ")
     #expect(named.label == "Ana")
-    #expect(!named.isFiltered)
+    #expect(named.isFiltered)
     let anon = ContextPillState.make(context: .personal(userID: user), team: nil, personalName: nil)
     #expect(anon.label == ContextStrings.personal)
+  }
+
+  @Test func allPillIsLabelledAllAndNotFiltered() {
+    let state = ContextPillState.make(context: .all(userID: UUID()), team: nil, personalName: "Ana")
+    #expect(state.kind == .all)
+    #expect(state.label == L10n.Nav.viewAll)
+    #expect(!state.isFiltered)
   }
 
   @Test func teamPillIsFilteredAndTruncationMatchesWeb() {
@@ -218,10 +238,5 @@ import Testing
     #expect(state.teamID == id)
     #expect(ContextPillState.maxLabelWidth(compact: true) == 80)
     #expect(ContextPillState.maxLabelWidth(compact: false) == 120)
-  }
-
-  @Test func avatarInitial() {
-    #expect(InitialAvatar.initial(" ana") == "A")
-    #expect(InitialAvatar.initial("") == "?")
   }
 }

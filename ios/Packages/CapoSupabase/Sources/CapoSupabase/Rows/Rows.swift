@@ -78,6 +78,10 @@ struct SongRow: Codable, Sendable {
     if let transpose = patch.transpose { body["transpose"] = .number(Double(transpose)) }
     if let capo = patch.capo { body["capo"] = .number(Double(capo)) }
     if let status = patch.status { body["status"] = .string(status.rawValue) }
+    if let teamID = patch.teamID {
+      body["team_id"] = .string(teamID.pg)
+      body["user_id"] = .null
+    }
     return body
   }
 }

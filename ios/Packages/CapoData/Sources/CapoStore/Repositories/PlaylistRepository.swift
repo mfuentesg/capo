@@ -59,7 +59,7 @@ struct GRDBPlaylistRepository: PlaylistRepository {
     var owner: UserID?
     var team: TeamID?
     switch context {
-    case .personal(let id): owner = id
+    case .personal(let id), .all(let id): owner = id
     case .team(let id): team = id
     }
     let now = ServerTimestamp.now()

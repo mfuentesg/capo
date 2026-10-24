@@ -39,7 +39,7 @@ struct GRDBSongRepository: SongRepository {
     var owner: UserID?
     var team: TeamID?
     switch context {
-    case .personal(let id): owner = id
+    case .personal(let id), .all(let id): owner = id
     case .team(let id): team = id
     }
     let song = Song(
@@ -111,7 +111,10 @@ struct GRDBSongRepository: SongRepository {
     s.id, s.title, s.artist, s."key", s.bpm, s.status, s.team_id, s.created_at,
     (s.lyrics IS NOT NULL AND s.lyrics <> '') AS has_lyrics,
     EXISTS (SELECT 1 FROM outbox o WHERE o.entity_key = 'song:' || s.id
-            AND o.state IN ('pending', 'inflight', 'conflict')) AS has_pending
+            AND o.state IN ('pending', 'inflight', 'conflict')) AS has_pending,
+    (SELECT COUNT(*) FROM playlist_songs ps WHERE ps.song_id = s.id) AS play_count,
+    (SELECT MAX(COALESCE(p.date, p.created_at)) FROM playlist_songs ps
+       JOIN playlists p ON p.id = ps.playlist_id WHERE ps.song_id = s.id) AS last_played
     """
 
   /// Runs `SELECT <listColumns> <from>` and attaches tags.
@@ -137,7 +140,8 @@ struct GRDBSongRepository: SongRepository {
         status: SongStatus(rawValue: row["status"]) ?? .published,
         teamID: row.optionalUUID("team_id"), hasLyrics: row["has_lyrics"],
         tags: tagsBySong[id.dbString] ?? [], hasPendingChanges: row["has_pending"],
-        createdAt: row.timestamp("created_at"))
+        createdAt: row.timestamp("created_at"), playCount: row["play_count"] ?? 0,
+        lastPlayed: row["last_played"])
     }
   }
 
@@ -218,7 +222,7 @@ struct GRDBTagRepository: TagRepository {
     var owner: UserID?
     var team: TeamID?
     switch context {
-    case .personal(let id): owner = id
+    case .personal(let id), .all(let id): owner = id
     case .team(let id): team = id
     }
     let tag = SongTag(

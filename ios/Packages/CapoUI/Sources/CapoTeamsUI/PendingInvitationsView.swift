@@ -1,5 +1,6 @@
 import CapoCore
 import CapoDesign
+import CapoIcons
 import SwiftUI
 
 /// Invitations addressed to the signed-in user's email; accept or decline.
@@ -10,36 +11,53 @@ public struct PendingInvitationsView: View {
   public init() {}
 
   public var body: some View {
-    List {
-      if model.isOffline { OfflineBanner() }
-      ForEach(model.items) { item in
-        VStack(alignment: .leading, spacing: 10) {
-          VStack(alignment: .leading, spacing: 2) {
-            Text(item.teamName).font(CapoFont.style(.headline)).foregroundStyle(CapoTheme.text)
-            if let inviter = item.inviterName {
-              Text(L10n.Invitations.invitationFrom(name: inviter))
-                .font(CapoFont.style(.subheadline)).foregroundStyle(CapoTheme.subtext)
+    ScrollView {
+      VStack(alignment: .leading, spacing: 16) {
+        if model.isOffline { OfflineBanner() }
+        Text(L10n.Invitations.pendingDescription).capoText(.sm).foregroundStyle(CapoTheme.subtext)
+        ForEach(model.items) { item in
+          VStack(alignment: .leading, spacing: 16) {
+            HStack(spacing: 12) {
+              CapoIcon(.mail, size: 20)
+                .foregroundStyle(CapoTheme.text)
+                .frame(width: 40, height: 40)
+                .background(CapoTheme.primary.opacity(0.1), in: Circle())
+              VStack(alignment: .leading, spacing: 2) {
+                Text(item.teamName).capoText(.lg, weight: .semibold, tracking: -0.025)
+                if let inviter = item.inviterName {
+                  Text(L10n.Invitations.invitationFrom(name: inviter))
+                    .capoText(.sm).foregroundStyle(CapoTheme.subtext)
+                }
+              }
+              Spacer(minLength: 8)
+              RoleBadge(role: item.invitation.role)
             }
-            RoleBadge(role: item.invitation.role).padding(.top, 4)
+            HStack(spacing: 4) {
+              CapoIcon(.clock, size: 12)
+              Text(L10n.Invitations.expires(date: TeamDetailView.dateText(item.invitation.expiresAt)))
+            }
+            .capoText(.xs)
+            .foregroundStyle(
+              TeamDetailModel.isExpired(item.invitation) ? CapoTheme.destructive : CapoTheme.subtext)
+            HStack(spacing: 8) {
+              Button(L10n.Invitations.accept) {
+                Task { await model.accept(services.teams, item) }
+              }
+              .buttonStyle(CapoPrimaryButtonStyle())
+              Button(TeamsStrings.decline) {
+                Task { await model.decline(services.teams, item) }
+              }
+              .buttonStyle(CapoSecondaryButtonStyle())
+            }
+            .disabled(model.isBusy)
           }
-          HStack {
-            Button(L10n.Invitations.accept) {
-              Task { await model.accept(services.teams, item) }
-            }
-            .buttonStyle(CapoPrimaryButtonStyle())
-            Button(TeamsStrings.decline, role: .destructive) {
-              Task { await model.decline(services.teams, item) }
-            }
-            .buttonStyle(CapoSecondaryButtonStyle())
-            .foregroundStyle(CapoTheme.destructive)
-          }
-          .disabled(model.isBusy)
+          .teamSurface()
+          .shadow(color: .black.opacity(0.05), radius: 1, y: 1)
         }
-        .padding(.vertical, 6)
-        .capoRowBackground()
       }
+      .padding(24)
     }
-    .capoList()
+    .background(CapoTheme.background)
     .overlay {
       if model.loaded && model.items.isEmpty {
         EmptyStateView(

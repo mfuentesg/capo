@@ -12,6 +12,8 @@ enum StageStrings {
   static var next: String { L10n.Ios.Stage.next }
   static var play: String { L10n.Ios.Stage.play }
   static var back: String { L10n.Ios.Stage.back }
+  static var decrease: String { L10n.Ios.Stage.decrease }
+  static var increase: String { L10n.Ios.Stage.increase }
   static var more: String { L10n.Ios.Stage.more }
   static var chordsToggle: String { L10n.Ios.Stage.chords }
   static var columnsToggle: String { L10n.Ios.Stage.columns }

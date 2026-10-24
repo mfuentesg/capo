@@ -89,12 +89,18 @@ public struct SongListItem: Identifiable, Hashable, Sendable {
   public var tags: [SongTag]
   public var hasPendingChanges: Bool
   public var createdAt: ServerTimestamp
+  /// Number of playlists the song appears in (web played-frequency badge).
+  public var playCount: Int
+  /// Latest playlist date (or when it was added) as `yyyy-MM-dd[...]`; nil when never played.
+  public var lastPlayed: String?
 
   public init(
     id: SongID, title: String, artist: String?, key: String?, bpm: Int?, status: SongStatus,
     teamID: TeamID?, hasLyrics: Bool, tags: [SongTag], hasPendingChanges: Bool,
-    createdAt: ServerTimestamp
+    createdAt: ServerTimestamp, playCount: Int = 0, lastPlayed: String? = nil
   ) {
+    self.playCount = playCount
+    self.lastPlayed = lastPlayed
     self.id = id
     self.title = title
     self.artist = artist
@@ -148,12 +154,15 @@ public struct SongPatch: Hashable, Sendable, Codable {
   public var transpose: Int?
   public var capo: Int?
   public var status: SongStatus?
+  /// Transfers a personal song to this team (sets `team_id`, clears `user_id`).
+  public var teamID: TeamID?
 
   public init(
     title: String? = nil, artist: String? = nil, key: String? = nil, bpm: Int? = nil,
     lyrics: String? = nil, notes: String? = nil, transpose: Int? = nil, capo: Int? = nil,
-    status: SongStatus? = nil
+    status: SongStatus? = nil, teamID: TeamID? = nil
   ) {
+    self.teamID = teamID
     self.title = title
     self.artist = artist
     self.key = key
@@ -176,7 +185,8 @@ public struct SongPatch: Hashable, Sendable, Codable {
       notes: newer.notes ?? notes,
       transpose: newer.transpose ?? transpose,
       capo: newer.capo ?? capo,
-      status: newer.status ?? status
+      status: newer.status ?? status,
+      teamID: newer.teamID ?? teamID
     )
   }
 }

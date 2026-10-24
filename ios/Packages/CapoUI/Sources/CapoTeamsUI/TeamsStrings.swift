@@ -36,6 +36,13 @@ enum TeamsStrings {
   static var shareLink: String {
     L10n.Ios.Teams.shareLink
   }
+  static var searchTeams: String { L10n.Ios.Teams.searchTeams }
+  static var iconPickerTitle: String { L10n.Ios.Teams.iconPickerTitle }
+  static var noTeamMatches: String { L10n.Ios.Teams.noTeamMatches }
+  static var transferNoTeams: String { L10n.Ios.Teams.transferNoTeams }
+  static func memberCount(_ count: Int) -> String {
+    count == 1 ? L10n.Ios.Teams.memberCountOne : L10n.Ios.Teams.memberCount(count: String(count))
+  }
   static var retry: String { L10n.Ios.Teams.retry }
   static var cancel: String { L10n.Common.cancel }
 }

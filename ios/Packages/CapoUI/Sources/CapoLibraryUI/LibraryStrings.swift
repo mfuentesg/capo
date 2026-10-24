@@ -57,6 +57,40 @@ enum LibraryStrings {
   static var noResultsMessage: String {
     L10n.Ios.Library.noResultsMessage
   }
+  static var addToCart: String { L10n.Songs.addToPlaylist }
+  static var removeFromCart: String { L10n.Ios.Library.removeFromCart }
+  static var clearCart: String { L10n.Ios.Library.clearCart }
+  static func cartAdd(_ count: Int) -> String { L10n.Ios.Library.cartAddCount(count: String(count)) }
+  static var songsTitle: String { L10n.Songs.title }
+  static var addSong: String { L10n.Songs.addSong }
+  static var searchSongs: String { L10n.Ios.Library.searchPrompt }
+  static var filtersTitle: String { L10n.Songs.filters }
+  static var filtersDescription: String { L10n.Songs.filtersDescription }
+  static var clearAll: String { L10n.Filters.clearAll }
+  static var bpmRange: String { L10n.Songs.bpmRange }
+  static var groupBy: String { L10n.Songs.groupBy }
+  static var noSongs: String { L10n.Songs.noSongs }
+  static var tryDifferentSearch: String { L10n.Common.tryDifferentSearch }
+  static var all: String { L10n.Songs.all }
+  static var me: String { L10n.Ios.Library.meOwner }
+  static var bpmHelp: String {
+    BPMBucket.description(slow: L10n.Songs.slow, medium: L10n.Songs.medium, fast: L10n.Songs.fast)
+  }
+  static func groupName(_ grouping: SongGrouping) -> String {
+    switch grouping {
+    case .none: L10n.Songs.none
+    case .key: L10n.Songs.byKey
+    case .artist: L10n.Songs.byArtist
+    }
+  }
+  /// Web filter button labels (`songs.slow` / `medium` / `fast`).
+  static func webBucketName(_ bucket: BPMBucket) -> String {
+    switch bucket {
+    case .slow: L10n.Songs.slow
+    case .medium: L10n.Songs.medium
+    case .fast: L10n.Songs.fast
+    }
+  }
   static func addCount(_ count: Int) -> String {
     L10n.Ios.Library.addCount(count: String(count))
   }

@@ -1,4 +1,5 @@
 import CapoDesign
+import CapoIcons
 import CapoPerformanceUI
 import SwiftUI
 import UIKit
@@ -73,11 +74,10 @@ public struct SetlistPerformanceView: View {
     VStack(spacing: 12) {
       HStack(spacing: 8) {
         Button(action: onClose) {
-          Image(systemName: "xmark")
-            .font(CapoFont.ui(20, weight: .bold))
+          CapoIcon(.x, size: 20, strokeWidth: 2.4)
             .foregroundStyle(CapoTheme.text)
             .frame(width: 48, height: 48)
-            .background(CapoTheme.surface, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .background(CapoTheme.surface, in: RoundedRectangle(cornerRadius: CapoRadius.xl, style: .continuous))
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -109,8 +109,8 @@ public struct SetlistPerformanceView: View {
     }
     .padding(.horizontal, 12)
     .padding(.vertical, 10)
-    .background(CapoTheme.sidebar.ignoresSafeArea(edges: .top))
-    .overlay(alignment: .bottom) { Rectangle().fill(CapoTheme.surface).frame(height: 1) }
+    .background(CapoTheme.card.ignoresSafeArea(edges: .top))
+    .overlay(alignment: .bottom) { Rectangle().fill(CapoTheme.border).frame(height: 1) }
   }
 
   private var device: String {
@@ -241,8 +241,7 @@ public struct SetlistPerformanceView: View {
         Button {
           if let target = SetlistMath.previous(index) { go(to: target) }
         } label: {
-          Image(systemName: "chevron.left")
-            .font(CapoFont.ui(24, weight: .bold))
+          CapoIcon(.chevronLeft, size: 26, strokeWidth: 2.4)
             .foregroundStyle(CapoTheme.text)
             .frame(width: 84, height: 64)
             .background(CapoTheme.surfaceStrong, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
@@ -281,8 +280,7 @@ public struct SetlistPerformanceView: View {
             .font(CapoFont.ui(18, weight: .bold)).lineLimit(1)
         }
         Spacer(minLength: 8)
-        Image(systemName: next == nil ? "checkmark" : "chevron.right")
-          .font(CapoFont.ui(24, weight: .bold))
+        CapoIcon(next == nil ? .check : .chevronRight, size: 26, strokeWidth: 2.4)
       }
       .foregroundStyle(CapoTheme.onPrimary)
       .padding(.horizontal, 20)

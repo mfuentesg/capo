@@ -1,22 +1,25 @@
 import CapoDesign
+import CapoIcons
 import CapoLibraryUI
 import SwiftUI
+import UniformTypeIdentifiers
 
-/// One setlist: ordered songs with drag reorder, add/remove, details, archive, delete, pin, share.
+/// Web `playlist-detail.tsx`: inline-editable header, Details pills, Privacy & sharing card,
+/// Archive card, numbered drag-reorderable songs and a Danger zone.
 public struct PlaylistDetailView: View {
   let playlistID: PlaylistID
   @Environment(\.userServices) private var services
   @Environment(\.currentTeamRole) private var role
   @Environment(\.capoActions) private var actions
+  @Environment(\.capoUIScale) private var scale
   @State private var detail: PlaylistDetail?
   @State private var songs: [SongListItem] = []
   @State private var loaded = false
   @State private var isOffline = false
-  @State private var editMode: EditMode = .inactive
   @State private var showPicker = false
-  @State private var showForm = false
   @State private var showShare = false
   @State private var confirmDelete = false
+  @State private var toast: String?
 
   public init(playlistID: PlaylistID) { self.playlistID = playlistID }
 
@@ -25,56 +28,53 @@ public struct PlaylistDetailView: View {
   public var body: some View {
     Group {
       if let detail {
-        List {
-          Section {
-            ForEach(Array(songs.enumerated()), id: \.element.id) { index, song in
-              Button { actions.performSetlist(playlistID, index) } label: {
-                SetlistSongRow(index: index, song: song)
-              }
-              .buttonStyle(.plain)
-              .capoCardRow()
+        ScrollView {
+          VStack(alignment: .leading, spacing: 0) {
+            headerCard(detail.playlist)
+            VStack(alignment: .leading, spacing: 24) {
+            PlaylistPrivacyCard(
+              playlist: detail.playlist, canEdit: canEdit, isOffline: isOffline,
+              onChange: { patch in
+                Task { try? await services.playlists.update(id: playlistID, patch) }
+              }, onCopied: { toast = L10n.PlaylistDetail.copied })
+            archiveCard(detail.playlist)
+            songsSection
+            if canEdit { dangerZone(detail.playlist) }
             }
-            .onMove { move(from: $0, to: $1) }
-            .onDelete { delete(at: $0) }
-            .moveDisabled(!canEdit)
-            .deleteDisabled(!canEdit)
-          } header: {
-            header(detail.playlist)
+            .padding(16)
+            .frame(maxWidth: 720, alignment: .leading)
           }
+          .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .capoList()
-        .overlay {
-          if songs.isEmpty {
-            EmptyStateView(
-              title: PlaylistStrings.emptySongsTitle, message: PlaylistStrings.emptySongsMessage,
-              systemImage: "music.note.list")
-          }
+        .background(CapoTheme.muted.opacity(0.3))
+        .overlay(alignment: .top) {
+          Rectangle().fill(CapoTheme.accentPlaylists).frame(height: 2).ignoresSafeArea(edges: .top)
         }
         .navigationTitle(detail.playlist.name)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbar(detail) }
-        .environment(\.editMode, $editMode)
       } else if loaded {
         EmptyStateView(title: PlaylistStrings.notFound, message: nil, systemImage: "questionmark.folder")
       } else {
         ProgressView()
       }
     }
+    .capoToast($toast)
     .sheet(isPresented: $showPicker) {
       SongPickerView(excluding: Set(songs.map(\.id))) { ids in
         Task { try? await services.playlists.addSongs(ids, to: playlistID) }
       }
     }
-    .sheet(isPresented: $showForm) {
-      if let playlist = detail?.playlist { PlaylistFormView(mode: .edit(playlist)) }
-    }
     .sheet(isPresented: $showShare) { ShareSheetView(playlistID: playlistID) }
     .confirmationDialog(
-      detail.map { PlaylistStrings.deleteConfirm($0.playlist.name) } ?? "",
+      L10n.PlaylistDetail.deletePlaylistConfirmTitle,
       isPresented: $confirmDelete, titleVisibility: .visible
     ) {
-      Button(PlaylistStrings.delete, role: .destructive) {
+      Button(L10n.PlaylistDetail.deletePlaylist, role: .destructive) {
         Task { try? await services.playlists.delete(id: playlistID) }
       }
+    } message: {
+      Text(L10n.PlaylistDetail.deletePlaylistConfirmDescription(name: detail?.playlist.name ?? ""))
     }
     .task(id: playlistID) {
       for await value in services.playlists.playlist(id: playlistID) {
@@ -88,107 +88,453 @@ public struct PlaylistDetailView: View {
     }
   }
 
-  @ViewBuilder private func header(_ playlist: Playlist) -> some View {
-    VStack(alignment: .leading, spacing: 4) {
-      if let date = PlaylistDate.display(playlist.date) { Text(date) }
-      if let text = playlist.description, !text.isEmpty { Text(text) }
+  // MARK: Sections
+
+  /// `bg-card p-4`: name and description (inline editable), then the Details pills.
+  private func headerCard(_ playlist: Playlist) -> some View {
+    VStack(alignment: .leading, spacing: 12) {
+      PlaylistHeaderFields(playlist: playlist, canEdit: canEdit) { patch in
+        Task { try? await services.playlists.update(id: playlistID, patch) }
+      }
+      PillFlow(spacing: 8) {
+        PlaylistDatePill(playlist: playlist, canEdit: canEdit) { patch in
+          Task { try? await services.playlists.update(id: playlistID, patch) }
+        }
+        PlaylistPill(
+          icon: .listMusic,
+          text: PlaylistLogic.countLabel(
+            songs.count, singular: L10n.PlaylistDetail.song, plural: L10n.PlaylistDetail.songsPlural))
+        PlaylistPill(
+          icon: playlist.isPublic ? .globe : .lock,
+          text: playlist.isPublic ? L10n.Filters.public : L10n.Filters.private)
+      }
     }
-    .font(CapoFont.style(.subheadline)).foregroundStyle(CapoTheme.subtext).textCase(nil)
+    .padding(16)
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .background(CapoTheme.card)
+    .overlay(alignment: .bottom) { Rectangle().fill(CapoTheme.border).frame(height: 1) }
   }
+
+  private func archiveCard(_ playlist: Playlist) -> some View {
+    let archived = playlist.archivedAt != nil
+    return HStack(alignment: .center, spacing: 12) {
+      VStack(alignment: .leading, spacing: 2) {
+        Text(archived ? L10n.Playlists.unarchive : L10n.Playlists.archive)
+          .capoText(.sm, weight: .semibold)
+        Text(archived ? L10n.PlaylistDetail.unarchiveDescription : L10n.PlaylistDetail.archiveDescription)
+          .capoText(.xs).foregroundStyle(CapoTheme.mutedForeground)
+      }
+      Spacer(minLength: 8)
+      if canEdit {
+        Button {
+          Task { try? await services.playlists.setArchived(id: playlistID, !archived) }
+        } label: {
+          HStack(spacing: 6) {
+            CapoIcon(archived ? .archiveRestore : .archive, size: 14)
+            Text(archived ? L10n.Playlists.unarchive : L10n.Playlists.archive)
+          }
+        }
+        .buttonStyle(CapoSecondaryButtonStyle(size: .small))
+      }
+    }
+    .padding(16)
+    .frame(maxWidth: 448, alignment: .leading)
+    .playlistCard()
+  }
+
+  private var songsSection: some View {
+    VStack(alignment: .leading, spacing: 12) {
+      HStack {
+        Text(L10n.PlaylistDetail.songs.uppercased())
+          .capoText(.xs, weight: .semibold, tracking: 0.1)
+          .foregroundStyle(CapoTheme.mutedForeground)
+          .accessibilityAddTraits(.isHeader)
+        Spacer()
+        if canEdit {
+          Button { showPicker = true } label: {
+            HStack(spacing: 6) {
+              CapoIcon(.plus, size: 14)
+              Text(PlaylistStrings.addSongs)
+            }
+          }
+          .buttonStyle(CapoSecondaryButtonStyle(size: .small))
+        }
+      }
+      if songs.isEmpty {
+        VStack(spacing: 12) {
+          EmptyStateView(
+            title: L10n.PlaylistDetail.noSongsInPlaylist,
+            message: L10n.PlaylistDetail.addSongsDescription, systemImage: "music.note.list",
+            tint: CapoTheme.accentPlaylists, bordered: true)
+        }
+      } else {
+        VStack(spacing: 8) {
+          ForEach(Array(songs.enumerated()), id: \.element.id) { index, song in
+            PlaylistSongRow(
+              index: index, song: song, canEdit: canEdit,
+              onOpen: { actions.performSetlist(playlistID, index) },
+              onRemove: { remove(song) }
+            )
+            .dropDestination(for: String.self) { items, _ in
+              guard canEdit, let raw = items.first, let dragged = UUID(uuidString: raw) else {
+                return false
+              }
+              reorder(dragged: dragged, onto: song.id)
+              return true
+            }
+          }
+        }
+      }
+    }
+  }
+
+  private func dangerZone(_ playlist: Playlist) -> some View {
+    VStack(alignment: .leading, spacing: 8) {
+      Text(L10n.PlaylistDetail.dangerZone)
+        .capoText(.sm, weight: .semibold).foregroundStyle(CapoTheme.destructive)
+      HStack(alignment: .center, spacing: 12) {
+        Text(L10n.PlaylistDetail.deletePlaylistDescription)
+          .capoText(.xs).foregroundStyle(CapoTheme.mutedForeground)
+        Spacer(minLength: 8)
+        Button { confirmDelete = true } label: {
+          HStack(spacing: 6) {
+            CapoIcon(.trash2, size: 14)
+            Text(L10n.PlaylistDetail.deletePlaylist)
+          }
+        }
+        .buttonStyle(CapoDestructiveButtonStyle(size: .small))
+      }
+      .padding(16)
+      .playlistCard()
+      .overlay(
+        RoundedRectangle(cornerRadius: CapoRadius.xl * scale, style: .continuous)
+          .strokeBorder(CapoTheme.destructive.opacity(0.3), lineWidth: 1))
+    }
+  }
+
+  // MARK: Toolbar
 
   @ToolbarContentBuilder private func toolbar(_ detail: PlaylistDetail) -> some ToolbarContent {
     ToolbarItem(placement: .topBarTrailing) {
       Button { actions.performSetlist(playlistID, 0) } label: {
-        Label(PlaylistStrings.perform, systemImage: "play.fill")
-      }
-      .disabled(songs.isEmpty)
-    }
-    if canEdit {
-      ToolbarItem(placement: .topBarTrailing) {
-        Button { showPicker = true } label: {
-          Label(PlaylistStrings.addSongs, systemImage: "plus")
+        HStack(spacing: 6) {
+          CapoIcon(.play, size: 14)
+          Text(PlaylistStrings.perform)
         }
       }
+      .buttonStyle(CapoPrimaryButtonStyle(size: .small))
+      .disabled(songs.isEmpty)
+    }
+    ToolbarItem(placement: .topBarTrailing) {
+      Button {
+        if let share = actions.sharePlaylist { share(playlistID) } else { showShare = true }
+      } label: {
+        CapoIcon(.share2, size: 16).foregroundStyle(CapoTheme.foreground)
+          .frame(width: 36, height: 36)
+      }
+      .disabled(isOffline)
+      .accessibilityLabel(PlaylistStrings.share)
     }
     ToolbarItem(placement: .topBarTrailing) {
       Menu {
-        if canEdit {
-          Button(editMode.isEditing ? PlaylistStrings.done : PlaylistStrings.reorder,
-            systemImage: "arrow.up.arrow.down") {
-            withAnimation { editMode = editMode.isEditing ? .inactive : .active }
-          }
-          .disabled(songs.count < 2)
-          Button(PlaylistStrings.editDetails, systemImage: "pencil") { showForm = true }
-        }
         Button(
           detail.isPinned ? PlaylistStrings.unpin : PlaylistStrings.pin,
           systemImage: detail.isPinned ? "pin.slash" : "pin"
         ) {
           Task { try? await services.playlists.setPinned(!detail.isPinned, playlistID: playlistID) }
         }
-        Button(PlaylistStrings.share, systemImage: "square.and.arrow.up") {
-          if let share = actions.sharePlaylist { share(playlistID) } else { showShare = true }
-        }
-          .disabled(isOffline)
-        if canEdit {
-          Button(
-            detail.playlist.archivedAt == nil ? PlaylistStrings.archive : PlaylistStrings.unarchive,
-            systemImage: "archivebox"
-          ) {
-            Task {
-              try? await services.playlists.setArchived(
-                id: playlistID, detail.playlist.archivedAt == nil)
-            }
-          }
-          Button(PlaylistStrings.delete, systemImage: "trash", role: .destructive) {
-            confirmDelete = true
-          }
-        }
       } label: {
-        Label(PlaylistStrings.title, systemImage: "ellipsis.circle")
+        CapoIcon(.moreVertical, size: 16).foregroundStyle(CapoTheme.foreground)
+          .frame(width: 36, height: 36)
       }
+      .accessibilityLabel(PlaylistStrings.title)
     }
   }
 
-  private func move(from source: IndexSet, to destination: Int) {
-    songs = SetlistMath.move(songs, from: source, to: destination)
-    let ids = songs.map(\.id)
+  // MARK: Mutations
+
+  private func reorder(dragged: SongID, onto target: SongID) {
+    let next = PlaylistLogic.move(songs, dragged: dragged, onto: target)
+    guard next.map(\.id) != songs.map(\.id) else { return }
+    songs = next
+    let ids = next.map(\.id)
     Task { try? await services.playlists.reorder(playlistID: playlistID, songIDs: ids) }
   }
 
-  private func delete(at offsets: IndexSet) {
-    let removed = offsets.map { songs[$0].id }
-    songs.remove(atOffsets: offsets)
-    Task {
-      for id in removed { try? await services.playlists.removeSong(id, from: playlistID) }
-    }
+  private func remove(_ song: SongListItem) {
+    songs.removeAll { $0.id == song.id }
+    Task { try? await services.playlists.removeSong(song.id, from: playlistID) }
   }
 }
 
-struct SetlistSongRow: View {
-  let index: Int
-  let song: SongListItem
+// MARK: - Header fields
+
+/// Inline-editable name (lg bold) and multiline description ("Add description").
+private struct PlaylistHeaderFields: View {
+  let playlist: Playlist
+  let canEdit: Bool
+  let onChange: (PlaylistPatch) -> Void
+  @State private var name = ""
+  @State private var details = ""
+  @FocusState private var focus: Field?
+  private enum Field { case name, details }
 
   var body: some View {
-    HStack(spacing: 12) {
-      Text("\(index + 1)").font(CapoFont.style(.subheadline, weight: .semibold).monospacedDigit())
-        .foregroundStyle(CapoTheme.subtext)
-        .frame(minWidth: 24)
-      VStack(alignment: .leading, spacing: 2) {
-        Text(song.title).font(CapoFont.style(.headline)).foregroundStyle(CapoTheme.text).lineLimit(1)
-        if let artist = song.artist, !artist.isEmpty {
-          Text(artist).font(CapoFont.style(.subheadline)).foregroundStyle(CapoTheme.subtext).lineLimit(1)
-        }
-      }
-      Spacer(minLength: 8)
-      if let key = song.key, !key.isEmpty {
-        KeyBadge(key)
-      }
+    VStack(alignment: .leading, spacing: 8) {
+      TextField(PlaylistStrings.name, text: $name)
+        .focused($focus, equals: .name)
+        .capoText(.lg, weight: .bold, tracking: -0.025)
+        .disabled(!canEdit)
+        .submitLabel(.done)
+        .onSubmit(commitName)
+      TextField(L10n.PlaylistDetail.addDescription, text: $details, axis: .vertical)
+        .focused($focus, equals: .details)
+        .capoText(.sm)
+        .foregroundStyle(CapoTheme.mutedForeground)
+        .lineLimit(1...4)
+        .disabled(!canEdit)
+        .onSubmit(commitDetails)
     }
-    .frame(minHeight: 56)
-    .contentShape(Rectangle())
+    .onAppear(perform: seed)
+    .onChange(of: playlist.name) { _, _ in if focus != .name { seed() } }
+    .onChange(of: playlist.description) { _, _ in if focus != .details { seed() } }
+    .onChange(of: focus) { old, _ in
+      if old == .name { commitName() }
+      if old == .details { commitDetails() }
+    }
+  }
+
+  private func seed() {
+    name = playlist.name
+    details = playlist.description ?? ""
+  }
+
+  private func commitName() {
+    let trimmed = name.trimmingCharacters(in: .whitespaces)
+    guard !trimmed.isEmpty else { return name = playlist.name }
+    guard trimmed != playlist.name else { return }
+    onChange(PlaylistPatch(name: trimmed))
+  }
+
+  private func commitDetails() {
+    let trimmed = details.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard trimmed != (playlist.description ?? "") else { return }
+    onChange(PlaylistPatch(description: trimmed))
   }
 }
+
+// MARK: - Date pill
+
+private struct PlaylistDatePill: View {
+  let playlist: Playlist
+  let canEdit: Bool
+  let onChange: (PlaylistPatch) -> Void
+  @State private var open = false
+  @State private var date = Date()
+
+  var body: some View {
+    Button { open = canEdit } label: {
+      PlaylistPill(
+        icon: .calendar, text: PlaylistDate.display(playlist.date) ?? L10n.PlaylistDetail.pickDate)
+    }
+    .buttonStyle(.plain)
+    .popover(isPresented: $open) {
+      VStack(spacing: 8) {
+        DatePicker("", selection: $date, displayedComponents: .date)
+          .datePickerStyle(.graphical).labelsHidden()
+          .onChange(of: date) { _, value in
+            onChange(PlaylistPatch(date: PlaylistDate.format(value)))
+          }
+        if playlist.date != nil {
+          Button(L10n.Songs.reset) {
+            onChange(PlaylistPatch(date: ""))
+            open = false
+          }
+          .buttonStyle(CapoSecondaryButtonStyle(size: .small))
+        }
+      }
+      .padding(12)
+      .frame(width: 320)
+      .presentationCompactAdaptation(.popover)
+    }
+    .onAppear { date = PlaylistDate.parse(playlist.date) ?? Date() }
+  }
+}
+
+// MARK: - Privacy & sharing
+
+/// Public visibility switch, public URL with Copy / Open, guest-editing switch.
+private struct PlaylistPrivacyCard: View {
+  let playlist: Playlist
+  let canEdit: Bool
+  let isOffline: Bool
+  let onChange: (PlaylistPatch) -> Void
+  let onCopied: () -> Void
+  @Environment(\.userServices) private var services
+  @Environment(\.openURL) private var openURL
+  @State private var ensuredCode: String?
+
+  private var code: String? { playlist.shareCode ?? ensuredCode }
+  private var url: URL? { code.map { services.sharing.shareURL(forCode: $0) } }
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: 16) {
+      Text(L10n.PlaylistDetail.privacySharing).capoText(.sm, weight: .semibold)
+      toggleRow(
+        title: L10n.PlaylistDetail.publicVisibility, detail: L10n.PlaylistDetail.anyoneWithLink,
+        isOn: playlist.isPublic, enabled: canEdit
+      ) { onChange(PlaylistPatch(isPublic: $0, allowGuestEditing: $0 ? nil : false)) }
+      if playlist.isPublic { urlRow }
+      toggleRow(
+        title: L10n.PlaylistDetail.guestEditing,
+        detail: playlist.isPublic
+          ? L10n.PlaylistDetail.guestsCanReorder : L10n.PlaylistDetail.guestEditingDisabledHint,
+        isOn: playlist.allowGuestEditing, enabled: canEdit && playlist.isPublic
+      ) { onChange(PlaylistPatch(allowGuestEditing: $0)) }
+    }
+    .padding(16)
+    .frame(maxWidth: 448, alignment: .leading)
+    .playlistCard()
+    .task(id: playlist.isPublic) {
+      guard playlist.isPublic, playlist.shareCode == nil, !isOffline else { return }
+      ensuredCode = try? await services.sharing.ensureShareCode(playlistID: playlist.id)
+    }
+  }
+
+  private func toggleRow(
+    title: String, detail: String, isOn: Bool, enabled: Bool, set: @escaping (Bool) -> Void
+  ) -> some View {
+    HStack(spacing: 12) {
+      VStack(alignment: .leading, spacing: 2) {
+        Text(title).capoText(.sm, weight: .medium)
+        Text(detail).capoText(.xs).foregroundStyle(CapoTheme.mutedForeground)
+      }
+      Spacer(minLength: 8)
+      Toggle("", isOn: Binding(get: { isOn }, set: set))
+        .labelsHidden()
+        .tint(CapoTheme.primary)
+        .disabled(!enabled)
+        .accessibilityLabel(title)
+    }
+    .opacity(enabled ? 1 : 0.6)
+  }
+
+  private var urlRow: some View {
+    VStack(alignment: .leading, spacing: 6) {
+      Text(L10n.PlaylistDetail.publicUrl).capoText(.xs, weight: .medium)
+        .foregroundStyle(CapoTheme.mutedForeground)
+      HStack(spacing: 8) {
+        Text(url?.absoluteString ?? "…")
+          .font(CapoFont.mono(12))
+          .lineLimit(1)
+          .truncationMode(.middle)
+          .padding(.horizontal, 10)
+          .frame(maxWidth: .infinity, minHeight: 32, alignment: .leading)
+          .background(CapoTheme.muted, in: RoundedRectangle(cornerRadius: CapoRadius.md, style: .continuous))
+        Button {
+          if let url { UIPasteboard.general.url = url; onCopied() }
+        } label: { CapoIcon(.copy, size: 14) }
+          .buttonStyle(CapoSecondaryButtonStyle(size: .small))
+          .disabled(url == nil)
+          .accessibilityLabel(L10n.PlaylistDetail.copy)
+        Button {
+          if let url { openURL(url) }
+        } label: { CapoIcon(.externalLink, size: 14) }
+          .buttonStyle(CapoSecondaryButtonStyle(size: .small))
+          .disabled(url == nil)
+          .accessibilityLabel(L10n.Playlists.openPlaylist)
+      }
+    }
+  }
+}
+
+// MARK: - Song row
+
+/// `rounded-xl bg-card shadow-sm p-3`: grip, 32 px numbered circle, title / artist, key and BPM
+/// badges, 36 px remove button.
+struct PlaylistSongRow: View {
+  let index: Int
+  let song: SongListItem
+  var canEdit = true
+  var onOpen: () -> Void = {}
+  var onRemove: () -> Void = {}
+  @Environment(\.capoUIScale) private var scale
+
+  var body: some View {
+    HStack(spacing: 8) {
+      if canEdit { grip }
+      Button(action: onOpen) {
+        HStack(spacing: 12) {
+          Text("\(index + 1)")
+            .capoText(.sm, weight: .bold).monospacedDigit()
+            .foregroundStyle(CapoTheme.primary)
+            .frame(width: 32, height: 32)
+            .background(CapoTheme.primary.opacity(0.10), in: Circle())
+          VStack(alignment: .leading, spacing: 4) {
+            Text(song.title).capoText(.sm, weight: .bold).lineLimit(1)
+              .foregroundStyle(CapoTheme.foreground)
+            if let artist = song.artist, !artist.isEmpty {
+              Text(artist).capoText(.xs).foregroundStyle(CapoTheme.mutedForeground).lineLimit(1)
+            }
+            badges
+          }
+          Spacer(minLength: 0)
+        }
+        .contentShape(Rectangle())
+      }
+      .buttonStyle(.plain)
+      if canEdit {
+        Button(action: onRemove) {
+          CapoIcon(.x, size: 16)
+            .foregroundStyle(CapoTheme.mutedForeground)
+            .frame(width: 36, height: 36)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(PlaylistStrings.remove)
+      }
+    }
+    .padding(12)
+    .playlistCard()
+  }
+
+  private var grip: some View {
+    CapoIcon(.gripVertical, size: 16)
+      .foregroundStyle(CapoTheme.mutedForeground.opacity(0.6))
+      .frame(width: 28, height: 36)
+      .contentShape(Rectangle())
+      .draggable(song.id.uuidString) {
+        Text(song.title).capoText(.sm, weight: .bold)
+          .padding(12).background(CapoTheme.card, in: Capsule())
+      }
+      .accessibilityHidden(true)
+  }
+
+  private var badges: some View {
+    HStack(spacing: 6) {
+      if let key = song.key, !key.isEmpty { KeyBadge(key) }
+      if let bpm = song.bpm, bpm > 0 { bpmBadge(bpm) }
+    }
+  }
+
+  /// Tempo badge: green from 90 BPM up, muted below (the canvas Setlist board).
+  private func bpmBadge(_ bpm: Int) -> some View {
+    let slow = bpm < 90
+    let tint = slow ? CapoTheme.mutedForeground : CapoTheme.success
+    let icon: CapoIconName = bpm < 90 ? .turtle : (bpm <= 120 ? .rabbit : .zap)
+    return HStack(spacing: 6) {
+      CapoIcon(icon, size: 12)
+      Text("\(bpm) \(L10n.Songs.bpm)").font(CapoFont.ui(12, weight: .medium))
+    }
+    .foregroundStyle(tint)
+    .padding(.horizontal, 8)
+    .frame(height: 22)
+    .background(slow ? CapoTheme.secondary : CapoTheme.success.opacity(0.10), in: Capsule())
+    .overlay(Capsule().strokeBorder(slow ? CapoTheme.border : CapoTheme.success.opacity(0.3), lineWidth: 1))
+  }
+}
+
+// MARK: - Share sheet
 
 /// Online only: ensures a share code, then offers the public link.
 struct ShareSheetView: View {
@@ -197,17 +543,37 @@ struct ShareSheetView: View {
   @Environment(\.dismiss) private var dismiss
   @State private var url: URL?
   @State private var errorText: String?
+  @State private var toast: String?
 
   var body: some View {
     NavigationStack {
       VStack(spacing: 20) {
         if let url {
-          Text(url.absoluteString).font(CapoFont.style(.callout)).textSelection(.enabled).multilineTextAlignment(.center)
-          ShareLink(item: url) { Label(PlaylistStrings.share, systemImage: "square.and.arrow.up") }
-            .buttonStyle(CapoPrimaryButtonStyle())
-          Button(PlaylistStrings.copyLink, systemImage: "doc.on.doc") {
-            UIPasteboard.general.url = url
+          VStack(spacing: 8) {
+            CapoIcon(.link, size: 20).foregroundStyle(CapoTheme.accentPlaylists)
+            Text(url.absoluteString)
+              .font(CapoFont.mono(13)).textSelection(.enabled).multilineTextAlignment(.center)
           }
+          .padding(16)
+          .frame(maxWidth: .infinity)
+          .playlistCard()
+          ShareLink(item: url) {
+            HStack(spacing: 8) {
+              CapoIcon(.share2, size: 16)
+              Text(PlaylistStrings.share)
+            }
+          }
+          .buttonStyle(CapoPrimaryButtonStyle())
+          Button {
+            UIPasteboard.general.url = url
+            toast = L10n.PlaylistDetail.copied
+          } label: {
+            HStack(spacing: 8) {
+              CapoIcon(.copy, size: 16)
+              Text(PlaylistStrings.copyLink)
+            }
+          }
+          .buttonStyle(CapoSecondaryButtonStyle())
         } else if let errorText {
           Text(errorText).foregroundStyle(CapoTheme.destructive)
         } else {
@@ -218,7 +584,8 @@ struct ShareSheetView: View {
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .background(CapoTheme.background)
       .tint(CapoTheme.primary)
-      .navigationTitle(PlaylistStrings.share)
+      .capoToast($toast)
+      .navigationTitle(L10n.PlaylistShare.sharedPlaylist)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .confirmationAction) { Button(PlaylistStrings.done) { dismiss() } }

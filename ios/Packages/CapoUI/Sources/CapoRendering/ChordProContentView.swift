@@ -6,6 +6,8 @@ public nonisolated struct SongRenderStyle: Hashable, Sendable {
   public var fontScale = 1.0, columns = 1, showChords = true, showLyrics = true, collapsible = true
   /// Header text of comment cards (localized "Comment"); empty hides the header.
   public var commentLabel = ""
+  /// Narrowest content width that still flows into two columns when `columns` is 2.
+  public var minTwoColumnWidth: Double = 640
   public init() {}
 }
 
@@ -25,7 +27,8 @@ public struct ChordProContentView: View {
 
   public var body: some View {
     let context = RenderContext(style: style, accent: nil, onChordTap: onChordTap)
-    BalancedColumnsLayout(columns: style.columns) {
+    BalancedColumnsLayout(
+      columns: style.columns, minTwoColumnWidth: CGFloat(style.minTwoColumnWidth)) {
       ForEach(RenderUnit.units(for: rendered)) { unit in
         unitView(unit, context: context)
       }

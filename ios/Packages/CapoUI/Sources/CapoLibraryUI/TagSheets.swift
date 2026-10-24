@@ -1,4 +1,5 @@
 import CapoDesign
+import CapoIcons
 import SwiftUI
 
 let tagPalette = [
@@ -38,7 +39,7 @@ struct TagManagementView: View {
                   Circle().fill(color(fromHex: hex)).frame(width: 32, height: 32)
                     .overlay {
                       if hex == colorHex {
-                        Image(systemName: "checkmark").font(CapoFont.style(.caption, weight: .bold)).foregroundStyle(.white)
+                        CapoIcon(.check, size: 14).foregroundStyle(.white)
                       }
                     }
                     .frame(width: 44, height: 44)
@@ -54,9 +55,7 @@ struct TagManagementView: View {
         }
         Section(LibraryStrings.tags) {
           if tags.isEmpty {
-            EmptyStateView(
-              title: LibraryStrings.noTags, message: LibraryStrings.noTagsHint,
-              systemImage: "tag")
+            LibraryEmptyState(icon: .tag, title: LibraryStrings.noTags, message: LibraryStrings.noTagsHint)
           }
           ForEach(tags) { tag in
             HStack {
@@ -112,15 +111,14 @@ struct AssignTagsView: View {
     NavigationStack {
       List {
         if allTags.isEmpty {
-          EmptyStateView(
-            title: LibraryStrings.noTags, message: LibraryStrings.noTagsHint, systemImage: "tag")
+          LibraryEmptyState(icon: .tag, title: LibraryStrings.noTags, message: LibraryStrings.noTagsHint)
         }
         ForEach(allTags) { tag in
           Button { toggle(tag) } label: {
             HStack {
               TagChip(name: tag.name, colorHex: tag.color, isSelected: assigned.contains(tag.id))
               Spacer()
-              if assigned.contains(tag.id) { Image(systemName: "checkmark").foregroundStyle(.tint) }
+              if assigned.contains(tag.id) { CapoIcon(.check, size: 16).foregroundStyle(CapoTheme.primary) }
             }
             .frame(minHeight: 44)
             .contentShape(Rectangle())

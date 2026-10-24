@@ -69,6 +69,9 @@ public nonisolated struct ChordDatabase: Sendable {
     return exactPositions(query)
   }
 
+  /// Raw database positions for a database `key` ("Csharp") and `suffix` ("minor"), in database order.
+  public func positions(key: String, suffix: String) -> [ChordPosition] { table[key]?[suffix] ?? [] }
+
   /// Port of chord-diagram.tsx:280-301: exact DB entry, else generated fingerings, else the base chord.
   public func resolve(_ chordName: String) -> ChordDiagramResult {
     var found: [ChordPosition] = []

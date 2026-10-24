@@ -14,6 +14,8 @@ final class SongPerformanceModel {
   var columns = UserPreferences.default.lyricsColumns
   private(set) var chordHand = UserPreferences.default.resolvedChordHand
   var showChords = true
+  var showLyrics = true
+  private(set) var tags: [SongTag] = []
   var scrollSpeed = AutoScrollSpeed.fallback
   var isAutoScrolling = false
 
@@ -53,6 +55,8 @@ final class SongPerformanceModel {
     rerender()
   }
 
+  func apply(tags: [SongTag]) { self.tags = tags }
+
   func apply(userSettings: UserSongSettings?) {
     self.userSettings = userSettings
     // A pending local change wins over whatever the store echoes meanwhile.
@@ -82,10 +86,42 @@ final class SongPerformanceModel {
     scheduleSave()
   }
 
+  /// The song's authored transpose and capo with the default font size.
+  var defaults: PerformanceSettings {
+    guard let song else { return PerformanceSettings() }
+    return PerformanceSettings(EffectiveSongSettings.resolve(song: song, user: nil))
+  }
+
   /// Back to the song's authored transpose and capo, default font size.
   func reset() {
-    guard let song else { return }
-    change { $0 = PerformanceSettings(EffectiveSongSettings.resolve(song: song, user: nil)) }
+    let defaults = defaults
+    change { $0 = defaults }
+  }
+
+  func reset(_ kind: DisplaySettingsLogic.Kind) {
+    let defaults = defaults
+    change { DisplaySettingsLogic.reset(kind, in: &$0, to: defaults) }
+  }
+
+  var chips: [DisplaySettingsLogic.Chip] {
+    DisplaySettingsLogic.chips(settings: settings, defaults: defaults)
+  }
+
+  var isDisplayModified: Bool {
+    DisplaySettingsLogic.isModified(
+      settings: settings, defaults: defaults, showChords: showChords, showLyrics: showLyrics)
+  }
+
+  func setChords(_ value: Bool) {
+    guard value || DisplaySettingsLogic.canHide(
+      showChords: showChords, showLyrics: showLyrics, hiding: .chords) else { return }
+    showChords = value
+  }
+
+  func setLyrics(_ value: Bool) {
+    guard value || DisplaySettingsLogic.canHide(
+      showChords: showChords, showLyrics: showLyrics, hiding: .lyrics) else { return }
+    showLyrics = value
   }
 
   func setColumns(_ value: Int) async {

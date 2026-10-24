@@ -1,4 +1,5 @@
 import CapoDesign
+import CapoChordPro
 import Observation
 
 @Observable
@@ -34,6 +35,27 @@ final class SongEditorModel {
         loadState = .missing
       }
     }
+  }
+
+  enum ParseOutcome: Equatable { case converted, alreadyChordPro }
+
+  /// Wand: converts chord-above-lyrics blocks in the lyrics to ChordPro (web `handleParseChords`).
+  @discardableResult
+  func parseChords() -> ParseOutcome {
+    let result = ChordProConverter.convertChordAboveLyricsBlocks(form.lyrics)
+    guard result.converted else { return .alreadyChordPro }
+    form.lyrics = result.output
+    return .converted
+  }
+
+  /// Applies a CifraClub import. In create mode (nothing typed yet) the details fill in too, like the
+  /// web's create-from-import; otherwise only the lyrics are replaced.
+  func apply(import song: CifraClubSong) {
+    form.lyrics = song.lyrics
+    guard !isEditing, form.title.trimmingCharacters(in: .whitespaces).isEmpty else { return }
+    form.title = song.title
+    form.artist = song.artist
+    if song.keyFound { form.key = song.key }
   }
 
   /// Returns the saved song id, or nil on failure (`errorText` is set).

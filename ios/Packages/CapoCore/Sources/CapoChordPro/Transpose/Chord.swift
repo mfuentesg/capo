@@ -25,6 +25,18 @@ struct Chord: Sendable {
     return nil
   }
 
+  /// The `Chord` rule at `start` inside a larger grammar: same ordered choice as `parse`, but it
+  /// returns the end index instead of requiring the whole input to be consumed.
+  /// `closedSuffix` is the chords-over-words build: suffixes are only the known mapping entries.
+  static func parsePrefix(_ units: Units, at start: Int, closedSuffix: Bool = false) -> (chord: Chord, end: Int)? {
+    guard start < units.count else { return nil }
+    let parser = ChordGrammar(s: Array(units[start...]), closedSuffix: closedSuffix)
+    for alternative in [parser.numeral, parser.numeric, parser.solfege, parser.symbol] {
+      if let (ast, end) = alternative() { return (Chord(ast: ast), start + end) }
+    }
+    return nil
+  }
+
   init(root: Key?, suffix: String?, bass: Key?) {
     self.root = root
     self.suffix = (suffix?.isEmpty ?? true) ? nil : suffix
@@ -101,6 +113,11 @@ private struct ChordGrammar {
   }
 
   let s: Units
+  var closedSuffix = false
+
+  /// Every suffix of `suffix-mapping.txt`, longest first (the generated grammar's ordered choice).
+  private static let knownSuffixes: [Units] = suffixNormalizeMapping.keys.map { $0.units }
+    .sorted { $0.count > $1.count }
 
   private func modifier(_ i: Int) -> Modifier? {
     guard i < s.count else { return nil }
@@ -110,6 +127,12 @@ private struct ChordGrammar {
   }
 
   private func suffixEnd(_ i: Int) -> Int {
+    if closedSuffix {
+      for known in Self.knownSuffixes where !known.isEmpty && JS.matches(s, at: i, known) {
+        return i + known.count
+      }
+      return i
+    }
     var j = i
     while j < s.count {
       let c = s[j]

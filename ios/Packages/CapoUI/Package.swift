@@ -9,6 +9,7 @@ let package = Package(
   platforms: [.iOS(.v17)],
   products: [
     .library(name: "CapoDesign", targets: ["CapoDesign"]),
+    .library(name: "CapoIcons", targets: ["CapoIcons"]),
     .library(name: "CapoRendering", targets: ["CapoRendering"]),
     .library(name: "CapoAuthUI", targets: ["CapoAuthUI"]),
     .library(name: "CapoLibraryUI", targets: ["CapoLibraryUI"]),
@@ -33,6 +34,7 @@ let package = Package(
       resources: [.process("Resources")],
       swiftSettings: mainActorByDefault
     ),
+    .target(name: "CapoIcons", swiftSettings: mainActorByDefault),
     .target(
       name: "CapoRendering",
       dependencies: ["CapoDesign", .product(name: "CapoChordPro", package: "CapoCore")],
@@ -67,6 +69,7 @@ let package = Package(
       swiftSettings: mainActorByDefault
     ),
     .testTarget(name: "CapoDesignTests", dependencies: ["CapoDesign"]),
+    .testTarget(name: "CapoIconsTests", dependencies: ["CapoIcons"]),
     .testTarget(name: "CapoAuthUITests", dependencies: ["CapoAuthUI"]),
     .testTarget(name: "CapoShellUITests", dependencies: ["CapoShellUI"]),
     .testTarget(name: "CapoRenderingTests", dependencies: ["CapoRendering"]),

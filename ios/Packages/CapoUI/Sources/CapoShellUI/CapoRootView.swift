@@ -8,6 +8,10 @@ public struct CapoRootView: View {
 
   public init(dependencies: AppDependencies) {
     CapoFonts.register()
+    #if DEBUG
+      // Screenshot hook: launch with `-CapoDemo YES` to skip sign-in and use the sample data.
+      let dependencies = UserDefaults.standard.bool(forKey: "CapoDemo") ? DemoSupport.dependencies : dependencies
+    #endif
     _store = State(initialValue: SessionStore(dependencies: dependencies))
   }
 

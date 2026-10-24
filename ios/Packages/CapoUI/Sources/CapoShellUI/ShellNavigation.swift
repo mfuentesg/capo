@@ -2,11 +2,33 @@ import CapoDesign
 import Foundation
 import Observation
 
-enum SidebarItem: Hashable, CaseIterable {
-  case library, setlists, teams, conflicts, settings
-}
+/// Top-level destinations; exactly the web navbar's Songs, Playlists, Chords and Teams.
+/// Used by the regular sidebar and the compact tab bar alike.
+enum SidebarItem: String, Hashable, CaseIterable {
+  case songs, playlists, chords, teams
 
-enum CompactTab: Hashable { case library, setlists, settings }
+  /// SF Symbol stand-in for the web's lucide icon; the single place to swap icons later.
+  var symbol: String {
+    switch self {
+    case .songs: "music.note"
+    case .playlists: "music.note.list"
+    case .chords: "guitars"
+    case .teams: "person.3"
+    }
+  }
+
+  var title: String {
+    switch self {
+    case .songs: L10n.Nav.songs
+    case .playlists: L10n.Nav.playlists
+    case .chords: L10n.Nav.chords
+    case .teams: L10n.Nav.teams
+    }
+  }
+
+  /// Parses the DEBUG `-CapoSidebar <name>` launch argument. `settings` is not a destination.
+  static func debug(_ name: String) -> SidebarItem? { SidebarItem(rawValue: name.lowercased()) }
+}
 
 struct EditorItem: Identifiable {
   let request: SongEditorRequest
@@ -33,8 +55,8 @@ struct PendingAdd: Identifiable {
 @Observable
 @MainActor
 final class ShellNavigation {
-  var sidebar: SidebarItem? = .library
-  var tab: CompactTab = .library
+  /// Selected destination for both layouts (sidebar row and compact tab).
+  var destination: SidebarItem = .songs
   var songSelection: SongID?
   var playlistSelection: PlaylistID?
   var editor: EditorItem?
@@ -42,15 +64,16 @@ final class ShellNavigation {
   var pendingAdd: PendingAdd?
   var pendingShare: PendingShare?
   var showConflicts = false
-  var showTeams = false
+  var showSettings = false
   var showInvitations = false
   var showSignOut = false
 
   func openSong(_ id: SongID) {
-    sidebar = .library
-    tab = .library
+    destination = .songs
     songSelection = id
   }
+
+  func open(_ item: SidebarItem) { destination = item }
 
   func resetSelections() {
     songSelection = nil

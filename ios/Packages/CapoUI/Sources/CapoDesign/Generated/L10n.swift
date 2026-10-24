@@ -412,10 +412,14 @@ public nonisolated enum L10n {
       public static var toSignUp: String { String(localized: "ios.auth.toSignUp", bundle: .module) }
     }
     public nonisolated enum ChordDiagram {
-      /// Guitar
-      public static var guitar: String { String(localized: "ios.chordDiagram.guitar", bundle: .module) }
-      /// Instrument
-      public static var instrument: String { String(localized: "ios.chordDiagram.instrument", bundle: .module) }
+      /// Generated Diagram
+      public static var generated: String { String(localized: "ios.chordDiagram.generated", bundle: .module) }
+      /// Go to variation {n}
+      public static func goToPosition(n: String) -> String {
+        String(format: String(localized: "ios.chordDiagram.goToPosition", bundle: .module), n)
+      }
+      /// LH
+      public static var leftHandShort: String { String(localized: "ios.chordDiagram.leftHandShort", bundle: .module) }
       /// muted
       public static var muted: String { String(localized: "ios.chordDiagram.muted", bundle: .module) }
       /// Next position
@@ -428,8 +432,10 @@ public nonisolated enum L10n {
       }
       /// Previous position
       public static var previous: String { String(localized: "ios.chordDiagram.previous", bundle: .module) }
-      /// Ukulele
-      public static var ukulele: String { String(localized: "ios.chordDiagram.ukulele", bundle: .module) }
+      /// RH
+      public static var rightHandShort: String { String(localized: "ios.chordDiagram.rightHandShort", bundle: .module) }
+      /// Verified Shape
+      public static var verified: String { String(localized: "ios.chordDiagram.verified", bundle: .module) }
     }
     public nonisolated enum Conflict {
       /// {title} (copy)
@@ -902,8 +908,14 @@ public nonisolated enum L10n {
         /// Sign out of Capo?
         public static var title: String { String(localized: "ios.shell.signOut.title", bundle: .module) }
       }
+      /// Account menu
+      public static var accountMenu: String { String(localized: "ios.shell.accountMenu", bundle: .module) }
       /// Cancel
       public static var cancel: String { String(localized: "ios.shell.cancel", bundle: .module) }
+      /// The chord glossary is coming soon.
+      public static var chordsSoonMessage: String { String(localized: "ios.shell.chordsSoonMessage", bundle: .module) }
+      /// Chord glossary
+      public static var chordsSoonTitle: String { String(localized: "ios.shell.chordsSoonTitle", bundle: .module) }
       /// Collapse list
       public static var collapseList: String { String(localized: "ios.shell.collapseList", bundle: .module) }
       /// Collapse sidebar

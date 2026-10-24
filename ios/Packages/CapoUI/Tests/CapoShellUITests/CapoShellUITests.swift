@@ -178,3 +178,50 @@ import Testing
     #expect(SidebarMetrics.width(collapsed: false) == 264)
   }
 }
+
+@MainActor
+@Suite struct ShellNavigationTests {
+  @Test func sidebarMatchesWebItemsInOrder() {
+    #expect(SidebarItem.allCases == [.songs, .playlists, .chords, .teams])
+    #expect(Set(SidebarItem.allCases.map(\.symbol)).count == 4)
+  }
+
+  @Test func debugLaunchArgumentParsesDestinations() {
+    #expect(SidebarItem.debug("Chords") == .chords)
+    #expect(SidebarItem.debug("teams") == .teams)
+    #expect(SidebarItem.debug("settings") == nil)
+    #expect(SidebarItem.debug("nope") == nil)
+  }
+
+  @Test func openSongSelectsSongsDestination() {
+    let nav = ShellNavigation()
+    nav.open(.chords)
+    let id = UUID()
+    nav.openSong(id)
+    #expect(nav.destination == .songs)
+    #expect(nav.songSelection == id)
+  }
+
+  @Test func personalPillShowsNameAndIsNotFiltered() {
+    let user = UUID()
+    let named = ContextPillState.make(context: .personal(userID: user), team: nil, personalName: " Ana ")
+    #expect(named.label == "Ana")
+    #expect(!named.isFiltered)
+    let anon = ContextPillState.make(context: .personal(userID: user), team: nil, personalName: nil)
+    #expect(anon.label == ContextStrings.personal)
+  }
+
+  @Test func teamPillIsFilteredAndTruncationMatchesWeb() {
+    let id = UUID()
+    let state = ContextPillState.make(context: .team(teamID: id), team: nil, personalName: "Ana")
+    #expect(state.isFiltered)
+    #expect(state.teamID == id)
+    #expect(ContextPillState.maxLabelWidth(compact: true) == 80)
+    #expect(ContextPillState.maxLabelWidth(compact: false) == 120)
+  }
+
+  @Test func avatarInitial() {
+    #expect(InitialAvatar.initial(" ana") == "A")
+    #expect(InitialAvatar.initial("") == "?")
+  }
+}

@@ -3061,36 +3061,53 @@
         }
       }
     },
-    "ios.chordDiagram.guitar" : {
+    "ios.chordDiagram.generated" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Guitar"
+            "value" : "Generated Diagram"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Guitarra"
+            "value" : "Diagrama generado"
           }
         }
       }
     },
-    "ios.chordDiagram.instrument" : {
+    "ios.chordDiagram.goToPosition" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Instrument"
+            "value" : "Go to variation %@"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Instrumento"
+            "value" : "Ir a la variación %@"
+          }
+        }
+      }
+    },
+    "ios.chordDiagram.leftHandShort" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LH"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MI"
           }
         }
       }
@@ -3180,19 +3197,36 @@
         }
       }
     },
-    "ios.chordDiagram.ukulele" : {
+    "ios.chordDiagram.rightHandShort" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ukulele"
+            "value" : "RH"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ukulele"
+            "value" : "MD"
+          }
+        }
+      }
+    },
+    "ios.chordDiagram.verified" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verified Shape"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forma verificada"
           }
         }
       }
@@ -6512,6 +6546,23 @@
         }
       }
     },
+    "ios.shell.accountMenu" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account menu"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menú de cuenta"
+          }
+        }
+      }
+    },
     "ios.shell.cancel" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -6525,6 +6576,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancelar"
+          }
+        }
+      }
+    },
+    "ios.shell.chordsSoonMessage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The chord glossary is coming soon."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El glosario de acordes llegará pronto."
+          }
+        }
+      }
+    },
+    "ios.shell.chordsSoonTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chord glossary"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Glosario de acordes"
           }
         }
       }

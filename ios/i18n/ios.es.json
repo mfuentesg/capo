@@ -97,14 +97,16 @@
       "toSignUp": "¿No tienes cuenta? Crea una"
     },
     "chordDiagram": {
-      "guitar": "Guitarra",
-      "instrument": "Instrumento",
+      "generated": "Diagrama generado",
+      "goToPosition": "Ir a la variación {n}",
+      "leftHandShort": "MI",
       "muted": "silenciada",
       "next": "Posición siguiente",
       "open": "al aire",
       "position": "Posición {n} de {total}",
       "previous": "Posición anterior",
-      "ukulele": "Ukulele"
+      "rightHandShort": "MD",
+      "verified": "Forma verificada"
     },
     "editor": {
       "artist": "Artista",
@@ -270,6 +272,9 @@
     },
     "shell": {
       "cancel": "Cancelar",
+      "accountMenu": "Menú de cuenta",
+      "chordsSoonMessage": "El glosario de acordes llegará pronto.",
+      "chordsSoonTitle": "Glosario de acordes",
       "collapseList": "Contraer lista",
       "collapseSidebar": "Contraer barra lateral",
       "config": {

@@ -26,6 +26,27 @@ final class ShellModel {
     self.services = services
     self.settingsContext = settingsContext
     contextStore = ContextStore(userID: session.userID, defaults: defaults)
+    #if DEBUG
+      // Screenshot/validation hook: launch with `-CapoSidebar songs|playlists|chords|teams|settings`.
+      if let name = UserDefaults.standard.string(forKey: "CapoSidebar") {
+        if name.lowercased() == "settings" {
+          navigation.showSettings = true
+        } else if let item = SidebarItem.debug(name) {
+          navigation.open(item)
+        }
+      }
+    #endif
+  }
+
+  /// Palettes arrive in a later wave; until then "Surprise me" stays hidden.
+  var hasPalettes: Bool { false }
+
+  func surpriseMe() {}
+
+  func setTheme(_ newTheme: AppTheme) {
+    theme = newTheme
+    let settings = services.settings
+    Task { try? await settings.updatePreferences(PreferencesPatch(theme: newTheme)) }
   }
 
   var context: AppContext { contextStore.context }

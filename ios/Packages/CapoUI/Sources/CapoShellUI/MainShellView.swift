@@ -61,9 +61,9 @@ struct MainShellView: View {
       }
       .shellEnvironment(model)
     }
-    .sheet(isPresented: $nav.showTeams) {
+    .sheet(isPresented: $nav.showSettings) {
       NavigationStack {
-        TeamsView().toolbar { doneButton { model.navigation.showTeams = false } }
+        SettingsView().toolbar { doneButton { model.navigation.showSettings = false } }
       }
       .shellEnvironment(model)
     }
@@ -111,7 +111,7 @@ private struct CompactShell: View {
 
   var body: some View {
     @Bindable var nav = model.navigation
-    TabView(selection: $nav.tab) {
+    TabView(selection: $nav.destination) {
       NavigationStack {
         LibraryView(selection: $nav.songSelection)
           .toolbar { shellToolbar }
@@ -121,8 +121,8 @@ private struct CompactShell: View {
               .toolbar(.hidden, for: .tabBar)
           }
       }
-      .tabItem { Label(ContextStrings.library, systemImage: "music.note.list") }
-      .tag(CompactTab.library)
+      .tabItem { Label(SidebarItem.songs.title, systemImage: SidebarItem.songs.symbol) }
+      .tag(SidebarItem.songs)
 
       NavigationStack {
         PlaylistsView(selection: $nav.playlistSelection)
@@ -131,15 +131,20 @@ private struct CompactShell: View {
             PlaylistDetailView(playlistID: id).id(id)
           }
       }
-      .tabItem { Label(ContextStrings.setlists, systemImage: "list.bullet.rectangle") }
-      .tag(CompactTab.setlists)
+      .tabItem { Label(SidebarItem.playlists.title, systemImage: SidebarItem.playlists.symbol) }
+      .tag(SidebarItem.playlists)
 
       NavigationStack {
-        SettingsView().toolbar { shellToolbar }
+        ChordsPlaceholderView().toolbar { shellToolbar }
       }
-      .tabItem { Label(ContextStrings.settings, systemImage: "gearshape") }
-      .badge(model.conflictCount)
-      .tag(CompactTab.settings)
+      .tabItem { Label(SidebarItem.chords.title, systemImage: SidebarItem.chords.symbol) }
+      .tag(SidebarItem.chords)
+
+      NavigationStack {
+        TeamsView().toolbar { shellToolbar }
+      }
+      .tabItem { Label(SidebarItem.teams.title, systemImage: SidebarItem.teams.symbol) }
+      .tag(SidebarItem.teams)
     }
     .tint(CapoTheme.primary)
   }
@@ -148,6 +153,7 @@ private struct CompactShell: View {
   private var shellToolbar: some ToolbarContent {
     ToolbarItem(placement: .topBarLeading) { ContextPill(model: model) }
     ToolbarItem(placement: .topBarTrailing) { SyncButton(model: model) }
+    ToolbarItem(placement: .topBarTrailing) { AvatarMenu(model: model) }
   }
 }
 
@@ -221,30 +227,29 @@ private struct RegularShell: View {
   @ViewBuilder
   private var mainArea: some View {
     @Bindable var nav = model.navigation
-    switch nav.sidebar ?? .library {
-    case .library:
-      ResizableSplit(layout: split, collapseLabel: ContextStrings.library, hideList: stage.isActive) {
+    switch nav.destination {
+    case .songs:
+      ResizableSplit(layout: split, collapseLabel: SidebarItem.songs.title, hideList: stage.isActive) {
         NavigationStack { LibraryView(selection: $nav.songSelection) }
       } detail: {
         if let id = nav.songSelection {
           NavigationStack { SongPerformanceView(songID: id).id(id) }
         } else {
-          placeholder("music.note", L10n.Ios.Shell.selectSong)
+          SongsDetailPlaceholder()
         }
       }
-    case .setlists:
-      ResizableSplit(layout: split, collapseLabel: ContextStrings.setlists, hideList: stage.isActive) {
+    case .playlists:
+      ResizableSplit(layout: split, collapseLabel: SidebarItem.playlists.title, hideList: stage.isActive) {
         NavigationStack { PlaylistsView(selection: $nav.playlistSelection) }
       } detail: {
         if let id = nav.playlistSelection {
           NavigationStack { PlaylistDetailView(playlistID: id).id(id) }
         } else {
-          placeholder("list.bullet.rectangle", L10n.Ios.Shell.selectSetlist)
+          placeholder(SidebarItem.playlists.symbol, L10n.Playlists.selectPlaylist)
         }
       }
+    case .chords: NavigationStack { ChordsPlaceholderView() }
     case .teams: NavigationStack { TeamsView() }
-    case .conflicts: NavigationStack { ConflictsView() }
-    case .settings: NavigationStack { SettingsView() }
     }
   }
 
@@ -352,29 +357,14 @@ private struct SidebarView: View {
   let model: ShellModel
   @Binding var collapsed: Bool
 
-  private static let items: [(SidebarItem, String)] = [
-    (.library, "music.note.list"), (.setlists, "list.bullet.rectangle"), (.teams, "person.3"),
-    (.conflicts, "exclamationmark.triangle"), (.settings, "gearshape")
-  ]
-
-  private func title(_ item: SidebarItem) -> String {
-    switch item {
-    case .library: ContextStrings.library
-    case .setlists: ContextStrings.setlists
-    case .teams: ContextStrings.teams
-    case .conflicts: ContextStrings.conflicts
-    case .settings: ContextStrings.settings
-    }
-  }
-
   var body: some View {
     VStack(spacing: collapsed ? 18 : 14) {
       header
-      contextSwitcher
+      ContextPill(model: model, style: collapsed ? .rail : .sidebar)
       if collapsed { CapoTheme.border.frame(width: 36, height: 1) }
       VStack(spacing: collapsed ? 12 : 4) {
-        ForEach(Self.items, id: \.0) { item, symbol in
-          navButton(item, symbol)
+        ForEach(SidebarItem.allCases, id: \.self) { item in
+          navButton(item)
         }
       }
       Spacer(minLength: 0)
@@ -411,68 +401,27 @@ private struct SidebarView: View {
     }
   }
 
-  private var contextSwitcher: some View {
-    let teamName = model.contextStore.selectedTeam?.name
-    let label = teamName ?? ContextStrings.personal
-    let symbol = model.context.teamID == nil ? "person.fill" : "person.2.fill"
-    return Menu {
-      ContextRows(model: model)
-      Divider()
-      Button(ContextStrings.invitations, systemImage: "envelope") { model.navigation.showInvitations = true }
-    } label: {
-      if collapsed {
-        Image(systemName: symbol)
-          .font(CapoFont.ui(22))
-          .frame(width: 56, height: 56)
-          .foregroundStyle(CapoTheme.text)
-          .background(CapoTheme.card, in: Circle())
-          .overlay(Circle().strokeBorder(CapoTheme.border, lineWidth: 1))
-      } else {
-        HStack(spacing: 10) {
-          Image(systemName: symbol)
-            .frame(width: 32, height: 32)
-            .background(CapoTheme.surface, in: Circle())
-          Text(label).font(CapoFont.style(.body, weight: .semibold)).lineLimit(1)
-          Spacer(minLength: 0)
-          Image(systemName: "chevron.up.chevron.down").font(CapoFont.style(.caption)).foregroundStyle(CapoTheme.subtext)
-        }
-        .foregroundStyle(CapoTheme.text)
-        .padding(.horizontal, 12)
-        .frame(minHeight: 56)
-        .background(CapoTheme.card, in: RoundedRectangle(cornerRadius: CapoRadius.medium, style: .continuous))
-        .overlay(
-          RoundedRectangle(cornerRadius: CapoRadius.medium, style: .continuous)
-            .strokeBorder(CapoTheme.border, lineWidth: 1))
-      }
-    }
-    .accessibilityLabel(label)
-  }
-
-  private func navButton(_ item: SidebarItem, _ symbol: String) -> some View {
-    let selected = (model.navigation.sidebar ?? .library) == item
-    let badge = item == .conflicts ? model.conflictCount : 0
+  private func navButton(_ item: SidebarItem) -> some View {
+    let selected = model.navigation.destination == item
     return Button {
-      model.navigation.sidebar = item
+      model.navigation.open(item)
     } label: {
       if collapsed {
-        Image(systemName: symbol)
+        Image(systemName: item.symbol)
           .font(CapoFont.ui(22))
           .frame(width: 56, height: 56)
           .foregroundStyle(selected ? CapoTheme.primary : CapoTheme.subtext)
           .background(
             selected ? CapoTheme.selection : Color.clear,
-            in: RoundedRectangle(cornerRadius: CapoRadius.large, style: .continuous)
-          )
-          .overlay(alignment: .topTrailing) { badgeView(badge).offset(x: -6, y: 6) }
+            in: RoundedRectangle(cornerRadius: CapoRadius.large, style: .continuous))
       } else {
         HStack(spacing: 12) {
-          Image(systemName: symbol)
+          Image(systemName: item.symbol)
             .font(CapoFont.ui(20))
             .frame(width: 28)
             .foregroundStyle(selected ? CapoTheme.primary : CapoTheme.subtext)
-          Text(title(item)).font(CapoFont.style(.body, weight: selected ? .semibold : .medium))
+          Text(item.title).font(CapoFont.style(.body, weight: selected ? .semibold : .medium))
           Spacer(minLength: 0)
-          badgeView(badge)
         }
         .foregroundStyle(CapoTheme.text)
         .padding(.horizontal, 12)
@@ -483,20 +432,8 @@ private struct SidebarView: View {
       }
     }
     .buttonStyle(.plain)
-    .accessibilityLabel(title(item))
+    .accessibilityLabel(item.title)
     .accessibilityAddTraits(selected ? .isSelected : [])
-  }
-
-  @ViewBuilder
-  private func badgeView(_ count: Int) -> some View {
-    if count > 0 {
-      Text("\(count)")
-        .font(CapoFont.ui(11, weight: .bold))
-        .foregroundStyle(CapoTheme.card)
-        .padding(.horizontal, 5)
-        .frame(minWidth: 18, minHeight: 18)
-        .background(CapoTheme.destructive, in: Capsule())
-    }
   }
 
   private var footer: some View {
@@ -525,13 +462,8 @@ private struct SidebarView: View {
           Spacer(minLength: 0)
         }
       }
-      Button {
-        model.navigation.showSignOut = true
-      } label: {
-        Image(systemName: "rectangle.portrait.and.arrow.right")
-      }
-      .buttonStyle(CapoIconButtonStyle())
-      .accessibilityLabel(ContextStrings.signOut)
+      if !collapsed { CapoTheme.border.frame(height: 1) }
+      AvatarMenu(model: model, style: collapsed ? .rail : .sidebar)
     }
   }
 }

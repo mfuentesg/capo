@@ -19,8 +19,8 @@ struct RenderContext {
 
 enum RenderPalette {
   static let chord = CapoTheme.chord
-  static let comment = OKLCH.dynamic(light: OKLCH(0.55, 0.12, 195), dark: OKLCH(0.68, 0.12, 195))
-  static let note = OKLCH.dynamic(light: OKLCH(0.58, 0.13, 65), dark: OKLCH(0.78, 0.12, 65))
+  static let comment = CapoTheme.token(\.comment)
+  static let note = CapoTheme.token(\.note)
 }
 
 // MARK: - Lines
@@ -210,11 +210,11 @@ struct PairColumn: View {
       .font(CapoFont.chord(scale: context.style.fontScale))
       .foregroundStyle(context.chordColor)
       .fixedSize()
-      .padding(.horizontal, context.pointSize * 0.28)
-      .padding(.vertical, 1)
+      // `.clp-col .chord`: padding 0 3px, margin 0 1px, radius 3px, 12% background.
+      .padding(.horizontal, 3)
       .background(
-        context.chordColor.opacity(0.14),
-        in: RoundedRectangle(cornerRadius: context.pointSize * 0.26, style: .continuous)
+        context.chordColor.opacity(0.12),
+        in: RoundedRectangle(cornerRadius: 3, style: .continuous)
       )
       .padding(.horizontal, 1)
       .contentShape(Rectangle())
@@ -329,18 +329,48 @@ struct SegmentView: View {
     body: SongBody
   ) -> some View {
     let accent = SectionAccent.color(for: sectionType)
-    return VStack(alignment: .leading, spacing: 0) {
+    return SectionBlockView(
+      sectionType: sectionType, isCollapsed: isCollapsed
+    ) {
       SectionHeaderView(
         title: title, count: count, accent: accent, icon: icon, flags: flags, pointSize: context.pointSize,
         isCollapsed: isCollapsed, onToggle: onToggle)
+    } content: {
+      LinesView(lines: body.lines, context: context.inSection(accent))
+    }
+  }
+}
+
+/// `.section-repeat-content`: accent tint (6% light / 12% dark), 2px accent left border, padding
+/// 8/16/10/16 and a `0 r r 0` radius.
+struct SectionBlockView<Header: View, Content: View>: View {
+  let sectionType: String
+  let isCollapsed: Bool
+  @ViewBuilder let header: Header
+  @ViewBuilder let content: Content
+
+  static var metrics: (top: CGFloat, leading: CGFloat, bottom: CGFloat, trailing: CGFloat, border: CGFloat) {
+    (top: 8, leading: 16, bottom: 10, trailing: 16, border: 2)
+  }
+
+  var body: some View {
+    let m = Self.metrics
+    let accent = SectionAccent.color(for: sectionType)
+    let shape = UnevenRoundedRectangle(
+      topLeadingRadius: 0, bottomLeadingRadius: 0, bottomTrailingRadius: CapoRadius.base,
+      topTrailingRadius: CapoRadius.base, style: .continuous)
+    VStack(alignment: .leading, spacing: 0) {
+      header
       if !isCollapsed {
-        LinesView(lines: body.lines, context: context.inSection(accent))
-          .padding(.leading, 14)
-          .padding(.top, 6)
-          .padding(.bottom, 4)
+        content
+          .padding(.top, 12)
           .frame(maxWidth: .infinity, alignment: .leading)
       }
     }
+    .padding(EdgeInsets(top: m.top, leading: m.leading, bottom: m.bottom, trailing: m.trailing))
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .background(SectionAccent.background(for: sectionType), in: shape)
+    .overlay(alignment: .leading) { Rectangle().fill(accent).frame(width: m.border) }
   }
 }
 
@@ -367,15 +397,20 @@ struct SectionHeaderView: View {
 
   private var row: some View {
     HStack(spacing: 10) {
-      RoundedRectangle(cornerRadius: 2, style: .continuous)
+      // 6px dot with a 2px card ring and a 4px accent-25% ring.
+      Circle()
         .fill(accent)
-        .frame(width: 4, height: max(20, pointSize * 0.8))
+        .frame(width: 6, height: 6)
+        .padding(2)
+        .background(CapoTheme.card, in: Circle())
+        .padding(4)
+        .background(accent.opacity(0.25), in: Circle())
       if let icon {
-        Image(systemName: icon).font(CapoFont.ui(11)).foregroundStyle(accent)
+        Image(systemName: icon).font(CapoFont.ui(12)).foregroundStyle(accent)
       }
       Text(title.uppercased())
-        .font(CapoFont.ui(max(13, pointSize * 0.6), weight: .bold))
-        .tracking(max(13, pointSize * 0.6) * 0.08)
+        .font(CapoFont.ui(12, weight: .bold))
+        .tracking(12 * 0.18)
         .foregroundStyle(accent)
         .fixedSize(horizontal: false, vertical: true)
       if count > 1 {
@@ -392,12 +427,12 @@ struct SectionHeaderView: View {
       if onToggle != nil {
         Image(systemName: "chevron.down")
           .font(CapoFont.ui(12, weight: .semibold))
-          .foregroundStyle(.secondary)
+          .foregroundStyle(CapoTheme.mutedForeground)
           .rotationEffect(.degrees(isCollapsed ? -90 : 0))
           .animation(.easeInOut(duration: 0.15), value: isCollapsed)
       }
     }
-    .frame(maxWidth: .infinity, minHeight: 36, alignment: .leading)
+    .frame(maxWidth: .infinity, minHeight: 32, alignment: .leading)
     .contentShape(Rectangle())
   }
 }

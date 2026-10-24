@@ -48,7 +48,7 @@ rm -rf ios/build/dd-release
 
 ## Manual checklist (needs a physical iPhone 13 Pro and iPad Pro 11, PLAN.md §9)
 
-Not machine-verifiable; none of these were run:
+Not machine-verifiable; none of these were run (production Google login was confirmed by the owner on both devices):
 
 1. Sign in with real Google OAuth (production, human's choice) and confirm the library count per context matches the web.
 2. Airplane mode, force quit, cold start: session restored; library, search, song view and a 20-song setlist work offline.
@@ -60,3 +60,12 @@ Not machine-verifiable; none of these were run:
 8. iPad: rotation, two columns, Stage Manager resize, hardware keyboard shortcuts.
 9. Sign out with "erase" deletes the database; a different account sees no earlier data.
 10. Chords at transpose +/-2 and capo 3 match the web for three real songs.
+11. Landscape iPad, dark mode and Stage Manager for the bottom bar and full-width tables.
+12. Songs table: sort by each header, A-Z scrubber, Select mode with "Add to Playlist", pushed song page with Previous/Next, playlist page Perform button.
+13. CifraClub import on a device (the parser is fixture-tested only; CifraClub returned 403 from the dev machine).
+14. Language switch: a restart is required; confirm the notice and Spanish strings.
+15. Settings: 12 palettes, 12 fonts, Surprise me; chord hand left/right in diagrams.
+
+## Latest automated run (design v2)
+
+Shell 22, Playlists 23, Library 31, Performance 58 tests pass on the iPhone 17 Pro simulator; the app builds for simulator and device.

@@ -1,5 +1,8 @@
 # Capo native iOS/iPadOS app: executable work breakdown (v1)
 
+> **Update (design v2, supersedes the navigation and Settings parts of this plan):** the app uses one shell on iPhone and iPad: a slim top bar (logo, context pill, avatar menu) and a bottom bar with Songs, Playlists, Chords and Teams. There is no sidebar, no `TabView` split and no right-hand detail panel. Songs and playlists are full-width tables; a song or playlist opens as a pushed page (per-tab `NavigationStack`). The instrument is guitar only (no ukulele), with a left/right chord hand. See `ios/docs/WEB_PARITY_ANALYSIS.md` and `ios/docs/STATUS.md`.
+
+
 Worktree: `/Users/mfuentesg/code/capo/.claude/worktrees/ios-p0` (branch `feat/ios-p0-golden-fixtures`). All paths below are relative to it.
 
 ## 0. Overview

@@ -16,9 +16,41 @@ final class LibraryModel {
   var teams: [Team] = []
   /// Songs queued to add to a playlist (the web's draft cart), in tap order.
   var cart: [SongID] = []
+  /// Column the table is sorted by. Until the user picks one, a search keeps its relevance order.
+  var tableSort = SongTableSort.default
+  var sortChosen = false
+  /// "Select" mode: row taps toggle the selection instead of opening the song.
+  var selecting = false
 
   func toggleCart(_ id: SongID) {
     if let index = cart.firstIndex(of: id) { cart.remove(at: index) } else { cart.append(id) }
+  }
+
+  /// Sort actually applied to the table; nil keeps the service order (relevance while searching).
+  var effectiveTableSort: SongTableSort? {
+    filters.isSearching && !sortChosen ? nil : tableSort
+  }
+
+  func sort(by column: SongColumn) {
+    tableSort = tableSort.tapped(column)
+    sortChosen = true
+  }
+
+  func setSort(_ sort: SongTableSort) {
+    tableSort = sort
+    sortChosen = true
+  }
+
+  /// Leaves select mode and drops the selection.
+  func finishSelecting() {
+    selecting = false
+    cart = []
+  }
+
+  /// Songs in table order for the current sort.
+  func displayedSongs(context: AppContext) -> [SongListItem] {
+    guard let sort = effectiveTableSort else { return songs }
+    return SongTableLogic.sorted(songs, by: sort) { [self] in ownership(for: $0, in: context)?.label ?? "" }
   }
 
   /// Ownership chip for a row; only the "All" view shows it.

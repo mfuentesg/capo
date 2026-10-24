@@ -2,10 +2,10 @@ import CapoDesign
 import CapoIcons
 import SwiftUI
 
-/// Searchable, filterable song library (web `songs-client.tsx`). Works in a split-view content
-/// column or a compact stack.
+/// Songs table (design A): search header, sortable column strip, letter-sectioned rows with an
+/// A-Z index, and a floating selection bar. Rows push the song page through `CapoActions.openSong`.
+/// Compact width falls back to two-line rows without the column strip.
 public struct LibraryView: View {
-  @Binding var selection: SongID?
   @Environment(\.userServices) private var services
   @Environment(\.appContext) private var context
   @Environment(\.currentTeamRole) private var role
@@ -14,27 +14,31 @@ public struct LibraryView: View {
   @State private var model = LibraryModel()
   @State private var showTagManagement = false
   @State private var assignTagsFor: SongSheetTarget?
+  @State private var activeLetter: String?
 
-  public init(selection: Binding<SongID?>) { _selection = selection }
+  public init() {}
 
   private var canEdit: Bool { role?.canEditContent ?? true }
-  private var isRegular: Bool { sizeClass == .regular }
 
   public var body: some View {
     @Bindable var model = model
-    VStack(spacing: 0) {
-      LibraryHeader(
-        model: model, canEdit: canEdit, isRegular: isRegular,
-        onAdd: { actions.openEditor(.create) }, onManageTags: { showTagManagement = true })
-      songList
+    GeometryReader { proxy in
+      let layout = SongTableLogic.Layout(
+        width: proxy.size.width, isRegularSizeClass: sizeClass == .regular, showsOwnership: context.isAll)
+      VStack(spacing: 0) {
+        LibraryHeader(
+          model: model, canEdit: canEdit, isRegular: layout.mode == .regular,
+          onAdd: { actions.openEditor(.create) }, onManageTags: { showTagManagement = true })
+        if layout.mode == .regular { columnStrip(layout) } else { CapoTheme.border.frame(height: 1) }
+        songList(layout)
+      }
     }
     .background(CapoTheme.background)
     .overlay { emptyState }
-    .safeAreaInset(edge: .bottom, spacing: 0) { cartBar }
-    .refreshable { await services.sync.syncNow(reason: .manual) }
+    .safeAreaInset(edge: .bottom, spacing: 0) { selectionBar }
     .navigationTitle("")
     .navigationBarTitleDisplayMode(.inline)
-    .toolbar(isRegular ? .hidden : .automatic, for: .navigationBar)
+    .toolbar(.hidden, for: .navigationBar)
     .sheet(isPresented: $showTagManagement) {
       TagManagementView(tags: model.tags).presentationDetents([.medium, .large])
     }
@@ -60,45 +64,92 @@ public struct LibraryView: View {
     }
   }
 
+  // MARK: Column strip
+
+  private func columnStrip(_ layout: SongTableLogic.Layout) -> some View {
+    func header(_ column: SongColumn, width: CGFloat? = nil) -> some View {
+      let sort = model.effectiveTableSort
+      let state: TableSortState =
+        sort?.column == column ? (sort?.ascending == true ? .ascending : .descending) : .unsorted
+      return TableColumnHeader(LibraryStrings.columnName(column), state: state) { model.sort(by: column) }
+        .frame(width: width, alignment: .leading)
+        .frame(maxWidth: width == nil ? .infinity : nil, alignment: .leading)
+    }
+    return HStack(spacing: 0) {
+      Color.clear.frame(width: SongTableMetrics.cart, height: 1)
+      header(.title)
+      header(.key, width: SongTableMetrics.key)
+      header(.bpm, width: SongTableMetrics.bpm)
+      header(.tags, width: SongTableMetrics.tags(showsOwnerColumn: layout.showsOwnerColumn))
+      header(.played, width: SongTableMetrics.played)
+      if layout.showsOwnerColumn { header(.owner, width: SongTableMetrics.owner) }
+    }
+    .padding(.leading, -8)
+    .padding(.trailing, SongTableMetrics.index)
+    .tableHeaderStrip()
+  }
+
   // MARK: List
 
-  private var songList: some View {
-    let groups = SongGrouping.groups(model.songs, by: model.filters.grouping)
-    return List(selection: $selection) {
-      ForEach(Array(groups.enumerated()), id: \.offset) { _, group in
-        if let title = group.title {
-          Section {
-            rows(group.items)
-          } header: {
-            Text(title)
-              .capoText(.sm, weight: .semibold)
-              .foregroundStyle(CapoTheme.mutedForeground)
-              .frame(maxWidth: .infinity, alignment: .leading)
-              .padding(.vertical, 8)
-              .background(CapoTheme.background)
-              .textCase(nil)
+  private func songList(_ layout: SongTableLogic.Layout) -> some View {
+    let displayed = model.displayedSongs(context: context)
+    let sections = SongTableLogic.sections(displayed, sort: model.effectiveTableSort, grouping: model.filters.grouping)
+    let letters = sections.compactMap { $0.id.hasPrefix("letter-") ? $0.title : nil }
+    return ScrollViewReader { reader in
+      List {
+        ForEach(sections, id: \.id) { section in
+          if let title = section.title {
+            Section {
+              rows(section.items, layout: layout)
+            } header: {
+              SongSectionHeader(title: title)
+                .listRowInsets(EdgeInsets())
+                .id(section.id)
+            }
+          } else {
+            rows(section.items, layout: layout)
           }
-        } else {
-          rows(group.items)
+        }
+      }
+      .listStyle(.plain)
+      .scrollContentBackground(.hidden)
+      .environment(\.defaultMinListRowHeight, 1)
+      .refreshable { await services.sync.syncNow(reason: .manual) }
+      .overlay(alignment: .trailing) {
+        if !letters.isEmpty {
+          LetterIndexScrubber(available: Set(letters), active: activeLetter ?? letters.first) { letter in
+            guard let target = SongTableLogic.target(for: letter, available: letters) else { return }
+            if activeLetter != target {
+              activeLetter = target
+              reader.scrollTo("letter-\(target)", anchor: .top)
+            }
+          }
+          .padding(.vertical, 8)
         }
       }
     }
-    .listStyle(.plain)
-    .scrollContentBackground(.hidden)
   }
 
   @ViewBuilder
-  private func rows(_ items: [SongListItem]) -> some View {
+  private func rows(_ items: [SongListItem], layout: SongTableLogic.Layout) -> some View {
     ForEach(items) { item in
-      SongRow(
-        item: item, isSelected: selection == item.id, inCart: model.cart.contains(item.id),
-        ownership: model.ownership(for: item, in: context),
-        onToggleCart: { model.toggleCart(item.id) }
-      )
-      .tag(item.id)
+      let state = SongTableRowState(
+        inCart: model.cart.contains(item.id), selecting: model.selecting,
+        ownership: model.ownership(for: item, in: context), layout: layout)
+      Group {
+        if layout.mode == .regular {
+          SongTableRow(item: item, state: state) { model.toggleCart(item.id) }
+        } else {
+          SongCompactRow(item: item, state: state) { model.toggleCart(item.id) }
+        }
+      }
+      .onTapGesture {
+        if model.selecting { model.toggleCart(item.id) } else { actions.openSong(item.id) }
+      }
+      .accessibilityAddTraits(.isButton)
       .listRowBackground(Color.clear)
       .listRowSeparator(.hidden)
-      .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+      .listRowInsets(EdgeInsets())
       .swipeActions(edge: .trailing) {
         Button { actions.addSongsToPlaylist([item.id]) } label: {
           CapoIconLabel(LibraryStrings.addToSetlist, icon: .listMusic)
@@ -129,35 +180,19 @@ public struct LibraryView: View {
     }
   }
 
-  // MARK: Cart
+  // MARK: Selection
 
-  /// The web's draft indicator: appears once songs are queued, opens the add-to-playlist flow.
-  @ViewBuilder private var cartBar: some View {
+  /// Floating "n selected · Clear · Add to Playlist" once songs are queued.
+  @ViewBuilder private var selectionBar: some View {
     if !model.cart.isEmpty {
-      HStack(spacing: 4) {
-        Button {
+      SelectionBar(
+        count: model.cart.count,
+        onClear: { withAnimation(.snappy(duration: 0.2)) { model.cart = [] } },
+        onAdd: {
           actions.addSongsToPlaylist(model.cart)
-          model.cart = []
-        } label: {
-          HStack(spacing: 8) {
-            CapoIcon(.listMusic, size: 16)
-            Text(LibraryStrings.cartAdd(model.cart.count)).capoText(.sm, weight: .medium)
-          }
-          .padding(.leading, 16).padding(.trailing, 8)
-          .frame(minHeight: CapoMetrics.minHitTarget)
-          .contentShape(Rectangle())
+          model.finishSelecting()
         }
-        Button { model.cart = [] } label: {
-          CapoIcon(.x, size: 14)
-            .frame(width: CapoMetrics.minHitTarget, height: CapoMetrics.minHitTarget)
-            .contentShape(Rectangle())
-        }
-        .accessibilityLabel(LibraryStrings.clearCart)
-      }
-      .buttonStyle(.plain)
-      .foregroundStyle(Color.white)
-      .background(CapoTheme.accentPlaylists, in: Capsule())
-      .shadow(color: .black.opacity(0.2), radius: 8, y: 3)
+      )
       .padding(.bottom, 12)
       .transition(.move(edge: .bottom).combined(with: .opacity))
     }

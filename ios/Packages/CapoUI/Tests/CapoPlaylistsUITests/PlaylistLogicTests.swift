@@ -77,3 +77,12 @@ private struct Item: Identifiable, Equatable { let id: Int }
     #expect(PlaylistLogic.countLabel(0, singular: "song", plural: "songs") == "0 songs")
   }
 }
+
+@Suite struct PlaylistDetailLayoutTests {
+  @Test func sidebySideFromTheBreakpointUp() {
+    #expect(PlaylistDetailLayout.isWide(paneWidth: 1180))
+    #expect(PlaylistDetailLayout.isWide(paneWidth: 720))
+    #expect(!PlaylistDetailLayout.isWide(paneWidth: 719))
+    #expect(!PlaylistDetailLayout.isWide(paneWidth: 393))
+  }
+}

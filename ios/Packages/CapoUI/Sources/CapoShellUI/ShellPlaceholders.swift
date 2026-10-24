@@ -6,7 +6,7 @@ import SwiftUI
 struct ChordsPlaceholderView: View {
   var body: some View {
     ShellEmptyState(
-      icon: SidebarItem.chords.icon, title: L10n.Ios.Shell.chordsSoonTitle,
+      icon: ShellTab.chords.icon, title: L10n.Ios.Shell.chordsSoonTitle,
       message: L10n.Ios.Shell.chordsSoonMessage)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(CapoTheme.background)
@@ -24,7 +24,7 @@ struct SongsDetailPlaceholder: View {
   var body: some View {
     ZStack(alignment: .bottomLeading) {
       GeometryReader { proxy in
-        CapoIcon(SidebarItem.songs.icon, size: min(proxy.size.width, proxy.size.height) * 0.45, strokeWidth: 1.5)
+        CapoIcon(ShellTab.songs.icon, size: min(proxy.size.width, proxy.size.height) * 0.45, strokeWidth: 1.5)
           .foregroundStyle(CapoTheme.foreground.opacity(0.04))
           .position(x: proxy.size.width / 2, y: proxy.size.height / 2)
       }

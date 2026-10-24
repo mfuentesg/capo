@@ -362,6 +362,46 @@
       "capoShort": "cejilla {fret}",
       "decrease": "Disminuir",
       "increase": "Aumentar"
+    },
+    "queue": {
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "jumpToSong": "Ir a canción…",
+      "hideList": "Ocultar lista",
+      "showList": "Mostrar lista de canciones",
+      "songs": "Canciones",
+      "setlist": "Repertorio",
+      "setlistTitle": "Repertorio · {name}",
+      "songListTitle": "Canciones",
+      "back": "Atrás"
+    },
+    "table": {
+      "active": "Activas",
+      "addToPlaylist": "Añadir a lista",
+      "archived": "Archivadas",
+      "clear": "Limpiar",
+      "colBpm": "BPM",
+      "colDate": "Fecha",
+      "colKey": "Tono",
+      "colName": "Nombre",
+      "colOwner": "Dueño",
+      "colPlayed": "Tocada",
+      "colSharing": "Compartir",
+      "colSongs": "Canciones",
+      "colTags": "Etiquetas",
+      "colTitle": "Título",
+      "done": "Listo",
+      "groupValue": "Grupo: {value}",
+      "indexLabel": "Índice alfabético",
+      "never": "Nunca",
+      "private": "Privada",
+      "public": "Pública",
+      "select": "Seleccionar",
+      "selectedCount": "{count} seleccionadas",
+      "sortAscending": "Orden ascendente",
+      "sortBy": "Ordenar por",
+      "sortDescending": "Orden descendente",
+      "sortRecent": "Añadidas recientemente"
     }
   }
 }

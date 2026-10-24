@@ -819,6 +819,30 @@ public nonisolated enum L10n {
       /// Remove offline copy
       public static var unpin: String { String(localized: "ios.playlists.unpin", bundle: .module) }
     }
+    public nonisolated enum Queue {
+      /// Back
+      public static var back: String { String(localized: "ios.queue.back", bundle: .module) }
+      /// Hide list
+      public static var hideList: String { String(localized: "ios.queue.hideList", bundle: .module) }
+      /// Jump to song…
+      public static var jumpToSong: String { String(localized: "ios.queue.jumpToSong", bundle: .module) }
+      /// Next
+      public static var next: String { String(localized: "ios.queue.next", bundle: .module) }
+      /// Previous
+      public static var previous: String { String(localized: "ios.queue.previous", bundle: .module) }
+      /// Setlist
+      public static var setlist: String { String(localized: "ios.queue.setlist", bundle: .module) }
+      /// Setlist · {name}
+      public static func setlistTitle(name: String) -> String {
+        String(format: String(localized: "ios.queue.setlistTitle", bundle: .module), name)
+      }
+      /// Show song list
+      public static var showList: String { String(localized: "ios.queue.showList", bundle: .module) }
+      /// Songs
+      public static var songListTitle: String { String(localized: "ios.queue.songListTitle", bundle: .module) }
+      /// Songs
+      public static var songs: String { String(localized: "ios.queue.songs", bundle: .module) }
+    }
     public nonisolated enum Server {
       /// Environment
       public static var environment: String { String(localized: "ios.server.environment", bundle: .module) }
@@ -1066,6 +1090,64 @@ public nonisolated enum L10n {
       public static var syncing: String { String(localized: "ios.sync.syncing", bundle: .module) }
       /// Up to date
       public static var upToDate: String { String(localized: "ios.sync.upToDate", bundle: .module) }
+    }
+    public nonisolated enum Table {
+      /// Active
+      public static var active: String { String(localized: "ios.table.active", bundle: .module) }
+      /// Add to Playlist
+      public static var addToPlaylist: String { String(localized: "ios.table.addToPlaylist", bundle: .module) }
+      /// Archived
+      public static var archived: String { String(localized: "ios.table.archived", bundle: .module) }
+      /// Clear
+      public static var clear: String { String(localized: "ios.table.clear", bundle: .module) }
+      /// BPM
+      public static var colBpm: String { String(localized: "ios.table.colBpm", bundle: .module) }
+      /// Date
+      public static var colDate: String { String(localized: "ios.table.colDate", bundle: .module) }
+      /// Key
+      public static var colKey: String { String(localized: "ios.table.colKey", bundle: .module) }
+      /// Name
+      public static var colName: String { String(localized: "ios.table.colName", bundle: .module) }
+      /// Owner
+      public static var colOwner: String { String(localized: "ios.table.colOwner", bundle: .module) }
+      /// Played
+      public static var colPlayed: String { String(localized: "ios.table.colPlayed", bundle: .module) }
+      /// Sharing
+      public static var colSharing: String { String(localized: "ios.table.colSharing", bundle: .module) }
+      /// Songs
+      public static var colSongs: String { String(localized: "ios.table.colSongs", bundle: .module) }
+      /// Tags
+      public static var colTags: String { String(localized: "ios.table.colTags", bundle: .module) }
+      /// Title
+      public static var colTitle: String { String(localized: "ios.table.colTitle", bundle: .module) }
+      /// Done
+      public static var done: String { String(localized: "ios.table.done", bundle: .module) }
+      /// Group: {value}
+      public static func groupValue(value: String) -> String {
+        String(format: String(localized: "ios.table.groupValue", bundle: .module), value)
+      }
+      /// Alphabet index
+      public static var indexLabel: String { String(localized: "ios.table.indexLabel", bundle: .module) }
+      /// Never
+      public static var never: String { String(localized: "ios.table.never", bundle: .module) }
+      /// Private
+      public static var `private`: String { String(localized: "ios.table.private", bundle: .module) }
+      /// Public
+      public static var `public`: String { String(localized: "ios.table.public", bundle: .module) }
+      /// Select
+      public static var select: String { String(localized: "ios.table.select", bundle: .module) }
+      /// {count} selected
+      public static func selectedCount(count: String) -> String {
+        String(format: String(localized: "ios.table.selectedCount", bundle: .module), count)
+      }
+      /// Sorted ascending
+      public static var sortAscending: String { String(localized: "ios.table.sortAscending", bundle: .module) }
+      /// Sort by
+      public static var sortBy: String { String(localized: "ios.table.sortBy", bundle: .module) }
+      /// Sorted descending
+      public static var sortDescending: String { String(localized: "ios.table.sortDescending", bundle: .module) }
+      /// Recently added
+      public static var sortRecent: String { String(localized: "ios.table.sortRecent", bundle: .module) }
     }
     public nonisolated enum Teams {
       /// Decline

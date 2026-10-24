@@ -68,15 +68,6 @@ struct FiltersPopover: View {
           }
         }
         divider
-        section(icon: nil, title: LibraryStrings.sort) {
-          FlowLayout(spacing: 8) {
-            ForEach(filters.availableSorts, id: \.self) { sort in
-              chip(LibraryStrings.sortName(sort), selected: filters.effectiveSort == sort, expands: false) {
-                model.filters.sort = sort
-              }
-            }
-          }
-        }
         section(icon: nil, title: LibraryStrings.status) {
           FlowLayout(spacing: 8) {
             ForEach(SongStatus.allCases, id: \.self) { status in

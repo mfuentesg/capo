@@ -1,3 +1,4 @@
+import CapoCore
 import CapoDesign
 import CapoIcons
 import CapoPerformanceUI
@@ -20,6 +21,7 @@ public struct SetlistPerformanceView: View {
   @State private var didSeedIndex = false
   @State private var name = ""
   @State private var chrome = StageChrome()
+  @State private var showQueue = false
 
   public init(playlistID: PlaylistID, startIndex: Int = 0, onClose: @escaping () -> Void) {
     self.playlistID = playlistID
@@ -52,6 +54,11 @@ public struct SetlistPerformanceView: View {
         .overlay(alignment: .trailing) { if compact && !isFullscreen { peekingCard } }
       }
       if showsBottomBar { bottomBar.frame(maxHeight: .infinity, alignment: .bottom) }
+      if !isFullscreen && !songs.isEmpty {
+        SongQueueOverlay(
+          isPresented: $showQueue, queue: queue, current: songs[safe: index]?.id,
+          onSelect: { id in if let target = songs.firstIndex(where: { $0.id == id }) { go(to: target) } })
+      }
     }
     .task(id: playlistID) {
       for await detail in services.playlists.playlist(id: playlistID) {
@@ -90,7 +97,10 @@ public struct SetlistPerformanceView: View {
             .lineLimit(1)
         }
         Spacer(minLength: 0)
-        if !songs.isEmpty { positionPill }
+        if !songs.isEmpty {
+          SongQueueButton(label: SetlistStrings.setlist, isActive: showQueue) { showQueue = true }
+          positionPill
+        }
         if !compact {
           Button {
             withAnimation(.easeInOut(duration: 0.22)) { chrome.isFullscreen = true }
@@ -182,8 +192,15 @@ public struct SetlistPerformanceView: View {
     }
     if let target = SetlistMath.previous(i) {
       nav.onPrevious = { go(to: target) }
+      nav.previousTitle = songs[target].title
     }
     return nav
+  }
+
+  private var queue: SongQueue {
+    SongQueue(
+      items: songs.map(SongQueueItem.init), title: L10n.Ios.Queue.setlistTitle(name: name),
+      buttonLabel: SetlistStrings.setlist, isNumbered: true)
   }
 
   private func go(to target: Int) {
@@ -307,4 +324,9 @@ enum SetlistStrings {
   static var bpm: String { L10n.Ios.Setlist.bpm }
   static var changeHint: String { L10n.Ios.Setlist.changeHint }
   static var enterFullscreen: String { L10n.Ios.Setlist.enterFullscreen }
+  static var setlist: String { L10n.Ios.Queue.setlist }
+}
+
+private extension Array {
+  subscript(safe index: Int) -> Element? { indices.contains(index) ? self[index] : nil }
 }

@@ -5,10 +5,7 @@ import SwiftUI
 /// Avatar trigger plus the account popover (web `user-profile-menu.tsx`): profile header,
 /// Settings, Invitations, Theme with Surprise me, Logout.
 struct AvatarMenu: View {
-  enum Style { case compact, sidebar, rail }
-
   let model: ShellModel
-  var style: Style = .compact
   @State private var open = false
 
   var body: some View {
@@ -30,31 +27,8 @@ struct AvatarMenu: View {
     }
   }
 
-  @ViewBuilder
   private var label: some View {
-    switch style {
-    case .compact:
-      avatar.frame(width: CapoMetrics.minTouchTarget, height: CapoMetrics.minTouchTarget).contentShape(Rectangle())
-    case .rail:
-      avatar.frame(width: 56, height: 56).contentShape(Rectangle())
-    case .sidebar:
-      HStack(spacing: 10) {
-        avatar
-        VStack(alignment: .leading, spacing: 1) {
-          Text(model.session.fullName ?? model.session.email ?? "")
-            .capoText(.sm, weight: .semibold).lineLimit(1)
-          if model.session.fullName != nil, let email = model.session.email {
-            Text(email).capoText(.xs).foregroundStyle(CapoTheme.mutedForeground).lineLimit(1)
-          }
-        }
-        Spacer(minLength: 0)
-        CapoIcon(.chevronUp, size: 12).foregroundStyle(CapoTheme.mutedForeground)
-      }
-      .foregroundStyle(CapoTheme.text)
-      .padding(.horizontal, 8)
-      .frame(minHeight: CapoMetrics.minTouchTarget + 4)
-      .contentShape(Rectangle())
-    }
+    avatar.frame(width: CapoMetrics.minTouchTarget, height: CapoMetrics.minTouchTarget).contentShape(Rectangle())
   }
 }
 

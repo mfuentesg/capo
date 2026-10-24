@@ -276,21 +276,38 @@ struct StageDock: View {
   // MARK: iPad
 
   private var pad: some View {
+    ViewThatFits(in: .horizontal) {
+      padRow(showsTitles: true, showsSlider: true)
+      padRow(showsTitles: false, showsSlider: true)
+      padRow(showsTitles: false, showsSlider: false)
+    }
+  }
+
+  /// Previous / Next sit at the leading edge (the left thumb), play and the readout trail.
+  private func padRow(showsTitles: Bool, showsSlider: Bool) -> some View {
     HStack(spacing: 22) {
+      if hasSetNav { setNav(showsTitles: showsTitles) }
       transposeStepper
       capoStepper
-      textSizeSlider.frame(width: 150)
+      if showsSlider { textSizeSlider.frame(width: 150) }
       layoutToggles
       Spacer(minLength: 0)
       autoScrollReadout
       StagePlayButton(isPlaying: model.isAutoScrolling, size: 72) {
         model.isAutoScrolling.toggle()
       }
-      if navigation.onPrevious != nil { previousButton }
-      if navigation.onNext != nil { nextButton }
     }
     .padding(.horizontal, 20)
     .frame(height: 96)
+  }
+
+  private var hasSetNav: Bool { navigation.onPrevious != nil || navigation.onNext != nil }
+
+  private func setNav(showsTitles: Bool) -> some View {
+    SongSetNav(
+      previousTitle: navigation.previousTitle, nextTitle: navigation.nextTitle,
+      positionLabel: navigation.positionLabel, showsTitles: showsTitles,
+      onPrevious: navigation.onPrevious, onNext: navigation.onNext)
   }
 
   private var textSizeSlider: some View {
@@ -395,48 +412,16 @@ struct StageDock: View {
     .accessibilityLabel(label)
   }
 
-  private var previousButton: some View {
-    Button {
-      navigation.onPrevious?()
-    } label: {
-      CapoIcon(.chevronLeft, size: 22, strokeWidth: 2.4)
-        .foregroundStyle(CapoTheme.text)
-        .frame(width: 56, height: 72)
-        .background(
-          CapoTheme.surfaceStrong, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
-    }
-    .buttonStyle(.plain)
-    .accessibilityLabel(L10n.Ios.Performance.previousSong)
-  }
-
-  private var nextButton: some View {
-    Button {
-      navigation.onNext?()
-    } label: {
-      HStack(spacing: 10) {
-        VStack(alignment: .leading, spacing: 1) {
-          StageCaption(StageStrings.next)
-          if let title = navigation.nextTitle {
-            Text(title).font(CapoFont.ui(16, weight: .semibold)).lineLimit(1)
-          }
-        }
-        CapoIcon(.chevronRight, size: 20, strokeWidth: 2.4)
-      }
-      .foregroundStyle(CapoTheme.text)
-      .padding(.horizontal, 18)
-      .frame(height: 72)
-      .frame(maxWidth: 220)
-      .background(CapoTheme.surfaceStrong, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
-    }
-    .buttonStyle(.plain)
-    .accessibilityLabel(
-      navigation.nextTitle.map(StageStrings.nextSong) ?? L10n.Ios.Performance.nextSong)
-  }
-
   // MARK: Phone
 
   private var phone: some View {
     VStack(spacing: 10) {
+      if hasSetNav && !navigation.isEmbedded {
+        HStack(spacing: 0) {
+          setNav(showsTitles: false)
+          Spacer(minLength: 0)
+        }
+      }
       HStack(spacing: 8) {
         transposeStepper
         capoStepper

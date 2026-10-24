@@ -4,14 +4,19 @@ import CapoLibraryUI
 import SwiftUI
 import UniformTypeIdentifiers
 
-/// Web `playlist-detail.tsx`: inline-editable header, Details pills, Privacy & sharing card,
-/// Archive card, numbered drag-reorderable songs and a Danger zone.
+/// Web `playlist-detail.tsx` as a pushed, full-width page (design A): header with inline-editable
+/// name and Details pills, numbered draggable songs on the left, and on wide panes a 300 pt
+/// column on the right with Privacy & sharing, Archive and the Danger zone. Narrow panes (and the
+/// iPhone) stack the same sections under the songs.
 public struct PlaylistDetailView: View {
   let playlistID: PlaylistID
+  let backLabel: String?
   @Environment(\.userServices) private var services
   @Environment(\.currentTeamRole) private var role
   @Environment(\.capoActions) private var actions
   @Environment(\.capoUIScale) private var scale
+  @Environment(\.isPresented) private var isPresented
+  @Environment(\.dismiss) private var dismiss
   @State private var detail: PlaylistDetail?
   @State private var songs: [SongListItem] = []
   @State private var loaded = false
@@ -20,43 +25,36 @@ public struct PlaylistDetailView: View {
   @State private var showShare = false
   @State private var confirmDelete = false
   @State private var toast: String?
+  @State private var paneWidth: CGFloat = 1000
 
-  public init(playlistID: PlaylistID) { self.playlistID = playlistID }
+  /// `backLabel` names the screen the back button returns to ("Playlists").
+  public init(playlistID: PlaylistID, backLabel: String? = nil) {
+    self.playlistID = playlistID
+    self.backLabel = backLabel
+  }
 
   private var canEdit: Bool { role?.canEditContent ?? true }
+  /// Songs left, sharing column right; below this the sections stack.
+  private var wide: Bool { PlaylistDetailLayout.isWide(paneWidth: Double(paneWidth)) }
 
   public var body: some View {
     Group {
       if let detail {
-        ScrollView {
-          VStack(alignment: .leading, spacing: 0) {
-            headerCard(detail.playlist)
-            VStack(alignment: .leading, spacing: 24) {
-            PlaylistPrivacyCard(
-              playlist: detail.playlist, canEdit: canEdit, isOffline: isOffline,
-              onChange: { patch in
-                Task { try? await services.playlists.update(id: playlistID, patch) }
-              }, onCopied: { toast = L10n.PlaylistDetail.copied })
-            archiveCard(detail.playlist)
-            songsSection
-            if canEdit { dangerZone(detail.playlist) }
-            }
-            .padding(16)
-            .frame(maxWidth: 720, alignment: .leading)
-          }
-          .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .background(CapoTheme.muted.opacity(0.3))
-        .overlay(alignment: .top) {
-          Rectangle().fill(CapoTheme.accentPlaylists).frame(height: 2).ignoresSafeArea(edges: .top)
-        }
-        .navigationTitle(detail.playlist.name)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar { toolbar(detail) }
+        page(detail)
       } else if loaded {
         EmptyStateView(title: PlaylistStrings.notFound, message: nil, systemImage: "questionmark.folder")
       } else {
         ProgressView()
+      }
+    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .background(CapoTheme.background.ignoresSafeArea())
+    .toolbar(.hidden, for: .navigationBar)
+    .background {
+      GeometryReader { proxy in
+        Color.clear
+          .onAppear { paneWidth = proxy.size.width }
+          .onChange(of: proxy.size.width) { _, width in paneWidth = width }
       }
     }
     .capoToast($toast)
@@ -88,13 +86,81 @@ public struct PlaylistDetailView: View {
     }
   }
 
-  // MARK: Sections
+  // MARK: Layout
 
-  /// `bg-card p-4`: name and description (inline editable), then the Details pills.
-  private func headerCard(_ playlist: Playlist) -> some View {
-    VStack(alignment: .leading, spacing: 12) {
-      PlaylistHeaderFields(playlist: playlist, canEdit: canEdit) { patch in
-        Task { try? await services.playlists.update(id: playlistID, patch) }
+  private func page(_ detail: PlaylistDetail) -> some View {
+    VStack(spacing: 0) {
+      headerCard(detail)
+      if wide {
+        HStack(spacing: 0) {
+          ScrollView { songsSection.frame(maxWidth: .infinity, alignment: .leading) }
+            .background(CapoTheme.card)
+          Rectangle().fill(CapoTheme.border).frame(width: 1)
+          ScrollView { sideColumn(detail.playlist) }
+            .frame(width: PlaylistDetailLayout.sideColumnWidth * scale)
+        }
+      } else {
+        ScrollView {
+          VStack(alignment: .leading, spacing: 0) {
+            songsSection.background(CapoTheme.card)
+            sideColumn(detail.playlist)
+          }
+        }
+      }
+    }
+    .overlay(alignment: .top) {
+      Rectangle().fill(CapoTheme.accentPlaylists).frame(height: 2).ignoresSafeArea(edges: .top)
+    }
+  }
+
+  /// Privacy & sharing, Archive and the Danger zone.
+  private func sideColumn(_ playlist: Playlist) -> some View {
+    VStack(alignment: .leading, spacing: 16) {
+      Text(L10n.PlaylistDetail.privacySharing.uppercased())
+        .capoText(.xs, weight: .semibold, tracking: 0.1)
+        .foregroundStyle(CapoTheme.mutedForeground)
+        .accessibilityAddTraits(.isHeader)
+      PlaylistPrivacyCard(
+        playlist: playlist, canEdit: canEdit, isOffline: isOffline,
+        onChange: { patch in
+          Task { try? await services.playlists.update(id: playlistID, patch) }
+        }, onCopied: { toast = L10n.PlaylistDetail.copied })
+      archiveCard(playlist)
+      if canEdit { dangerZone(playlist) }
+    }
+    .padding(20)
+    .frame(maxWidth: .infinity, alignment: .leading)
+  }
+
+  // MARK: Header
+
+  /// `bg-card`: back button, name and description (inline editable), actions, Details pills.
+  private func headerCard(_ detail: PlaylistDetail) -> some View {
+    let playlist = detail.playlist
+    return VStack(alignment: .leading, spacing: 12) {
+      HStack(spacing: 4) {
+        if isPresented { backButton }
+        Spacer(minLength: 0)
+        if !wide {
+          shareButton(labeled: false)
+          moreMenu(detail)
+        }
+      }
+      .frame(minHeight: 36)
+      if wide {
+        HStack(alignment: .top, spacing: 12) {
+          PlaylistHeaderFields(playlist: playlist, canEdit: canEdit) { patch in
+            Task { try? await services.playlists.update(id: playlistID, patch) }
+          }
+          shareButton(labeled: true)
+          performButton(fullWidth: false)
+          moreMenu(detail)
+        }
+      } else {
+        PlaylistHeaderFields(playlist: playlist, canEdit: canEdit) { patch in
+          Task { try? await services.playlists.update(id: playlistID, patch) }
+        }
+        performButton(fullWidth: true)
       }
       PillFlow(spacing: 8) {
         PlaylistDatePill(playlist: playlist, canEdit: canEdit) { patch in
@@ -109,11 +175,83 @@ public struct PlaylistDetailView: View {
           text: playlist.isPublic ? L10n.Filters.public : L10n.Filters.private)
       }
     }
-    .padding(16)
+    .padding(.horizontal, wide ? 24 : 16)
+    .padding(.top, 8)
+    .padding(.bottom, 16)
     .frame(maxWidth: .infinity, alignment: .leading)
-    .background(CapoTheme.card)
+    .background(CapoTheme.card.ignoresSafeArea(edges: .top))
     .overlay(alignment: .bottom) { Rectangle().fill(CapoTheme.border).frame(height: 1) }
   }
+
+  private var backButton: some View {
+    Button { dismiss() } label: {
+      HStack(spacing: 4) {
+        CapoIcon(.arrowLeft, size: 16)
+        if let backLabel { Text(backLabel).capoText(.sm, weight: .medium).lineLimit(1) }
+      }
+      .foregroundStyle(CapoTheme.primary)
+      .padding(.horizontal, 8)
+      .frame(minWidth: 36, minHeight: 36)
+      .contentShape(Rectangle())
+    }
+    .buttonStyle(.plain)
+    .accessibilityLabel(backLabel ?? PlaylistStrings.close)
+  }
+
+  private func performButton(fullWidth: Bool) -> some View {
+    Button { actions.performSetlist(playlistID, 0) } label: {
+      HStack(spacing: 6) {
+        CapoIcon(.play, size: 14)
+        Text(PlaylistStrings.perform)
+      }
+      .frame(maxWidth: fullWidth ? .infinity : nil)
+    }
+    .buttonStyle(CapoPrimaryButtonStyle(size: fullWidth ? .regular : .small))
+    .disabled(songs.isEmpty)
+  }
+
+  @ViewBuilder private func shareButton(labeled: Bool) -> some View {
+    let action = {
+      if let share = actions.sharePlaylist { share(playlistID) } else { showShare = true }
+    }
+    if labeled {
+      Button(action: action) {
+        HStack(spacing: 6) {
+          CapoIcon(.share2, size: 14)
+          Text(PlaylistStrings.share)
+        }
+      }
+      .buttonStyle(CapoSecondaryButtonStyle(size: .small))
+      .disabled(isOffline)
+    } else {
+      Button(action: action) {
+        CapoIcon(.share2, size: 16).foregroundStyle(CapoTheme.foreground)
+          .frame(width: 36, height: 36)
+          .contentShape(Rectangle())
+      }
+      .buttonStyle(.plain)
+      .disabled(isOffline)
+      .accessibilityLabel(PlaylistStrings.share)
+    }
+  }
+
+  private func moreMenu(_ detail: PlaylistDetail) -> some View {
+    Menu {
+      Button(
+        detail.isPinned ? PlaylistStrings.unpin : PlaylistStrings.pin,
+        systemImage: detail.isPinned ? "pin.slash" : "pin"
+      ) {
+        Task { try? await services.playlists.setPinned(!detail.isPinned, playlistID: playlistID) }
+      }
+    } label: {
+      CapoIcon(.moreVertical, size: 16).foregroundStyle(CapoTheme.foreground)
+        .frame(width: 36, height: 36)
+        .contentShape(Rectangle())
+    }
+    .accessibilityLabel(PlaylistStrings.title)
+  }
+
+  // MARK: Sections
 
   private func archiveCard(_ playlist: Playlist) -> some View {
     let archived = playlist.archivedAt != nil
@@ -128,22 +266,18 @@ public struct PlaylistDetailView: View {
       if canEdit {
         Button {
           Task { try? await services.playlists.setArchived(id: playlistID, !archived) }
-        } label: {
-          HStack(spacing: 6) {
-            CapoIcon(archived ? .archiveRestore : .archive, size: 14)
-            Text(archived ? L10n.Playlists.unarchive : L10n.Playlists.archive)
-          }
-        }
-        .buttonStyle(CapoSecondaryButtonStyle(size: .small))
+        } label: { CapoIcon(archived ? .archiveRestore : .archive, size: 14) }
+          .buttonStyle(CapoSecondaryButtonStyle(size: .small))
+          .accessibilityLabel(archived ? L10n.Playlists.unarchive : L10n.Playlists.archive)
       }
     }
     .padding(16)
-    .frame(maxWidth: 448, alignment: .leading)
+    .frame(maxWidth: .infinity, alignment: .leading)
     .playlistCard()
   }
 
   private var songsSection: some View {
-    VStack(alignment: .leading, spacing: 12) {
+    VStack(alignment: .leading, spacing: 0) {
       HStack {
         Text(L10n.PlaylistDetail.songs.uppercased())
           .capoText(.xs, weight: .semibold, tracking: 0.1)
@@ -160,18 +294,20 @@ public struct PlaylistDetailView: View {
           .buttonStyle(CapoSecondaryButtonStyle(size: .small))
         }
       }
+      .padding(.horizontal, 16)
+      .padding(.vertical, 12)
+      .overlay(alignment: .bottom) { Rectangle().fill(CapoTheme.border).frame(height: 1) }
       if songs.isEmpty {
-        VStack(spacing: 12) {
-          EmptyStateView(
-            title: L10n.PlaylistDetail.noSongsInPlaylist,
-            message: L10n.PlaylistDetail.addSongsDescription, systemImage: "music.note.list",
-            tint: CapoTheme.accentPlaylists, bordered: true)
-        }
+        EmptyStateView(
+          title: L10n.PlaylistDetail.noSongsInPlaylist,
+          message: L10n.PlaylistDetail.addSongsDescription, systemImage: "music.note.list",
+          tint: CapoTheme.accentPlaylists, bordered: true)
+          .padding(16)
       } else {
-        VStack(spacing: 8) {
+        VStack(spacing: 0) {
           ForEach(Array(songs.enumerated()), id: \.element.id) { index, song in
             PlaylistSongRow(
-              index: index, song: song, canEdit: canEdit,
+              index: index, song: song, canEdit: canEdit, wide: wide,
               onOpen: { actions.performSetlist(playlistID, index) },
               onRemove: { remove(song) }
             )
@@ -192,10 +328,9 @@ public struct PlaylistDetailView: View {
     VStack(alignment: .leading, spacing: 8) {
       Text(L10n.PlaylistDetail.dangerZone)
         .capoText(.sm, weight: .semibold).foregroundStyle(CapoTheme.destructive)
-      HStack(alignment: .center, spacing: 12) {
+      VStack(alignment: .leading, spacing: 12) {
         Text(L10n.PlaylistDetail.deletePlaylistDescription)
           .capoText(.xs).foregroundStyle(CapoTheme.mutedForeground)
-        Spacer(minLength: 8)
         Button { confirmDelete = true } label: {
           HStack(spacing: 6) {
             CapoIcon(.trash2, size: 14)
@@ -205,49 +340,11 @@ public struct PlaylistDetailView: View {
         .buttonStyle(CapoDestructiveButtonStyle(size: .small))
       }
       .padding(16)
+      .frame(maxWidth: .infinity, alignment: .leading)
       .playlistCard()
       .overlay(
         RoundedRectangle(cornerRadius: CapoRadius.xl * scale, style: .continuous)
           .strokeBorder(CapoTheme.destructive.opacity(0.3), lineWidth: 1))
-    }
-  }
-
-  // MARK: Toolbar
-
-  @ToolbarContentBuilder private func toolbar(_ detail: PlaylistDetail) -> some ToolbarContent {
-    ToolbarItem(placement: .topBarTrailing) {
-      Button { actions.performSetlist(playlistID, 0) } label: {
-        HStack(spacing: 6) {
-          CapoIcon(.play, size: 14)
-          Text(PlaylistStrings.perform)
-        }
-      }
-      .buttonStyle(CapoPrimaryButtonStyle(size: .small))
-      .disabled(songs.isEmpty)
-    }
-    ToolbarItem(placement: .topBarTrailing) {
-      Button {
-        if let share = actions.sharePlaylist { share(playlistID) } else { showShare = true }
-      } label: {
-        CapoIcon(.share2, size: 16).foregroundStyle(CapoTheme.foreground)
-          .frame(width: 36, height: 36)
-      }
-      .disabled(isOffline)
-      .accessibilityLabel(PlaylistStrings.share)
-    }
-    ToolbarItem(placement: .topBarTrailing) {
-      Menu {
-        Button(
-          detail.isPinned ? PlaylistStrings.unpin : PlaylistStrings.pin,
-          systemImage: detail.isPinned ? "pin.slash" : "pin"
-        ) {
-          Task { try? await services.playlists.setPinned(!detail.isPinned, playlistID: playlistID) }
-        }
-      } label: {
-        CapoIcon(.moreVertical, size: 16).foregroundStyle(CapoTheme.foreground)
-          .frame(width: 36, height: 36)
-      }
-      .accessibilityLabel(PlaylistStrings.title)
     }
   }
 
@@ -265,6 +362,14 @@ public struct PlaylistDetailView: View {
     songs.removeAll { $0.id == song.id }
     Task { try? await services.playlists.removeSong(song.id, from: playlistID) }
   }
+}
+
+/// Pane-width rule of the playlist page: songs and sharing side by side, or stacked.
+nonisolated enum PlaylistDetailLayout {
+  static let sideColumnWidth: CGFloat = 300
+  static let wideBreakpoint = 720.0
+
+  static func isWide(paneWidth: Double) -> Bool { paneWidth >= wideBreakpoint }
 }
 
 // MARK: - Header fields
@@ -379,7 +484,6 @@ private struct PlaylistPrivacyCard: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
-      Text(L10n.PlaylistDetail.privacySharing).capoText(.sm, weight: .semibold)
       toggleRow(
         title: L10n.PlaylistDetail.publicVisibility, detail: L10n.PlaylistDetail.anyoneWithLink,
         isOn: playlist.isPublic, enabled: canEdit
@@ -393,7 +497,7 @@ private struct PlaylistPrivacyCard: View {
       ) { onChange(PlaylistPatch(allowGuestEditing: $0)) }
     }
     .padding(16)
-    .frame(maxWidth: 448, alignment: .leading)
+    .frame(maxWidth: .infinity, alignment: .leading)
     .playlistCard()
     .task(id: playlist.isPublic) {
       guard playlist.isPublic, playlist.shareCode == nil, !isOffline else { return }
@@ -450,15 +554,16 @@ private struct PlaylistPrivacyCard: View {
 
 // MARK: - Song row
 
-/// `rounded-xl bg-card shadow-sm p-3`: grip, 32 px numbered circle, title / artist, key and BPM
-/// badges, 36 px remove button.
+/// Flat row of the songs list: grip, 28 pt numbered circle, title with artist, key and BPM
+/// badges, remove button. Wide panes keep everything on one line; narrow ones stack the artist
+/// and tempo under the title.
 struct PlaylistSongRow: View {
   let index: Int
   let song: SongListItem
   var canEdit = true
+  var wide = true
   var onOpen: () -> Void = {}
   var onRemove: () -> Void = {}
-  @Environment(\.capoUIScale) private var scale
 
   var body: some View {
     HStack(spacing: 8) {
@@ -466,19 +571,11 @@ struct PlaylistSongRow: View {
       Button(action: onOpen) {
         HStack(spacing: 12) {
           Text("\(index + 1)")
-            .capoText(.sm, weight: .bold).monospacedDigit()
+            .capoText(.xs, weight: .bold).monospacedDigit()
             .foregroundStyle(CapoTheme.primary)
-            .frame(width: 32, height: 32)
+            .frame(width: 28, height: 28)
             .background(CapoTheme.primary.opacity(0.10), in: Circle())
-          VStack(alignment: .leading, spacing: 4) {
-            Text(song.title).capoText(.sm, weight: .bold).lineLimit(1)
-              .foregroundStyle(CapoTheme.foreground)
-            if let artist = song.artist, !artist.isEmpty {
-              Text(artist).capoText(.xs).foregroundStyle(CapoTheme.mutedForeground).lineLimit(1)
-            }
-            badges
-          }
-          Spacer(minLength: 0)
+          if wide { wideContent } else { narrowContent }
         }
         .contentShape(Rectangle())
       }
@@ -494,8 +591,47 @@ struct PlaylistSongRow: View {
         .accessibilityLabel(PlaylistStrings.remove)
       }
     }
-    .padding(12)
-    .playlistCard()
+    .padding(.horizontal, 16)
+    .padding(.vertical, wide ? 8 : 10)
+    .frame(minHeight: wide ? 52 : 0)
+    .overlay(alignment: .bottom) { Rectangle().fill(CapoTheme.border.opacity(0.5)).frame(height: 1) }
+  }
+
+  private var wideContent: some View {
+    HStack(spacing: 12) {
+      HStack(alignment: .firstTextBaseline, spacing: 8) {
+        Text(song.title).capoText(.sm, weight: .bold).lineLimit(1)
+          .foregroundStyle(CapoTheme.foreground)
+        if let artist = song.artist, !artist.isEmpty {
+          Text(artist).capoText(.xs).foregroundStyle(CapoTheme.mutedForeground).lineLimit(1)
+        }
+      }
+      Spacer(minLength: 0)
+      HStack { if let key = song.key, !key.isEmpty { KeyBadge(key) } }
+        .frame(width: 64, alignment: .leading)
+      HStack { if let bpm = song.bpm, bpm > 0 { bpmBadge(bpm) } }
+        .frame(width: 104, alignment: .leading)
+    }
+  }
+
+  private var narrowContent: some View {
+    HStack(spacing: 8) {
+      VStack(alignment: .leading, spacing: 2) {
+        Text(song.title).capoText(.sm, weight: .bold).lineLimit(1)
+          .foregroundStyle(CapoTheme.foreground)
+        HStack(spacing: 6) {
+          if let artist = song.artist, !artist.isEmpty { Text(artist).lineLimit(1) }
+          if let bpm = song.bpm, bpm > 0 {
+            if song.artist?.isEmpty == false { Text("·") }
+            CapoIcon(Self.tempoIcon(bpm), size: 12)
+            Text("\(bpm)").monospacedDigit()
+          }
+        }
+        .capoText(.xs).foregroundStyle(CapoTheme.mutedForeground)
+      }
+      Spacer(minLength: 0)
+      if let key = song.key, !key.isEmpty { KeyBadge(key) }
+    }
   }
 
   private var grip: some View {
@@ -510,20 +646,16 @@ struct PlaylistSongRow: View {
       .accessibilityHidden(true)
   }
 
-  private var badges: some View {
-    HStack(spacing: 6) {
-      if let key = song.key, !key.isEmpty { KeyBadge(key) }
-      if let bpm = song.bpm, bpm > 0 { bpmBadge(bpm) }
-    }
+  private static func tempoIcon(_ bpm: Int) -> CapoIconName {
+    bpm < 90 ? .turtle : (bpm <= 120 ? .rabbit : .zap)
   }
 
   /// Tempo badge: green from 90 BPM up, muted below (the canvas Setlist board).
   private func bpmBadge(_ bpm: Int) -> some View {
     let slow = bpm < 90
     let tint = slow ? CapoTheme.mutedForeground : CapoTheme.success
-    let icon: CapoIconName = bpm < 90 ? .turtle : (bpm <= 120 ? .rabbit : .zap)
     return HStack(spacing: 6) {
-      CapoIcon(icon, size: 12)
+      CapoIcon(Self.tempoIcon(bpm), size: 12)
       Text("\(bpm) \(L10n.Songs.bpm)").font(CapoFont.ui(12, weight: .medium))
     }
     .foregroundStyle(tint)

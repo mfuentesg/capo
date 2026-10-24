@@ -27,11 +27,13 @@ final class ShellModel {
     self.settingsContext = settingsContext
     contextStore = ContextStore(userID: session.userID, defaults: defaults)
     #if DEBUG
-      // Screenshot/validation hook: launch with `-CapoSidebar songs|playlists|chords|teams|settings`.
-      if let name = UserDefaults.standard.string(forKey: "CapoSidebar") {
+      // Screenshot/validation hook: launch with `-CapoTab songs|playlists|chords|teams|settings`
+      // (`-CapoSidebar` is the legacy spelling).
+      let launch = UserDefaults.standard
+      if let name = launch.string(forKey: "CapoTab") ?? launch.string(forKey: "CapoSidebar") {
         if name.lowercased() == "settings" {
           navigation.showSettings = true
-        } else if let item = SidebarItem.debug(name) {
+        } else if let item = ShellTab.debug(name) {
           navigation.open(item)
         }
       }

@@ -40,7 +40,7 @@ struct SongRow: View {
             if let artist = item.artist, !artist.isEmpty {
               Text(artist).capoText(.xs).foregroundStyle(CapoTheme.mutedForeground).lineLimit(1)
             }
-            if let ownership { ownershipChip(ownership) }
+            if let ownership { OwnerChipView(chip: ownership) }
           }
         }
         badges
@@ -81,69 +81,16 @@ struct SongRow: View {
   private var badges: some View {
     FlowLayout(spacing: 6) {
       if let key = item.key, !key.isEmpty {
-        MetaBadge(
-          icon: .music2, text: key, foreground: CapoTheme.accentSongs,
-          background: CapoTheme.accentSongs.opacity(0.10),
-          border: CapoTheme.accentSongs.opacity(0.30), mono: true)
+        KeyBadge(key: key)
       }
-      if let bpm = item.bpm, bpm > 0 { bpmBadge(bpm) }
-      if let frequency { frequencyBadge(frequency) }
+      if let bpm = item.bpm, bpm > 0 { BPMBadge(bpm: bpm) }
+      PlayedBadge(item: item)
       ForEach(item.tags.prefix(3)) { SongRowTag(name: $0.name, colorHex: $0.color) }
       if item.tags.count > 3 {
         Text(LibraryStrings.moreTags(item.tags.count - 3))
           .capoText(.px11).foregroundStyle(CapoTheme.mutedForeground)
       }
     }
-  }
-
-  private func bpmBadge(_ bpm: Int) -> some View {
-    let icon: CapoIconName =
-      switch SongBadgeLogic.iconTier(bpm: bpm) {
-      case .turtle: .turtle
-      case .rabbit: .rabbit
-      case .zap: .zap
-      }
-    let tone: (Color, Color, Color) =
-      switch SongBadgeLogic.colorTier(bpm: bpm) {
-      case .slow: (CapoTheme.mutedForeground, CapoTheme.muted, CapoTheme.border)
-      case .steady: (CapoTheme.accentActivity, CapoTheme.accentActivity.opacity(0.10), CapoTheme.accentActivity.opacity(0.30))
-      case .fast: (SongTone.rose(), SongTone.rose().opacity(0.10), SongTone.rose().opacity(0.30))
-      }
-    return MetaBadge(icon: icon, text: LibraryStrings.bpm(bpm), foreground: tone.0, background: tone.1, border: tone.2)
-  }
-
-  /// "3× · 5d" once the song has appeared in a playlist.
-  private var frequency: (text: String, recent: Bool)? {
-    guard item.playCount > 0, let date = SongBadgeLogic.parseDate(item.lastPlayed) else { return nil }
-    return (
-      "\(item.playCount)× · \(SongBadgeLogic.compactRelative(date))",
-      SongBadgeLogic.isRecentlyPlayed(lastPlayed: date)
-    )
-  }
-
-  private func frequencyBadge(_ value: (text: String, recent: Bool)) -> some View {
-    let amber = SongTone.amber()
-    return MetaBadge(
-      icon: .repeat, text: value.text,
-      foreground: value.recent ? amber : CapoTheme.mutedForeground,
-      background: value.recent ? amber.opacity(0.10) : CapoTheme.muted,
-      border: value.recent ? amber.opacity(0.30) : CapoTheme.border)
-  }
-
-  private func ownershipChip(_ chip: OwnershipChip) -> some View {
-    HStack(spacing: 4) {
-      if let icon = chip.icon {
-        CapoIcon.named(icon, size: 12)
-      } else {
-        Circle().frame(width: 6, height: 6)
-      }
-      Text(chip.label).lineLimit(1)
-    }
-    .capoText(.px10, weight: .medium)
-    .foregroundStyle(chip.color)
-    .padding(.horizontal, 8).padding(.vertical, 2)
-    .background(chip.color.opacity(0.15), in: Capsule())
-    .frame(maxWidth: 130)
   }
 }
 

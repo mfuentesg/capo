@@ -4,8 +4,8 @@ import Foundation
 import Observation
 
 /// Top-level destinations; exactly the web navbar's Songs, Playlists, Chords and Teams.
-/// Used by the regular sidebar and the compact tab bar alike.
-enum SidebarItem: String, Hashable, CaseIterable {
+/// Shown in the bottom bar at every size.
+enum ShellTab: String, Hashable, CaseIterable {
   case songs, playlists, chords, teams
 
   /// The web navbar's lucide icon.
@@ -27,8 +27,8 @@ enum SidebarItem: String, Hashable, CaseIterable {
     }
   }
 
-  /// Parses the DEBUG `-CapoSidebar <name>` launch argument. `settings` is not a destination.
-  static func debug(_ name: String) -> SidebarItem? { SidebarItem(rawValue: name.lowercased()) }
+  /// Parses the DEBUG `-CapoTab <name>` (or legacy `-CapoSidebar`) launch argument. `settings` is not a destination.
+  static func debug(_ name: String) -> ShellTab? { ShellTab(rawValue: name.lowercased()) }
 }
 
 struct EditorItem: Identifiable {
@@ -52,14 +52,15 @@ struct PendingAdd: Identifiable {
   let id = UUID()
 }
 
-/// Navigation and presentation state shared by the compact and regular layouts.
+/// Navigation and presentation state: the selected tab plus one stack path per tab.
 @Observable
 @MainActor
 final class ShellNavigation {
-  /// Selected destination for both layouts (sidebar row and compact tab).
-  var destination: SidebarItem = .songs
-  var songSelection: SongID?
-  var playlistSelection: PlaylistID?
+  var destination: ShellTab = .songs
+  /// Pushed song pages of the Songs tab (the library table is the root).
+  var songPath: [SongID] = []
+  /// Pushed playlist pages of the Playlists tab.
+  var playlistPath: [PlaylistID] = []
   var editor: EditorItem?
   var setlistRun: SetlistRun?
   var pendingAdd: PendingAdd?
@@ -69,16 +70,32 @@ final class ShellNavigation {
   var showInvitations = false
   var showSignOut = false
 
+  /// Pushes the song onto the Songs stack, switching to that tab first.
   func openSong(_ id: SongID) {
     destination = .songs
-    songSelection = id
+    if songPath.last != id { songPath.append(id) }
   }
 
-  func open(_ item: SidebarItem) { destination = item }
+  func openPlaylist(_ id: PlaylistID) {
+    destination = .playlists
+    if playlistPath.last != id { playlistPath.append(id) }
+  }
+
+  /// Switches tab; selecting the tab you are already on pops its stack to the root.
+  func open(_ tab: ShellTab) {
+    if destination == tab {
+      switch tab {
+      case .songs: songPath = []
+      case .playlists: playlistPath = []
+      case .chords, .teams: break
+      }
+    }
+    destination = tab
+  }
 
   func resetSelections() {
-    songSelection = nil
-    playlistSelection = nil
+    songPath = []
+    playlistPath = []
   }
 
   func makeActions() -> CapoActions {

@@ -9,23 +9,16 @@ import CapoSettingsUI
 import CapoTeamsUI
 import SwiftUI
 
-/// Signed-in shell: sidebar split view on regular width, tab bar on compact width.
+/// Signed-in shell, one layout at every size: slim top bar, one navigation stack per tab, bottom bar.
 struct MainShellView: View {
   let model: ShellModel
   let onSignOut: (_ erase: Bool) -> Void
 
-  @Environment(\.horizontalSizeClass) private var sizeClass
   @Environment(\.scenePhase) private var scenePhase
 
   var body: some View {
     @Bindable var nav = model.navigation
-    Group {
-      if sizeClass == .regular {
-        RegularShell(model: model)
-      } else {
-        CompactShell(model: model)
-      }
-    }
+    ShellContainer(model: model)
     .capoTheme()
     .id(model.context)
     .shellEnvironment(model)
@@ -106,360 +99,154 @@ struct MainShellView: View {
   }
 }
 
-// MARK: - Compact
+// MARK: - Container
 
-private struct CompactShell: View {
+/// Top bar, tab content and bottom bar. Both bars hide while a song is full screen on stage.
+private struct ShellContainer: View {
   let model: ShellModel
+  private let stage = AppFullscreen.shared
+  /// Tabs shown at least once stay alive, so their search, filters and scroll position survive a switch.
+  @State private var visited: Set<ShellTab> = [.songs]
 
   var body: some View {
-    @Bindable var nav = model.navigation
-    TabView(selection: $nav.destination) {
-      NavigationStack {
-        LibraryView(selection: $nav.songSelection)
-          .toolbar { shellToolbar }
-          .navigationDestination(item: $nav.songSelection) { id in
-            SongPerformanceView(songID: id).id(id)
-              // The stage controls own the bottom edge; the tab bar returns when you go back.
-              .toolbar(.hidden, for: .tabBar)
-          }
-      }
-      .tabItem { CapoIconLabel(SidebarItem.songs.title, icon: SidebarItem.songs.icon) }
-      .tag(SidebarItem.songs)
-
-      NavigationStack {
-        PlaylistsView(selection: $nav.playlistSelection)
-          .toolbar { shellToolbar }
-          .navigationDestination(item: $nav.playlistSelection) { id in
-            PlaylistDetailView(playlistID: id).id(id)
-          }
-      }
-      .tabItem { CapoIconLabel(SidebarItem.playlists.title, icon: SidebarItem.playlists.icon) }
-      .tag(SidebarItem.playlists)
-
-      NavigationStack {
-        ChordsView().toolbar { shellToolbar }
-      }
-      .tabItem { CapoIconLabel(SidebarItem.chords.title, icon: SidebarItem.chords.icon) }
-      .tag(SidebarItem.chords)
-
-      NavigationStack {
-        TeamsView().toolbar { shellToolbar }
-      }
-      .tabItem { CapoIconLabel(SidebarItem.teams.title, icon: SidebarItem.teams.icon) }
-      .tag(SidebarItem.teams)
+    VStack(spacing: 0) {
+      if !stage.isActive { ShellTopBar(model: model).transition(.move(edge: .top)) }
+      tabs
+      if !stage.isActive { ShellBottomBar(navigation: model.navigation).transition(.move(edge: .bottom)) }
     }
-    .tint(CapoTheme.primary)
-  }
-
-  @ToolbarContentBuilder
-  private var shellToolbar: some ToolbarContent {
-    ToolbarItem(placement: .topBarLeading) { ContextPill(model: model) }
-    ToolbarItem(placement: .topBarTrailing) { SyncButton(model: model) }
-    ToolbarItem(placement: .topBarTrailing) { AvatarMenu(model: model) }
-  }
-}
-
-// MARK: - Regular
-
-private struct RegularShell: View {
-  let model: ShellModel
-  @AppStorage("capo.sidebar.collapsed") private var sidebarCollapsed = false
-  @AppStorage("capo.split.layout") private var splitRaw = SplitLayout().rawValue
-
-  private var split: Binding<SplitLayout> {
-    Binding(
-      get: { SplitLayout(rawValue: splitRaw) ?? SplitLayout() },
-      set: { splitRaw = $0.rawValue })
-  }
-
-  @State private var narrow = false
-  private var stage = AppFullscreen.shared
-  private static let narrowWidth: CGFloat = 900
-
-  var body: some View {
-    HStack(spacing: 0) {
-      if !stage.isActive {
-        SidebarView(model: model, collapsed: $sidebarCollapsed)
-          .frame(width: SidebarMetrics.width(collapsed: sidebarCollapsed))
-          .background(CapoTheme.sidebar.ignoresSafeArea())
-          .overlay(alignment: .trailing) { CapoTheme.border.frame(width: 1).ignoresSafeArea() }
-          .transition(.move(edge: .leading))
-      }
-      mainArea
-    }
-    .animation(.snappy(duration: 0.28), value: sidebarCollapsed)
     .animation(.snappy(duration: 0.28), value: stage.isActive)
     .background(CapoTheme.background.ignoresSafeArea())
     .background { shortcuts }
-    .background {
-      // Narrow windows (portrait iPad, Split View) start with the sidebar as a rail so the
-      // song detail keeps room; the user can still expand it.
-      GeometryReader { proxy in
-        Color.clear
-          .onAppear { updateNarrow(proxy.size.width) }
-          .onChange(of: proxy.size.width) { _, width in updateNarrow(width) }
+    .onChange(of: model.navigation.destination, initial: true) { _, tab in visited.insert(tab) }
+  }
+
+  private var tabs: some View {
+    @Bindable var nav = model.navigation
+    return ZStack {
+      ForEach(ShellTab.allCases, id: \.self) { tab in
+        if visited.contains(tab) {
+          let selected = nav.destination == tab
+          root(tab)
+            .opacity(selected ? 1 : 0)
+            .allowsHitTesting(selected)
+            .accessibilityHidden(!selected)
+        }
       }
+    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+  }
+
+  @ViewBuilder
+  private func root(_ tab: ShellTab) -> some View {
+    @Bindable var nav = model.navigation
+    switch tab {
+    case .songs:
+      NavigationStack(path: $nav.songPath) {
+        LibraryView()
+          .navigationDestination(for: SongID.self) { id in SongPerformanceView(songID: id).id(id) }
+      }
+    case .playlists:
+      NavigationStack(path: $nav.playlistPath) {
+        PlaylistsView { id in model.navigation.openPlaylist(id) }
+          .navigationDestination(for: PlaylistID.self) { id in PlaylistDetailView(playlistID: id).id(id) }
+      }
+    case .chords:
+      NavigationStack { ChordsView().toolbar(.hidden, for: .navigationBar) }
+    case .teams:
+      NavigationStack { TeamsView().toolbar(.hidden, for: .navigationBar) }
     }
   }
 
-  private func updateNarrow(_ width: CGFloat) {
-    let isNarrow = width < Self.narrowWidth
-    guard isNarrow != narrow else { return }
-    narrow = isNarrow
-    if isNarrow { sidebarCollapsed = true }
-  }
-
-  /// Hidden buttons carrying the keyboard shortcuts.
+  /// Hidden buttons carrying the keyboard shortcuts: Command-1...4 switch tabs.
   private var shortcuts: some View {
     Group {
-      Button("") { sidebarCollapsed.toggle() }
-        .keyboardShortcut("s", modifiers: [.command, .option])
-      Button("") {
-        var layout = split.wrappedValue
-        layout.toggleList()
-        withAnimation(.snappy(duration: 0.28)) { split.wrappedValue = layout }
+      ForEach(Array(ShellTab.allCases.enumerated()), id: \.element) { index, tab in
+        Button("") { model.navigation.open(tab) }
+          .keyboardShortcut(KeyEquivalent(Character(String(index + 1))), modifiers: .command)
       }
-      .keyboardShortcut("l", modifiers: [.command, .option])
     }
     .opacity(0)
     .accessibilityHidden(true)
     .allowsHitTesting(false)
   }
-
-  @ViewBuilder
-  private var mainArea: some View {
-    @Bindable var nav = model.navigation
-    switch nav.destination {
-    case .songs:
-      ResizableSplit(layout: split, collapseLabel: SidebarItem.songs.title, hideList: stage.isActive) {
-        NavigationStack { LibraryView(selection: $nav.songSelection) }
-      } detail: {
-        if let id = nav.songSelection {
-          NavigationStack { SongPerformanceView(songID: id).id(id) }
-        } else {
-          SongsDetailPlaceholder()
-        }
-      }
-    case .playlists:
-      ResizableSplit(layout: split, collapseLabel: SidebarItem.playlists.title, hideList: stage.isActive) {
-        NavigationStack { PlaylistsView(selection: $nav.playlistSelection) }
-      } detail: {
-        if let id = nav.playlistSelection {
-          NavigationStack { PlaylistDetailView(playlistID: id).id(id) }
-        } else {
-          placeholder(SidebarItem.playlists.icon, L10n.Playlists.selectPlaylist)
-        }
-      }
-    case .chords: NavigationStack { ChordsView() }
-    case .teams: NavigationStack { TeamsView() }
-    }
-  }
-
-  private func placeholder(_ icon: CapoIconName, _ title: String) -> some View {
-    ShellEmptyState(icon: icon, title: title, message: nil)
-  }
 }
 
-/// List/detail split with a draggable handle and a collapsible list, like the web's `ResizablePanel`.
-private struct ResizableSplit<List: View, Detail: View>: View {
-  @Binding var layout: SplitLayout
-  let collapseLabel: String
-  var hideList = false
-  @ViewBuilder let list: () -> List
-  @ViewBuilder let detail: () -> Detail
+// MARK: - Top bar
 
-  @State private var dragStartWidth: CGFloat?
-  @State private var dragWidth: CGFloat?
-
-  var body: some View {
-    GeometryReader { proxy in
-      let total = proxy.size.width
-      let width = dragWidth ?? layout.listWidth(total: total)
-      HStack(spacing: 0) {
-        if !layout.isListCollapsed && !hideList {
-          list()
-            .frame(width: width)
-            .transition(.move(edge: .leading))
-          handle(total: total, width: width)
-        }
-        detail()
-          .frame(maxWidth: .infinity)
-          .overlay(alignment: .leading) {
-            if layout.isListCollapsed && !hideList { expandTab }
-          }
-      }
-      .animation(dragWidth == nil ? .snappy(duration: 0.28) : nil, value: layout)
-    }
-  }
-
-  private func handle(total: CGFloat, width: CGFloat) -> some View {
-    VStack(spacing: 10) {
-      Capsule().fill(CapoTheme.subtext.opacity(0.6)).frame(width: 5, height: 44)
-      Button {
-        layout.toggleList()
-      } label: {
-        CapoIcon(.chevronLeft, size: 16)
-          .foregroundStyle(CapoTheme.subtext)
-          .frame(width: 30, height: 30)
-          .background(CapoTheme.card, in: Circle())
-          .overlay(Circle().strokeBorder(CapoTheme.border, lineWidth: 1))
-          .frame(width: CapoMetrics.minTouchTarget, height: CapoMetrics.minTouchTarget)
-          .contentShape(Rectangle())
-      }
-      .accessibilityLabel(PanelStrings.collapseList)
-    }
-    .frame(width: 20)
-    .background(alignment: .center) { CapoTheme.border.frame(width: 1) }
-    .contentShape(Rectangle())
-    .gesture(
-      DragGesture(minimumDistance: 2, coordinateSpace: .global)
-        .onChanged { value in
-          let start = dragStartWidth ?? width
-          dragStartWidth = start
-          dragWidth = SplitLayout.clamp(start + value.translation.width, total: total)
-        }
-        .onEnded { _ in
-          if let dragWidth { layout.setListWidth(dragWidth, total: total) }
-          dragStartWidth = nil
-          dragWidth = nil
-        })
-    .accessibilityElement(children: .contain)
-    .accessibilityAdjustableAction { direction in
-      let step: CGFloat = direction == .increment ? 40 : -40
-      layout.setListWidth(width + step, total: total)
-    }
-  }
-
-  private var expandTab: some View {
-    Button {
-      layout.toggleList()
-    } label: {
-      CapoIcon(.chevronRight, size: 16)
-        .foregroundStyle(CapoTheme.subtext)
-        .frame(width: 28, height: 72)
-        .background(
-          UnevenRoundedRectangle(bottomTrailingRadius: 14, topTrailingRadius: 14, style: .continuous)
-            .fill(CapoTheme.card)
-        )
-        .overlay(
-          UnevenRoundedRectangle(bottomTrailingRadius: 14, topTrailingRadius: 14, style: .continuous)
-            .strokeBorder(CapoTheme.border, lineWidth: 1))
-        .frame(width: 44, height: CapoMetrics.minTouchTarget + 24, alignment: .leading)
-        .contentShape(Rectangle())
-    }
-    .accessibilityLabel(PanelStrings.expandList)
-  }
-}
-
-// MARK: - Sidebar
-
-private struct SidebarView: View {
+/// 56 pt bar: wordmark on the left; sync state, context pill and account menu on the right.
+private struct ShellTopBar: View {
   let model: ShellModel
-  @Binding var collapsed: Bool
 
   var body: some View {
-    VStack(spacing: collapsed ? 18 : 14) {
-      header
-      ContextPill(model: model, style: collapsed ? .rail : .sidebar)
-      if collapsed { CapoTheme.border.frame(width: 36, height: 1) }
-      VStack(spacing: collapsed ? 12 : 4) {
-        ForEach(SidebarItem.allCases, id: \.self) { item in
-          navButton(item)
-        }
-      }
-      Spacer(minLength: 0)
-      footer
-    }
-    .padding(.horizontal, collapsed ? 14 : 16)
-    .padding(.top, 20)
-    .padding(.bottom, 16)
-    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-  }
-
-  private var toggleButton: some View {
-    Button {
-      collapsed.toggle()
-    } label: {
-      CapoIcon(.columns2, size: 20)
-        .frame(width: collapsed ? 56 : CapoMetrics.minTouchTarget, height: collapsed ? 56 : CapoMetrics.minTouchTarget)
-        .foregroundStyle(collapsed ? CapoTheme.onPrimary : CapoTheme.text)
-        .background(
-          collapsed ? CapoTheme.primary : Color.clear,
-          in: RoundedRectangle(cornerRadius: CapoRadius.large, style: .continuous))
-    }
-    .accessibilityLabel(collapsed ? PanelStrings.expandSidebar : PanelStrings.collapseSidebar)
-  }
-
-  private var header: some View {
-    HStack {
-      if !collapsed {
-        Text("Capo").font(CapoFont.style(.title2, weight: .bold)).foregroundStyle(CapoTheme.text)
-        Spacer()
-      }
-      toggleButton
-    }
-  }
-
-  private func navButton(_ item: SidebarItem) -> some View {
-    let selected = model.navigation.destination == item
-    return Button {
-      model.navigation.open(item)
-    } label: {
-      if collapsed {
-        CapoIcon(item.icon, size: 20)
-          .frame(width: 56, height: 56)
-          .foregroundStyle(selected ? CapoTheme.foreground : CapoTheme.mutedForeground)
-          .background(
-            selected ? CapoTheme.secondary : Color.clear,
-            in: RoundedRectangle(cornerRadius: CapoRadius.md, style: .continuous))
-      } else {
-        HStack(spacing: 12) {
-          CapoIcon(item.icon, size: 20)
-            .frame(width: 28)
-          Text(item.title).capoText(.sm, weight: .medium)
-          Spacer(minLength: 0)
-        }
-        .foregroundStyle(selected ? CapoTheme.foreground : CapoTheme.mutedForeground)
-        .padding(.horizontal, 12)
-        .frame(minHeight: 48)
-        .background(
-          selected ? CapoTheme.secondary : Color.clear,
-          in: RoundedRectangle(cornerRadius: CapoRadius.md, style: .continuous))
-      }
-    }
-    .buttonStyle(.plain)
-    .accessibilityLabel(item.title)
-    .accessibilityAddTraits(selected ? .isSelected : [])
-  }
-
-  private var footer: some View {
     let status = model.syncStatus
     let healthy = status.phase == .idle && status.pendingOperations == 0 && status.conflicts == 0
-    return VStack(spacing: 8) {
-      if collapsed {
-        Button { model.syncNow(.manual) } label: {
-          Circle().fill(healthy ? CapoTheme.success : CapoTheme.warning).frame(width: 12, height: 12)
-            .frame(width: CapoMetrics.minTouchTarget, height: CapoMetrics.minTouchTarget)
-        }
-        .accessibilityLabel(SyncStatusBadge.label(for: status))
-      } else {
-        HStack(spacing: 10) {
-          SyncButton(model: model)
-          VStack(alignment: .leading, spacing: 2) {
-            Text(SyncStatusBadge.label(for: status))
-              .font(CapoFont.style(.subheadline, weight: .semibold)).foregroundStyle(CapoTheme.text)
-            Text(status.pendingOperations > 0
-              ? L10n.Ios.Sync.pendingChanges(count: String(status.pendingOperations))
-              : L10n.Ios.Shell.songsSaved(
-                count: String(model.songCount),
-                device: UIDevice.current.userInterfaceIdiom == .pad ? "iPad" : "iPhone"))
-              .font(CapoFont.style(.caption).monospacedDigit()).foregroundStyle(CapoTheme.subtext)
+    HStack(spacing: 4) {
+      CapoLogo(height: 24)
+      Spacer(minLength: 8)
+      if !healthy { SyncButton(model: model) }
+      ContextPill(model: model)
+      AvatarMenu(model: model)
+    }
+    .padding(.horizontal, 16)
+    .frame(height: ShellMetrics.topBarHeight)
+    .background(CapoTheme.background.ignoresSafeArea(edges: .top))
+    .overlay(alignment: .bottom) { CapoTheme.border.opacity(0.4).frame(height: 1) }
+  }
+}
+
+enum ShellMetrics {
+  static let topBarHeight: CGFloat = 56
+}
+
+// MARK: - Bottom bar
+
+/// Songs, Playlists, Chords, Teams. iPad: centred pills with icon and label side by side;
+/// iPhone: four equal items with the label under the icon. Active tab = primary tint.
+private struct ShellBottomBar: View {
+  let navigation: ShellNavigation
+  @Environment(\.horizontalSizeClass) private var sizeClass
+
+  private var wide: Bool { sizeClass == .regular }
+
+  var body: some View {
+    HStack(spacing: wide ? 8 : 0) {
+      ForEach(ShellTab.allCases, id: \.self) { tab in item(tab) }
+    }
+    .padding(.horizontal, wide ? 16 : 8)
+    .padding(.top, wide ? 8 : 6)
+    .padding(.bottom, wide ? 8 : 4)
+    .frame(maxWidth: .infinity)
+    .background(CapoTheme.background.ignoresSafeArea(edges: .bottom))
+    .overlay(alignment: .top) { CapoTheme.border.opacity(0.4).frame(height: 1) }
+  }
+
+  private func item(_ tab: ShellTab) -> some View {
+    let selected = navigation.destination == tab
+    return Button { navigation.open(tab) } label: {
+      Group {
+        if wide {
+          HStack(spacing: 8) {
+            CapoIcon(tab.icon, size: 20)
+            Text(tab.title).capoText(.sm, weight: .medium)
           }
-          Spacer(minLength: 0)
+          .padding(.horizontal, 22)
+          .frame(height: 44)
+        } else {
+          VStack(spacing: 3) {
+            CapoIcon(tab.icon, size: 22)
+            Text(tab.title).capoText(.px11, weight: .semibold)
+          }
+          .frame(maxWidth: .infinity)
+          .frame(height: 52)
         }
       }
-      if !collapsed { CapoTheme.border.frame(height: 1) }
-      AvatarMenu(model: model, style: collapsed ? .rail : .sidebar)
+      .foregroundStyle(selected ? CapoTheme.primary : CapoTheme.mutedForeground)
+      .background(selected ? CapoTheme.primary.opacity(0.14) : Color.clear, in: Capsule())
+      .contentShape(Capsule())
+      .padding(.horizontal, wide ? 0 : 6)
     }
+    .buttonStyle(.plain)
+    .accessibilityLabel(tab.title)
+    .accessibilityAddTraits(selected ? .isSelected : [])
   }
 }

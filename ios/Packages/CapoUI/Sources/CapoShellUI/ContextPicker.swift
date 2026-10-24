@@ -49,13 +49,9 @@ extension ShellModel {
   var hasTeams: Bool { !contextStore.teams.isEmpty }
 }
 
-/// Context switcher. `compact` is the iPhone toolbar pill; `sidebar` fills the expanded sidebar;
-/// `rail` is the round button in the collapsed sidebar.
+/// Context switcher pill of the top bar.
 struct ContextPill: View {
-  enum Style { case compact, sidebar, rail }
-
   let model: ShellModel
-  var style: Style = .compact
   @State private var open = false
 
   var body: some View {
@@ -87,52 +83,22 @@ struct ContextPill: View {
     }
   }
 
-  @ViewBuilder
   private func label(_ state: ContextPillState) -> some View {
-    switch style {
-    case .rail:
-      leading(state, size: state.kind == .all && model.hasTeams ? 24 : 36)
-        .frame(width: 56, height: 56)
-        .background(state.isFiltered ? CapoTheme.accent.opacity(0.6) : CapoTheme.card, in: Circle())
-        .overlay(Circle().strokeBorder(CapoTheme.border, lineWidth: 1))
-    case .compact:
-      HStack(spacing: 6) {
-        leading(state, size: 20)
-        Text(state.label)
-          .capoText(.xs, weight: .medium)
-          .lineLimit(1)
-          .frame(maxWidth: ContextPillState.maxLabelWidth(compact: true), alignment: .leading)
-          .fixedSize(horizontal: true, vertical: false)
-        CapoIcon(.chevronDown, size: 12).foregroundStyle(CapoTheme.mutedForeground)
-      }
-      .foregroundStyle(CapoTheme.foreground)
-      .padding(.horizontal, 10)
-      .frame(height: 32)
-      .background(state.isFiltered ? CapoTheme.accent.opacity(0.6) : Color.clear, in: Capsule())
-      .frame(minHeight: CapoMetrics.minTouchTarget)
-      .contentShape(Capsule())
-    case .sidebar:
-      HStack(spacing: 10) {
-        leading(state, size: 24)
-        Text(state.label)
-          .capoText(.sm, weight: .medium)
-          .lineLimit(1)
-          .truncationMode(.tail)
-        Spacer(minLength: 0)
-        CapoIcon(.chevronDown, size: 12).foregroundStyle(CapoTheme.mutedForeground)
-      }
-      .foregroundStyle(CapoTheme.foreground)
-      .padding(.horizontal, 12)
-      .frame(minHeight: CapoMetrics.minTouchTarget + 4)
-      .background(
-        state.isFiltered ? CapoTheme.accent.opacity(0.6) : CapoTheme.card,
-        in: RoundedRectangle(cornerRadius: CapoRadius.md, style: .continuous)
-      )
-      .overlay(
-        RoundedRectangle(cornerRadius: CapoRadius.md, style: .continuous)
-          .strokeBorder(CapoTheme.border, lineWidth: 1))
-      .contentShape(RoundedRectangle(cornerRadius: CapoRadius.md, style: .continuous))
+    HStack(spacing: 6) {
+      leading(state, size: 20)
+      Text(state.label)
+        .capoText(.xs, weight: .medium)
+        .lineLimit(1)
+        .frame(maxWidth: ContextPillState.maxLabelWidth(compact: true), alignment: .leading)
+        .fixedSize(horizontal: true, vertical: false)
+      CapoIcon(.chevronDown, size: 12).foregroundStyle(CapoTheme.mutedForeground)
     }
+    .foregroundStyle(CapoTheme.foreground)
+    .padding(.horizontal, 10)
+    .frame(height: 32)
+    .background(state.isFiltered ? CapoTheme.accent.opacity(0.6) : Color.clear, in: Capsule())
+    .frame(minHeight: CapoMetrics.minTouchTarget)
+    .contentShape(Capsule())
   }
 }
 

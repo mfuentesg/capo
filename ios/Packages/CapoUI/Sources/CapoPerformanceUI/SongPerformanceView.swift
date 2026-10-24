@@ -16,11 +16,21 @@ public struct PerformanceNavigation {
   public var dockBottomInset: Double
   /// Shared full-screen flag; a standalone screen makes its own.
   public var chrome: StageChrome?
+  /// Title of the preceding song, for the Previous half of the set nav.
+  public var previousTitle: String?
+  /// Label of the back button in the pushed page header (the screen it returns to).
+  public var backLabel: String?
+  /// Songs of the current context, listed by the header's slide-over.
+  public var queue: SongQueue?
+  /// Called with the song picked in the slide-over.
+  public var onSelectSong: ((SongID) -> Void)?
 
   public init(
     positionLabel: String? = nil, onNext: (@MainActor () -> Void)? = nil,
     onPrevious: (@MainActor () -> Void)? = nil, nextTitle: String? = nil,
-    isEmbedded: Bool = false, dockBottomInset: Double = 0, chrome: StageChrome? = nil
+    isEmbedded: Bool = false, dockBottomInset: Double = 0, chrome: StageChrome? = nil,
+    previousTitle: String? = nil, backLabel: String? = nil, queue: SongQueue? = nil,
+    onSelectSong: ((SongID) -> Void)? = nil
   ) {
     self.positionLabel = positionLabel
     self.onNext = onNext
@@ -29,6 +39,32 @@ public struct PerformanceNavigation {
     self.isEmbedded = isEmbedded
     self.dockBottomInset = dockBottomInset
     self.chrome = chrome
+    self.previousTitle = previousTitle
+    self.backLabel = backLabel
+    self.queue = queue
+    self.onSelectSong = onSelectSong
+  }
+
+  /// Wires Previous / Next / position to the neighbours of a song in its queue. Nothing happens
+  /// without `onSelectSong`, since there is no way to open the other song.
+  @MainActor func applying(
+    neighbors: SongNeighbors?, onSelectSong select: ((SongID) -> Void)?
+  ) -> PerformanceNavigation {
+    var nav = self
+    nav.onSelectSong = select
+    guard let neighbors, let select else { return nav }
+    nav.positionLabel = neighbors.positionLabel
+    nav.previousTitle = neighbors.previous?.title
+    nav.nextTitle = neighbors.next?.title
+    if let previous = neighbors.previous {
+      let id = previous.id
+      nav.onPrevious = { select(id) }
+    }
+    if let next = neighbors.next {
+      let id = next.id
+      nav.onNext = { select(id) }
+    }
+    return nav
   }
 
   public static let standalone = PerformanceNavigation()
@@ -38,16 +74,40 @@ public struct PerformanceNavigation {
 public struct SongPerformanceView: View {
   let songID: SongID
   let navigation: PerformanceNavigation
+  let queue: SongQueue?
+  let neighbors: SongNeighbors?
+  let onSelectSong: ((SongID) -> Void)?
   @Environment(\.userServices) private var services
 
-  public init(songID: SongID, navigation: PerformanceNavigation = .standalone) {
+  /// A full-width pushed page. With a `queue` (or explicit `neighbors`) and `onSelectSong`, the
+  /// page shows Previous / Next in the bottom-left thumb zone and, for a queue, a header button
+  /// that slides the song list in from the leading edge.
+  public init(
+    songID: SongID, navigation: PerformanceNavigation = .standalone, queue: SongQueue? = nil,
+    neighbors: SongNeighbors? = nil, backLabel: String? = nil,
+    onSelectSong: ((SongID) -> Void)? = nil
+  ) {
     self.songID = songID
-    self.navigation = navigation
+    var nav = navigation
+    if let backLabel { nav.backLabel = backLabel }
+    self.navigation = nav
+    self.queue = queue
+    self.neighbors = neighbors
+    self.onSelectSong = onSelectSong
   }
 
   public var body: some View {
-    SongPerformanceScreen(songID: songID, services: services, navigation: navigation)
+    SongPerformanceScreen(songID: songID, services: services, navigation: resolvedNavigation)
       .id(songID)
+  }
+
+  private var resolvedNavigation: PerformanceNavigation {
+    guard !navigation.isEmbedded else { return navigation }
+    var nav = navigation.applying(
+      neighbors: neighbors ?? queue.flatMap { SongNeighbors(queue: $0, current: songID) },
+      onSelectSong: onSelectSong)
+    nav.queue = queue
+    return nav
   }
 }
 
@@ -62,6 +122,7 @@ struct SongPerformanceScreen: View {
   @State private var titlePill = TitlePillVisibility()
   @State private var titlePillVisible = false
   @State private var transientDockExpanded = false
+  @State private var showQueue = false
   @AppStorage(StageDockPreference.defaultsKey) private var dockExpanded = true
   @Environment(\.currentTeamRole) private var role
   @Environment(\.capoActions) private var actions
@@ -105,6 +166,7 @@ struct SongPerformanceScreen: View {
         ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity)
       }
       shortcutHost
+      queueOverlay
     }
     .toolbar(.hidden, for: .navigationBar)
     .background {
@@ -168,6 +230,7 @@ struct SongPerformanceScreen: View {
           song: song, model: model, navigation: navigation,
           canEdit: role?.canEditContent ?? true, compact: compact,
           showsBack: !navigation.isEmbedded && isPresented, onBack: { dismiss() },
+          onShowList: queueEnabled ? { showQueue = true } : nil,
           onEdit: { actions.openEditor(.edit(song.id)) }, onFullscreen: toggleFullscreen)
           .transition(.move(edge: .top).combined(with: .opacity))
       }
@@ -272,6 +335,16 @@ struct SongPerformanceScreen: View {
       }
     }
     .allowsHitTesting(true)
+  }
+
+  private var queueEnabled: Bool {
+    !navigation.isEmbedded && navigation.queue != nil && navigation.onSelectSong != nil
+  }
+
+  @ViewBuilder private var queueOverlay: some View {
+    if queueEnabled, !isFullscreen, let queue = navigation.queue, let select = navigation.onSelectSong {
+      SongQueueOverlay(isPresented: $showQueue, queue: queue, current: model.songID, onSelect: select)
+    }
   }
 
   /// ⌃⌘F, as on macOS apps; the visible buttons carry the labels.

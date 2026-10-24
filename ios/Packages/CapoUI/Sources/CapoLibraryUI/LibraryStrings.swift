@@ -122,4 +122,17 @@ enum LibraryStrings {
     case .archived: L10n.Ios.Library.Status.archived
     }
   }
+
+  static func columnName(_ column: SongColumn) -> String {
+    switch column {
+    case .title: L10n.Ios.Table.colTitle
+    case .artist: L10n.Ios.Library.Sort.artist
+    case .key: L10n.Ios.Table.colKey
+    case .bpm: L10n.Ios.Table.colBpm
+    case .tags: L10n.Ios.Table.colTags
+    case .played: L10n.Ios.Table.colPlayed
+    case .owner: L10n.Ios.Table.colOwner
+    case .recent: L10n.Ios.Table.sortRecent
+    }
+  }
 }

@@ -362,6 +362,46 @@
       "capoShort": "capo {fret}",
       "decrease": "Decrease",
       "increase": "Increase"
+    },
+    "queue": {
+      "previous": "Previous",
+      "next": "Next",
+      "jumpToSong": "Jump to song…",
+      "hideList": "Hide list",
+      "showList": "Show song list",
+      "songs": "Songs",
+      "setlist": "Setlist",
+      "setlistTitle": "Setlist · {name}",
+      "songListTitle": "Songs",
+      "back": "Back"
+    },
+    "table": {
+      "active": "Active",
+      "addToPlaylist": "Add to Playlist",
+      "archived": "Archived",
+      "clear": "Clear",
+      "colBpm": "BPM",
+      "colDate": "Date",
+      "colKey": "Key",
+      "colName": "Name",
+      "colOwner": "Owner",
+      "colPlayed": "Played",
+      "colSharing": "Sharing",
+      "colSongs": "Songs",
+      "colTags": "Tags",
+      "colTitle": "Title",
+      "done": "Done",
+      "groupValue": "Group: {value}",
+      "indexLabel": "Alphabet index",
+      "never": "Never",
+      "private": "Private",
+      "public": "Public",
+      "select": "Select",
+      "selectedCount": "{count} selected",
+      "sortAscending": "Sorted ascending",
+      "sortBy": "Sort by",
+      "sortDescending": "Sorted descending",
+      "sortRecent": "Recently added"
     }
   }
 }

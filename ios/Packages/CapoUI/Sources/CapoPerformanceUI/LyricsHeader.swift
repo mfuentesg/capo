@@ -14,6 +14,7 @@ struct LyricsHeader: View {
   let compact: Bool
   let showsBack: Bool
   let onBack: () -> Void
+  var onShowList: (() -> Void)?
   let onEdit: () -> Void
   let onFullscreen: () -> Void
   @State private var showSettings = false
@@ -39,10 +40,7 @@ struct LyricsHeader: View {
 
   private var titleRow: some View {
     HStack(spacing: 6) {
-      if showsBack {
-        LyricsHeaderButton(
-          icon: .arrowLeft, label: StageStrings.back, size: 32, action: onBack)
-      }
+      if showsBack { backButton }
       Text(song.title)
         .capoText(.base, weight: .semibold)
         .foregroundStyle(CapoTheme.foreground)
@@ -52,8 +50,32 @@ struct LyricsHeader: View {
         Text(position).capoText(.xs).monospacedDigit().foregroundStyle(CapoTheme.mutedForeground)
       }
       Spacer(minLength: 0)
+      if let onShowList, let label = navigation.queue?.buttonLabel {
+        SongQueueButton(label: label, action: onShowList)
+      }
     }
     .frame(minHeight: 32 * scale)
+  }
+
+  /// Arrow plus the name of the screen it returns to, tinted primary, then a hairline divider.
+  @ViewBuilder private var backButton: some View {
+    if let label = navigation.backLabel, !compact {
+      Button(action: onBack) {
+        HStack(spacing: 4) {
+          CapoIcon(.arrowLeft, size: 16)
+          Text(label).capoText(.sm, weight: .medium).lineLimit(1)
+        }
+        .foregroundStyle(CapoTheme.primary)
+        .padding(.horizontal, 8)
+        .frame(minHeight: 36 * scale)
+        .contentShape(Rectangle())
+      }
+      .buttonStyle(.plain)
+      .accessibilityLabel(StageStrings.back)
+      Rectangle().fill(CapoTheme.border).frame(width: 1, height: 18).padding(.horizontal, 2)
+    } else {
+      LyricsHeaderButton(icon: .arrowLeft, label: StageStrings.back, size: 32, action: onBack)
+    }
   }
 
   // MARK: Row 2

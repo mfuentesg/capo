@@ -93,10 +93,10 @@ import Testing
     let session = try #require(await deps.auth.currentSession())
     let services = try await deps.makeUserServices(session)
     let model = ShellModel(session: session, services: services, defaults: UserDefaults(suiteName: "capo.tests.\(UUID())")!)
-    model.navigation.songSelection = UUID()
+    model.navigation.songPath = [UUID()]
     let teamID = UUID()
     model.select(.team(teamID: teamID))
-    #expect(model.navigation.songSelection == nil)
+    #expect(model.navigation.songPath.isEmpty)
     #expect(model.context == .team(teamID: teamID))
   }
 
@@ -153,66 +153,76 @@ import Testing
 }
 
 @MainActor
-@Suite struct PanelLayoutTests {
-  @Test func defaultsToThirtyFiveSixtyFive() {
-    #expect(SplitLayout().listWidth(total: 1000) == 350)
-  }
-
-  @Test func clampsToMinimumListWidth() {
-    #expect(SplitLayout().listWidth(total: 600) == 280)
-    var layout = SplitLayout()
-    layout.setListWidth(50, total: 1000)
-    #expect(layout.listWidth(total: 1000) == 280)
-  }
-
-  @Test func keepsDetailAtLeastItsMinimum() {
-    var layout = SplitLayout()
-    layout.setListWidth(990, total: 1000)
-    #expect(layout.listWidth(total: 1000) == 640)
-  }
-
-  @Test func collapsedHasNoListWidth() {
-    var layout = SplitLayout()
-    layout.toggleList()
-    #expect(layout.listWidth(total: 1000) == 0)
-    layout.toggleList()
-    #expect(layout.listWidth(total: 1000) == 350)
-  }
-
-  @Test func roundTripsThroughRawValue() {
-    var layout = SplitLayout(listFraction: 0.42)
-    layout.toggleList()
-    #expect(SplitLayout(rawValue: layout.rawValue) == layout)
-    #expect(SplitLayout(rawValue: "garbage") == nil)
-  }
-
-  @Test func sidebarWidths() {
-    #expect(SidebarMetrics.width(collapsed: true) == 84)
-    #expect(SidebarMetrics.width(collapsed: false) == 264)
-  }
-}
-
-@MainActor
 @Suite struct ShellNavigationTests {
-  @Test func sidebarMatchesWebItemsInOrder() {
-    #expect(SidebarItem.allCases == [.songs, .playlists, .chords, .teams])
-    #expect(Set(SidebarItem.allCases.map(\.icon.rawValue)).count == 4)
+  @Test func tabsMatchWebItemsInOrder() {
+    #expect(ShellTab.allCases == [.songs, .playlists, .chords, .teams])
+    #expect(Set(ShellTab.allCases.map(\.icon.rawValue)).count == 4)
   }
 
   @Test func debugLaunchArgumentParsesDestinations() {
-    #expect(SidebarItem.debug("Chords") == .chords)
-    #expect(SidebarItem.debug("teams") == .teams)
-    #expect(SidebarItem.debug("settings") == nil)
-    #expect(SidebarItem.debug("nope") == nil)
+    #expect(ShellTab.debug("Chords") == .chords)
+    #expect(ShellTab.debug("teams") == .teams)
+    #expect(ShellTab.debug("settings") == nil)
+    #expect(ShellTab.debug("nope") == nil)
   }
 
-  @Test func openSongSelectsSongsDestination() {
+  @Test func openSongPushesOntoSongsStackAndSwitchesTab() {
     let nav = ShellNavigation()
     nav.open(.chords)
     let id = UUID()
     nav.openSong(id)
     #expect(nav.destination == .songs)
-    #expect(nav.songSelection == id)
+    #expect(nav.songPath == [id])
+  }
+
+  @Test func openingTheSameSongTwiceDoesNotStackDuplicates() {
+    let nav = ShellNavigation()
+    let id = UUID()
+    nav.openSong(id)
+    nav.openSong(id)
+    #expect(nav.songPath == [id])
+    let other = UUID()
+    nav.openSong(other)
+    #expect(nav.songPath == [id, other])
+  }
+
+  @Test func openPlaylistUsesItsOwnStack() {
+    let nav = ShellNavigation()
+    let song = UUID(), playlist = UUID()
+    nav.openSong(song)
+    nav.openPlaylist(playlist)
+    #expect(nav.destination == .playlists)
+    #expect(nav.playlistPath == [playlist])
+    #expect(nav.songPath == [song])
+  }
+
+  @Test func reselectingTheActiveTabPopsToRoot() {
+    let nav = ShellNavigation()
+    nav.openSong(UUID())
+    nav.open(.songs)
+    #expect(nav.songPath.isEmpty)
+    nav.openPlaylist(UUID())
+    nav.open(.chords)
+    #expect(!nav.playlistPath.isEmpty)
+    nav.open(.playlists)
+    #expect(!nav.playlistPath.isEmpty)
+    nav.open(.playlists)
+    #expect(nav.playlistPath.isEmpty)
+  }
+
+  @Test func resetSelectionsClearsBothStacks() {
+    let nav = ShellNavigation()
+    nav.openSong(UUID())
+    nav.openPlaylist(UUID())
+    nav.resetSelections()
+    #expect(nav.songPath.isEmpty && nav.playlistPath.isEmpty)
+  }
+
+  @Test func actionsOpenSongThroughTheStack() {
+    let nav = ShellNavigation()
+    let id = UUID()
+    nav.makeActions().openSong(id)
+    #expect(nav.songPath == [id])
   }
 
   @Test func personalPillShowsNameAndIsNotFiltered() {

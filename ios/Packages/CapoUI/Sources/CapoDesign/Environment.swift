@@ -41,6 +41,10 @@ extension EnvironmentValues {
   @Entry public var userServices: UserServices = .preview
   /// Default: `.personal(userID: FakeIDs.user)`.
   @Entry public var appContext: AppContext = .personal(userID: FakeIDs.user)
+  /// Where new songs, playlists and tags are created. Unlike `appContext` (the view filter, which can
+  /// be "All") this is always personal or a team, as on the web where the creation context survives
+  /// switching the view to "All".
+  @Entry public var creationContext: AppContext = .personal(userID: FakeIDs.user)
   /// nil = personal (full rights).
   @Entry public var currentTeamRole: TeamRole? = nil
   @Entry public var capoActions: CapoActions = .noop

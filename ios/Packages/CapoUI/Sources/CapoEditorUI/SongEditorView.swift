@@ -10,6 +10,7 @@ public struct SongEditorView: View {
 
   @Environment(\.userServices) private var services
   @Environment(\.appContext) private var context
+  @Environment(\.creationContext) private var creationContext
   @Environment(\.currentTeamRole) private var role
   @State private var model = SongEditorModel()
   @State private var confirmDelete = false
@@ -176,7 +177,7 @@ public struct SongEditorView: View {
         previewToggle
         Button(EditorStrings.save) {
           Task {
-            if let id = await model.save(songs: services.songs, context: context) { onFinish(id) }
+            if let id = await model.save(songs: services.songs, context: creationContext) { onFinish(id) }
           }
         }
         .buttonStyle(CapoPrimaryButtonStyle())

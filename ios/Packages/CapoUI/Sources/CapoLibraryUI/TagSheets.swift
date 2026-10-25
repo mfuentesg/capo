@@ -20,6 +20,7 @@ struct TagManagementView: View {
   let tags: [SongTag]
   @Environment(\.userServices) private var services
   @Environment(\.appContext) private var context
+  @Environment(\.creationContext) private var creationContext
   @Environment(\.dismiss) private var dismiss
   @State private var name = ""
   @State private var colorHex = tagPalette[0]
@@ -84,7 +85,7 @@ struct TagManagementView: View {
     guard !trimmed.isEmpty else { return }
     Task {
       do {
-        _ = try await services.tags.create(name: trimmed, color: colorHex, in: context)
+        _ = try await services.tags.create(name: trimmed, color: colorHex, in: creationContext)
         name = ""
         errorText = nil
       } catch { errorText = String(describing: error) }

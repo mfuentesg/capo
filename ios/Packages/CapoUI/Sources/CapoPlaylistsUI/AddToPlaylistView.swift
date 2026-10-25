@@ -11,6 +11,7 @@ public struct AddToPlaylistView: View {
 
   @Environment(\.userServices) private var services
   @Environment(\.appContext) private var context
+  @Environment(\.creationContext) private var creationContext
   @State private var ids: [SongID]
   @State private var titles: [SongID: (title: String, artist: String?)] = [:]
   @State private var playlists: [PlaylistSummary] = []
@@ -200,7 +201,7 @@ public struct AddToPlaylistView: View {
         case .new:
           _ = try await services.playlists.create(
             PlaylistDraft(name: newName.trimmingCharacters(in: .whitespaces), songIDs: ids),
-            in: context)
+            in: creationContext)
           await finish(L10n.Toasts.playlistCreated)
         case .existing(let playlistID):
           var existing: [SongID] = []

@@ -10,6 +10,7 @@ struct PlaylistFormView: View {
 
   @Environment(\.userServices) private var services
   @Environment(\.appContext) private var context
+  @Environment(\.creationContext) private var creationContext
   @Environment(\.dismiss) private var dismiss
   @State private var name = ""
   @State private var details = ""
@@ -83,7 +84,7 @@ struct PlaylistFormView: View {
             PlaylistDraft(
               name: trimmed, description: details.isEmpty ? nil : details,
               date: hasDate ? dateString : nil),
-            in: context)
+            in: creationContext)
           onSaved(created)
         case .edit(let playlist):
           try await services.playlists.update(

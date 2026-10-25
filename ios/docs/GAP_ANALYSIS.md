@@ -43,7 +43,7 @@ Backlog (section 4): 28 work items = P0 8, P1 11, P2 9 (IDs GAP-011 and GAP-027 
 3. GAP-003 (P0, BUG, web): the web column toggle overwrites the whole `profiles.preferences` JSON (`features/songs/api/user-preferences-api.ts:93-113`), wiping `chordHand`, `palette`, `uiFont`, `theme`, `locale`, which iOS also reads. Fix on the web side.
 4. GAP-004 (P0, BUG): the song picker used by the playlist detail ignores the playlist's bucket, so personal songs can be added to team playlists (`UI/CapoLibraryUI/SongPickerView.swift:11`; the web filters, `features/playlists/components/playlist-detail/add-songs-sheet.tsx:54-65`). Teammates cannot read those songs.
 5. GAP-005 (P0, MISSING): Sign in with Apple (App Store 4.8) and shipping account deletion (5.1.1v). Both are release blockers (`ios/HUMAN_TODO.md` items 4 and 5, `UI/CapoShellUI/ShellSettings.swift:10`).
-6. GAP-006 (P0, MISSING): no universal links and no in-app handler for `https://<host>/shared/<code>` or `/teams/accept-invitation?token=`. `Info.plist` has only the `capo://` scheme and no associated domains.
+6. GAP-006 (WON'T DO, links stay web-only): no universal links and no in-app handler for `https://<host>/shared/<code>` or `/teams/accept-invitation?token=`. `Info.plist` has only the `capo://` scheme and no associated domains.
 7. GAP-007 (P0, BUG): the share sheet depends on the `ensure_share_code` RPC, which now requires edit permission. Viewers and offline users cannot share a link that is already in the local row (`KIT/CapoComposition.swift:128-130`, `UI/CapoTeamsUI/PlaylistShareSheet.swift:79-96`). The fallback `ShareSheetView` has no private-playlist check (`UI/CapoPlaylistsUI/PlaylistDetailView.swift:725-731`).
 8. GAP-008 (P0, BUG): decline invitation deletes the row, but RLS only lets owner or admin delete (`MIG/20251224171732_rls_policies.sql:241`), so decline silently does nothing. Pending invitations are also filtered by RLS to teams where the user is already a member (`MIG/20251224171732_rls_policies.sql:216-221`), so the invitee's list is probably empty on web and iOS (verify on production).
 9. GAP-009 (P1, BUG): song tag filter uses OR semantics (`DATA/CapoStore/Repositories/SongRepository.swift:174-182`); the web uses AND (`features/songs/components/song-list/song-list.tsx:62-64`).
@@ -362,7 +362,7 @@ Format: ID, title, size, acceptance criteria (AC), files, tests.
 - Files: `SB/Auth/SupabaseAuthService.swift`, `CORE/CapoCore/Contracts/LocalContracts.swift:102-109`, `UI/CapoAuthUI/AuthView.swift`, `UI/CapoShellUI/ShellSettings.swift:10`, Xcode entitlements, `ios/HUMAN_TODO.md`.
 - Tests: `CapoAuthUITests`, `CapoSupabaseTests` (request shape), `CapoShellUITests` (Release flag).
 
-**GAP-006. Universal links and URL router (M)**
+**GAP-006. Universal links and URL router (M) — WON'T DO (product decision 2026-10-25: shared and invitation links stay web-only)**
 
 - AC: AASA file on the web domain (`public/.well-known/apple-app-site-association`), Associated Domains entitlement, router for `/shared/<code>` (open the playlist if synced, else GAP-024 viewer, else Safari) and `/teams/accept-invitation?token=` (signed in: call `accept_team_invitation`, switch to the team; signed out: keep the token and resume after login, like the `_invitation_token` cookie).
 - Files: web `public/.well-known/*`, `ios/Capo/**` entitlements, `KIT/CapoAppScene.swift:17-19`, new `UI/CapoShellUI/DeepLinkRouter.swift`, `ShellNavigation.swift`.
@@ -465,7 +465,7 @@ Format: ID, title, size, acceptance criteria (AC), files, tests.
 - AC: sparkles button fills a random "Adjective Noun" (lists in `playlist-create-form.tsx:45-62`), localized.
 - Files: `UI/CapoPlaylistsUI/PlaylistFormView.swift`, `PlaylistLogic.swift`.
 
-**GAP-024. In-app shared playlist viewer (L)**
+**GAP-024. In-app shared playlist viewer (L) — WON'T DO (shared pages stay web-only)**
 
 - AC: read-only view by code with lyrics and prev/next, owner and team toggles, realtime; signed-out access only if the product wants it (question 2).
 - Files: `UI/CapoPlaylistsUI` (new view), `CORE/CapoCore/Contracts/RemoteContracts.swift` (`getPublicPlaylist(code:)`), `SB/Remote/SupabaseRemoteSyncSource.swift`.

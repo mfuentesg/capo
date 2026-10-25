@@ -44,8 +44,6 @@ for (const m of exportsSrc.matchAll(/export \{([^}]*)\} from '\.\/icons\/([^']+)
   }
 }
 
-// Canonical web name: strip the `Icon` suffix alias (CheckIcon -> Check).
-const canonical = (n) => (fileFor.has(n) || !n.endsWith("Icon") ? n : n)
 const webNames = new Set()
 for (const n of used) {
   if (fileFor.has(n) && !(n.endsWith("Icon") && fileFor.has(n.slice(0, -4)))) webNames.add(n)

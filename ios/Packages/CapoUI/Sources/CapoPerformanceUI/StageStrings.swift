@@ -16,6 +16,7 @@ enum StageStrings {
   static var increase: String { L10n.Ios.Stage.increase }
   static var more: String { L10n.Ios.Stage.more }
   static var chordsToggle: String { L10n.Ios.Stage.chords }
+  static var lyricsToggle: String { L10n.Songs.Lyrics.showLyricsLabel }
   static var columnsToggle: String { L10n.Ios.Stage.columns }
   static var enterFullscreen: String { L10n.Ios.Stage.enterFullscreen }
   static var exitFullscreen: String { L10n.Ios.Stage.exitFullscreen }

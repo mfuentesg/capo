@@ -40,6 +40,38 @@ nonisolated enum FloatingControlsPreference {
   static let defaultFraction = CGPoint(x: 0.88, y: 0.86)
 }
 
+/// Where the floating button rests, remembered separately for each orientation and width class,
+/// because a spot that suits a portrait phone is wrong on a landscape iPad. Stored as one string,
+/// `"p-c=0.88,0.86;l-r=0.9,0.5"`; shapes with no entry fall back to the legacy single position.
+nonisolated struct FloatingPlacements: Equatable {
+  static let key = "ios.stage.floatingControls.placements"
+
+  /// `p`/`l` for portrait/landscape, `c`/`r` for compact/regular width.
+  static func shape(size: CGSize, isRegularWidth: Bool) -> String {
+    (size.width > size.height ? "l" : "p") + "-" + (isRegularWidth ? "r" : "c")
+  }
+
+  private var values: [String: CGPoint] = [:]
+
+  init(raw: String) {
+    for entry in raw.split(separator: ";") {
+      let pair = entry.split(separator: "=")
+      guard pair.count == 2 else { continue }
+      let numbers = pair[1].split(separator: ",").compactMap { Double($0) }
+      guard numbers.count == 2 else { continue }
+      values[String(pair[0])] = CGPoint(x: numbers[0], y: numbers[1])
+    }
+  }
+
+  var raw: String {
+    values.keys.sorted().map { "\($0)=\(values[$0]!.x),\(values[$0]!.y)" }.joined(separator: ";")
+  }
+
+  func fraction(for shape: String, fallback: CGPoint) -> CGPoint { values[shape] ?? fallback }
+
+  mutating func set(_ fraction: CGPoint, for shape: String) { values[shape] = fraction }
+}
+
 /// Placement of the floating controls button inside the lyrics area (pure; unit-tested).
 nonisolated enum FloatingControlsMath {
   static let buttonSize: CGFloat = 60
@@ -60,11 +92,13 @@ nonisolated enum FloatingControlsMath {
   /// The panel opens above the button when it sits in the lower half, below otherwise.
   static func opensAbove(center: CGPoint, in size: CGSize) -> Bool { center.y > size.height / 2 }
 
-  static func clamp(_ point: CGPoint, in size: CGSize) -> CGPoint {
+  /// `top`/`bottom` keep the button off the status bar and home indicator when the area runs
+  /// under them (full screen), without shrinking the area the panel is laid out in.
+  static func clamp(_ point: CGPoint, in size: CGSize, top: CGFloat = 0, bottom: CGFloat = 0) -> CGPoint {
     let inset = buttonSize / 2 + margin
     return CGPoint(
       x: min(max(point.x, inset), max(inset, size.width - inset)),
-      y: min(max(point.y, inset), max(inset, size.height - inset)))
+      y: min(max(point.y, inset + top), max(inset + top, size.height - inset - bottom)))
   }
 }
 

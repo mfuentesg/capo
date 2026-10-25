@@ -8,8 +8,10 @@ import SwiftUI
 public struct LibraryView: View {
   @Environment(\.userServices) private var services
   @Environment(\.appContext) private var context
-  @Environment(\.currentTeamRole) private var role
+  @Environment(\.teamRoles) private var teamRoles
+  @Environment(\.creationContext) private var creationContext
   @Environment(\.capoActions) private var actions
+  @Environment(\.playlistDraft) private var draft
   @Environment(\.horizontalSizeClass) private var sizeClass
   @State private var model = LibraryModel()
   @State private var showTagManagement = false
@@ -18,7 +20,8 @@ public struct LibraryView: View {
 
   public init() {}
 
-  private var canEdit: Bool { role?.canEditContent ?? true }
+  /// Creating happens in the creation bucket; the rows use their own team.
+  private var canCreate: Bool { teamRoles.canEdit(in: creationContext) }
 
   public var body: some View {
     @Bindable var model = model
@@ -27,7 +30,7 @@ public struct LibraryView: View {
         width: proxy.size.width, isRegularSizeClass: sizeClass == .regular, showsOwnership: context.isAll)
       VStack(spacing: 0) {
         LibraryHeader(
-          model: model, canEdit: canEdit, isRegular: layout.mode == .regular,
+          model: model, canEdit: canCreate, isRegular: layout.mode == .regular,
           onAdd: { actions.openEditor(.create) }, onManageTags: { showTagManagement = true })
         if layout.mode == .regular { columnStrip(layout) } else { CapoTheme.border.frame(height: 1) }
         songList(layout)
@@ -45,6 +48,8 @@ public struct LibraryView: View {
     .sheet(item: $assignTagsFor) { target in
       AssignTagsView(songID: target.id, allTags: model.tags).presentationDetents([.medium, .large])
     }
+    // Tags belong to a context, so a selection from the previous one would match nothing.
+    .onChange(of: context) { model.filters.tagIDs = [] }
     .task(id: model.searchInput) { await model.commitSearchAfterDebounce() }
     .task(id: model.query(context: context)) {
       for await items in services.songs.songs(model.query(context: context)) {
@@ -134,17 +139,17 @@ public struct LibraryView: View {
   private func rows(_ items: [SongListItem], layout: SongTableLogic.Layout) -> some View {
     ForEach(items) { item in
       let state = SongTableRowState(
-        inCart: model.cart.contains(item.id), selecting: model.selecting,
+        inCart: draft.contains(item.id), selecting: model.selecting,
         ownership: model.ownership(for: item, in: context), layout: layout)
       Group {
         if layout.mode == .regular {
-          SongTableRow(item: item, state: state) { model.toggleCart(item.id) }
+          SongTableRow(item: item, state: state) { draft.toggle(item.id) }
         } else {
-          SongCompactRow(item: item, state: state) { model.toggleCart(item.id) }
+          SongCompactRow(item: item, state: state) { draft.toggle(item.id) }
         }
       }
       .onTapGesture {
-        if model.selecting { model.toggleCart(item.id) } else { actions.openSong(item.id) }
+        if model.selecting { draft.toggle(item.id) } else { actions.openSong(item.id) }
       }
       .accessibilityAddTraits(.isButton)
       .listRowBackground(Color.clear)
@@ -157,7 +162,7 @@ public struct LibraryView: View {
         .tint(CapoTheme.accentPlaylists)
       }
       .swipeActions(edge: .leading) {
-        if canEdit {
+        if teamRoles.canEdit(teamID: item.teamID) {
           Button { assignTagsFor = SongSheetTarget(id: item.id) } label: {
             CapoIconLabel(LibraryStrings.assignTags, icon: .tag)
           }
@@ -168,7 +173,7 @@ public struct LibraryView: View {
         Button { actions.addSongsToPlaylist([item.id]) } label: {
           CapoIconLabel(LibraryStrings.addToSetlist, icon: .listMusic)
         }
-        if canEdit {
+        if teamRoles.canEdit(teamID: item.teamID) {
           Button { assignTagsFor = SongSheetTarget(id: item.id) } label: {
             CapoIconLabel(LibraryStrings.assignTags, icon: .tag)
           }
@@ -184,13 +189,12 @@ public struct LibraryView: View {
 
   /// Floating "n selected · Clear · Add to Playlist" once songs are queued.
   @ViewBuilder private var selectionBar: some View {
-    if !model.cart.isEmpty {
+    if !draft.ids.isEmpty {
       SelectionBar(
-        count: model.cart.count,
-        onClear: { withAnimation(.snappy(duration: 0.2)) { model.cart = [] } },
+        count: draft.ids.count,
+        onClear: { withAnimation(.snappy(duration: 0.2)) { draft.clear() } },
         onAdd: {
-          actions.addSongsToPlaylist(model.cart)
-          model.finishSelecting()
+          actions.addSongsToPlaylist(draft.ids)
         }
       )
       .padding(.bottom, 12)

@@ -39,6 +39,8 @@ extension GRDBSyncStore {
         }
       }
 
+      if batch.memberships != nil { try Self.purgeLeftTeams(db) }
+
       for id in batch.deleteSongIDs where !skip.contains(OutboxOperation.key("song", id)) {
         try LocalPurge.song(db, id: id)
       }
@@ -119,6 +121,35 @@ extension GRDBSyncStore {
             profile.updatedAt.raw, keepLocalPreferences
           ])
       }
+    }
+  }
+
+  /// Left (or removed from) a team: its songs, playlists and tags go, together with any queued or
+  /// failed operations on them, which could never be applied any more and would otherwise pin the
+  /// rows through the pull's skip set.
+  private static func purgeLeftTeams(_ db: Database) throws {
+    let orphan = "team_id IS NOT NULL AND team_id NOT IN (SELECT team_id FROM team_members)"
+    for raw in try String.fetchAll(db, sql: "SELECT id FROM songs WHERE \(orphan)") {
+      guard let id = UUID(uuidString: raw) else { continue }
+      for key in [OutboxOperation.key("song", id), OutboxOperation.key("settings", id)] {
+        try Outbox.delete(
+          db, entityKey: key, states: [.pending, .inflight, .conflict, .failed])
+      }
+      try LocalPurge.song(db, id: id)
+    }
+    for raw in try String.fetchAll(db, sql: "SELECT id FROM playlists WHERE \(orphan)") {
+      guard let id = UUID(uuidString: raw) else { continue }
+      try Outbox.delete(
+        db, entityKey: OutboxOperation.key("playlist", id),
+        states: [.pending, .inflight, .conflict, .failed])
+      try LocalPurge.playlist(db, id: id)
+    }
+    for raw in try String.fetchAll(db, sql: "SELECT id FROM song_tags WHERE \(orphan)") {
+      guard let id = UUID(uuidString: raw) else { continue }
+      try Outbox.delete(
+        db, entityKey: OutboxOperation.key("tag", id),
+        states: [.pending, .inflight, .conflict, .failed])
+      try LocalPurge.tag(db, id: id)
     }
   }
 

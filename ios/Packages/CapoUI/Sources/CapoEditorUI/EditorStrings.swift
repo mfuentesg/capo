@@ -18,6 +18,18 @@ enum EditorStrings {
   static var bpmInvalid: String {
     L10n.Ios.Editor.bpmInvalid
   }
+  /// "Title: Max 200 characters".
+  static func tooLong(_ field: EditorForm.LimitedField) -> String {
+    let name: String =
+      switch field {
+      case .title: L10n.Ios.Editor.title
+      case .artist: L10n.Ios.Editor.artist
+      case .key: L10n.Ios.Editor.key
+      case .notes: L10n.Ios.Editor.notes
+      case .lyrics: L10n.Ios.Editor.lyrics
+      }
+    return "\(name): \(L10n.Ios.Editor.maxLength(max: String(field.maxLength)))"
+  }
   static var transpose: String { L10n.Ios.Editor.transpose }
   static var capo: String { L10n.Ios.Editor.capo }
   static var notes: String { L10n.Ios.Editor.notes }
@@ -56,6 +68,25 @@ enum EditorStrings {
     L10n.Ios.Editor.saveFailed
   }
   static var comment: String { L10n.Ios.Editor.comment }
+
+  // Failed changes
+  static var failedTitle: String { L10n.Ios.Editor.Conflicts.failedTitle }
+  static var failedHint: String { L10n.Ios.Editor.Conflicts.failedHint }
+  static var retry: String { L10n.Ios.Editor.Conflicts.retry }
+  static var discardFailed: String { L10n.Ios.Editor.Conflicts.discard }
+  static func failedKind(_ kind: String) -> String {
+    switch kind {
+    case "createSong", "updateSong": L10n.Ios.Editor.Conflicts.kindSong
+    case "deleteSong": L10n.Ios.Editor.Conflicts.kindSongDeleted
+    case "setSongTags", "createTag", "deleteTag": L10n.Ios.Editor.Conflicts.kindTags
+    case "createPlaylist", "updatePlaylist", "setPlaylistArchived":
+      L10n.Ios.Editor.Conflicts.kindPlaylist
+    case "deletePlaylist": L10n.Ios.Editor.Conflicts.kindPlaylistDeleted
+    case "addSongToPlaylist", "removeSongFromPlaylist", "reorderPlaylist":
+      L10n.Ios.Editor.Conflicts.kindPlaylistSongs
+    default: L10n.Ios.Editor.Conflicts.kindOther
+    }
+  }
 
   // Conflicts
   static var conflictsTitle: String {

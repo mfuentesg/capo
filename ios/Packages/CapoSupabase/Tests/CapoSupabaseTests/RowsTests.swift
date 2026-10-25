@@ -52,7 +52,7 @@ import Testing
     #expect(array.profile?.fullName == nil)
   }
 
-  @Test func pendingInvitationFallsBackToInviterEmail() throws {
+  @Test func pendingInvitationDecodesTheRpcRow() throws {
     let pending = try decode(PendingInvitationRow.self, "pending_invitation").model
     #expect(pending.teamName == "Worship Team")
     #expect(pending.inviterName == "a@example.test")

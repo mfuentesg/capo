@@ -15,6 +15,7 @@ Needs Xcode 26 or newer.
 
 ```bash
 ios/scripts/build-sim.sh            # app for the simulator, unsigned (derived data in ios/build/dd-sim)
+ios/scripts/check-design-tokens.mjs # web CSS tokens vs iOS palette tables (also run by test-packages.sh)
 ios/scripts/test-packages.sh        # swift test for CapoCore, CapoData, CapoSupabase, then CapoUI on a simulator
 ios/scripts/install-device.sh [iphone|ipad]   # signed build, install and launch on a connected device
 ```
@@ -40,7 +41,7 @@ For local debugging, `ios/scripts/mint-dev-session.sh` writes a git-ignored `Dev
 
 ## Navigation and debug launch arguments
 
-One shell for iPhone and iPad: slim top bar plus a bottom bar (Songs, Playlists, Chords, Teams). Settings opens from the avatar menu. Debug builds accept launch arguments for simulator checks: `-CapoDemo YES` (demo data), `-CapoSidebar songs|playlists|chords|teams|settings` (start tab), `-CapoOpenFirstSong YES`, `-CapoStageFullscreen YES`, `-CapoSettingsTab appearance|account`, `-CapoDebugPalette`, `-CapoDebugFont`, `-CapoDevSession YES`.
+One shell for iPhone and iPad: slim top bar plus a bottom bar (Songs, Playlists, Chords, Teams). Settings opens from the avatar menu. Debug builds accept launch arguments for simulator checks: `-CapoDemo YES` (demo data), `-CapoSidebar songs|playlists|chords|teams|settings` (start tab), `-CapoOpenFirstSong YES`, `-CapoOpenDraft YES` (queue three songs, open the draft dialog), `-CapoFloatingOpen YES` with `-ios.stage.floatingControls YES` (floating controls, panel open), `-CapoStageFullscreen YES`, `-CapoSettingsTab appearance|account`, `-CapoDebugPalette`, `-CapoDebugFont`, `-CapoDevSession YES`.
 
 Production is configured with `ios/scripts/use-supabase.sh production`; the app then reads and writes the real account. Status and open items: `ios/docs/STATUS.md`.
 

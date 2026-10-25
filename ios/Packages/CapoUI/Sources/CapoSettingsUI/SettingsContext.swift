@@ -1,3 +1,4 @@
+import CapoCore
 import SwiftUI
 
 /// What `SettingsView` needs from the shell. `SettingsView` keeps its frozen no-argument init, so
@@ -16,6 +17,8 @@ public nonisolated struct SettingsContext: Sendable {
   /// Calls the `delete_user_account` RPC. nil hides the "Delete account" button (the shell passes
   /// nil in production builds until the human approves).
   public var deleteAccount: (@Sendable () async throws -> Void)?
+  /// Sends the feedback form. nil hides the Feedback row.
+  public var submitFeedback: (@Sendable (FeedbackDraft) async throws -> Void)?
 
   public init(
     email: String? = nil,
@@ -26,7 +29,8 @@ public nonisolated struct SettingsContext: Sendable {
     serverURL: URL? = nil,
     isDemo: Bool = false,
     signOut: @escaping @MainActor @Sendable (Bool) -> Void = { _ in },
-    deleteAccount: (@Sendable () async throws -> Void)? = nil
+    deleteAccount: (@Sendable () async throws -> Void)? = nil,
+    submitFeedback: (@Sendable (FeedbackDraft) async throws -> Void)? = nil
   ) {
     self.email = email
     self.fullName = fullName
@@ -37,6 +41,7 @@ public nonisolated struct SettingsContext: Sendable {
     self.isDemo = isDemo
     self.signOut = signOut
     self.deleteAccount = deleteAccount
+    self.submitFeedback = submitFeedback
   }
 
   public static let empty = SettingsContext()

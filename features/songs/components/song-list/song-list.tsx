@@ -1,5 +1,6 @@
 "use client"
 
+import { BPM_FAST_ABOVE, BPM_SLOW_BELOW } from "@/lib/bpm"
 import { memo, useMemo } from "react"
 import { Music } from "lucide-react"
 import { SongItem } from "@/features/songs"
@@ -54,10 +55,10 @@ export const SongList = memo(function SongList({
       const matchesBpm =
         bpmRange === "all" ||
         (bpmRange === "slow"
-          ? bpm < 100
+          ? bpm < BPM_SLOW_BELOW
           : bpmRange === "medium"
-            ? bpm >= 100 && bpm <= 140
-            : bpm > 140)
+            ? bpm >= BPM_SLOW_BELOW && bpm <= BPM_FAST_ABOVE
+            : bpm > BPM_FAST_ABOVE)
 
       const matchesTags =
         filterTags.length === 0 ||

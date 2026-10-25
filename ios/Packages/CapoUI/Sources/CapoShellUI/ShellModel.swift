@@ -12,9 +12,13 @@ final class ShellModel {
   let contextStore: ContextStore
   let navigation = ShellNavigation()
   var syncStatus = SyncStatus(phase: .idle, lastSuccessAt: nil, pendingOperations: 0, conflicts: 0, failedOperations: 0)
-  var conflictCount = 0
+  private var openConflicts = 0
+  private var failedCount = 0
+  /// Conflicts plus refused changes: everything the sync-issues screen lists.
+  var conflictCount: Int { openConflicts + failedCount }
   var songCount = 0
   private var didDebugOpen = false
+  private var didDebugDraft = false
   var theme: AppTheme?
   let settingsContext: SettingsContext
 
@@ -87,7 +91,12 @@ final class ShellModel {
   }
 
   func observeConflicts() async {
-    for await list in services.conflicts.conflicts() { conflictCount = list.count }
+    for await list in services.conflicts.conflicts() { openConflicts = list.count }
+  }
+
+  /// Refused changes count with conflicts: the sync-issues screen lists both.
+  func observeFailedOperations() async {
+    for await list in services.conflicts.failedOperations() { failedCount = list.count }
   }
 
   /// Songs saved on this device for the current context, for the sidebar footer.
@@ -100,6 +109,12 @@ final class ShellModel {
         if !didDebugOpen, UserDefaults.standard.bool(forKey: "CapoOpenFirstSong"), let first = items.first {
           didDebugOpen = true
           navigation.openSong(first.id)
+        }
+        // `-CapoOpenDraft YES`: queue the first three songs and open the draft dialog.
+        if !didDebugDraft, UserDefaults.standard.bool(forKey: "CapoOpenDraft"), items.count >= 3 {
+          didDebugDraft = true
+          navigation.draft.add(items.prefix(3).map(\.id))
+          navigation.pendingAdd = PendingAdd()
         }
       #endif
     }

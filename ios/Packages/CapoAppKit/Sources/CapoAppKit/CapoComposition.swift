@@ -81,8 +81,10 @@ public nonisolated enum CapoComposition {
       reachability: reachability ?? NWReachabilityMonitor())
     syncBox.engine = engine
     var deleteAccount: (@Sendable () async throws -> Void)?
+    var submitFeedback: (@Sendable (FeedbackDraft) async throws -> Void)?
     if let account = remotes.account {
       deleteAccount = { try await account.deleteAccount(userID: userID) }
+      submitFeedback = { try await account.submitFeedback($0) }
     }
     logger.info("Opened local database for user \(userID.uuidString, privacy: .private)")
 
@@ -107,7 +109,7 @@ public nonisolated enum CapoComposition {
           logger.error("Erasing local data failed: \(error.localizedDescription, privacy: .public)")
         }
       },
-      deleteAccount: deleteAccount)
+      deleteAccount: deleteAccount, submitFeedback: submitFeedback)
   }
 }
 

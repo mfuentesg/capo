@@ -62,6 +62,39 @@ import Testing
     #expect(d.string(forKey: ContextStore.key(for: user)) == nil)
   }
 
+  @Test func creationContextSurvivesSwitchingToAll() {
+    let d = defaults()
+    let user = UUID()
+    let t = team(3)
+    let store = ContextStore(userID: user, defaults: d)
+    #expect(store.creationContext == .personal(userID: user))
+    store.update(teams: [t])
+    store.select(.team(teamID: t.id))
+    store.selectAll()
+    #expect(store.context == .all(userID: user))
+    #expect(store.creationContext == .team(teamID: t.id))
+
+    let relaunched = ContextStore(userID: user, defaults: d)
+    #expect(relaunched.context == .all(userID: user))
+    #expect(relaunched.creationContext == .team(teamID: t.id))
+    relaunched.selectPersonal()
+    #expect(relaunched.creationContext == .personal(userID: user))
+  }
+
+  @Test func creationContextIsTheStoredTeamBeforeTeamsLoad() {
+    let d = defaults()
+    let user = UUID()
+    let t = team(4)
+    let first = ContextStore(userID: user, defaults: d)
+    first.update(teams: [t])
+    first.select(.team(teamID: t.id))
+    let cold = ContextStore(userID: user, defaults: d)
+    #expect(cold.context == .all(userID: user))  // team not confirmed yet
+    #expect(cold.creationContext == .team(teamID: t.id))
+    cold.update(teams: [])
+    #expect(cold.creationContext == .personal(userID: user))
+  }
+
   @Test func personalHasNoRole() {
     let store = ContextStore(userID: UUID(), defaults: defaults())
     #expect(store.role == nil)
@@ -143,12 +176,8 @@ import Testing
     #expect(calls.count == 1)
   }
 
-  @Test func releaseBuildsKeepDeletionHidden() {
-    #if DEBUG
-      #expect(ShellSettings.allowsAccountDeletion)
-    #else
-      #expect(!ShellSettings.allowsAccountDeletion)
-    #endif
+  @Test func accountDeletionShipsInEveryBuild() {
+    #expect(ShellSettings.allowsAccountDeletion)
   }
 }
 
@@ -173,6 +202,22 @@ import Testing
     nav.openSong(id)
     #expect(nav.destination == .songs)
     #expect(nav.songPath == [id])
+  }
+
+  @Test func switchingContextKeepsNavigationAndTheDraft() {
+    let user = UUID()
+    let defaults = UserDefaults(suiteName: "ctx-nav-\(UUID().uuidString)")!
+    let store = ContextStore(userID: user, defaults: defaults)
+    let nav = ShellNavigation()
+    let song = UUID()
+    nav.openSong(song)
+    nav.draft.add([song])
+    store.selectPersonal()
+    store.selectAll()
+    // Navigation and the draft live outside the context store, and the shell view no longer
+    // recreates itself with `.id(context)`, so none of this is reset by a filter change.
+    #expect(nav.songPath == [song])
+    #expect(nav.draft.ids == [song])
   }
 
   @Test func openingTheSameSongTwiceDoesNotStackDuplicates() {

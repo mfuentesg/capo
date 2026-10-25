@@ -124,7 +124,15 @@ struct SongPerformanceScreen: View {
   @State private var transientDockExpanded = false
   @State private var showQueue = false
   @AppStorage(StageDockPreference.defaultsKey) private var dockExpanded = true
-  @Environment(\.currentTeamRole) private var role
+  @AppStorage(FloatingControlsPreference.enabledKey) private var floatingControls = false
+  @State private var floatingOpen = {
+    #if DEBUG
+      UserDefaults.standard.bool(forKey: "CapoFloatingOpen")  // screenshot hook
+    #else
+      false
+    #endif
+  }()
+  @Environment(\.teamRoles) private var teamRoles
   @Environment(\.capoActions) private var actions
   @Environment(\.horizontalSizeClass) private var sizeClass
   @Environment(\.isPresented) private var isPresented
@@ -228,7 +236,7 @@ struct SongPerformanceScreen: View {
       if !isFullscreen && !showsInlineHeading {
         LyricsHeader(
           song: song, model: model, navigation: navigation,
-          canEdit: role?.canEditContent ?? true, compact: compact,
+          canEdit: teamRoles.canEdit(teamID: song.teamID), compact: compact,
           showsBack: !navigation.isEmbedded && isPresented, onBack: { dismiss() },
           onShowList: queueEnabled ? { showQueue = true } : nil,
           onEdit: { actions.openEditor(.edit(song.id)) }, onFullscreen: toggleFullscreen)
@@ -236,8 +244,10 @@ struct SongPerformanceScreen: View {
       }
       content(song)
         .overlay(alignment: .trailing) { rail }
-        .overlay(alignment: .bottom) { dockArea }
+        .overlay(alignment: .bottom) { if !floatingControls { dockArea } }
+        .overlay { if floatingControls { floatingArea } }
         .overlay { if isFullscreen { fullscreenOverlay(song) } }
+        .background { controlsModeShortcut }
     }
   }
 
@@ -277,6 +287,7 @@ struct SongPerformanceScreen: View {
   /// Space under the last line so the floating dock never hides it.
   private var dockReserve: CGFloat {
     let inset = CGFloat(navigation.dockBottomInset)
+    if floatingControls { return 80 + inset }
     if showsFullDock { return (compact ? 220 : 170) + inset }
     return 130 + inset
   }
@@ -292,7 +303,25 @@ struct SongPerformanceScreen: View {
   private var dockArea: some View {
     VStack(spacing: 8) {
       if showsFullDock {
-        StageDockHandle { setDock(expanded: false) }
+        ZStack {
+          StageDockHandle { setDock(expanded: false) }
+          HStack {
+            Spacer()
+            Button {
+              floatingOpen = false
+              floatingControls = true
+            } label: {
+              Image(systemName: "arrow.up.and.down.and.arrow.left.and.right")
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(CapoTheme.subtext)
+                .frame(width: 44, height: 44)
+                .background(CapoTheme.surface, in: Circle())
+                .overlay(Circle().strokeBorder(CapoTheme.border, lineWidth: 1))
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(StageStrings.floatControls)
+          }
+        }
         StageDock(model: model, navigation: navigation, compact: compact)
       } else {
         StageCollapsedDock(model: model) { setDock(expanded: true) }
@@ -301,6 +330,43 @@ struct SongPerformanceScreen: View {
     .padding(.horizontal, compact ? 10 : 40)
     .padding(.bottom, 22 + CGFloat(navigation.dockBottomInset))
     .frame(maxWidth: .infinity)
+  }
+
+  /// ⌘⇧D switches between the docked bar and the floating button (hardware keyboard).
+  private var controlsModeShortcut: some View {
+    Button(floatingControls ? StageStrings.dockControls : StageStrings.floatControls) {
+      floatingOpen = false
+      floatingControls.toggle()
+    }
+    .keyboardShortcut("d", modifiers: [.command, .shift])
+    .opacity(0)
+    .frame(width: 0, height: 0)
+    .accessibilityHidden(true)
+  }
+
+  /// The controls as one draggable button; its panel is the same dock, plus a way back to the bar.
+  private var floatingArea: some View {
+    FloatingControls(
+      isOpen: $floatingOpen, isPlaying: model.isAutoScrolling,
+      topInset: isFullscreen ? 56 : 0, bottomInset: isFullscreen ? 34 : 0
+    ) {
+      VStack(spacing: 8) {
+        StageDock(model: model, navigation: navigation, compact: compact)
+        Button {
+          floatingOpen = false
+          floatingControls = false
+        } label: {
+          Label(StageStrings.dockControls, systemImage: "dock.rectangle")
+            .font(CapoFont.ui(14, weight: .semibold))
+            .foregroundStyle(CapoTheme.text)
+            .padding(.horizontal, 14)
+            .frame(minHeight: 44)
+            .background(CapoTheme.surface, in: Capsule())
+            .overlay(Capsule().strokeBorder(CapoTheme.border, lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+      }
+    }
   }
 
   private func fullscreenOverlay(_ song: Song) -> some View {

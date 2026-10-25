@@ -31,8 +31,10 @@ public final class SupabaseRealtimeNotifier: RealtimeNotifier {
       }
       do {
         try await channel.subscribeWithError()
-        // Hold the subscriptions (and so the callbacks) until the consumer goes away.
-        while !Task.isCancelled { try? await Task.sleep(for: .seconds(3600)) }
+        // Hold the subscriptions (and so the callbacks) until the consumer goes away. If the
+        // channel drops, finish the stream: the sync engine resubscribes with backoff and runs a
+        // full sync to catch up on what was missed.
+        for await status in channel.statusChange where status == .unsubscribed { break }
       } catch {
         // Realtime is an optimisation; the sync engine still pulls on its other triggers.
       }

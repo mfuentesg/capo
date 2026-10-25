@@ -1,6 +1,6 @@
 // Generates ios/Fixtures/converter/converter.json from the web implementation:
 //   npx tsx ios/scripts/gen-converter-golden.ts
-import { writeFileSync, readFileSync } from "node:fs"
+import { writeFileSync } from "node:fs"
 import path from "node:path"
 import {
   convertToChordPro,

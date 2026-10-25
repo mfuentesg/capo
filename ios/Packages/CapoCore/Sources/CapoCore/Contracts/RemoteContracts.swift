@@ -71,13 +71,17 @@ public protocol RemoteWriter: Sendable {
 public protocol TeamsRemote: Sendable {
   func members(teamID: TeamID) async throws -> [TeamMember]
   func invitations(teamID: TeamID) async throws -> [TeamInvitation]
-  func pendingInvitations(email: String) async throws -> [PendingInvitation]
+  func pendingInvitations() async throws -> [PendingInvitation]
   func createTeam(name: String, icon: String?, isPublic: Bool) async throws -> Team
   func updateTeam(id: TeamID, name: String, icon: String?) async throws
   func deleteTeam(id: TeamID) async throws
   func leaveTeam(id: TeamID) async throws
   func invite(email: String, role: TeamRole, teamID: TeamID) async throws -> TeamInvitation
   func revokeInvitation(id: UUID) async throws
+  /// Removes the caller's own invitation (RPC `decline_team_invitation`; RLS only lets admins delete).
+  func declineInvitation(token: String) async throws
+  /// Replaces an invitation with a fresh one in one transaction (RPC `resend_team_invitation`).
+  func resendInvitation(id: UUID) async throws -> TeamInvitation
   func acceptInvitation(token: String) async throws -> TeamID
   func changeRole(userID: UserID, teamID: TeamID, role: TeamRole) async throws
   func removeMember(userID: UserID, teamID: TeamID) async throws

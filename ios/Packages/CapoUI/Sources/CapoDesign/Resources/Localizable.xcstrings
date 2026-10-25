@@ -2330,6 +2330,23 @@
         }
       }
     },
+    "invitations.decline" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Decline"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechazar"
+          }
+        }
+      }
+    },
     "invitations.emptyDescription" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3622,6 +3639,23 @@
         }
       }
     },
+    "ios.editor.conflicts.discard" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discard"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descartar"
+          }
+        }
+      }
+    },
     "ios.editor.conflicts.empty" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3669,6 +3703,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sin conflictos"
+          }
+        }
+      }
+    },
+    "ios.editor.conflicts.failedHint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server refused these changes. Retry them, or discard them to restore the server's version."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El servidor rechazó estos cambios. Reinténtalos o descártalos para restaurar la versión del servidor."
+          }
+        }
+      }
+    },
+    "ios.editor.conflicts.failedTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changes that didn't sync"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambios que no se sincronizaron"
           }
         }
       }
@@ -3724,6 +3792,125 @@
         }
       }
     },
+    "ios.editor.conflicts.kindOther" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambio"
+          }
+        }
+      }
+    },
+    "ios.editor.conflicts.kindPlaylist" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Playlist change"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambio de playlist"
+          }
+        }
+      }
+    },
+    "ios.editor.conflicts.kindPlaylistDeleted" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Playlist deletion"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminación de playlist"
+          }
+        }
+      }
+    },
+    "ios.editor.conflicts.kindPlaylistSongs" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Playlist songs"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canciones de la playlist"
+          }
+        }
+      }
+    },
+    "ios.editor.conflicts.kindSong" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Song change"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambio de canción"
+          }
+        }
+      }
+    },
+    "ios.editor.conflicts.kindSongDeleted" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Song deletion"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminación de canción"
+          }
+        }
+      }
+    },
+    "ios.editor.conflicts.kindTags" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tag change"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambio de etiquetas"
+          }
+        }
+      }
+    },
     "ios.editor.conflicts.mine" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3754,6 +3941,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se pudo resolver el conflicto"
+          }
+        }
+      }
+    },
+    "ios.editor.conflicts.retry" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
           }
         }
       }
@@ -4077,6 +4281,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Letra (ChordPro)"
+          }
+        }
+      }
+    },
+    "ios.editor.maxLength" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max %@ characters"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Máximo %@ caracteres"
           }
         }
       }
@@ -5628,6 +5849,23 @@
         }
       }
     },
+    "ios.playlists.crossBucket" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Songs marked in red belong to a different account or team than this playlist. Remove them to continue."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las canciones en rojo pertenecen a otra cuenta o equipo distinto al de esta playlist. Quítalas para continuar."
+          }
+        }
+      }
+    },
     "ios.playlists.date" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5917,6 +6155,23 @@
         }
       }
     },
+    "ios.playlists.otherBucket" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Different account or team"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otra cuenta o equipo"
+          }
+        }
+      }
+    },
     "ios.playlists.perform" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -6066,6 +6321,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ canciones"
+          }
+        }
+      }
+    },
+    "ios.playlists.suggestAdjectives" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sunday|Midnight|Golden|Electric|Acoustic|Sacred|Morning|Twilight|Revival|Worship|Vibrant|Eternal"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dominical|Medianoche|Dorado|Eléctrico|Acústico|Sagrado|Matutino|Crepuscular|Avivamiento|Adoración|Vibrante|Eterno"
+          }
+        }
+      }
+    },
+    "ios.playlists.suggestNouns" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Setlist|Sessions|Worship|Gathering|Anthems|Melodies|Journey|Voices|Moments|Reflections|Praise|Songs"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repertorio|Sesiones|Alabanza|Encuentro|Himnos|Melodías|Camino|Voces|Momentos|Reflexiones|Gozo|Canciones"
           }
         }
       }
@@ -6614,6 +6903,23 @@
         }
       }
     },
+    "ios.settings.deleteTeamsWarning" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You own %@, which has other members. Deleting your account also deletes it, with its songs and playlists, for everyone. Transfer ownership first if you want to keep it."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eres propietario de %@, que tiene otros miembros. Eliminar tu cuenta también lo elimina, con sus canciones y playlists, para todos. Transfiere la propiedad primero si quieres conservarlo."
+          }
+        }
+      }
+    },
     "ios.settings.eraseAndSignOut" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -6695,23 +7001,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cambios pendientes"
-          }
-        }
-      }
-    },
-    "ios.settings.restartForLanguage" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Restart Capo to apply the new language."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reinicia Capo para aplicar el nuevo idioma."
           }
         }
       }
@@ -7532,6 +7821,23 @@
         }
       }
     },
+    "ios.stage.dockControls" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dock controls"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acoplar controles"
+          }
+        }
+      }
+    },
     "ios.stage.enterFullscreen" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7562,6 +7868,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Salir de pantalla completa"
+          }
+        }
+      }
+    },
+    "ios.stage.floatControls" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Float controls"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flotar controles"
           }
         }
       }
@@ -12020,6 +12343,363 @@
         }
       }
     },
+    "settings.apiTokens.close" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar"
+          }
+        }
+      }
+    },
+    "settings.apiTokens.copied" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copied"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiado"
+          }
+        }
+      }
+    },
+    "settings.apiTokens.copy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar"
+          }
+        }
+      }
+    },
+    "settings.apiTokens.create" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create token"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear token"
+          }
+        }
+      }
+    },
+    "settings.apiTokens.createError" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not create the token."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo crear el token."
+          }
+        }
+      }
+    },
+    "settings.apiTokens.createdOn" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Created %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creado %@"
+          }
+        }
+      }
+    },
+    "settings.apiTokens.creating" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creating..."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creando..."
+          }
+        }
+      }
+    },
+    "settings.apiTokens.description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tokens let external tools such as HollyShow read your songs."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los tokens permiten que herramientas externas como HollyShow lean tus canciones."
+          }
+        }
+      }
+    },
+    "settings.apiTokens.empty" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No tokens yet."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún no hay tokens."
+          }
+        }
+      }
+    },
+    "settings.apiTokens.lastUsed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last used %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Último uso %@"
+          }
+        }
+      }
+    },
+    "settings.apiTokens.loadError" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not load tokens."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron cargar los tokens."
+          }
+        }
+      }
+    },
+    "settings.apiTokens.nameLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Token name"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre del token"
+          }
+        }
+      }
+    },
+    "settings.apiTokens.namePlaceholder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "e.g. Church laptop"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "p. ej. Laptop de la iglesia"
+          }
+        }
+      }
+    },
+    "settings.apiTokens.neverUsed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Never used"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nunca usado"
+          }
+        }
+      }
+    },
+    "settings.apiTokens.revealTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy your new token"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copia tu nuevo token"
+          }
+        }
+      }
+    },
+    "settings.apiTokens.revealWarning" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This token will not be shown again. Store it somewhere safe."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este token no se volverá a mostrar. Guárdalo en un lugar seguro."
+          }
+        }
+      }
+    },
+    "settings.apiTokens.revoke" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revoke"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revocar"
+          }
+        }
+      }
+    },
+    "settings.apiTokens.revokeAria" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revoke token %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revocar token %@"
+          }
+        }
+      }
+    },
+    "settings.apiTokens.revokeError" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not revoke the token."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo revocar el token."
+          }
+        }
+      }
+    },
+    "settings.apiTokens.revoked" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revoked"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revocado"
+          }
+        }
+      }
+    },
+    "settings.apiTokens.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API tokens"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tokens de API"
+          }
+        }
+      }
+    },
     "settings.appearance" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -13907,6 +14587,23 @@
         }
       }
     },
+    "songs.lyrics.semitone" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "semitone"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "semitono"
+          }
+        }
+      }
+    },
     "songs.lyrics.settings" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -13920,6 +14617,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Configuración"
+          }
+        }
+      }
+    },
+    "songs.lyrics.shiftChords" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shift chords"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover acordes"
+          }
+        }
+      }
+    },
+    "songs.lyrics.shiftChordsHint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rewrites the chords in the lyrics (selection, or all if nothing is selected). Key, capo and transpose settings are not changed."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reescribe los acordes de la letra (la selección, o todo si no hay selección). No cambia la tonalidad, el capo ni la transposición."
           }
         }
       }

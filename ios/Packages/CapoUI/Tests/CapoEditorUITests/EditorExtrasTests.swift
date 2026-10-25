@@ -1,6 +1,7 @@
 import CapoDesign
 import Foundation
 import Testing
+import os
 
 @testable import CapoEditorUI
 
@@ -79,12 +80,35 @@ private let samplePage = """
   """
 
 @MainActor @Suite struct CifraClubImporterTests {
+  @Test func decodesLatin1PagesByCharset() {
+    let url = URL(string: "https://www.cifraclub.com/x/y/")!
+    let data = Data([0x63, 0x6F, 0x72, 0x61, 0xE7, 0xE3, 0x6F])  // "coração" in ISO-8859-1
+    let response = httpResponse(url, 200, headers: ["Content-Type": "text/html; charset=iso-8859-1"])
+    #expect(CifraClubImporter.decode(data, response) == "cora\u{E7}\u{E3}o")
+    let utf8 = httpResponse(url, 200, headers: ["Content-Type": "text/html; charset=utf-8"])
+    #expect(CifraClubImporter.decode(Data("cora\u{E7}\u{E3}o".utf8), utf8) == "cora\u{E7}\u{E3}o")
+  }
+
 
   @Test func importsAfterValidation() async {
     let importer = CifraClubImporter { url in (Data(samplePage.utf8), httpResponse(url, 200)) }
     let result = await importer.importSong(from: " https://www.cifraclub.com/john-newton/amazing-grace/ ")
     guard case .success(let song) = result else { Issue.record("expected success: \(result)"); return }
     #expect(song.title == "Amazing Grace" && song.artist == "John Newton" && song.key == "G")
+  }
+
+  @Test func throttlesToTenImportsPerMinute() async {
+    let clock = OSAllocatedUnfairLock(initialState: Date(timeIntervalSince1970: 1000))
+    let importer = CifraClubImporter(
+      load: { url in (Data(samplePage.utf8), httpResponse(url, 200)) },
+      throttle: ImportThrottle(now: { clock.withLock { $0 } }))
+    let url = "https://www.cifraclub.com/john-newton/amazing-grace/"
+    for _ in 0..<10 {
+      guard case .success = await importer.importSong(from: url) else { Issue.record("limited early"); return }
+    }
+    #expect(await importer.importSong(from: url) == .failure(.rateLimited))
+    clock.withLock { $0 = $0.addingTimeInterval(61) }
+    guard case .success = await importer.importSong(from: url) else { Issue.record("window"); return }
   }
 
   @Test func rejectsBadInputBeforeFetching() async {
@@ -139,5 +163,34 @@ extension Result: @retroactive Equatable where Success == CifraClubSong, Failure
     case (.failure(let a), .failure(let b)): a == b
     default: false
     }
+  }
+}
+
+@Suite struct ShiftChordsTests {
+  @Test func shiftsDownWithFlats() {
+    #expect(ShiftChords.shiftChord("B", by: -1) == "Bb")
+    #expect(ShiftChords.shiftChord("F#m7", by: -1) == "Fm7")
+    #expect(ShiftChords.shiftChord("E/G#", by: -2) == "D/Gb")
+    #expect(ShiftChords.shiftChord("Bsus4", by: -2) == "Asus4")
+  }
+
+  @Test func shiftsUpWithSharpsAndWraps() {
+    #expect(ShiftChords.shiftChord("A", by: 1) == "A#")
+    #expect(ShiftChords.shiftChord("Bb", by: 2) == "C")
+    #expect(ShiftChords.shiftChord("C", by: -1) == "B")
+    #expect(ShiftChords.shiftChord("B", by: 1) == "C")
+  }
+
+  @Test func leavesNonChordsAlone() {
+    #expect(ShiftChords.shiftChord("N.C.", by: -1) == "N.C.")
+    #expect(ShiftChords.shiftChord("x2", by: -1) == "x2")
+  }
+
+  @Test func rewritesOnlyBracketedChords() {
+    let input = "{title: Bb song}\n{c: Verse}\n[B]Be a [F#m]light [N.C.]now"
+    #expect(
+      ShiftChords.shiftLyrics(input, by: -1)
+        == "{title: Bb song}\n{c: Verse}\n[Bb]Be a [Fm]light [N.C.]now")
+    #expect(ShiftChords.shiftLyrics("[C]a [G]b", by: 0) == "[C]a [G]b")
   }
 }

@@ -20,11 +20,13 @@ struct MainShellView: View {
     @Bindable var nav = model.navigation
     ShellContainer(model: model)
     .capoTheme()
-    .id(model.context)
+    // No `.id(model.context)`: switching the view filter reloads the queries (`.task(id: context)`)
+    // but keeps tab navigation, open sheets and the playlist draft.
     .shellEnvironment(model)
     .task { await model.observeTeams() }
     .task { await model.observeSync() }
     .task { await model.observeConflicts() }
+    .task { await model.observeFailedOperations() }
     .task(id: model.context) { await model.observeSongCount() }
     .task { await model.observePreferences() }
     .onChange(of: scenePhase) { _, phase in
@@ -43,8 +45,8 @@ struct MainShellView: View {
       }
       .shellEnvironment(model)
     }
-    .sheet(item: $nav.pendingAdd) { pending in
-      AddToPlaylistView(songIDs: pending.songIDs) { model.navigation.pendingAdd = nil }
+    .sheet(item: $nav.pendingAdd) { _ in
+      AddToPlaylistView { model.navigation.pendingAdd = nil }
         .shellEnvironment(model)
     }
     .sheet(item: $nav.pendingShare) { share in

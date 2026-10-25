@@ -337,6 +337,7 @@ struct StageDock: View {
       StageCaption(StageStrings.layout)
       HStack(spacing: 4) {
         chordsToggle(width: 52)
+        lyricsToggle(width: 52)
         columnsToggle(width: 52)
       }
       .padding(4)
@@ -346,7 +347,7 @@ struct StageDock: View {
 
   private func chordsToggle(width: CGFloat) -> some View {
     Button {
-      model.showChords.toggle()
+      model.setChords(!model.showChords)  // never both off, as on the web
     } label: {
       Text("C")
         .font(CapoFont.ui(18, weight: .bold))
@@ -361,6 +362,25 @@ struct StageDock: View {
     .sensoryFeedback(.impact(weight: .light), trigger: model.showChords)
     .accessibilityLabel(StageStrings.chordsToggle)
     .accessibilityAddTraits(model.showChords ? .isSelected : [])
+  }
+
+  private func lyricsToggle(width: CGFloat) -> some View {
+    Button {
+      model.setLyrics(!model.showLyrics)
+    } label: {
+      Text("Aa")
+        .font(CapoFont.ui(18, weight: .bold))
+        .foregroundStyle(model.showLyrics ? CapoTheme.text : CapoTheme.subtext)
+        .frame(width: width, height: 44)
+        .background(
+          model.showLyrics ? CapoTheme.surfaceStrong : Color.clear,
+          in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .contentShape(Rectangle())
+    }
+    .buttonStyle(.plain)
+    .sensoryFeedback(.impact(weight: .light), trigger: model.showLyrics)
+    .accessibilityLabel(StageStrings.lyricsToggle)
+    .accessibilityAddTraits(model.showLyrics ? .isSelected : [])
   }
 
   private func columnsToggle(width: CGFloat) -> some View {
@@ -437,7 +457,7 @@ struct StageDock: View {
           Text("C").font(CapoFont.ui(22, weight: .bold))
             .foregroundStyle(model.showChords ? CapoTheme.chord : CapoTheme.subtext)
         } action: {
-          model.showChords.toggle()
+          model.setChords(!model.showChords)
         }
         .sensoryFeedback(.impact(weight: .light), trigger: model.showChords)
         Button {
@@ -484,6 +504,12 @@ struct StageDock: View {
   private var displayOptions: some View {
     VStack(alignment: .leading, spacing: 18) {
       textSizeSlider
+      HStack {
+        StageCaption(StageStrings.layout)
+        Spacer()
+        lyricsToggle(width: 52)
+        columnsToggle(width: 52)
+      }
       HStack {
         StageCaption(L10n.Songs.Lyrics.AutoScroll.speed)
         Spacer()

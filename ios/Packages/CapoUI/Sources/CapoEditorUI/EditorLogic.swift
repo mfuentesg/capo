@@ -33,12 +33,40 @@ struct EditorForm: Equatable {
     status = song.status
   }
 
-  enum Issue: Equatable { case titleRequired, bpmInvalid }
+  /// Server limits (`songSchema` in `features/songs/api/actions.ts`); a longer value is rejected
+  /// there and the optimistic row would be rolled back at the next pull.
+  enum LimitedField: CaseIterable, Equatable {
+    case title, artist, key, notes, lyrics
+
+    var maxLength: Int {
+      switch self {
+      case .title, .artist: 200
+      case .key: 12
+      case .notes: 10_000
+      case .lyrics: 100_000
+      }
+    }
+  }
+
+  enum Issue: Equatable { case titleRequired, bpmInvalid, tooLong(LimitedField) }
+
+  func value(of field: LimitedField) -> String {
+    switch field {
+    case .title: cleanTitle
+    case .artist: artist.trimmingCharacters(in: .whitespacesAndNewlines)
+    case .key: key.trimmingCharacters(in: .whitespacesAndNewlines)
+    case .notes: notes.trimmingCharacters(in: .whitespacesAndNewlines)
+    case .lyrics: lyrics
+    }
+  }
 
   var issues: [Issue] {
     var result: [Issue] = []
     if title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { result.append(.titleRequired) }
     if parsedBPM == .invalid { result.append(.bpmInvalid) }
+    for field in LimitedField.allCases where value(of: field).count > field.maxLength {
+      result.append(.tooLong(field))
+    }
     return result
   }
 

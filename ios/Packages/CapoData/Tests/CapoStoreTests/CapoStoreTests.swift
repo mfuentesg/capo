@@ -58,7 +58,7 @@ import Testing
     #expect(makeSearchLyrics("[Am]a{t: z}b") == "a b")
   }
 
-  @Test func tagFilterIsAnyOf() async throws {
+  @Test func tagFilterRequiresEveryTag() async throws {
     let env = try Env()
     let ctx = AppContext.personal(userID: me)
     let s1 = makeSong("One"), s2 = makeSong("Two"), s3 = makeSong("Three")
@@ -70,11 +70,63 @@ import Testing
     var q = query(ctx)
     q.tagIDs = [t1.id, t2.id]
     q.sort = .title
-    #expect(await titles(env, q) == ["One", "Two"])
+    try await env.repos.songs.setTags(songID: s3.id, tagIDs: [t1.id, t2.id])
+    #expect(await titles(env, q) == ["Three"])  // AND, like the web
+    q.tagIDs = [t2.id]
+    q.sort = .title
+    #expect(await titles(env, q) == ["Three", "Two"])
+    try await env.repos.songs.setTags(songID: s3.id, tagIDs: [])
     q.tagIDs = [t2.id]
     let items = await first(env.repos.songs.songs(q)) ?? []
     #expect(items.map(\.title) == ["Two"])
     #expect(items.first?.tags.map(\.id) == [t2.id])
+  }
+
+  @Test func playlistsOnlyAcceptSongsOfTheirOwnBucket() async throws {
+    let env = try Env()
+    let personal = makeSong("Mine"), teamSong = makeSong("Shared", user: nil, team: teamA)
+    try await env.repos.syncStore.apply(PullBatch(upsertSongs: [personal, teamSong], skipEntityKeys: []))
+    let list = try await env.repos.playlists.create(
+      PlaylistDraft(name: "L"), in: .personal(userID: me))
+    await #expect(throws: CapoError.self) {
+      try await env.repos.playlists.addSongs([teamSong.id], to: list.id)
+    }
+    try await env.repos.playlists.addSongs([personal.id], to: list.id)
+    await #expect(throws: CapoError.self) {
+      _ = try await env.repos.playlists.create(
+        PlaylistDraft(name: "T", songIDs: [personal.id]), in: .team(teamID: teamA))
+    }
+  }
+
+  @Test func playCountOnlyCountsPlaylistsOfTheSongsBucket() async throws {
+    let env = try Env()
+    let song = makeSong("S")
+    try await env.repos.syncStore.apply(PullBatch(upsertSongs: [song], skipEntityKeys: []))
+    let list = try await env.repos.playlists.create(
+      PlaylistDraft(name: "P", songIDs: [song.id]), in: .personal(userID: me))
+    // A stray entry in a team playlist (legacy data) is not counted for a personal song.
+    let teamList = try await env.repos.playlists.create(PlaylistDraft(name: "T"), in: .team(teamID: teamA))
+    try await env.db.writer.write { db in
+      try GRDBPlaylistRepository.insertEntry(db, playlistID: teamList.id, songID: song.id, position: 0)
+    }
+    _ = list
+    let items = await first(env.repos.songs.songs(query(.personal(userID: me)))) ?? []
+    #expect(items.first?.playCount == 1)
+  }
+
+  @Test func playlistTextLimitsMirrorTheServer() async throws {
+    let env = try Env()
+    let ctx = AppContext.personal(userID: me)
+    await #expect(throws: CapoError.self) {
+      _ = try await env.repos.playlists.create(
+        PlaylistDraft(name: String(repeating: "a", count: 201)), in: ctx)
+    }
+    let ok = try await env.repos.playlists.create(
+      PlaylistDraft(name: String(repeating: "a", count: 200)), in: ctx)
+    await #expect(throws: CapoError.self) {
+      try await env.repos.playlists.update(
+        id: ok.id, PlaylistPatch(description: String(repeating: "d", count: 2001)))
+    }
   }
 
   // MARK: Outbox
@@ -197,8 +249,32 @@ import Testing
     #expect(again.count == 1 && again[0].attempts == 1 && again[0].lastError == "x")
     try await store.complete(op.id, outcome: .rejected(.permissionDenied))
     #expect(try await store.statusCounts() == (pending: 0, conflicts: 0, failed: 1))
+    // A refused change keeps its entity out of the next pull until the user resolves it.
+    #expect(try await store.pendingEntityKeys() == [OutboxOperation.key("song", song.id)])
+  }
+
+  @Test func failedOperationsCanBeRetriedOrDiscarded() async throws {
+    let env = try Env()
+    let song = try await env.repos.songs.create(SongDraft(title: "Keep"), in: .personal(userID: me))
+    let store = env.repos.syncStore
+    let op = try await store.nextPendingOperations(limit: 5, now: .now)[0]
+    try await store.complete(op.id, outcome: .rejected(.permissionDenied))
+
+    let failed = try #require(await first(env.repos.conflicts.failedOperations()))
+    #expect(failed.count == 1 && failed[0].kind == "createSong" && failed[0].subject == "Keep")
+
+    try await env.repos.conflicts.retryFailed(failed[0].id)
+    #expect(try await store.nextPendingOperations(limit: 5, now: .now).count == 1)
+    #expect(try await store.statusCounts().failed == 0)
+
+    let again = try await store.nextPendingOperations(limit: 5, now: .now)[0]
+    try await store.complete(again.id, outcome: .rejected(.permissionDenied))
+    let listed = try #require(await first(env.repos.conflicts.failedOperations()))
+    try await env.repos.conflicts.discardFailed(listed[0].id)
+    #expect(try await store.statusCounts().failed == 0)
     #expect(try await store.pendingEntityKeys().isEmpty)
-    _ = song
+    // The song's version is blanked so the next pull fetches it again (or purges it).
+    #expect(try await store.localVersions(of: .songs)[song.id]?.raw == "")
   }
 
   // MARK: Apply
@@ -372,6 +448,26 @@ import Testing
     try await env.repos.syncStore.apply(PullBatch(teams: [team], memberships: [membership]))
     let teams = await first(env.repos.teams.teams())
     #expect(teams?.map(\.role) == [.admin])
+  }
+
+  @Test func leavingATeamPurgesItsRowsAndQueuedOperations() async throws {
+    let env = try Env()
+    let team = Team(
+      id: teamA, name: "Band", icon: nil, avatarURL: nil, isPublic: false, createdBy: me,
+      createdAt: .now(), updatedAt: .now())
+    let membership = TeamMembership(id: UUID(), teamID: teamA, userID: me, role: .member, joinedAt: .now())
+    let teamSong = makeSong("Shared", user: nil, team: teamA)
+    let mine = makeSong("Mine")
+    let store = env.repos.syncStore
+    try await store.apply(PullBatch(teams: [team], memberships: [membership], upsertSongs: [teamSong, mine]))
+    try await env.repos.songs.update(id: teamSong.id, SongPatch(artist: "edited"))
+    #expect(try await store.pendingEntityKeys().contains(OutboxOperation.key("song", teamSong.id)))
+
+    // Membership is gone: the pending edit could never be applied, so it must not pin the row.
+    try await store.apply(PullBatch(teams: [], memberships: []))
+    #expect(try await store.localVersions(of: .songs).keys.contains(teamSong.id) == false)
+    #expect(try await store.localVersions(of: .songs).keys.contains(mine.id))
+    #expect(try await store.pendingEntityKeys().isEmpty)
   }
 
   // MARK: Erase & metadata

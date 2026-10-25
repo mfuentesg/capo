@@ -28,6 +28,7 @@ let package = Package(
     .target(
       name: "CapoDesign",
       dependencies: [
+        "CapoIcons",
         .product(name: "CapoCore", package: "CapoCore"),
         .product(name: "CapoChordPro", package: "CapoCore"),
         .product(name: "CapoFakes", package: "CapoCore")
@@ -85,6 +86,7 @@ let package = Package(
     .testTarget(name: "CapoDesignTests", dependencies: ["CapoDesign"]),
     .testTarget(name: "CapoIconsTests", dependencies: ["CapoIcons"]),
     .testTarget(name: "CapoAuthUITests", dependencies: ["CapoAuthUI"]),
+    .testTarget(name: "CapoSettingsUITests", dependencies: ["CapoSettingsUI"]),
     .testTarget(name: "CapoShellUITests", dependencies: ["CapoShellUI"]),
     .testTarget(name: "CapoRenderingTests", dependencies: ["CapoRendering"]),
     .testTarget(name: "CapoLibraryUITests", dependencies: ["CapoLibraryUI"]),

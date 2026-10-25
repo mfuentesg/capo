@@ -33,6 +33,14 @@ public actor SyncEngine: SyncService {
   private var realtimeTask: Task<Void, Never>?
   private var debounceTasks: [String: Task<Void, Never>] = [:]
 
+  /// The secondary tables (entries, tags, assignments, settings, profile) have no version column
+  /// to diff, so they are refetched only on a full refresh or when realtime reports a change.
+  static let fullRefreshInterval: TimeInterval = 300
+  private var needsFullRefresh = true
+  private var lastFullRefreshAt: Date?
+  private var dirtyTables: Set<String> = []
+  static let realtimeRetryDelays: [Duration] = [.seconds(1), .seconds(2), .seconds(5), .seconds(15), .seconds(30), .seconds(60)]
+
   public init(
     userID: UserID, store: any LocalSyncStore, remote: any RemoteSyncSource,
     writer: any RemoteWriter, realtime: (any RealtimeNotifier)?,
@@ -93,6 +101,8 @@ public actor SyncEngine: SyncService {
   }
 
   public func syncNow(reason: SyncReason) async {
+    // Realtime and enqueue triggers are narrow; everything else re-checks all tables.
+    if reason != .realtime && reason != .outboxEnqueued { needsFullRefresh = true }
     if isSyncing {
       rerunRequested = true
       await withCheckedContinuation { waiters.append($0) }
@@ -131,17 +141,42 @@ public actor SyncEngine: SyncService {
     }
   }
 
+  private func noteRealtime(table: String) {
+    dirtyTables.insert(table)
+    scheduleDebounced(key: "realtime", reason: .realtime)
+  }
+
+  /// Keeps one realtime subscription alive: when the stream ends (channel dropped, subscribe
+  /// failed) it resubscribes with backoff and runs a full sync, because events may have been
+  /// missed while disconnected.
   private func subscribeRealtime() {
     realtimeTask?.cancel()
     realtimeTask = nil
     guard let realtime, !lifecycleTasks.isEmpty else { return }
-    let stream = realtime.changes(scope: scope)
+    let scope = scope
     realtimeTask = Task { [weak self] in
-      for await _ in stream {
+      var failures = 0
+      while !Task.isCancelled {
+        let started = Date()
+        for await change in realtime.changes(scope: scope) {
+          guard !Task.isCancelled else { return }
+          failures = 0
+          await self?.noteRealtime(table: change.table)
+        }
         guard !Task.isCancelled else { return }
-        await self?.scheduleDebounced(key: "realtime", reason: .realtime)
+        // A subscription that lived a while was healthy; only quick failures escalate.
+        if Date().timeIntervalSince(started) > 30 { failures = 0 }
+        let delays = Self.realtimeRetryDelays
+        try? await Task.sleep(for: delays[min(failures, delays.count - 1)])
+        failures += 1
+        guard !Task.isCancelled else { return }
+        await self?.resubscribed()
       }
     }
+  }
+
+  private func resubscribed() async {
+    await syncNow(reason: .reachability)
   }
 
   // MARK: Run
@@ -261,10 +296,17 @@ public actor SyncEngine: SyncService {
       case .rejected(let error): return .rejected(error)
       }
     } catch {
+      // Offline never counts against an operation; anything else that keeps failing is surfaced
+      // for review instead of retrying forever and blocking the entity.
+      if !(error is URLError), record.attempts + 1 >= Self.maxAttempts {
+        return .rejected(.server(describe(error)))
+      }
       return .retryLater(
         error: describe(error), nextAttemptAt: clock().addingTimeInterval(Self.backoff(record.attempts)))
     }
   }
+
+  static let maxAttempts = 8
 
   static func backoff(_ attempts: Int) -> TimeInterval {
     min(pow(2, Double(max(0, min(attempts, 20)))), maxBackoff)
@@ -293,14 +335,25 @@ public actor SyncEngine: SyncService {
       playlists += try await remote.playlists(ids: ids)
     }
 
-    var entries: [PlaylistEntry] = []
-    for ids in remotePlaylistVersions.map(\.id).chunked(Self.chunkSize) {
-      entries += try await remote.playlistEntries(playlistIDs: ids)
+    let now = clock()
+    let full =
+      needsFullRefresh || lastFullRefreshAt.map { now.timeIntervalSince($0) > Self.fullRefreshInterval } ?? true
+    let dirty = dirtyTables
+    func refresh(_ table: String) -> Bool { full || dirty.contains(table) }
+
+    var entries: [PlaylistEntry]?
+    if refresh("playlist_songs") || !playlistDiff.changed.isEmpty || !playlistDiff.deleted.isEmpty {
+      var fetched: [PlaylistEntry] = []
+      for ids in remotePlaylistVersions.map(\.id).chunked(Self.chunkSize) {
+        fetched += try await remote.playlistEntries(playlistIDs: ids)
+      }
+      entries = fetched
     }
-    let tags = try await remote.tags(scope: newScope)
-    let assignments = try await remote.tagAssignments()
-    let settings = try await remote.userSongSettings(userID: userID)
-    let profile = try await remote.profile(userID: userID)
+    let tags = refresh("song_tags") ? try await remote.tags(scope: newScope) : nil
+    let assignments = refresh("song_tag_assignments") ? try await remote.tagAssignments() : nil
+    let settings =
+      refresh("user_song_settings") ? try await remote.userSongSettings(userID: userID) : nil
+    let profile = refresh("profiles") ? try await remote.profile(userID: userID) : nil
 
     let batch = PullBatch(
       teams: teams, memberships: memberships, upsertSongs: songs,
@@ -309,6 +362,11 @@ public actor SyncEngine: SyncService {
       tagAssignments: assignments, userSongSettings: settings, profile: profile,
       skipEntityKeys: try await store.pendingEntityKeys())
     try await store.apply(batch)
+    dirtyTables.subtract(dirty)
+    if full {
+      needsFullRefresh = false
+      lastFullRefreshAt = now
+    }
 
     var metadata = try await store.syncMetadata()
     metadata.lastPullAt = clock()

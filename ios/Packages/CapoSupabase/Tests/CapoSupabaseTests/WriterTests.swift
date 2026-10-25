@@ -105,7 +105,7 @@ import Testing
 
   @Test func reorderRunsOffsetPhaseBeforeFinalPhase() async throws {
     let server = StubServer()
-    server.handle { _ in .json(204, "") }
+    server.handle { _ in .ok("[{\"playlist_id\":\"x\"}]") }
     _ = try await writer(server).apply(
       .reorderPlaylist(playlistID: Ids.playlist, songIDs: [Ids.song2, Ids.song]))
     let positions = server.restRequests.compactMap { ($0.jsonObject?["position"] as? NSNumber)?.intValue }
@@ -125,12 +125,53 @@ import Testing
     #expect(request.jsonObject?["p_playlist_id"] as? String == Ids.playlist.pg)
   }
 
-  @Test func setSongTagsDeletesThenInserts() async throws {
+  @Test func setSongTagsInsertsMissingBeforeDeletingStale() async throws {
     let server = StubServer()
-    server.handle { _ in .json(204, "") }
-    _ = try await writer(server).apply(.setSongTags(songID: Ids.song, tagIDs: [Ids.tag]))
-    #expect(server.restRequests.map(\.method) == ["DELETE", "POST"])
+    let stale = UUID()
+    server.handle { request in
+      switch request.method {
+      case "POST": .json(201, "")
+      default: .ok("[{\"tag_id\":\"\(stale.pg)\"}]")
+      }
+    }
+    let result = try await writer(server).apply(.setSongTags(songID: Ids.song, tagIDs: [Ids.tag]))
+    #expect(result == .applied(serverSong: nil))
+    #expect(server.restRequests.map(\.method) == ["GET", "POST", "DELETE"])
     #expect(server.restRequests[1].jsonArray?.first?["tag_id"] as? String == Ids.tag.pg)
+    #expect(server.restRequests[2].query["tag_id"]?.contains(stale.pg) == true)
+  }
+
+  @Test func rejectedTagInsertNeverDeletesServerTags() async throws {
+    let server = StubServer()
+    server.handle { request in
+      request.method == "GET"
+        ? .ok("[{\"tag_id\":\"\(UUID().pg)\"}]") : .postgrestError(403, code: "42501")
+    }
+    let result = try await writer(server).apply(.setSongTags(songID: Ids.song, tagIDs: [Ids.tag]))
+    #expect(result == .rejected(.permissionDenied))
+    #expect(!server.restRequests.map(\.method).contains("DELETE"))
+  }
+
+  @Test func deleteThatRlsSilentlyIgnoredIsRejected() async throws {
+    let server = StubServer()
+    server.sequence([.ok("[]"), .ok("[{\"id\":\"x\"}]")])  // zero rows deleted, row still visible
+    let result = try await writer(server).apply(.deleteSong(id: Ids.song))
+    #expect(result == .rejected(.permissionDenied))
+  }
+
+  @Test func deleteOfAnAlreadyGoneRowIsApplied() async throws {
+    let server = StubServer()
+    server.sequence([.ok("[]"), .ok("[]")])
+    let result = try await writer(server).apply(.deleteSong(id: Ids.song))
+    #expect(result == .applied(serverSong: nil))
+  }
+
+  @Test func archiveThatRlsSilentlyIgnoredIsRejected() async throws {
+    let server = StubServer()
+    server.sequence([.ok("[]"), .ok("[{\"id\":\"x\"}]")])
+    let result = try await writer(server).apply(
+      .setPlaylistArchived(id: Ids.playlist, archivedAt: nil))
+    #expect(result == .rejected(.permissionDenied))
   }
 
   @Test func upsertSettingsUsesCompositeConflictTarget() async throws {
@@ -146,9 +187,26 @@ import Testing
     #expect(request.jsonObject?["updated_at"] as? String == "2024-07-01T00:00:00.000Z")
   }
 
-  @Test func preferencesAreMergedKeepingUnknownKeys() async throws {
+  @Test func preferencesUseTheServerSideMergeRpc() async throws {
     let server = StubServer()
-    server.sequence([.ok("[" + (try fixtureString("profile_row")) + "]"), .json(204, "")])
+    server.handle { _ in .json(204, "") }
+    let result = try await writer(server).apply(
+      .updatePreferences(PreferencesPatch(lyricsColumns: 2), userID: Ids.user))
+    #expect(result == .applied(serverSong: nil))
+    let request = try #require(server.restRequests.first)
+    #expect(server.restRequests.count == 1)
+    #expect(request.path == "/rest/v1/rpc/merge_user_preferences")
+    let patch = try #require(request.jsonObject?["p_patch"] as? [String: Any])
+    #expect((patch["lyricsColumns"] as? NSNumber)?.intValue == 2)
+    #expect(patch["theme"] == nil)  // only the changed key travels
+  }
+
+  @Test func preferencesFallBackToReadMergeWriteWhenTheRpcIsMissing() async throws {
+    let server = StubServer()
+    server.sequence([
+      .postgrestError(404, code: "PGRST202"),
+      .ok("[" + (try fixtureString("profile_row")) + "]"), .json(204, "")
+    ])
     _ = try await writer(server).apply(
       .updatePreferences(PreferencesPatch(lyricsColumns: 2), userID: Ids.user))
     let update = try #require(server.restRequests.last)
@@ -181,7 +239,7 @@ import Testing
 
   @Test func archiveSetsAndClearsArchivedAt() async throws {
     let server = StubServer()
-    server.handle { _ in .json(204, "") }
+    server.handle { _ in .ok("[{\"id\":\"x\"}]") }
     _ = try await writer(server).apply(
       .setPlaylistArchived(id: Ids.playlist, archivedAt: ServerTimestamp("2024-08-01T00:00:00Z")))
     _ = try await writer(server).apply(.setPlaylistArchived(id: Ids.playlist, archivedAt: nil))

@@ -18,6 +18,65 @@ struct GRDBConflictRepository: ConflictRepository {
     }
   }
 
+  func failedOperations() -> AsyncStream<[FailedOperation]> {
+    database.stream { db in
+      try Row.fetchAll(
+        db, sql: "SELECT * FROM outbox WHERE state = 'failed' ORDER BY id"
+      ).compactMap { row in
+        guard let entry = try? OutboxEntry(row: row) else { return nil }
+        return FailedOperation(
+          id: entry.opID, kind: Outbox.kind(entry.operation),
+          subject: try Self.subject(db, entityKey: entry.operation.entityKey),
+          error: entry.lastError, createdAt: entry.createdAt)
+      }
+    }
+  }
+
+  func retryFailed(_ id: UUID) async throws {
+    try await database.writer.write { db in
+      try db.execute(
+        sql: """
+          UPDATE outbox SET state = 'pending', attempts = 0, next_attempt_at = 0, last_error = NULL
+          WHERE op_id = ? AND state = 'failed'
+          """,
+        arguments: [id.dbString])
+    }
+  }
+
+  func discardFailed(_ id: UUID) async throws {
+    try await database.writer.write { db in
+      guard
+        let row = try Row.fetchOne(
+          db, sql: "SELECT * FROM outbox WHERE op_id = ? AND state = 'failed'",
+          arguments: [id.dbString])
+      else { return }
+      let entry = try OutboxEntry(row: row)
+      try Outbox.delete(db, id: entry.id)
+      // The pull diffs by updated_at; blank it so the entity is fetched again (or purged when it
+      // never reached the server) instead of keeping the change the server refused.
+      let parts = entry.operation.entityKey.split(separator: ":", maxSplits: 1).map(String.init)
+      guard parts.count == 2 else { return }
+      let table = ["song": "songs", "playlist": "playlists"][parts[0]]
+      if let table {
+        try db.execute(
+          sql: "UPDATE \(table) SET updated_at = '' WHERE id = ?", arguments: [parts[1]])
+      }
+    }
+  }
+
+  /// Name shown for an entity key ("song:<id>" -> title).
+  private static func subject(_ db: Database, entityKey: String) throws -> String? {
+    let parts = entityKey.split(separator: ":", maxSplits: 1).map(String.init)
+    guard parts.count == 2 else { return nil }
+    let lookup: [String: String] = [
+      "song": "SELECT title FROM songs WHERE id = ?",
+      "playlist": "SELECT name FROM playlists WHERE id = ?",
+      "tag": "SELECT name FROM song_tags WHERE id = ?"
+    ]
+    guard let sql = lookup[parts[0]] else { return nil }
+    return try String.fetchOne(db, sql: sql, arguments: [parts[1]])
+  }
+
   func resolve(_ conflictID: UUID, with resolution: ConflictResolution) async throws {
     let userID = database.userID
     try await database.writer.write { db in

@@ -92,23 +92,17 @@ export async function getUserProfileData(
 
 export async function upsertUserPreferences(
   supabase: SupabaseClient<Database>,
-  userId: string,
   preferences: UserPreferences
 ): Promise<UserPreferences> {
-  const { data, error } = await supabase
-    .from("profiles")
-    .update({
-      preferences: {
-        lyricsColumns: preferences.lyricsColumns,
-        ...(preferences.locale !== undefined && { locale: preferences.locale }),
-        ...(preferences.theme !== undefined && { theme: preferences.theme })
-      },
-      updated_at: new Date().toISOString()
-    })
-    .eq("id", userId)
-    .select("preferences")
-    .single()
+  // The merge happens in the database (one atomic JSONB `||`), so keys this call does not carry
+  // (palette, uiFont, chordHand, theme, locale, or anything a newer client added) are never wiped
+  // and two concurrent partial updates cannot lose each other.
+  const defined = Object.fromEntries(
+    Object.entries(preferences).filter(([, value]) => value !== undefined)
+  )
+
+  const { data, error } = await supabase.rpc("merge_user_preferences", { p_patch: defined })
 
   if (error) throw error
-  return mapJsonToPreferences(data.preferences)
+  return mapJsonToPreferences(data)
 }

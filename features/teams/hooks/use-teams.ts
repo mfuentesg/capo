@@ -14,7 +14,9 @@ import {
   removeTeamMemberAction,
   changeTeamMemberRoleAction,
   deleteTeamInvitationAction,
-  getPendingInvitationsAction
+  getPendingInvitationsAction,
+  resendTeamInvitationAction,
+  declineTeamInvitationAction
 } from "../api/actions"
 import { teamsKeys } from "./query-keys"
 import { useUser } from "@/features/auth"
@@ -569,19 +571,13 @@ export function useResendTeamInvitation() {
 
   return useMutation({
     mutationFn: async ({
-      invitationId,
-      teamId,
-      email,
-      role
+      invitationId
     }: {
       invitationId: string
       teamId: string
       email: string
       role: Tables<"team_invitations">["role"]
-    }) => {
-      await deleteTeamInvitationAction(invitationId)
-      return inviteTeamMemberAction(teamId, email, role)
-    },
+    }) => resendTeamInvitationAction(invitationId),
     onMutate: async ({ invitationId, teamId, email, role }) => {
       await queryClient.cancelQueries({ queryKey: teamsKeys.invitations(teamId) })
 
@@ -630,6 +626,19 @@ export function useResendTeamInvitation() {
       const message = error instanceof Error ? error.message : "Failed to resend invitation"
       toast.error(message)
     }
+  })
+}
+
+/**
+ * Hook to decline one of the current user's pending invitations
+ */
+export function useDeclineTeamInvitation() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ token }: { token: string }) => declineTeamInvitationAction(token),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: teamsKeys.pendingInvitations() })
   })
 }
 

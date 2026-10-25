@@ -1,4 +1,5 @@
 import CapoDesign
+import CapoIcons
 import SwiftUI
 
 /// Create or edit a setlist's name, description and date.
@@ -10,6 +11,7 @@ struct PlaylistFormView: View {
 
   @Environment(\.userServices) private var services
   @Environment(\.appContext) private var context
+  @Environment(\.creationContext) private var creationContext
   @Environment(\.dismiss) private var dismiss
   @State private var name = ""
   @State private var details = ""
@@ -17,16 +19,45 @@ struct PlaylistFormView: View {
   @State private var date = Date()
   @State private var errorText: String?
   @State private var seeded = false
+  @State private var bucket: AppContext?
 
   var body: some View {
     NavigationStack {
       Form {
         Section {
-          TextField(PlaylistStrings.name, text: $name)
+          HStack(spacing: 8) {
+            TextField(PlaylistStrings.name, text: $name)
+            if isCreate {
+              Button {
+                name = PlaylistLogic.suggestName(
+                  adjectives: L10n.Ios.Playlists.suggestAdjectives,
+                  nouns: L10n.Ios.Playlists.suggestNouns)
+              } label: {
+                CapoIcon(.sparkles, size: 16).foregroundStyle(CapoTheme.mutedForeground)
+                  .frame(width: 36, height: 36).contentShape(Rectangle())
+              }
+              .buttonStyle(.plain)
+              .accessibilityLabel(L10n.Playlists.suggestName)
+            }
+          }
+          if name.count > PlaylistLogic.maxName {
+            limitError(PlaylistStrings.name, max: PlaylistLogic.maxName)
+          }
           TextField(PlaylistStrings.descriptionLabel, text: $details, axis: .vertical)
             .lineLimit(1...4)
+          if details.count > PlaylistLogic.maxDescription {
+            limitError(PlaylistStrings.descriptionLabel, max: PlaylistLogic.maxDescription)
+          }
         }
         .listRowBackground(CapoTheme.card)
+        if isCreate {
+          Section {
+            BucketPicker(
+              selection: Binding(get: { bucket ?? creationContext }, set: { bucket = $0 }),
+              label: L10n.Playlists.bucket)
+          }
+          .listRowBackground(Color.clear)
+        }
         Section {
           Toggle(PlaylistStrings.hasDate, isOn: $hasDate).tint(CapoTheme.primary)
           if hasDate {
@@ -48,11 +79,21 @@ struct PlaylistFormView: View {
         ToolbarItem(placement: .confirmationAction) {
           Button(isCreate ? PlaylistStrings.create : PlaylistStrings.save, action: save)
             .font(CapoFont.style(.body, weight: .bold))
-            .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
+            .disabled(!canSave)
         }
       }
       .onAppear(perform: seed)
     }
+  }
+
+  private var canSave: Bool {
+    !name.trimmingCharacters(in: .whitespaces).isEmpty && name.count <= PlaylistLogic.maxName
+      && details.count <= PlaylistLogic.maxDescription
+  }
+
+  private func limitError(_ field: String, max: Int) -> some View {
+    Text("\(field): \(L10n.Ios.Editor.maxLength(max: String(max)))")
+      .font(CapoFont.style(.footnote)).foregroundStyle(CapoTheme.destructive)
   }
 
   private var isCreate: Bool {
@@ -83,7 +124,7 @@ struct PlaylistFormView: View {
             PlaylistDraft(
               name: trimmed, description: details.isEmpty ? nil : details,
               date: hasDate ? dateString : nil),
-            in: context)
+            in: bucket ?? creationContext)
           onSaved(created)
         case .edit(let playlist):
           try await services.playlists.update(

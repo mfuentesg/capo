@@ -23,7 +23,7 @@ public struct CifraClubImportView: View {
   @FocusState private var focused: Bool
 
   public init(
-    mode: Mode, importer: CifraClubImporter = CifraClubImporter(),
+    mode: Mode, importer: CifraClubImporter = .live,
     onImported: @escaping (CifraClubSong) -> Void, onClose: @escaping () -> Void
   ) {
     self.mode = mode

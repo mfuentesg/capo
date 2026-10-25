@@ -6,2234 +6,2332 @@ import Foundation
 public nonisolated enum L10n {
   public nonisolated enum Account {
     /// Cancel
-    public static var cancelDelete: String { String(localized: "account.cancelDelete", bundle: .module) }
+    public static var cancelDelete: String { String(localized: "account.cancelDelete", bundle: L10nRuntime.bundle) }
     /// Yes, delete my account
-    public static var confirmDelete: String { String(localized: "account.confirmDelete", bundle: .module) }
+    public static var confirmDelete: String { String(localized: "account.confirmDelete", bundle: L10nRuntime.bundle) }
     /// Danger Zone
-    public static var dangerZone: String { String(localized: "account.dangerZone", bundle: .module) }
+    public static var dangerZone: String { String(localized: "account.dangerZone", bundle: L10nRuntime.bundle) }
     /// Delete Account
-    public static var deleteAccount: String { String(localized: "account.deleteAccount", bundle: .module) }
+    public static var deleteAccount: String { String(localized: "account.deleteAccount", bundle: L10nRuntime.bundle) }
     /// Delete Account
-    public static var deleteAccountButton: String { String(localized: "account.deleteAccountButton", bundle: .module) }
+    public static var deleteAccountButton: String { String(localized: "account.deleteAccountButton", bundle: L10nRuntime.bundle) }
     /// Are you sure you want to delete your account?
-    public static var deleteAccountConfirm: String { String(localized: "account.deleteAccountConfirm", bundle: .module) }
+    public static var deleteAccountConfirm: String { String(localized: "account.deleteAccountConfirm", bundle: L10nRuntime.bundle) }
     /// This will permanently delete your account and all your songs, playlists, and data. This action cannot be undone.
-    public static var deleteAccountConfirmDescription: String { String(localized: "account.deleteAccountConfirmDescription", bundle: .module) }
+    public static var deleteAccountConfirmDescription: String { String(localized: "account.deleteAccountConfirmDescription", bundle: L10nRuntime.bundle) }
     /// Permanently delete your account and all associated data. This action cannot be undone.
-    public static var deleteAccountDescription: String { String(localized: "account.deleteAccountDescription", bundle: .module) }
+    public static var deleteAccountDescription: String { String(localized: "account.deleteAccountDescription", bundle: L10nRuntime.bundle) }
     /// Authentication is managed through your sign-in provider. Your name and email cannot be changed here.
-    public static var info: String { String(localized: "account.info", bundle: .module) }
+    public static var info: String { String(localized: "account.info", bundle: L10nRuntime.bundle) }
     /// Account
-    public static var title: String { String(localized: "account.title", bundle: .module) }
+    public static var title: String { String(localized: "account.title", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum Activity {
     /// No activity yet
-    public static var noActivity: String { String(localized: "activity.noActivity", bundle: .module) }
+    public static var noActivity: String { String(localized: "activity.noActivity", bundle: L10nRuntime.bundle) }
     /// Your recent actions will appear here
-    public static var noActivityDescription: String { String(localized: "activity.noActivityDescription", bundle: .module) }
+    public static var noActivityDescription: String { String(localized: "activity.noActivityDescription", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum Auth {
     /// your@email.com
-    public static var emailPlaceholder: String { String(localized: "auth.emailPlaceholder", bundle: .module) }
+    public static var emailPlaceholder: String { String(localized: "auth.emailPlaceholder", bundle: L10nRuntime.bundle) }
     /// Something went wrong during sign-in. Please try again.
-    public static var errorAuthError: String { String(localized: "auth.errorAuthError", bundle: .module) }
+    public static var errorAuthError: String { String(localized: "auth.errorAuthError", bundle: L10nRuntime.bundle) }
     /// Authentication failed. Please try again.
-    public static var errorAuthFailed: String { String(localized: "auth.errorAuthFailed", bundle: .module) }
+    public static var errorAuthFailed: String { String(localized: "auth.errorAuthFailed", bundle: L10nRuntime.bundle) }
     /// Sign-in failed. Please try again.
-    public static var errorGeneric: String { String(localized: "auth.errorGeneric", bundle: .module) }
+    public static var errorGeneric: String { String(localized: "auth.errorGeneric", bundle: L10nRuntime.bundle) }
     /// Invalid sign-in link. Please try again.
-    public static var errorMissingCode: String { String(localized: "auth.errorMissingCode", bundle: .module) }
+    public static var errorMissingCode: String { String(localized: "auth.errorMissingCode", bundle: L10nRuntime.bundle) }
     /// Coming soon
-    public static var githubComingSoon: String { String(localized: "auth.githubComingSoon", bundle: .module) }
+    public static var githubComingSoon: String { String(localized: "auth.githubComingSoon", bundle: L10nRuntime.bundle) }
     /// GitHub
-    public static var githubLabel: String { String(localized: "auth.githubLabel", bundle: .module) }
+    public static var githubLabel: String { String(localized: "auth.githubLabel", bundle: L10nRuntime.bundle) }
     /// Logging in
-    public static var loggingIn: String { String(localized: "auth.loggingIn", bundle: .module) }
+    public static var loggingIn: String { String(localized: "auth.loggingIn", bundle: L10nRuntime.bundle) }
     /// Login
-    public static var login: String { String(localized: "auth.login", bundle: .module) }
+    public static var login: String { String(localized: "auth.login", bundle: L10nRuntime.bundle) }
     /// Login with {provider}
     public static func loginWith(provider: String) -> String {
-      String(format: String(localized: "auth.loginWith", bundle: .module), provider)
+      String(format: String(localized: "auth.loginWith", bundle: L10nRuntime.bundle), provider)
     }
     /// Logout
-    public static var logout: String { String(localized: "auth.logout", bundle: .module) }
+    public static var logout: String { String(localized: "auth.logout", bundle: L10nRuntime.bundle) }
     /// Sign in without a password
-    public static var magicLinkDescription: String { String(localized: "auth.magicLinkDescription", bundle: .module) }
+    public static var magicLinkDescription: String { String(localized: "auth.magicLinkDescription", bundle: L10nRuntime.bundle) }
     /// Magic Link
-    public static var magicLinkLabel: String { String(localized: "auth.magicLinkLabel", bundle: .module) }
+    public static var magicLinkLabel: String { String(localized: "auth.magicLinkLabel", bundle: L10nRuntime.bundle) }
     /// or continue with email
-    public static var orContinueWith: String { String(localized: "auth.orContinueWith", bundle: .module) }
+    public static var orContinueWith: String { String(localized: "auth.orContinueWith", bundle: L10nRuntime.bundle) }
     /// Send Magic Link
-    public static var sendMagicLink: String { String(localized: "auth.sendMagicLink", bundle: .module) }
+    public static var sendMagicLink: String { String(localized: "auth.sendMagicLink", bundle: L10nRuntime.bundle) }
     /// Sign in to start creating and sharing your music
-    public static var signInDescription: String { String(localized: "auth.signInDescription", bundle: .module) }
+    public static var signInDescription: String { String(localized: "auth.signInDescription", bundle: L10nRuntime.bundle) }
     /// Chords. Lyrics. Setlists. In tune with your team.
-    public static var tagline: String { String(localized: "auth.tagline", bundle: .module) }
+    public static var tagline: String { String(localized: "auth.tagline", bundle: L10nRuntime.bundle) }
     /// Welcome back
-    public static var welcome: String { String(localized: "auth.welcome", bundle: .module) }
+    public static var welcome: String { String(localized: "auth.welcome", bundle: L10nRuntime.bundle) }
     /// Welcome to Capo
-    public static var welcomeToCapo: String { String(localized: "auth.welcomeToCapo", bundle: .module) }
+    public static var welcomeToCapo: String { String(localized: "auth.welcomeToCapo", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum Chords {
     public nonisolated enum Analyzer {
       /// Tap frets on the strings above to build your chord shape.
-      public static var emptyState: String { String(localized: "chords.analyzer.emptyState", bundle: .module) }
+      public static var emptyState: String { String(localized: "chords.analyzer.emptyState", bundle: L10nRuntime.bundle) }
       /// Identify a chord
-      public static var emptyStateTitle: String { String(localized: "chords.analyzer.emptyStateTitle", bundle: .module) }
+      public static var emptyStateTitle: String { String(localized: "chords.analyzer.emptyStateTitle", bundle: L10nRuntime.bundle) }
       /// Exact
-      public static var exact: String { String(localized: "chords.analyzer.exact", bundle: .module) }
+      public static var exact: String { String(localized: "chords.analyzer.exact", bundle: L10nRuntime.bundle) }
       /// numbers = fret
-      public static var fretLegend: String { String(localized: "chords.analyzer.fretLegend", bundle: .module) }
+      public static var fretLegend: String { String(localized: "chords.analyzer.fretLegend", bundle: L10nRuntime.bundle) }
       /// Fret position:
-      public static var fretPosition: String { String(localized: "chords.analyzer.fretPosition", bundle: .module) }
+      public static var fretPosition: String { String(localized: "chords.analyzer.fretPosition", bundle: L10nRuntime.bundle) }
       /// Guitar fretboard input
-      public static var fretboardLabel: String { String(localized: "chords.analyzer.fretboardLabel", bundle: .module) }
+      public static var fretboardLabel: String { String(localized: "chords.analyzer.fretboardLabel", bundle: L10nRuntime.bundle) }
       /// Higher fret position
-      public static var higherFret: String { String(localized: "chords.analyzer.higherFret", bundle: .module) }
+      public static var higherFret: String { String(localized: "chords.analyzer.higherFret", bundle: L10nRuntime.bundle) }
       /// Select the fret pressed on each string, then see the matching chords below.
-      public static var instructions: String { String(localized: "chords.analyzer.instructions", bundle: .module) }
+      public static var instructions: String { String(localized: "chords.analyzer.instructions", bundle: L10nRuntime.bundle) }
       /// Tap a fret on each string to build your chord shape.
-      public static var instructionsDiagram: String { String(localized: "chords.analyzer.instructionsDiagram", bundle: .module) }
+      public static var instructionsDiagram: String { String(localized: "chords.analyzer.instructionsDiagram", bundle: L10nRuntime.bundle) }
       /// Lower fret position
-      public static var lowerFret: String { String(localized: "chords.analyzer.lowerFret", bundle: .module) }
+      public static var lowerFret: String { String(localized: "chords.analyzer.lowerFret", bundle: L10nRuntime.bundle) }
       /// Matching chords
-      public static var matches: String { String(localized: "chords.analyzer.matches", bundle: .module) }
+      public static var matches: String { String(localized: "chords.analyzer.matches", bundle: L10nRuntime.bundle) }
       /// {count} note(s) missing
       public static func missingNotes(count: String) -> String {
-        String(format: String(localized: "chords.analyzer.missingNotes", bundle: .module), count)
+        String(format: String(localized: "chords.analyzer.missingNotes", bundle: L10nRuntime.bundle), count)
       }
       /// = muted
-      public static var mutedLegend: String { String(localized: "chords.analyzer.mutedLegend", bundle: .module) }
+      public static var mutedLegend: String { String(localized: "chords.analyzer.mutedLegend", bundle: L10nRuntime.bundle) }
       /// No matching chords found. Try a different combination.
-      public static var noMatch: String { String(localized: "chords.analyzer.noMatch", bundle: .module) }
+      public static var noMatch: String { String(localized: "chords.analyzer.noMatch", bundle: L10nRuntime.bundle) }
       /// No chords found
-      public static var noMatchTitle: String { String(localized: "chords.analyzer.noMatchTitle", bundle: .module) }
+      public static var noMatchTitle: String { String(localized: "chords.analyzer.noMatchTitle", bundle: L10nRuntime.bundle) }
       /// Notes
-      public static var notes: String { String(localized: "chords.analyzer.notes", bundle: .module) }
+      public static var notes: String { String(localized: "chords.analyzer.notes", bundle: L10nRuntime.bundle) }
       /// = open
-      public static var openLegend: String { String(localized: "chords.analyzer.openLegend", bundle: .module) }
+      public static var openLegend: String { String(localized: "chords.analyzer.openLegend", bundle: L10nRuntime.bundle) }
       /// Reset
-      public static var reset: String { String(localized: "chords.analyzer.reset", bundle: .module) }
+      public static var reset: String { String(localized: "chords.analyzer.reset", bundle: L10nRuntime.bundle) }
       /// Wide span — this shape may be difficult to play.
-      public static var stretchWarning: String { String(localized: "chords.analyzer.stretchWarning", bundle: .module) }
+      public static var stretchWarning: String { String(localized: "chords.analyzer.stretchWarning", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Glossary {
       /// {count} chords
       public static func chordsFound(count: String) -> String {
-        String(format: String(localized: "chords.glossary.chordsFound", bundle: .module), count)
+        String(format: String(localized: "chords.glossary.chordsFound", bundle: L10nRuntime.bundle), count)
       }
       /// No chords found
-      public static var noResults: String { String(localized: "chords.glossary.noResults", bundle: .module) }
+      public static var noResults: String { String(localized: "chords.glossary.noResults", bundle: L10nRuntime.bundle) }
       /// Search chords…
-      public static var searchPlaceholder: String { String(localized: "chords.glossary.searchPlaceholder", bundle: .module) }
+      public static var searchPlaceholder: String { String(localized: "chords.glossary.searchPlaceholder", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Orientation {
       /// Flip (nut at bottom)
-      public static var flipVertical: String { String(localized: "chords.orientation.flipVertical", bundle: .module) }
+      public static var flipVertical: String { String(localized: "chords.orientation.flipVertical", bundle: L10nRuntime.bundle) }
       /// LH
-      public static var lh: String { String(localized: "chords.orientation.lh", bundle: .module) }
+      public static var lh: String { String(localized: "chords.orientation.lh", bundle: L10nRuntime.bundle) }
       /// Mirror
-      public static var mirror: String { String(localized: "chords.orientation.mirror", bundle: .module) }
+      public static var mirror: String { String(localized: "chords.orientation.mirror", bundle: L10nRuntime.bundle) }
       /// RH
-      public static var rh: String { String(localized: "chords.orientation.rh", bundle: .module) }
+      public static var rh: String { String(localized: "chords.orientation.rh", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Page {
       /// Chord Finder
-      public static var analyzerTab: String { String(localized: "chords.page.analyzerTab", bundle: .module) }
+      public static var analyzerTab: String { String(localized: "chords.page.analyzerTab", bundle: L10nRuntime.bundle) }
       /// Beta
-      public static var betaBadge: String { String(localized: "chords.page.betaBadge", bundle: .module) }
+      public static var betaBadge: String { String(localized: "chords.page.betaBadge", bundle: L10nRuntime.bundle) }
       /// Chord Library
-      public static var glossaryTab: String { String(localized: "chords.page.glossaryTab", bundle: .module) }
+      public static var glossaryTab: String { String(localized: "chords.page.glossaryTab", bundle: L10nRuntime.bundle) }
       /// Browse all chords or identify a chord by its finger positions.
-      public static var subtitle: String { String(localized: "chords.page.subtitle", bundle: .module) }
+      public static var subtitle: String { String(localized: "chords.page.subtitle", bundle: L10nRuntime.bundle) }
       /// Chord Reference
-      public static var title: String { String(localized: "chords.page.title", bundle: .module) }
+      public static var title: String { String(localized: "chords.page.title", bundle: L10nRuntime.bundle) }
     }
     /// No diagram available for this chord.
-    public static var noDiagram: String { String(localized: "chords.noDiagram", bundle: .module) }
+    public static var noDiagram: String { String(localized: "chords.noDiagram", bundle: L10nRuntime.bundle) }
     /// not found
-    public static var notFound: String { String(localized: "chords.notFound", bundle: .module) }
+    public static var notFound: String { String(localized: "chords.notFound", bundle: L10nRuntime.bundle) }
     /// Play chord
-    public static var playChord: String { String(localized: "chords.playChord", bundle: .module) }
+    public static var playChord: String { String(localized: "chords.playChord", bundle: L10nRuntime.bundle) }
     /// Position {current} of {total}
     public static func positionOf(current: String, total: String) -> String {
-      String(format: String(localized: "chords.positionOf", bundle: .module), current, total)
+      String(format: String(localized: "chords.positionOf", bundle: L10nRuntime.bundle), current, total)
     }
     /// Chord: {chordName}
     public static func title(chordName: String) -> String {
-      String(format: String(localized: "chords.title", bundle: .module), chordName)
+      String(format: String(localized: "chords.title", bundle: L10nRuntime.bundle), chordName)
     }
     /// Variation {count}
     public static func variation(count: String) -> String {
-      String(format: String(localized: "chords.variation", bundle: .module), count)
+      String(format: String(localized: "chords.variation", bundle: L10nRuntime.bundle), count)
     }
   }
   public nonisolated enum Common {
     /// Back to Home
-    public static var backToHome: String { String(localized: "common.backToHome", bundle: .module) }
+    public static var backToHome: String { String(localized: "common.backToHome", bundle: L10nRuntime.bundle) }
     /// Cancel
-    public static var cancel: String { String(localized: "common.cancel", bundle: .module) }
+    public static var cancel: String { String(localized: "common.cancel", bundle: L10nRuntime.bundle) }
     /// Capo App
-    public static var capoApp: String { String(localized: "common.capoApp", bundle: .module) }
+    public static var capoApp: String { String(localized: "common.capoApp", bundle: L10nRuntime.bundle) }
     /// Capo Logo
-    public static var capoLogo: String { String(localized: "common.capoLogo", bundle: .module) }
+    public static var capoLogo: String { String(localized: "common.capoLogo", bundle: L10nRuntime.bundle) }
     /// Clear search
-    public static var clearSearch: String { String(localized: "common.clearSearch", bundle: .module) }
+    public static var clearSearch: String { String(localized: "common.clearSearch", bundle: L10nRuntime.bundle) }
     /// Click to add
-    public static var clickToAdd: String { String(localized: "common.clickToAdd", bundle: .module) }
+    public static var clickToAdd: String { String(localized: "common.clickToAdd", bundle: L10nRuntime.bundle) }
     /// Close
-    public static var close: String { String(localized: "common.close", bundle: .module) }
+    public static var close: String { String(localized: "common.close", bundle: L10nRuntime.bundle) }
     /// Soon
-    public static var comingSoon: String { String(localized: "common.comingSoon", bundle: .module) }
+    public static var comingSoon: String { String(localized: "common.comingSoon", bundle: L10nRuntime.bundle) }
     /// Failed to copy to clipboard
-    public static var copyToClipboardFailed: String { String(localized: "common.copyToClipboardFailed", bundle: .module) }
+    public static var copyToClipboardFailed: String { String(localized: "common.copyToClipboardFailed", bundle: L10nRuntime.bundle) }
     /// Delete
-    public static var delete: String { String(localized: "common.delete", bundle: .module) }
+    public static var delete: String { String(localized: "common.delete", bundle: L10nRuntime.bundle) }
     /// Discard
-    public static var discard: String { String(localized: "common.discard", bundle: .module) }
+    public static var discard: String { String(localized: "common.discard", bundle: L10nRuntime.bundle) }
     /// You have unsaved changes. Do you want to discard them?
-    public static var discardChangesMessage: String { String(localized: "common.discardChangesMessage", bundle: .module) }
+    public static var discardChangesMessage: String { String(localized: "common.discardChangesMessage", bundle: L10nRuntime.bundle) }
     /// Done
-    public static var done: String { String(localized: "common.done", bundle: .module) }
+    public static var done: String { String(localized: "common.done", bundle: L10nRuntime.bundle) }
     /// Edit
-    public static var edit: String { String(localized: "common.edit", bundle: .module) }
+    public static var edit: String { String(localized: "common.edit", bundle: L10nRuntime.bundle) }
     /// Email
-    public static var email: String { String(localized: "common.email", bundle: .module) }
+    public static var email: String { String(localized: "common.email", bundle: L10nRuntime.bundle) }
     /// member@example.com
-    public static var emailPlaceholder: String { String(localized: "common.emailPlaceholder", bundle: .module) }
+    public static var emailPlaceholder: String { String(localized: "common.emailPlaceholder", bundle: L10nRuntime.bundle) }
     /// Go back
-    public static var goBack: String { String(localized: "common.goBack", bundle: .module) }
+    public static var goBack: String { String(localized: "common.goBack", bundle: L10nRuntime.bundle) }
     /// Google
-    public static var google: String { String(localized: "common.google", bundle: .module) }
+    public static var google: String { String(localized: "common.google", bundle: L10nRuntime.bundle) }
     /// Keep Editing
-    public static var keepEditing: String { String(localized: "common.keepEditing", bundle: .module) }
+    public static var keepEditing: String { String(localized: "common.keepEditing", bundle: L10nRuntime.bundle) }
     /// Loading...
-    public static var loading: String { String(localized: "common.loading", bundle: .module) }
+    public static var loading: String { String(localized: "common.loading", bundle: L10nRuntime.bundle) }
     /// Member options
-    public static var memberOptions: String { String(localized: "common.memberOptions", bundle: .module) }
+    public static var memberOptions: String { String(localized: "common.memberOptions", bundle: L10nRuntime.bundle) }
     /// More
-    public static var more: String { String(localized: "common.more", bundle: .module) }
+    public static var more: String { String(localized: "common.more", bundle: L10nRuntime.bundle) }
     /// Next
-    public static var next: String { String(localized: "common.next", bundle: .module) }
+    public static var next: String { String(localized: "common.next", bundle: L10nRuntime.bundle) }
     /// Powered by Capo
-    public static var poweredBy: String { String(localized: "common.poweredBy", bundle: .module) }
+    public static var poweredBy: String { String(localized: "common.poweredBy", bundle: L10nRuntime.bundle) }
     /// Previous
-    public static var previous: String { String(localized: "common.previous", bundle: .module) }
+    public static var previous: String { String(localized: "common.previous", bundle: L10nRuntime.bundle) }
     /// Remove song
-    public static var removeSong: String { String(localized: "common.removeSong", bundle: .module) }
+    public static var removeSong: String { String(localized: "common.removeSong", bundle: L10nRuntime.bundle) }
     /// Role
-    public static var role: String { String(localized: "common.role", bundle: .module) }
+    public static var role: String { String(localized: "common.role", bundle: L10nRuntime.bundle) }
     /// Save
-    public static var save: String { String(localized: "common.save", bundle: .module) }
+    public static var save: String { String(localized: "common.save", bundle: L10nRuntime.bundle) }
     /// Save failed
-    public static var saveFailed: String { String(localized: "common.saveFailed", bundle: .module) }
+    public static var saveFailed: String { String(localized: "common.saveFailed", bundle: L10nRuntime.bundle) }
     /// Saved
-    public static var saved: String { String(localized: "common.saved", bundle: .module) }
+    public static var saved: String { String(localized: "common.saved", bundle: L10nRuntime.bundle) }
     /// Saving…
-    public static var saving: String { String(localized: "common.saving", bundle: .module) }
+    public static var saving: String { String(localized: "common.saving", bundle: L10nRuntime.bundle) }
     /// Search
-    public static var search: String { String(localized: "common.search", bundle: .module) }
+    public static var search: String { String(localized: "common.search", bundle: L10nRuntime.bundle) }
     /// Submit
-    public static var submit: String { String(localized: "common.submit", bundle: .module) }
+    public static var submit: String { String(localized: "common.submit", bundle: L10nRuntime.bundle) }
     /// Toggle menu
-    public static var toggleMenu: String { String(localized: "common.toggleMenu", bundle: .module) }
+    public static var toggleMenu: String { String(localized: "common.toggleMenu", bundle: L10nRuntime.bundle) }
     /// Toggle theme
-    public static var toggleTheme: String { String(localized: "common.toggleTheme", bundle: .module) }
+    public static var toggleTheme: String { String(localized: "common.toggleTheme", bundle: L10nRuntime.bundle) }
     /// Try again
-    public static var tryAgain: String { String(localized: "common.tryAgain", bundle: .module) }
+    public static var tryAgain: String { String(localized: "common.tryAgain", bundle: L10nRuntime.bundle) }
     /// Try a different search term
-    public static var tryDifferentSearch: String { String(localized: "common.tryDifferentSearch", bundle: .module) }
+    public static var tryDifferentSearch: String { String(localized: "common.tryDifferentSearch", bundle: L10nRuntime.bundle) }
     /// Unsaved Changes
-    public static var unsavedChanges: String { String(localized: "common.unsavedChanges", bundle: .module) }
+    public static var unsavedChanges: String { String(localized: "common.unsavedChanges", bundle: L10nRuntime.bundle) }
     /// User menu
-    public static var userMenu: String { String(localized: "common.userMenu", bundle: .module) }
+    public static var userMenu: String { String(localized: "common.userMenu", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum Dashboard {
     /// Add Song
-    public static var addSong: String { String(localized: "dashboard.addSong", bundle: .module) }
+    public static var addSong: String { String(localized: "dashboard.addSong", bundle: L10nRuntime.bundle) }
     /// Add your first song
-    public static var addYourFirstSong: String { String(localized: "dashboard.addYourFirstSong", bundle: .module) }
+    public static var addYourFirstSong: String { String(localized: "dashboard.addYourFirstSong", bundle: L10nRuntime.bundle) }
     /// Here's an overview of your library.
-    public static var description: String { String(localized: "dashboard.description", bundle: .module) }
+    public static var description: String { String(localized: "dashboard.description", bundle: L10nRuntime.bundle) }
     /// Distribution across musical keys
-    public static var distributionByKey: String { String(localized: "dashboard.distributionByKey", bundle: .module) }
+    public static var distributionByKey: String { String(localized: "dashboard.distributionByKey", bundle: L10nRuntime.bundle) }
     /// Latest songs in your library
-    public static var latestSongs: String { String(localized: "dashboard.latestSongs", bundle: .module) }
+    public static var latestSongs: String { String(localized: "dashboard.latestSongs", bundle: L10nRuntime.bundle) }
     /// New Playlist
-    public static var newPlaylist: String { String(localized: "dashboard.newPlaylist", bundle: .module) }
+    public static var newPlaylist: String { String(localized: "dashboard.newPlaylist", bundle: L10nRuntime.bundle) }
     /// No songs yet
-    public static var noSongsYet: String { String(localized: "dashboard.noSongsYet", bundle: .module) }
+    public static var noSongsYet: String { String(localized: "dashboard.noSongsYet", bundle: L10nRuntime.bundle) }
     /// Playlists
-    public static var playlists: String { String(localized: "dashboard.playlists", bundle: .module) }
+    public static var playlists: String { String(localized: "dashboard.playlists", bundle: L10nRuntime.bundle) }
     /// Recent Activity
-    public static var recentActivity: String { String(localized: "dashboard.recentActivity", bundle: .module) }
+    public static var recentActivity: String { String(localized: "dashboard.recentActivity", bundle: L10nRuntime.bundle) }
     /// Your latest actions
-    public static var recentActivityDescription: String { String(localized: "dashboard.recentActivityDescription", bundle: .module) }
+    public static var recentActivityDescription: String { String(localized: "dashboard.recentActivityDescription", bundle: L10nRuntime.bundle) }
     /// Recently Added
-    public static var recentlyAdded: String { String(localized: "dashboard.recentlyAdded", bundle: .module) }
+    public static var recentlyAdded: String { String(localized: "dashboard.recentlyAdded", bundle: L10nRuntime.bundle) }
     /// Songs by Key
-    public static var songsByKey: String { String(localized: "dashboard.songsByKey", bundle: .module) }
+    public static var songsByKey: String { String(localized: "dashboard.songsByKey", bundle: L10nRuntime.bundle) }
     /// This Month
-    public static var thisMonth: String { String(localized: "dashboard.thisMonth", bundle: .module) }
+    public static var thisMonth: String { String(localized: "dashboard.thisMonth", bundle: L10nRuntime.bundle) }
     /// Dashboard
-    public static var title: String { String(localized: "dashboard.title", bundle: .module) }
+    public static var title: String { String(localized: "dashboard.title", bundle: L10nRuntime.bundle) }
     /// Total Songs
-    public static var totalSongs: String { String(localized: "dashboard.totalSongs", bundle: .module) }
+    public static var totalSongs: String { String(localized: "dashboard.totalSongs", bundle: L10nRuntime.bundle) }
     /// Upcoming
-    public static var upcoming: String { String(localized: "dashboard.upcoming", bundle: .module) }
+    public static var upcoming: String { String(localized: "dashboard.upcoming", bundle: L10nRuntime.bundle) }
     /// View all
-    public static var viewAll: String { String(localized: "dashboard.viewAll", bundle: .module) }
+    public static var viewAll: String { String(localized: "dashboard.viewAll", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum Errors {
     /// Go to Songs
-    public static var goToSongs: String { String(localized: "errors.goToSongs", bundle: .module) }
+    public static var goToSongs: String { String(localized: "errors.goToSongs", bundle: L10nRuntime.bundle) }
     /// There was a problem loading this page. Please try again.
-    public static var loadingError: String { String(localized: "errors.loadingError", bundle: .module) }
+    public static var loadingError: String { String(localized: "errors.loadingError", bundle: L10nRuntime.bundle) }
     /// An unexpected error occurred. Please try again.
-    public static var unexpectedError: String { String(localized: "errors.unexpectedError", bundle: .module) }
+    public static var unexpectedError: String { String(localized: "errors.unexpectedError", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum Filters {
     /// Clear all
-    public static var clearAll: String { String(localized: "filters.clearAll", bundle: .module) }
+    public static var clearAll: String { String(localized: "filters.clearAll", bundle: L10nRuntime.bundle) }
     /// Private
-    public static var `private`: String { String(localized: "filters.private", bundle: .module) }
+    public static var `private`: String { String(localized: "filters.private", bundle: L10nRuntime.bundle) }
     /// Public
-    public static var `public`: String { String(localized: "filters.public", bundle: .module) }
+    public static var `public`: String { String(localized: "filters.public", bundle: L10nRuntime.bundle) }
     /// Visibility
-    public static var visibility: String { String(localized: "filters.visibility", bundle: .module) }
+    public static var visibility: String { String(localized: "filters.visibility", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum Invitations {
     /// Accept
-    public static var accept: String { String(localized: "invitations.accept", bundle: .module) }
+    public static var accept: String { String(localized: "invitations.accept", bundle: L10nRuntime.bundle) }
     /// Invitation accepted successfully! 🎉
-    public static var acceptedTitle: String { String(localized: "invitations.acceptedTitle", bundle: .module) }
+    public static var acceptedTitle: String { String(localized: "invitations.acceptedTitle", bundle: L10nRuntime.bundle) }
     /// Accepting...
-    public static var accepting: String { String(localized: "invitations.accepting", bundle: .module) }
+    public static var accepting: String { String(localized: "invitations.accepting", bundle: L10nRuntime.bundle) }
     /// Accepting your invitation...
-    public static var acceptingDescription: String { String(localized: "invitations.acceptingDescription", bundle: .module) }
+    public static var acceptingDescription: String { String(localized: "invitations.acceptingDescription", bundle: L10nRuntime.bundle) }
     /// Back to Teams
-    public static var backToTeams: String { String(localized: "invitations.backToTeams", bundle: .module) }
+    public static var backToTeams: String { String(localized: "invitations.backToTeams", bundle: L10nRuntime.bundle) }
     /// Create Account or Sign In
-    public static var createAccountOrSignIn: String { String(localized: "invitations.createAccountOrSignIn", bundle: .module) }
+    public static var createAccountOrSignIn: String { String(localized: "invitations.createAccountOrSignIn", bundle: L10nRuntime.bundle) }
+    /// Decline
+    public static var decline: String { String(localized: "invitations.decline", bundle: L10nRuntime.bundle) }
     /// You don't have any pending team invitations at the moment.
-    public static var emptyDescription: String { String(localized: "invitations.emptyDescription", bundle: .module) }
+    public static var emptyDescription: String { String(localized: "invitations.emptyDescription", bundle: L10nRuntime.bundle) }
     /// No pending invitations
-    public static var emptyTitle: String { String(localized: "invitations.emptyTitle", bundle: .module) }
+    public static var emptyTitle: String { String(localized: "invitations.emptyTitle", bundle: L10nRuntime.bundle) }
     /// This invitation was already accepted. You can access the team from your Teams page.
-    public static var errorAlreadyAccepted: String { String(localized: "invitations.errorAlreadyAccepted", bundle: .module) }
+    public static var errorAlreadyAccepted: String { String(localized: "invitations.errorAlreadyAccepted", bundle: L10nRuntime.bundle) }
     /// This invitation has expired. Ask the team admin to send you a new invitation.
-    public static var errorExpired: String { String(localized: "invitations.errorExpired", bundle: .module) }
+    public static var errorExpired: String { String(localized: "invitations.errorExpired", bundle: L10nRuntime.bundle) }
     /// This invitation link is invalid or no longer available.
-    public static var errorNotFound: String { String(localized: "invitations.errorNotFound", bundle: .module) }
+    public static var errorNotFound: String { String(localized: "invitations.errorNotFound", bundle: L10nRuntime.bundle) }
     /// This invitation has expired
-    public static var expired: String { String(localized: "invitations.expired", bundle: .module) }
+    public static var expired: String { String(localized: "invitations.expired", bundle: L10nRuntime.bundle) }
     /// Expires {date}
     public static func expires(date: String) -> String {
-      String(format: String(localized: "invitations.expires", bundle: .module), date)
+      String(format: String(localized: "invitations.expires", bundle: L10nRuntime.bundle), date)
     }
     /// Failed to accept invitation
-    public static var failedToAccept: String { String(localized: "invitations.failedToAccept", bundle: .module) }
+    public static var failedToAccept: String { String(localized: "invitations.failedToAccept", bundle: L10nRuntime.bundle) }
     /// Failed to fetch invitations
-    public static var fetchFailed: String { String(localized: "invitations.fetchFailed", bundle: .module) }
+    public static var fetchFailed: String { String(localized: "invitations.fetchFailed", bundle: L10nRuntime.bundle) }
     /// Go Home
-    public static var goHome: String { String(localized: "invitations.goHome", bundle: .module) }
+    public static var goHome: String { String(localized: "invitations.goHome", bundle: L10nRuntime.bundle) }
     /// Go to Dashboard
-    public static var goToDashboard: String { String(localized: "invitations.goToDashboard", bundle: .module) }
+    public static var goToDashboard: String { String(localized: "invitations.goToDashboard", bundle: L10nRuntime.bundle) }
     /// Go to Teams
-    public static var goToTeams: String { String(localized: "invitations.goToTeams", bundle: .module) }
+    public static var goToTeams: String { String(localized: "invitations.goToTeams", bundle: L10nRuntime.bundle) }
     /// Invalid invitation
-    public static var invalid: String { String(localized: "invitations.invalid", bundle: .module) }
+    public static var invalid: String { String(localized: "invitations.invalid", bundle: L10nRuntime.bundle) }
     /// This invitation link is invalid or has already been used.
-    public static var invalidLinkDescription: String { String(localized: "invitations.invalidLinkDescription", bundle: .module) }
+    public static var invalidLinkDescription: String { String(localized: "invitations.invalidLinkDescription", bundle: L10nRuntime.bundle) }
     /// Invalid invitation link
-    public static var invalidLinkTitle: String { String(localized: "invitations.invalidLinkTitle", bundle: .module) }
+    public static var invalidLinkTitle: String { String(localized: "invitations.invalidLinkTitle", bundle: L10nRuntime.bundle) }
     /// Invitation from {name}
     public static func invitationFrom(name: String) -> String {
-      String(format: String(localized: "invitations.invitationFrom", bundle: .module), name)
+      String(format: String(localized: "invitations.invitationFrom", bundle: L10nRuntime.bundle), name)
     }
     /// Failed to load invitations
-    public static var loadFailed: String { String(localized: "invitations.loadFailed", bundle: .module) }
+    public static var loadFailed: String { String(localized: "invitations.loadFailed", bundle: L10nRuntime.bundle) }
     /// No invitation token provided
-    public static var missingToken: String { String(localized: "invitations.missingToken", bundle: .module) }
+    public static var missingToken: String { String(localized: "invitations.missingToken", bundle: L10nRuntime.bundle) }
     /// Review and accept team invitations sent to you.
-    public static var pendingDescription: String { String(localized: "invitations.pendingDescription", bundle: .module) }
+    public static var pendingDescription: String { String(localized: "invitations.pendingDescription", bundle: L10nRuntime.bundle) }
     /// Pending Invitations
-    public static var pendingTitle: String { String(localized: "invitations.pendingTitle", bundle: .module) }
+    public static var pendingTitle: String { String(localized: "invitations.pendingTitle", bundle: L10nRuntime.bundle) }
     /// Processing your invitation...
-    public static var processing: String { String(localized: "invitations.processing", bundle: .module) }
+    public static var processing: String { String(localized: "invitations.processing", bundle: L10nRuntime.bundle) }
     /// Redirecting you to your teams...
-    public static var redirecting: String { String(localized: "invitations.redirecting", bundle: .module) }
+    public static var redirecting: String { String(localized: "invitations.redirecting", bundle: L10nRuntime.bundle) }
     /// Sign In
-    public static var signIn: String { String(localized: "invitations.signIn", bundle: .module) }
+    public static var signIn: String { String(localized: "invitations.signIn", bundle: L10nRuntime.bundle) }
     /// You need to be signed in with the email address that matches this invitation.
-    public static var signInRequiredDescription: String { String(localized: "invitations.signInRequiredDescription", bundle: .module) }
+    public static var signInRequiredDescription: String { String(localized: "invitations.signInRequiredDescription", bundle: L10nRuntime.bundle) }
     /// Sign in required
-    public static var signInRequiredTitle: String { String(localized: "invitations.signInRequiredTitle", bundle: .module) }
+    public static var signInRequiredTitle: String { String(localized: "invitations.signInRequiredTitle", bundle: L10nRuntime.bundle) }
     /// Sign in to continue
-    public static var signInToContinue: String { String(localized: "invitations.signInToContinue", bundle: .module) }
+    public static var signInToContinue: String { String(localized: "invitations.signInToContinue", bundle: L10nRuntime.bundle) }
     /// Team Invitation
-    public static var title: String { String(localized: "invitations.title", bundle: .module) }
+    public static var title: String { String(localized: "invitations.title", bundle: L10nRuntime.bundle) }
     /// Unable to accept invitation
-    public static var unableToAccept: String { String(localized: "invitations.unableToAccept", bundle: .module) }
+    public static var unableToAccept: String { String(localized: "invitations.unableToAccept", bundle: L10nRuntime.bundle) }
     /// View
-    public static var view: String { String(localized: "invitations.view", bundle: .module) }
+    public static var view: String { String(localized: "invitations.view", bundle: L10nRuntime.bundle) }
     /// Welcome to the team!
-    public static var welcome: String { String(localized: "invitations.welcome", bundle: .module) }
+    public static var welcome: String { String(localized: "invitations.welcome", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum Ios {
     public nonisolated enum Auth {
       public nonisolated enum Error {
         /// This action is not allowed.
-        public static var denied: String { String(localized: "ios.auth.error.denied", bundle: .module) }
+        public static var denied: String { String(localized: "ios.auth.error.denied", bundle: L10nRuntime.bundle) }
         /// Sign in failed. Try again.
-        public static var generic: String { String(localized: "ios.auth.error.generic", bundle: .module) }
+        public static var generic: String { String(localized: "ios.auth.error.generic", bundle: L10nRuntime.bundle) }
         /// Check your email and password.
-        public static var invalid: String { String(localized: "ios.auth.error.invalid", bundle: .module) }
+        public static var invalid: String { String(localized: "ios.auth.error.invalid", bundle: L10nRuntime.bundle) }
         /// You are offline. Connect to sign in.
-        public static var offline: String { String(localized: "ios.auth.error.offline", bundle: .module) }
+        public static var offline: String { String(localized: "ios.auth.error.offline", bundle: L10nRuntime.bundle) }
       }
       /// Email
-      public static var email: String { String(localized: "ios.auth.email", bundle: .module) }
+      public static var email: String { String(localized: "ios.auth.email", bundle: L10nRuntime.bundle) }
       /// Continue with Google
-      public static var google: String { String(localized: "ios.auth.google", bundle: .module) }
+      public static var google: String { String(localized: "ios.auth.google", bundle: L10nRuntime.bundle) }
       /// or
-      public static var or: String { String(localized: "ios.auth.or", bundle: .module) }
+      public static var or: String { String(localized: "ios.auth.or", bundle: L10nRuntime.bundle) }
       /// Password
-      public static var password: String { String(localized: "ios.auth.password", bundle: .module) }
+      public static var password: String { String(localized: "ios.auth.password", bundle: L10nRuntime.bundle) }
       /// Sign in
-      public static var signIn: String { String(localized: "ios.auth.signIn", bundle: .module) }
+      public static var signIn: String { String(localized: "ios.auth.signIn", bundle: L10nRuntime.bundle) }
       /// Create account
-      public static var signUp: String { String(localized: "ios.auth.signUp", bundle: .module) }
+      public static var signUp: String { String(localized: "ios.auth.signUp", bundle: L10nRuntime.bundle) }
       /// Your songs and setlists, ready on stage.
-      public static var tagline: String { String(localized: "ios.auth.tagline", bundle: .module) }
+      public static var tagline: String { String(localized: "ios.auth.tagline", bundle: L10nRuntime.bundle) }
       /// Have an account? Sign in
-      public static var toSignIn: String { String(localized: "ios.auth.toSignIn", bundle: .module) }
+      public static var toSignIn: String { String(localized: "ios.auth.toSignIn", bundle: L10nRuntime.bundle) }
       /// No account? Create one
-      public static var toSignUp: String { String(localized: "ios.auth.toSignUp", bundle: .module) }
+      public static var toSignUp: String { String(localized: "ios.auth.toSignUp", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum ChordDiagram {
       /// Generated Diagram
-      public static var generated: String { String(localized: "ios.chordDiagram.generated", bundle: .module) }
+      public static var generated: String { String(localized: "ios.chordDiagram.generated", bundle: L10nRuntime.bundle) }
       /// Go to variation {n}
       public static func goToPosition(n: String) -> String {
-        String(format: String(localized: "ios.chordDiagram.goToPosition", bundle: .module), n)
+        String(format: String(localized: "ios.chordDiagram.goToPosition", bundle: L10nRuntime.bundle), n)
       }
       /// LH
-      public static var leftHandShort: String { String(localized: "ios.chordDiagram.leftHandShort", bundle: .module) }
+      public static var leftHandShort: String { String(localized: "ios.chordDiagram.leftHandShort", bundle: L10nRuntime.bundle) }
       /// muted
-      public static var muted: String { String(localized: "ios.chordDiagram.muted", bundle: .module) }
+      public static var muted: String { String(localized: "ios.chordDiagram.muted", bundle: L10nRuntime.bundle) }
       /// Next position
-      public static var next: String { String(localized: "ios.chordDiagram.next", bundle: .module) }
+      public static var next: String { String(localized: "ios.chordDiagram.next", bundle: L10nRuntime.bundle) }
       /// open
-      public static var `open`: String { String(localized: "ios.chordDiagram.open", bundle: .module) }
+      public static var `open`: String { String(localized: "ios.chordDiagram.open", bundle: L10nRuntime.bundle) }
       /// Position {n} of {total}
       public static func position(n: String, total: String) -> String {
-        String(format: String(localized: "ios.chordDiagram.position", bundle: .module), n, total)
+        String(format: String(localized: "ios.chordDiagram.position", bundle: L10nRuntime.bundle), n, total)
       }
       /// Previous position
-      public static var previous: String { String(localized: "ios.chordDiagram.previous", bundle: .module) }
+      public static var previous: String { String(localized: "ios.chordDiagram.previous", bundle: L10nRuntime.bundle) }
       /// RH
-      public static var rightHandShort: String { String(localized: "ios.chordDiagram.rightHandShort", bundle: .module) }
+      public static var rightHandShort: String { String(localized: "ios.chordDiagram.rightHandShort", bundle: L10nRuntime.bundle) }
       /// Verified Shape
-      public static var verified: String { String(localized: "ios.chordDiagram.verified", bundle: .module) }
+      public static var verified: String { String(localized: "ios.chordDiagram.verified", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Conflict {
       /// {title} (copy)
       public static func copyTitle(title: String) -> String {
-        String(format: String(localized: "ios.conflict.copyTitle", bundle: .module), title)
+        String(format: String(localized: "ios.conflict.copyTitle", bundle: L10nRuntime.bundle), title)
       }
       /// This song was deleted on the server.
-      public static var deletedOnServer: String { String(localized: "ios.conflict.deletedOnServer", bundle: .module) }
+      public static var deletedOnServer: String { String(localized: "ios.conflict.deletedOnServer", bundle: L10nRuntime.bundle) }
       /// This song was changed on another device while you were editing it.
-      public static var description: String { String(localized: "ios.conflict.description", bundle: .module) }
+      public static var description: String { String(localized: "ios.conflict.description", bundle: L10nRuntime.bundle) }
       /// Keep both
-      public static var keepBoth: String { String(localized: "ios.conflict.keepBoth", bundle: .module) }
+      public static var keepBoth: String { String(localized: "ios.conflict.keepBoth", bundle: L10nRuntime.bundle) }
       /// Keep mine
-      public static var keepMine: String { String(localized: "ios.conflict.keepMine", bundle: .module) }
+      public static var keepMine: String { String(localized: "ios.conflict.keepMine", bundle: L10nRuntime.bundle) }
       /// Keep theirs
-      public static var keepTheirs: String { String(localized: "ios.conflict.keepTheirs", bundle: .module) }
+      public static var keepTheirs: String { String(localized: "ios.conflict.keepTheirs", bundle: L10nRuntime.bundle) }
       /// My version
-      public static var mine: String { String(localized: "ios.conflict.mine", bundle: .module) }
+      public static var mine: String { String(localized: "ios.conflict.mine", bundle: L10nRuntime.bundle) }
       /// Server version
-      public static var theirs: String { String(localized: "ios.conflict.theirs", bundle: .module) }
+      public static var theirs: String { String(localized: "ios.conflict.theirs", bundle: L10nRuntime.bundle) }
       /// Conflicts
-      public static var title: String { String(localized: "ios.conflict.title", bundle: .module) }
+      public static var title: String { String(localized: "ios.conflict.title", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Demo {
       /// Demo mode
-      public static var badge: String { String(localized: "ios.demo.badge", bundle: .module) }
+      public static var badge: String { String(localized: "ios.demo.badge", bundle: L10nRuntime.bundle) }
       /// Server configuration missing
-      public static var configurationMissing: String { String(localized: "ios.demo.configurationMissing", bundle: .module) }
+      public static var configurationMissing: String { String(localized: "ios.demo.configurationMissing", bundle: L10nRuntime.bundle) }
       /// This build has no server configuration. You can explore the app with sample data.
-      public static var configurationMissingDescription: String { String(localized: "ios.demo.configurationMissingDescription", bundle: .module) }
+      public static var configurationMissingDescription: String { String(localized: "ios.demo.configurationMissingDescription", bundle: L10nRuntime.bundle) }
       /// Showing sample data. Nothing is saved to a server.
-      public static var description: String { String(localized: "ios.demo.description", bundle: .module) }
+      public static var description: String { String(localized: "ios.demo.description", bundle: L10nRuntime.bundle) }
       /// Use demo
-      public static var use: String { String(localized: "ios.demo.use", bundle: .module) }
+      public static var use: String { String(localized: "ios.demo.use", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Editor {
       public nonisolated enum Conflicts {
         /// This song was deleted on the server.
-        public static var deletedRemotely: String { String(localized: "ios.editor.conflicts.deletedRemotely", bundle: .module) }
+        public static var deletedRemotely: String { String(localized: "ios.editor.conflicts.deletedRemotely", bundle: L10nRuntime.bundle) }
         /// Differs
-        public static var differs: String { String(localized: "ios.editor.conflicts.differs", bundle: .module) }
+        public static var differs: String { String(localized: "ios.editor.conflicts.differs", bundle: L10nRuntime.bundle) }
+        /// Discard
+        public static var discard: String { String(localized: "ios.editor.conflicts.discard", bundle: L10nRuntime.bundle) }
         /// (empty)
-        public static var empty: String { String(localized: "ios.editor.conflicts.empty", bundle: .module) }
+        public static var empty: String { String(localized: "ios.editor.conflicts.empty", bundle: L10nRuntime.bundle) }
         /// Everything you edited offline has been synced.
-        public static var emptyMessage: String { String(localized: "ios.editor.conflicts.emptyMessage", bundle: .module) }
+        public static var emptyMessage: String { String(localized: "ios.editor.conflicts.emptyMessage", bundle: L10nRuntime.bundle) }
         /// No conflicts
-        public static var emptyTitle: String { String(localized: "ios.editor.conflicts.emptyTitle", bundle: .module) }
+        public static var emptyTitle: String { String(localized: "ios.editor.conflicts.emptyTitle", bundle: L10nRuntime.bundle) }
+        /// The server refused these changes. Retry them, or discard them to restore the server's version.
+        public static var failedHint: String { String(localized: "ios.editor.conflicts.failedHint", bundle: L10nRuntime.bundle) }
+        /// Changes that didn't sync
+        public static var failedTitle: String { String(localized: "ios.editor.conflicts.failedTitle", bundle: L10nRuntime.bundle) }
         /// Keep both
-        public static var keepBoth: String { String(localized: "ios.editor.conflicts.keepBoth", bundle: .module) }
+        public static var keepBoth: String { String(localized: "ios.editor.conflicts.keepBoth", bundle: L10nRuntime.bundle) }
         /// Keep mine
-        public static var keepMine: String { String(localized: "ios.editor.conflicts.keepMine", bundle: .module) }
+        public static var keepMine: String { String(localized: "ios.editor.conflicts.keepMine", bundle: L10nRuntime.bundle) }
         /// Keep server version
-        public static var keepTheirs: String { String(localized: "ios.editor.conflicts.keepTheirs", bundle: .module) }
+        public static var keepTheirs: String { String(localized: "ios.editor.conflicts.keepTheirs", bundle: L10nRuntime.bundle) }
+        /// Change
+        public static var kindOther: String { String(localized: "ios.editor.conflicts.kindOther", bundle: L10nRuntime.bundle) }
+        /// Playlist change
+        public static var kindPlaylist: String { String(localized: "ios.editor.conflicts.kindPlaylist", bundle: L10nRuntime.bundle) }
+        /// Playlist deletion
+        public static var kindPlaylistDeleted: String { String(localized: "ios.editor.conflicts.kindPlaylistDeleted", bundle: L10nRuntime.bundle) }
+        /// Playlist songs
+        public static var kindPlaylistSongs: String { String(localized: "ios.editor.conflicts.kindPlaylistSongs", bundle: L10nRuntime.bundle) }
+        /// Song change
+        public static var kindSong: String { String(localized: "ios.editor.conflicts.kindSong", bundle: L10nRuntime.bundle) }
+        /// Song deletion
+        public static var kindSongDeleted: String { String(localized: "ios.editor.conflicts.kindSongDeleted", bundle: L10nRuntime.bundle) }
+        /// Tag change
+        public static var kindTags: String { String(localized: "ios.editor.conflicts.kindTags", bundle: L10nRuntime.bundle) }
         /// Mine
-        public static var mine: String { String(localized: "ios.editor.conflicts.mine", bundle: .module) }
+        public static var mine: String { String(localized: "ios.editor.conflicts.mine", bundle: L10nRuntime.bundle) }
         /// Couldn't resolve the conflict
-        public static var resolveFailed: String { String(localized: "ios.editor.conflicts.resolveFailed", bundle: .module) }
+        public static var resolveFailed: String { String(localized: "ios.editor.conflicts.resolveFailed", bundle: L10nRuntime.bundle) }
+        /// Retry
+        public static var retry: String { String(localized: "ios.editor.conflicts.retry", bundle: L10nRuntime.bundle) }
         /// Server
-        public static var theirs: String { String(localized: "ios.editor.conflicts.theirs", bundle: .module) }
+        public static var theirs: String { String(localized: "ios.editor.conflicts.theirs", bundle: L10nRuntime.bundle) }
         /// Sync conflicts
-        public static var title: String { String(localized: "ios.editor.conflicts.title", bundle: .module) }
+        public static var title: String { String(localized: "ios.editor.conflicts.title", bundle: L10nRuntime.bundle) }
       }
       /// Artist
-      public static var artist: String { String(localized: "ios.editor.artist", bundle: .module) }
+      public static var artist: String { String(localized: "ios.editor.artist", bundle: L10nRuntime.bundle) }
       /// Tempo (BPM)
-      public static var bpm: String { String(localized: "ios.editor.bpm", bundle: .module) }
+      public static var bpm: String { String(localized: "ios.editor.bpm", bundle: L10nRuntime.bundle) }
       /// Tempo must be between 1 and 400
-      public static var bpmInvalid: String { String(localized: "ios.editor.bpmInvalid", bundle: .module) }
+      public static var bpmInvalid: String { String(localized: "ios.editor.bpmInvalid", bundle: L10nRuntime.bundle) }
       /// Cancel
-      public static var cancel: String { String(localized: "ios.editor.cancel", bundle: .module) }
+      public static var cancel: String { String(localized: "ios.editor.cancel", bundle: L10nRuntime.bundle) }
       /// Capo
-      public static var capo: String { String(localized: "ios.editor.capo", bundle: .module) }
+      public static var capo: String { String(localized: "ios.editor.capo", bundle: L10nRuntime.bundle) }
       /// Chords
-      public static var chordsMode: String { String(localized: "ios.editor.chordsMode", bundle: .module) }
+      public static var chordsMode: String { String(localized: "ios.editor.chordsMode", bundle: L10nRuntime.bundle) }
       /// Comment
-      public static var comment: String { String(localized: "ios.editor.comment", bundle: .module) }
+      public static var comment: String { String(localized: "ios.editor.comment", bundle: L10nRuntime.bundle) }
       /// Copy example
-      public static var copyExample: String { String(localized: "ios.editor.copyExample", bundle: .module) }
+      public static var copyExample: String { String(localized: "ios.editor.copyExample", bundle: L10nRuntime.bundle) }
       /// Delete song
-      public static var delete: String { String(localized: "ios.editor.delete", bundle: .module) }
+      public static var delete: String { String(localized: "ios.editor.delete", bundle: L10nRuntime.bundle) }
       /// It will be removed from your library and from any setlists.
-      public static var deleteConfirmMessage: String { String(localized: "ios.editor.deleteConfirmMessage", bundle: .module) }
+      public static var deleteConfirmMessage: String { String(localized: "ios.editor.deleteConfirmMessage", bundle: L10nRuntime.bundle) }
       /// Delete this song?
-      public static var deleteConfirmTitle: String { String(localized: "ios.editor.deleteConfirmTitle", bundle: .module) }
+      public static var deleteConfirmTitle: String { String(localized: "ios.editor.deleteConfirmTitle", bundle: L10nRuntime.bundle) }
       /// Delete song
-      public static var deleteSong: String { String(localized: "ios.editor.deleteSong", bundle: .module) }
+      public static var deleteSong: String { String(localized: "ios.editor.deleteSong", bundle: L10nRuntime.bundle) }
       /// Details
-      public static var details: String { String(localized: "ios.editor.details", bundle: .module) }
+      public static var details: String { String(localized: "ios.editor.details", bundle: L10nRuntime.bundle) }
       /// Discard
-      public static var discard: String { String(localized: "ios.editor.discard", bundle: .module) }
+      public static var discard: String { String(localized: "ios.editor.discard", bundle: L10nRuntime.bundle) }
       /// Discard changes?
-      public static var discardTitle: String { String(localized: "ios.editor.discardTitle", bundle: .module) }
+      public static var discardTitle: String { String(localized: "ios.editor.discardTitle", bundle: L10nRuntime.bundle) }
       /// Hide keyboard
-      public static var dismissKeyboard: String { String(localized: "ios.editor.dismissKeyboard", bundle: .module) }
+      public static var dismissKeyboard: String { String(localized: "ios.editor.dismissKeyboard", bundle: L10nRuntime.bundle) }
       /// Edit
-      public static var edit: String { String(localized: "ios.editor.edit", bundle: .module) }
+      public static var edit: String { String(localized: "ios.editor.edit", bundle: L10nRuntime.bundle) }
       /// Edit song
-      public static var editSong: String { String(localized: "ios.editor.editSong", bundle: .module) }
+      public static var editSong: String { String(localized: "ios.editor.editSong", bundle: L10nRuntime.bundle) }
       /// Hide preview
-      public static var hidePreview: String { String(localized: "ios.editor.hidePreview", bundle: .module) }
+      public static var hidePreview: String { String(localized: "ios.editor.hidePreview", bundle: L10nRuntime.bundle) }
       /// Insert directive
-      public static var insertDirective: String { String(localized: "ios.editor.insertDirective", bundle: .module) }
+      public static var insertDirective: String { String(localized: "ios.editor.insertDirective", bundle: L10nRuntime.bundle) }
       /// Keep editing
-      public static var keepEditing: String { String(localized: "ios.editor.keepEditing", bundle: .module) }
+      public static var keepEditing: String { String(localized: "ios.editor.keepEditing", bundle: L10nRuntime.bundle) }
       /// Key
-      public static var key: String { String(localized: "ios.editor.key", bundle: .module) }
+      public static var key: String { String(localized: "ios.editor.key", bundle: L10nRuntime.bundle) }
       /// Live preview
-      public static var livePreview: String { String(localized: "ios.editor.livePreview", bundle: .module) }
+      public static var livePreview: String { String(localized: "ios.editor.livePreview", bundle: L10nRuntime.bundle) }
       /// Lyrics (ChordPro)
-      public static var lyrics: String { String(localized: "ios.editor.lyrics", bundle: .module) }
+      public static var lyrics: String { String(localized: "ios.editor.lyrics", bundle: L10nRuntime.bundle) }
+      /// Max {max} characters
+      public static func maxLength(max: String) -> String {
+        String(format: String(localized: "ios.editor.maxLength", bundle: L10nRuntime.bundle), max)
+      }
       /// Transpose & notes
-      public static var moreOptions: String { String(localized: "ios.editor.moreOptions", bundle: .module) }
+      public static var moreOptions: String { String(localized: "ios.editor.moreOptions", bundle: L10nRuntime.bundle) }
       /// New song
-      public static var newSong: String { String(localized: "ios.editor.newSong", bundle: .module) }
+      public static var newSong: String { String(localized: "ios.editor.newSong", bundle: L10nRuntime.bundle) }
       /// None
-      public static var noKey: String { String(localized: "ios.editor.noKey", bundle: .module) }
+      public static var noKey: String { String(localized: "ios.editor.noKey", bundle: L10nRuntime.bundle) }
       /// This song is no longer available.
-      public static var notFound: String { String(localized: "ios.editor.notFound", bundle: .module) }
+      public static var notFound: String { String(localized: "ios.editor.notFound", bundle: L10nRuntime.bundle) }
       /// Notes
-      public static var notes: String { String(localized: "ios.editor.notes", bundle: .module) }
+      public static var notes: String { String(localized: "ios.editor.notes", bundle: L10nRuntime.bundle) }
       /// Preview
-      public static var preview: String { String(localized: "ios.editor.preview", bundle: .module) }
+      public static var preview: String { String(localized: "ios.editor.preview", bundle: L10nRuntime.bundle) }
       /// Resize preview
-      public static var resizePreview: String { String(localized: "ios.editor.resizePreview", bundle: .module) }
+      public static var resizePreview: String { String(localized: "ios.editor.resizePreview", bundle: L10nRuntime.bundle) }
       /// Save
-      public static var save: String { String(localized: "ios.editor.save", bundle: .module) }
+      public static var save: String { String(localized: "ios.editor.save", bundle: L10nRuntime.bundle) }
       /// Couldn't save the song
-      public static var saveFailed: String { String(localized: "ios.editor.saveFailed", bundle: .module) }
+      public static var saveFailed: String { String(localized: "ios.editor.saveFailed", bundle: L10nRuntime.bundle) }
       /// Saved on this device · will sync when online
-      public static var savedLocally: String { String(localized: "ios.editor.savedLocally", bundle: .module) }
+      public static var savedLocally: String { String(localized: "ios.editor.savedLocally", bundle: L10nRuntime.bundle) }
       /// Show preview
-      public static var showPreview: String { String(localized: "ios.editor.showPreview", bundle: .module) }
+      public static var showPreview: String { String(localized: "ios.editor.showPreview", bundle: L10nRuntime.bundle) }
       /// Title
-      public static var title: String { String(localized: "ios.editor.title", bundle: .module) }
+      public static var title: String { String(localized: "ios.editor.title", bundle: L10nRuntime.bundle) }
       /// A title is required
-      public static var titleRequired: String { String(localized: "ios.editor.titleRequired", bundle: .module) }
+      public static var titleRequired: String { String(localized: "ios.editor.titleRequired", bundle: L10nRuntime.bundle) }
       /// Transpose
-      public static var transpose: String { String(localized: "ios.editor.transpose", bundle: .module) }
+      public static var transpose: String { String(localized: "ios.editor.transpose", bundle: L10nRuntime.bundle) }
       /// Viewers can't edit songs in this team.
-      public static var viewerNotice: String { String(localized: "ios.editor.viewerNotice", bundle: .module) }
+      public static var viewerNotice: String { String(localized: "ios.editor.viewerNotice", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum EraseData {
       /// Erase
-      public static var confirm: String { String(localized: "ios.eraseData.confirm", bundle: .module) }
+      public static var confirm: String { String(localized: "ios.eraseData.confirm", bundle: L10nRuntime.bundle) }
       /// Removes the local copy of your library from this device. You can download it again by signing in.
-      public static var message: String { String(localized: "ios.eraseData.message", bundle: .module) }
+      public static var message: String { String(localized: "ios.eraseData.message", bundle: L10nRuntime.bundle) }
       /// {count} changes have not been synced and will be lost.
       public static func pendingWarning(count: String) -> String {
-        String(format: String(localized: "ios.eraseData.pendingWarning", bundle: .module), count)
+        String(format: String(localized: "ios.eraseData.pendingWarning", bundle: L10nRuntime.bundle), count)
       }
       /// Erase offline data
-      public static var title: String { String(localized: "ios.eraseData.title", bundle: .module) }
+      public static var title: String { String(localized: "ios.eraseData.title", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Library {
       public nonisolated enum Bpm {
         /// Fast (> 120)
-        public static var fast: String { String(localized: "ios.library.bpm.fast", bundle: .module) }
+        public static var fast: String { String(localized: "ios.library.bpm.fast", bundle: L10nRuntime.bundle) }
         /// Medium (90–120)
-        public static var medium: String { String(localized: "ios.library.bpm.medium", bundle: .module) }
+        public static var medium: String { String(localized: "ios.library.bpm.medium", bundle: L10nRuntime.bundle) }
         /// Slow (< 90)
-        public static var slow: String { String(localized: "ios.library.bpm.slow", bundle: .module) }
+        public static var slow: String { String(localized: "ios.library.bpm.slow", bundle: L10nRuntime.bundle) }
       }
       public nonisolated enum Sort {
         /// Artist
-        public static var artist: String { String(localized: "ios.library.sort.artist", bundle: .module) }
+        public static var artist: String { String(localized: "ios.library.sort.artist", bundle: L10nRuntime.bundle) }
         /// Recently added
-        public static var recent: String { String(localized: "ios.library.sort.recent", bundle: .module) }
+        public static var recent: String { String(localized: "ios.library.sort.recent", bundle: L10nRuntime.bundle) }
         /// Relevance
-        public static var relevance: String { String(localized: "ios.library.sort.relevance", bundle: .module) }
+        public static var relevance: String { String(localized: "ios.library.sort.relevance", bundle: L10nRuntime.bundle) }
         /// Title
-        public static var title: String { String(localized: "ios.library.sort.title", bundle: .module) }
+        public static var title: String { String(localized: "ios.library.sort.title", bundle: L10nRuntime.bundle) }
       }
       public nonisolated enum Status {
         /// Archived
-        public static var archived: String { String(localized: "ios.library.status.archived", bundle: .module) }
+        public static var archived: String { String(localized: "ios.library.status.archived", bundle: L10nRuntime.bundle) }
         /// Draft
-        public static var draft: String { String(localized: "ios.library.status.draft", bundle: .module) }
+        public static var draft: String { String(localized: "ios.library.status.draft", bundle: L10nRuntime.bundle) }
         /// Published
-        public static var published: String { String(localized: "ios.library.status.published", bundle: .module) }
+        public static var published: String { String(localized: "ios.library.status.published", bundle: L10nRuntime.bundle) }
       }
       /// Add ({count})
       public static func addCount(count: String) -> String {
-        String(format: String(localized: "ios.library.addCount", bundle: .module), count)
+        String(format: String(localized: "ios.library.addCount", bundle: L10nRuntime.bundle), count)
       }
       /// Add to setlist
-      public static var addToSetlist: String { String(localized: "ios.library.addToSetlist", bundle: .module) }
+      public static var addToSetlist: String { String(localized: "ios.library.addToSetlist", bundle: L10nRuntime.bundle) }
       /// All
-      public static var allBucketsShort: String { String(localized: "ios.library.allBucketsShort", bundle: .module) }
+      public static var allBucketsShort: String { String(localized: "ios.library.allBucketsShort", bundle: L10nRuntime.bundle) }
       /// Assign tags
-      public static var assignTags: String { String(localized: "ios.library.assignTags", bundle: .module) }
+      public static var assignTags: String { String(localized: "ios.library.assignTags", bundle: L10nRuntime.bundle) }
       /// {value} BPM
       public static func bpmValue(value: String) -> String {
-        String(format: String(localized: "ios.library.bpmValue", bundle: .module), value)
+        String(format: String(localized: "ios.library.bpmValue", bundle: L10nRuntime.bundle), value)
       }
       /// Cancel
-      public static var cancel: String { String(localized: "ios.library.cancel", bundle: .module) }
+      public static var cancel: String { String(localized: "ios.library.cancel", bundle: L10nRuntime.bundle) }
       /// Add {count} to playlist
       public static func cartAddCount(count: String) -> String {
-        String(format: String(localized: "ios.library.cartAddCount", bundle: .module), count)
+        String(format: String(localized: "ios.library.cartAddCount", bundle: L10nRuntime.bundle), count)
       }
       /// Clear selection
-      public static var clearCart: String { String(localized: "ios.library.clearCart", bundle: .module) }
+      public static var clearCart: String { String(localized: "ios.library.clearCart", bundle: L10nRuntime.bundle) }
       /// Color
-      public static var color: String { String(localized: "ios.library.color", bundle: .module) }
+      public static var color: String { String(localized: "ios.library.color", bundle: L10nRuntime.bundle) }
       /// Create
-      public static var create: String { String(localized: "ios.library.create", bundle: .module) }
+      public static var create: String { String(localized: "ios.library.create", bundle: L10nRuntime.bundle) }
       /// Delete
-      public static var delete: String { String(localized: "ios.library.delete", bundle: .module) }
+      public static var delete: String { String(localized: "ios.library.delete", bundle: L10nRuntime.bundle) }
       /// Done
-      public static var done: String { String(localized: "ios.library.done", bundle: .module) }
+      public static var done: String { String(localized: "ios.library.done", bundle: L10nRuntime.bundle) }
       /// Edit
-      public static var editSong: String { String(localized: "ios.library.editSong", bundle: .module) }
+      public static var editSong: String { String(localized: "ios.library.editSong", bundle: L10nRuntime.bundle) }
       /// Songs you add will show up here, ready offline.
-      public static var emptyMessage: String { String(localized: "ios.library.emptyMessage", bundle: .module) }
+      public static var emptyMessage: String { String(localized: "ios.library.emptyMessage", bundle: L10nRuntime.bundle) }
       /// No songs yet
-      public static var emptyTitle: String { String(localized: "ios.library.emptyTitle", bundle: .module) }
+      public static var emptyTitle: String { String(localized: "ios.library.emptyTitle", bundle: L10nRuntime.bundle) }
       /// Filters
-      public static var filters: String { String(localized: "ios.library.filters", bundle: .module) }
+      public static var filters: String { String(localized: "ios.library.filters", bundle: L10nRuntime.bundle) }
       /// Manage tags
-      public static var manageTags: String { String(localized: "ios.library.manageTags", bundle: .module) }
+      public static var manageTags: String { String(localized: "ios.library.manageTags", bundle: L10nRuntime.bundle) }
       /// Me
-      public static var meOwner: String { String(localized: "ios.library.meOwner", bundle: .module) }
+      public static var meOwner: String { String(localized: "ios.library.meOwner", bundle: L10nRuntime.bundle) }
       /// +{count}
       public static func moreTags(count: String) -> String {
-        String(format: String(localized: "ios.library.moreTags", bundle: .module), count)
+        String(format: String(localized: "ios.library.moreTags", bundle: L10nRuntime.bundle), count)
       }
       /// New song
-      public static var newSong: String { String(localized: "ios.library.newSong", bundle: .module) }
+      public static var newSong: String { String(localized: "ios.library.newSong", bundle: L10nRuntime.bundle) }
       /// New tag
-      public static var newTag: String { String(localized: "ios.library.newTag", bundle: .module) }
+      public static var newTag: String { String(localized: "ios.library.newTag", bundle: L10nRuntime.bundle) }
       /// Try a different search or clear the filters.
-      public static var noResultsMessage: String { String(localized: "ios.library.noResultsMessage", bundle: .module) }
+      public static var noResultsMessage: String { String(localized: "ios.library.noResultsMessage", bundle: L10nRuntime.bundle) }
       /// No matching songs
-      public static var noResultsTitle: String { String(localized: "ios.library.noResultsTitle", bundle: .module) }
+      public static var noResultsTitle: String { String(localized: "ios.library.noResultsTitle", bundle: L10nRuntime.bundle) }
       /// No tags yet
-      public static var noTags: String { String(localized: "ios.library.noTags", bundle: .module) }
+      public static var noTags: String { String(localized: "ios.library.noTags", bundle: L10nRuntime.bundle) }
       /// Create a tag to organize your songs.
-      public static var noTagsHint: String { String(localized: "ios.library.noTagsHint", bundle: .module) }
+      public static var noTagsHint: String { String(localized: "ios.library.noTagsHint", bundle: L10nRuntime.bundle) }
       /// Not synced yet
-      public static var pendingChanges: String { String(localized: "ios.library.pendingChanges", bundle: .module) }
+      public static var pendingChanges: String { String(localized: "ios.library.pendingChanges", bundle: L10nRuntime.bundle) }
       /// Add songs
-      public static var pickerTitle: String { String(localized: "ios.library.pickerTitle", bundle: .module) }
+      public static var pickerTitle: String { String(localized: "ios.library.pickerTitle", bundle: L10nRuntime.bundle) }
       /// Remove from playlist
-      public static var removeFromCart: String { String(localized: "ios.library.removeFromCart", bundle: .module) }
+      public static var removeFromCart: String { String(localized: "ios.library.removeFromCart", bundle: L10nRuntime.bundle) }
       /// Reset filters
-      public static var resetFilters: String { String(localized: "ios.library.resetFilters", bundle: .module) }
+      public static var resetFilters: String { String(localized: "ios.library.resetFilters", bundle: L10nRuntime.bundle) }
       /// Search title, artist, lyrics
-      public static var searchPrompt: String { String(localized: "ios.library.searchPrompt", bundle: .module) }
+      public static var searchPrompt: String { String(localized: "ios.library.searchPrompt", bundle: L10nRuntime.bundle) }
       /// Sort
-      public static var sortLabel: String { String(localized: "ios.library.sortLabel", bundle: .module) }
+      public static var sortLabel: String { String(localized: "ios.library.sortLabel", bundle: L10nRuntime.bundle) }
       /// Status
-      public static var statusLabel: String { String(localized: "ios.library.statusLabel", bundle: .module) }
+      public static var statusLabel: String { String(localized: "ios.library.statusLabel", bundle: L10nRuntime.bundle) }
       /// Tag name
-      public static var tagName: String { String(localized: "ios.library.tagName", bundle: .module) }
+      public static var tagName: String { String(localized: "ios.library.tagName", bundle: L10nRuntime.bundle) }
       /// Tags
-      public static var tags: String { String(localized: "ios.library.tags", bundle: .module) }
+      public static var tags: String { String(localized: "ios.library.tags", bundle: L10nRuntime.bundle) }
       /// Tempo
-      public static var tempo: String { String(localized: "ios.library.tempo", bundle: .module) }
+      public static var tempo: String { String(localized: "ios.library.tempo", bundle: L10nRuntime.bundle) }
       /// Library
-      public static var title: String { String(localized: "ios.library.title", bundle: .module) }
+      public static var title: String { String(localized: "ios.library.title", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Offline {
       /// Available offline
-      public static var availableOffline: String { String(localized: "ios.offline.availableOffline", bundle: .module) }
+      public static var availableOffline: String { String(localized: "ios.offline.availableOffline", bundle: L10nRuntime.bundle) }
       /// You are offline
-      public static var banner: String { String(localized: "ios.offline.banner", bundle: .module) }
+      public static var banner: String { String(localized: "ios.offline.banner", bundle: L10nRuntime.bundle) }
       /// Some songs are not downloaded yet
-      public static var notFullyAvailable: String { String(localized: "ios.offline.notFullyAvailable", bundle: .module) }
+      public static var notFullyAvailable: String { String(localized: "ios.offline.notFullyAvailable", bundle: L10nRuntime.bundle) }
       /// Pin for offline use
-      public static var pin: String { String(localized: "ios.offline.pin", bundle: .module) }
+      public static var pin: String { String(localized: "ios.offline.pin", bundle: L10nRuntime.bundle) }
       /// Pinned for offline use
-      public static var pinned: String { String(localized: "ios.offline.pinned", bundle: .module) }
+      public static var pinned: String { String(localized: "ios.offline.pinned", bundle: L10nRuntime.bundle) }
       /// This action requires an internet connection.
-      public static var requiresConnection: String { String(localized: "ios.offline.requiresConnection", bundle: .module) }
+      public static var requiresConnection: String { String(localized: "ios.offline.requiresConnection", bundle: L10nRuntime.bundle) }
       /// Unpin
-      public static var unpin: String { String(localized: "ios.offline.unpin", bundle: .module) }
+      public static var unpin: String { String(localized: "ios.offline.unpin", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Performance {
       /// Smaller text
-      public static var decreaseFont: String { String(localized: "ios.performance.decreaseFont", bundle: .module) }
+      public static var decreaseFont: String { String(localized: "ios.performance.decreaseFont", bundle: L10nRuntime.bundle) }
       /// Larger text
-      public static var increaseFont: String { String(localized: "ios.performance.increaseFont", bundle: .module) }
+      public static var increaseFont: String { String(localized: "ios.performance.increaseFont", bundle: L10nRuntime.bundle) }
       /// Next song
-      public static var nextSong: String { String(localized: "ios.performance.nextSong", bundle: .module) }
+      public static var nextSong: String { String(localized: "ios.performance.nextSong", bundle: L10nRuntime.bundle) }
       /// Page down
-      public static var pageDown: String { String(localized: "ios.performance.pageDown", bundle: .module) }
+      public static var pageDown: String { String(localized: "ios.performance.pageDown", bundle: L10nRuntime.bundle) }
       /// Page up
-      public static var pageUp: String { String(localized: "ios.performance.pageUp", bundle: .module) }
+      public static var pageUp: String { String(localized: "ios.performance.pageUp", bundle: L10nRuntime.bundle) }
       /// Previous song
-      public static var previousSong: String { String(localized: "ios.performance.previousSong", bundle: .module) }
+      public static var previousSong: String { String(localized: "ios.performance.previousSong", bundle: L10nRuntime.bundle) }
       /// Scroll faster
-      public static var scrollFaster: String { String(localized: "ios.performance.scrollFaster", bundle: .module) }
+      public static var scrollFaster: String { String(localized: "ios.performance.scrollFaster", bundle: L10nRuntime.bundle) }
       /// Scroll slower
-      public static var scrollSlower: String { String(localized: "ios.performance.scrollSlower", bundle: .module) }
+      public static var scrollSlower: String { String(localized: "ios.performance.scrollSlower", bundle: L10nRuntime.bundle) }
       /// Keyboard shortcuts
-      public static var shortcutsTitle: String { String(localized: "ios.performance.shortcutsTitle", bundle: .module) }
+      public static var shortcutsTitle: String { String(localized: "ios.performance.shortcutsTitle", bundle: L10nRuntime.bundle) }
       /// Toggle auto-scroll
-      public static var toggleAutoScroll: String { String(localized: "ios.performance.toggleAutoScroll", bundle: .module) }
+      public static var toggleAutoScroll: String { String(localized: "ios.performance.toggleAutoScroll", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Playlists {
       /// Active
-      public static var active: String { String(localized: "ios.playlists.active", bundle: .module) }
+      public static var active: String { String(localized: "ios.playlists.active", bundle: L10nRuntime.bundle) }
       /// Add songs
-      public static var addSongs: String { String(localized: "ios.playlists.addSongs", bundle: .module) }
+      public static var addSongs: String { String(localized: "ios.playlists.addSongs", bundle: L10nRuntime.bundle) }
       /// Archive
-      public static var archive: String { String(localized: "ios.playlists.archive", bundle: .module) }
+      public static var archive: String { String(localized: "ios.playlists.archive", bundle: L10nRuntime.bundle) }
       /// Archived
-      public static var archived: String { String(localized: "ios.playlists.archived", bundle: .module) }
+      public static var archived: String { String(localized: "ios.playlists.archived", bundle: L10nRuntime.bundle) }
       /// Cancel
-      public static var cancel: String { String(localized: "ios.playlists.cancel", bundle: .module) }
+      public static var cancel: String { String(localized: "ios.playlists.cancel", bundle: L10nRuntime.bundle) }
       /// Add to setlist
-      public static var chooseSetlist: String { String(localized: "ios.playlists.chooseSetlist", bundle: .module) }
+      public static var chooseSetlist: String { String(localized: "ios.playlists.chooseSetlist", bundle: L10nRuntime.bundle) }
       /// Close
-      public static var close: String { String(localized: "ios.playlists.close", bundle: .module) }
+      public static var close: String { String(localized: "ios.playlists.close", bundle: L10nRuntime.bundle) }
       /// Copy link
-      public static var copyLink: String { String(localized: "ios.playlists.copyLink", bundle: .module) }
+      public static var copyLink: String { String(localized: "ios.playlists.copyLink", bundle: L10nRuntime.bundle) }
       /// Create
-      public static var create: String { String(localized: "ios.playlists.create", bundle: .module) }
+      public static var create: String { String(localized: "ios.playlists.create", bundle: L10nRuntime.bundle) }
+      /// Songs marked in red belong to a different account or team than this playlist. Remove them to continue.
+      public static var crossBucket: String { String(localized: "ios.playlists.crossBucket", bundle: L10nRuntime.bundle) }
       /// Date
-      public static var date: String { String(localized: "ios.playlists.date", bundle: .module) }
+      public static var date: String { String(localized: "ios.playlists.date", bundle: L10nRuntime.bundle) }
       /// Delete
-      public static var delete: String { String(localized: "ios.playlists.delete", bundle: .module) }
+      public static var delete: String { String(localized: "ios.playlists.delete", bundle: L10nRuntime.bundle) }
       /// Delete "{name}"? This can't be undone.
       public static func deleteConfirm(name: String) -> String {
-        String(format: String(localized: "ios.playlists.deleteConfirm", bundle: .module), name)
+        String(format: String(localized: "ios.playlists.deleteConfirm", bundle: L10nRuntime.bundle), name)
       }
       /// Description
-      public static var description: String { String(localized: "ios.playlists.description", bundle: .module) }
+      public static var description: String { String(localized: "ios.playlists.description", bundle: L10nRuntime.bundle) }
       /// Done
-      public static var done: String { String(localized: "ios.playlists.done", bundle: .module) }
+      public static var done: String { String(localized: "ios.playlists.done", bundle: L10nRuntime.bundle) }
       /// Edit details
-      public static var editDetails: String { String(localized: "ios.playlists.editDetails", bundle: .module) }
+      public static var editDetails: String { String(localized: "ios.playlists.editDetails", bundle: L10nRuntime.bundle) }
       /// No archived setlists
-      public static var emptyArchived: String { String(localized: "ios.playlists.emptyArchived", bundle: .module) }
+      public static var emptyArchived: String { String(localized: "ios.playlists.emptyArchived", bundle: L10nRuntime.bundle) }
       /// Create a setlist to plan your next service or gig.
-      public static var emptyMessage: String { String(localized: "ios.playlists.emptyMessage", bundle: .module) }
+      public static var emptyMessage: String { String(localized: "ios.playlists.emptyMessage", bundle: L10nRuntime.bundle) }
       /// Add songs from your library.
-      public static var emptySongsMessage: String { String(localized: "ios.playlists.emptySongsMessage", bundle: .module) }
+      public static var emptySongsMessage: String { String(localized: "ios.playlists.emptySongsMessage", bundle: L10nRuntime.bundle) }
       /// This setlist is empty
-      public static var emptySongsTitle: String { String(localized: "ios.playlists.emptySongsTitle", bundle: .module) }
+      public static var emptySongsTitle: String { String(localized: "ios.playlists.emptySongsTitle", bundle: L10nRuntime.bundle) }
       /// No setlists yet
-      public static var emptyTitle: String { String(localized: "ios.playlists.emptyTitle", bundle: .module) }
+      public static var emptyTitle: String { String(localized: "ios.playlists.emptyTitle", bundle: L10nRuntime.bundle) }
       /// Set a date
-      public static var hasDate: String { String(localized: "ios.playlists.hasDate", bundle: .module) }
+      public static var hasDate: String { String(localized: "ios.playlists.hasDate", bundle: L10nRuntime.bundle) }
       /// Name
-      public static var name: String { String(localized: "ios.playlists.name", bundle: .module) }
+      public static var name: String { String(localized: "ios.playlists.name", bundle: L10nRuntime.bundle) }
       /// New setlist
-      public static var new: String { String(localized: "ios.playlists.new", bundle: .module) }
+      public static var new: String { String(localized: "ios.playlists.new", bundle: L10nRuntime.bundle) }
       /// Next: {title}
       public static func nextSong(title: String) -> String {
-        String(format: String(localized: "ios.playlists.nextSong", bundle: .module), title)
+        String(format: String(localized: "ios.playlists.nextSong", bundle: L10nRuntime.bundle), title)
       }
       /// Setlist not found
-      public static var notFound: String { String(localized: "ios.playlists.notFound", bundle: .module) }
+      public static var notFound: String { String(localized: "ios.playlists.notFound", bundle: L10nRuntime.bundle) }
       /// Ready offline
-      public static var offlineReady: String { String(localized: "ios.playlists.offlineReady", bundle: .module) }
+      public static var offlineReady: String { String(localized: "ios.playlists.offlineReady", bundle: L10nRuntime.bundle) }
+      /// Different account or team
+      public static var otherBucket: String { String(localized: "ios.playlists.otherBucket", bundle: L10nRuntime.bundle) }
       /// Perform
-      public static var perform: String { String(localized: "ios.playlists.perform", bundle: .module) }
+      public static var perform: String { String(localized: "ios.playlists.perform", bundle: L10nRuntime.bundle) }
       /// Keep available offline
-      public static var pin: String { String(localized: "ios.playlists.pin", bundle: .module) }
+      public static var pin: String { String(localized: "ios.playlists.pin", bundle: L10nRuntime.bundle) }
       /// Pinned
-      public static var pinned: String { String(localized: "ios.playlists.pinned", bundle: .module) }
+      public static var pinned: String { String(localized: "ios.playlists.pinned", bundle: L10nRuntime.bundle) }
       /// Remove
-      public static var remove: String { String(localized: "ios.playlists.remove", bundle: .module) }
+      public static var remove: String { String(localized: "ios.playlists.remove", bundle: L10nRuntime.bundle) }
       /// Reorder
-      public static var reorder: String { String(localized: "ios.playlists.reorder", bundle: .module) }
+      public static var reorder: String { String(localized: "ios.playlists.reorder", bundle: L10nRuntime.bundle) }
       /// Save
-      public static var save: String { String(localized: "ios.playlists.save", bundle: .module) }
+      public static var save: String { String(localized: "ios.playlists.save", bundle: L10nRuntime.bundle) }
       /// Share
-      public static var share: String { String(localized: "ios.playlists.share", bundle: .module) }
+      public static var share: String { String(localized: "ios.playlists.share", bundle: L10nRuntime.bundle) }
       /// Sharing needs a connection
-      public static var shareOffline: String { String(localized: "ios.playlists.shareOffline", bundle: .module) }
+      public static var shareOffline: String { String(localized: "ios.playlists.shareOffline", bundle: L10nRuntime.bundle) }
       /// {n} songs
       public static func songCount(n: String) -> String {
-        String(format: String(localized: "ios.playlists.songCount", bundle: .module), n)
+        String(format: String(localized: "ios.playlists.songCount", bundle: L10nRuntime.bundle), n)
       }
+      /// Sunday|Midnight|Golden|Electric|Acoustic|Sacred|Morning|Twilight|Revival|Worship|Vibrant|Eternal
+      public static var suggestAdjectives: String { String(localized: "ios.playlists.suggestAdjectives", bundle: L10nRuntime.bundle) }
+      /// Setlist|Sessions|Worship|Gathering|Anthems|Melodies|Journey|Voices|Moments|Reflections|Praise|Songs
+      public static var suggestNouns: String { String(localized: "ios.playlists.suggestNouns", bundle: L10nRuntime.bundle) }
       /// Setlists
-      public static var title: String { String(localized: "ios.playlists.title", bundle: .module) }
+      public static var title: String { String(localized: "ios.playlists.title", bundle: L10nRuntime.bundle) }
       /// Unarchive
-      public static var unarchive: String { String(localized: "ios.playlists.unarchive", bundle: .module) }
+      public static var unarchive: String { String(localized: "ios.playlists.unarchive", bundle: L10nRuntime.bundle) }
       /// Remove offline copy
-      public static var unpin: String { String(localized: "ios.playlists.unpin", bundle: .module) }
+      public static var unpin: String { String(localized: "ios.playlists.unpin", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Queue {
       /// Back
-      public static var back: String { String(localized: "ios.queue.back", bundle: .module) }
+      public static var back: String { String(localized: "ios.queue.back", bundle: L10nRuntime.bundle) }
       /// Hide list
-      public static var hideList: String { String(localized: "ios.queue.hideList", bundle: .module) }
+      public static var hideList: String { String(localized: "ios.queue.hideList", bundle: L10nRuntime.bundle) }
       /// Jump to song…
-      public static var jumpToSong: String { String(localized: "ios.queue.jumpToSong", bundle: .module) }
+      public static var jumpToSong: String { String(localized: "ios.queue.jumpToSong", bundle: L10nRuntime.bundle) }
       /// Next
-      public static var next: String { String(localized: "ios.queue.next", bundle: .module) }
+      public static var next: String { String(localized: "ios.queue.next", bundle: L10nRuntime.bundle) }
       /// Previous
-      public static var previous: String { String(localized: "ios.queue.previous", bundle: .module) }
+      public static var previous: String { String(localized: "ios.queue.previous", bundle: L10nRuntime.bundle) }
       /// Setlist
-      public static var setlist: String { String(localized: "ios.queue.setlist", bundle: .module) }
+      public static var setlist: String { String(localized: "ios.queue.setlist", bundle: L10nRuntime.bundle) }
       /// Setlist · {name}
       public static func setlistTitle(name: String) -> String {
-        String(format: String(localized: "ios.queue.setlistTitle", bundle: .module), name)
+        String(format: String(localized: "ios.queue.setlistTitle", bundle: L10nRuntime.bundle), name)
       }
       /// Show song list
-      public static var showList: String { String(localized: "ios.queue.showList", bundle: .module) }
+      public static var showList: String { String(localized: "ios.queue.showList", bundle: L10nRuntime.bundle) }
       /// Songs
-      public static var songListTitle: String { String(localized: "ios.queue.songListTitle", bundle: .module) }
+      public static var songListTitle: String { String(localized: "ios.queue.songListTitle", bundle: L10nRuntime.bundle) }
       /// Songs
-      public static var songs: String { String(localized: "ios.queue.songs", bundle: .module) }
+      public static var songs: String { String(localized: "ios.queue.songs", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Server {
       /// Environment
-      public static var environment: String { String(localized: "ios.server.environment", bundle: .module) }
+      public static var environment: String { String(localized: "ios.server.environment", bundle: L10nRuntime.bundle) }
       /// Server
-      public static var url: String { String(localized: "ios.server.url", bundle: .module) }
+      public static var url: String { String(localized: "ios.server.url", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Setlist {
       /// BPM
-      public static var bpm: String { String(localized: "ios.setlist.bpm", bundle: .module) }
+      public static var bpm: String { String(localized: "ios.setlist.bpm", bundle: L10nRuntime.bundle) }
       /// Swipe, tap the buttons, or use your pedal to change song
-      public static var changeHint: String { String(localized: "ios.setlist.changeHint", bundle: .module) }
+      public static var changeHint: String { String(localized: "ios.setlist.changeHint", bundle: L10nRuntime.bundle) }
       /// Close setlist
-      public static var close: String { String(localized: "ios.setlist.close", bundle: .module) }
+      public static var close: String { String(localized: "ios.setlist.close", bundle: L10nRuntime.bundle) }
       /// End
-      public static var end: String { String(localized: "ios.setlist.end", bundle: .module) }
+      public static var end: String { String(localized: "ios.setlist.end", bundle: L10nRuntime.bundle) }
       /// Enter full screen
-      public static var enterFullscreen: String { String(localized: "ios.setlist.enterFullscreen", bundle: .module) }
+      public static var enterFullscreen: String { String(localized: "ios.setlist.enterFullscreen", bundle: L10nRuntime.bundle) }
       /// Finish setlist
-      public static var finish: String { String(localized: "ios.setlist.finish", bundle: .module) }
+      public static var finish: String { String(localized: "ios.setlist.finish", bundle: L10nRuntime.bundle) }
       /// Next: {title}
       public static func next(title: String) -> String {
-        String(format: String(localized: "ios.setlist.next", bundle: .module), title)
+        String(format: String(localized: "ios.setlist.next", bundle: L10nRuntime.bundle), title)
       }
       /// Next
-      public static var nextLabel: String { String(localized: "ios.setlist.nextLabel", bundle: .module) }
+      public static var nextLabel: String { String(localized: "ios.setlist.nextLabel", bundle: L10nRuntime.bundle) }
       /// {current} / {total}
       public static func position(current: String, total: String) -> String {
-        String(format: String(localized: "ios.setlist.position", bundle: .module), current, total)
+        String(format: String(localized: "ios.setlist.position", bundle: L10nRuntime.bundle), current, total)
       }
       /// Previous song
-      public static var previous: String { String(localized: "ios.setlist.previous", bundle: .module) }
+      public static var previous: String { String(localized: "ios.setlist.previous", bundle: L10nRuntime.bundle) }
       /// Previous song: {title}
       public static func previousSong(title: String) -> String {
-        String(format: String(localized: "ios.setlist.previousSong", bundle: .module), title)
+        String(format: String(localized: "ios.setlist.previousSong", bundle: L10nRuntime.bundle), title)
       }
       /// Saved on this {device} · screen stays on
       public static func savedOnDevice(device: String) -> String {
-        String(format: String(localized: "ios.setlist.savedOnDevice", bundle: .module), device)
+        String(format: String(localized: "ios.setlist.savedOnDevice", bundle: L10nRuntime.bundle), device)
       }
     }
     public nonisolated enum Settings {
       /// About
-      public static var about: String { String(localized: "ios.settings.about", bundle: .module) }
+      public static var about: String { String(localized: "ios.settings.about", bundle: L10nRuntime.bundle) }
       /// Account
-      public static var account: String { String(localized: "ios.settings.account", bundle: .module) }
+      public static var account: String { String(localized: "ios.settings.account", bundle: L10nRuntime.bundle) }
       /// Data on this device
-      public static var data: String { String(localized: "ios.settings.data", bundle: .module) }
+      public static var data: String { String(localized: "ios.settings.data", bundle: L10nRuntime.bundle) }
       /// Default layout
-      public static var defaultColumns: String { String(localized: "ios.settings.defaultColumns", bundle: .module) }
+      public static var defaultColumns: String { String(localized: "ios.settings.defaultColumns", bundle: L10nRuntime.bundle) }
       /// Could not delete the account. Try again.
-      public static var deleteFailed: String { String(localized: "ios.settings.deleteFailed", bundle: .module) }
+      public static var deleteFailed: String { String(localized: "ios.settings.deleteFailed", bundle: L10nRuntime.bundle) }
+      /// You own {teams}, which has other members. Deleting your account also deletes it, with its songs and playlists, for everyone. Transfer ownership first if you want to keep it.
+      public static func deleteTeamsWarning(teams: String) -> String {
+        String(format: String(localized: "ios.settings.deleteTeamsWarning", bundle: L10nRuntime.bundle), teams)
+      }
       /// Erase local data and sign out
-      public static var eraseAndSignOut: String { String(localized: "ios.settings.eraseAndSignOut", bundle: .module) }
+      public static var eraseAndSignOut: String { String(localized: "ios.settings.eraseAndSignOut", bundle: L10nRuntime.bundle) }
       /// Last sync
-      public static var lastSync: String { String(localized: "ios.settings.lastSync", bundle: .module) }
+      public static var lastSync: String { String(localized: "ios.settings.lastSync", bundle: L10nRuntime.bundle) }
       /// Lyrics
-      public static var lyrics: String { String(localized: "ios.settings.lyrics", bundle: .module) }
+      public static var lyrics: String { String(localized: "ios.settings.lyrics", bundle: L10nRuntime.bundle) }
       /// Change in iOS Settings
-      public static var openLanguageSettings: String { String(localized: "ios.settings.openLanguageSettings", bundle: .module) }
+      public static var openLanguageSettings: String { String(localized: "ios.settings.openLanguageSettings", bundle: L10nRuntime.bundle) }
       /// Pending changes
-      public static var pendingChanges: String { String(localized: "ios.settings.pendingChanges", bundle: .module) }
-      /// Restart Capo to apply the new language.
-      public static var restartForLanguage: String { String(localized: "ios.settings.restartForLanguage", bundle: .module) }
+      public static var pendingChanges: String { String(localized: "ios.settings.pendingChanges", bundle: L10nRuntime.bundle) }
       /// Sign out
-      public static var signOut: String { String(localized: "ios.settings.signOut", bundle: .module) }
+      public static var signOut: String { String(localized: "ios.settings.signOut", bundle: L10nRuntime.bundle) }
       /// Your songs stay on this device and sync again when you sign back in.
-      public static var signOutMessage: String { String(localized: "ios.settings.signOutMessage", bundle: .module) }
+      public static var signOutMessage: String { String(localized: "ios.settings.signOutMessage", bundle: L10nRuntime.bundle) }
       /// Sign out of Capo?
-      public static var signOutTitle: String { String(localized: "ios.settings.signOutTitle", bundle: .module) }
+      public static var signOutTitle: String { String(localized: "ios.settings.signOutTitle", bundle: L10nRuntime.bundle) }
       /// Status
-      public static var status: String { String(localized: "ios.settings.status", bundle: .module) }
+      public static var status: String { String(localized: "ios.settings.status", bundle: L10nRuntime.bundle) }
       /// Sync
-      public static var sync: String { String(localized: "ios.settings.sync", bundle: .module) }
+      public static var sync: String { String(localized: "ios.settings.sync", bundle: L10nRuntime.bundle) }
       /// Version
-      public static var version: String { String(localized: "ios.settings.version", bundle: .module) }
+      public static var version: String { String(localized: "ios.settings.version", bundle: L10nRuntime.bundle) }
       /// Review conflicts
-      public static var viewConflicts: String { String(localized: "ios.settings.viewConflicts", bundle: .module) }
+      public static var viewConflicts: String { String(localized: "ios.settings.viewConflicts", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Shell {
       public nonisolated enum Config {
         /// Use demo mode
-        public static var demo: String { String(localized: "ios.shell.config.demo", bundle: .module) }
+        public static var demo: String { String(localized: "ios.shell.config.demo", bundle: L10nRuntime.bundle) }
         /// This build has no Supabase configuration (Secrets.plist). You can explore the app with sample data.
-        public static var message: String { String(localized: "ios.shell.config.message", bundle: .module) }
+        public static var message: String { String(localized: "ios.shell.config.message", bundle: L10nRuntime.bundle) }
         /// Server not configured
-        public static var title: String { String(localized: "ios.shell.config.title", bundle: .module) }
+        public static var title: String { String(localized: "ios.shell.config.title", bundle: L10nRuntime.bundle) }
       }
       public nonisolated enum Context {
         /// Personal
-        public static var personal: String { String(localized: "ios.shell.context.personal", bundle: .module) }
+        public static var personal: String { String(localized: "ios.shell.context.personal", bundle: L10nRuntime.bundle) }
       }
       public nonisolated enum SignOut {
         /// Sign out and erase offline data
-        public static var erase: String { String(localized: "ios.shell.signOut.erase", bundle: .module) }
+        public static var erase: String { String(localized: "ios.shell.signOut.erase", bundle: L10nRuntime.bundle) }
         /// Sign out and keep offline data
-        public static var keep: String { String(localized: "ios.shell.signOut.keep", bundle: .module) }
+        public static var keep: String { String(localized: "ios.shell.signOut.keep", bundle: L10nRuntime.bundle) }
         /// Erasing removes the songs stored on this device.
-        public static var message: String { String(localized: "ios.shell.signOut.message", bundle: .module) }
+        public static var message: String { String(localized: "ios.shell.signOut.message", bundle: L10nRuntime.bundle) }
         /// {count} changes have not synced yet and will be lost if you erase offline data.
         public static func pending(count: String) -> String {
-          String(format: String(localized: "ios.shell.signOut.pending", bundle: .module), count)
+          String(format: String(localized: "ios.shell.signOut.pending", bundle: L10nRuntime.bundle), count)
         }
         /// Sign out of Capo?
-        public static var title: String { String(localized: "ios.shell.signOut.title", bundle: .module) }
+        public static var title: String { String(localized: "ios.shell.signOut.title", bundle: L10nRuntime.bundle) }
       }
       /// Account menu
-      public static var accountMenu: String { String(localized: "ios.shell.accountMenu", bundle: .module) }
+      public static var accountMenu: String { String(localized: "ios.shell.accountMenu", bundle: L10nRuntime.bundle) }
       /// Cancel
-      public static var cancel: String { String(localized: "ios.shell.cancel", bundle: .module) }
+      public static var cancel: String { String(localized: "ios.shell.cancel", bundle: L10nRuntime.bundle) }
       /// The chord glossary is coming soon.
-      public static var chordsSoonMessage: String { String(localized: "ios.shell.chordsSoonMessage", bundle: .module) }
+      public static var chordsSoonMessage: String { String(localized: "ios.shell.chordsSoonMessage", bundle: L10nRuntime.bundle) }
       /// Chord glossary
-      public static var chordsSoonTitle: String { String(localized: "ios.shell.chordsSoonTitle", bundle: .module) }
+      public static var chordsSoonTitle: String { String(localized: "ios.shell.chordsSoonTitle", bundle: L10nRuntime.bundle) }
       /// Collapse list
-      public static var collapseList: String { String(localized: "ios.shell.collapseList", bundle: .module) }
+      public static var collapseList: String { String(localized: "ios.shell.collapseList", bundle: L10nRuntime.bundle) }
       /// Collapse sidebar
-      public static var collapseSidebar: String { String(localized: "ios.shell.collapseSidebar", bundle: .module) }
+      public static var collapseSidebar: String { String(localized: "ios.shell.collapseSidebar", bundle: L10nRuntime.bundle) }
       /// Conflicts
-      public static var conflicts: String { String(localized: "ios.shell.conflicts", bundle: .module) }
+      public static var conflicts: String { String(localized: "ios.shell.conflicts", bundle: L10nRuntime.bundle) }
       /// Context
-      public static var contextHeader: String { String(localized: "ios.shell.contextHeader", bundle: .module) }
+      public static var contextHeader: String { String(localized: "ios.shell.contextHeader", bundle: L10nRuntime.bundle) }
       /// Done
-      public static var done: String { String(localized: "ios.shell.done", bundle: .module) }
+      public static var done: String { String(localized: "ios.shell.done", bundle: L10nRuntime.bundle) }
       /// Expand list
-      public static var expandList: String { String(localized: "ios.shell.expandList", bundle: .module) }
+      public static var expandList: String { String(localized: "ios.shell.expandList", bundle: L10nRuntime.bundle) }
       /// Expand sidebar
-      public static var expandSidebar: String { String(localized: "ios.shell.expandSidebar", bundle: .module) }
+      public static var expandSidebar: String { String(localized: "ios.shell.expandSidebar", bundle: L10nRuntime.bundle) }
       /// Could not open your library
-      public static var failed: String { String(localized: "ios.shell.failed", bundle: .module) }
+      public static var failed: String { String(localized: "ios.shell.failed", bundle: L10nRuntime.bundle) }
       /// Invitations
-      public static var invitations: String { String(localized: "ios.shell.invitations", bundle: .module) }
+      public static var invitations: String { String(localized: "ios.shell.invitations", bundle: L10nRuntime.bundle) }
       /// Library
-      public static var library: String { String(localized: "ios.shell.library", bundle: .module) }
+      public static var library: String { String(localized: "ios.shell.library", bundle: L10nRuntime.bundle) }
       /// Capo
-      public static var navigateHeader: String { String(localized: "ios.shell.navigateHeader", bundle: .module) }
+      public static var navigateHeader: String { String(localized: "ios.shell.navigateHeader", bundle: L10nRuntime.bundle) }
       /// Try again
-      public static var retry: String { String(localized: "ios.shell.retry", bundle: .module) }
+      public static var retry: String { String(localized: "ios.shell.retry", bundle: L10nRuntime.bundle) }
       /// Select a setlist
-      public static var selectSetlist: String { String(localized: "ios.shell.selectSetlist", bundle: .module) }
+      public static var selectSetlist: String { String(localized: "ios.shell.selectSetlist", bundle: L10nRuntime.bundle) }
       /// Select a song
-      public static var selectSong: String { String(localized: "ios.shell.selectSong", bundle: .module) }
+      public static var selectSong: String { String(localized: "ios.shell.selectSong", bundle: L10nRuntime.bundle) }
       /// Setlists
-      public static var setlists: String { String(localized: "ios.shell.setlists", bundle: .module) }
+      public static var setlists: String { String(localized: "ios.shell.setlists", bundle: L10nRuntime.bundle) }
       /// Settings
-      public static var settings: String { String(localized: "ios.shell.settings", bundle: .module) }
+      public static var settings: String { String(localized: "ios.shell.settings", bundle: L10nRuntime.bundle) }
       /// Sign out
-      public static var signOutButton: String { String(localized: "ios.shell.signOutButton", bundle: .module) }
+      public static var signOutButton: String { String(localized: "ios.shell.signOutButton", bundle: L10nRuntime.bundle) }
       /// {count} songs saved on this {device}
       public static func songsSaved(count: String, device: String) -> String {
-        String(format: String(localized: "ios.shell.songsSaved", bundle: .module), count, device)
+        String(format: String(localized: "ios.shell.songsSaved", bundle: L10nRuntime.bundle), count, device)
       }
       /// Sync now
-      public static var syncNow: String { String(localized: "ios.shell.syncNow", bundle: .module) }
+      public static var syncNow: String { String(localized: "ios.shell.syncNow", bundle: L10nRuntime.bundle) }
       /// Teams
-      public static var teams: String { String(localized: "ios.shell.teams", bundle: .module) }
+      public static var teams: String { String(localized: "ios.shell.teams", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Stage {
       /// Auto-scroll
-      public static var autoScroll: String { String(localized: "ios.stage.autoScroll", bundle: .module) }
+      public static var autoScroll: String { String(localized: "ios.stage.autoScroll", bundle: L10nRuntime.bundle) }
       /// Back
-      public static var back: String { String(localized: "ios.stage.back", bundle: .module) }
+      public static var back: String { String(localized: "ios.stage.back", bundle: L10nRuntime.bundle) }
       /// capo {fret}
       public static func capoShort(fret: String) -> String {
-        String(format: String(localized: "ios.stage.capoShort", bundle: .module), fret)
+        String(format: String(localized: "ios.stage.capoShort", bundle: L10nRuntime.bundle), fret)
       }
       /// Show chords
-      public static var chords: String { String(localized: "ios.stage.chords", bundle: .module) }
+      public static var chords: String { String(localized: "ios.stage.chords", bundle: L10nRuntime.bundle) }
       /// Collapse controls
-      public static var collapseControls: String { String(localized: "ios.stage.collapseControls", bundle: .module) }
+      public static var collapseControls: String { String(localized: "ios.stage.collapseControls", bundle: L10nRuntime.bundle) }
       /// Two columns
-      public static var columns: String { String(localized: "ios.stage.columns", bundle: .module) }
+      public static var columns: String { String(localized: "ios.stage.columns", bundle: L10nRuntime.bundle) }
       /// Performance controls
-      public static var controlsToolbar: String { String(localized: "ios.stage.controlsToolbar", bundle: .module) }
+      public static var controlsToolbar: String { String(localized: "ios.stage.controlsToolbar", bundle: L10nRuntime.bundle) }
       /// Decrease
-      public static var decrease: String { String(localized: "ios.stage.decrease", bundle: .module) }
+      public static var decrease: String { String(localized: "ios.stage.decrease", bundle: L10nRuntime.bundle) }
+      /// Dock controls
+      public static var dockControls: String { String(localized: "ios.stage.dockControls", bundle: L10nRuntime.bundle) }
       /// Enter full screen
-      public static var enterFullscreen: String { String(localized: "ios.stage.enterFullscreen", bundle: .module) }
+      public static var enterFullscreen: String { String(localized: "ios.stage.enterFullscreen", bundle: L10nRuntime.bundle) }
       /// Exit full screen
-      public static var exitFullscreen: String { String(localized: "ios.stage.exitFullscreen", bundle: .module) }
+      public static var exitFullscreen: String { String(localized: "ios.stage.exitFullscreen", bundle: L10nRuntime.bundle) }
+      /// Float controls
+      public static var floatControls: String { String(localized: "ios.stage.floatControls", bundle: L10nRuntime.bundle) }
       /// from {bpm}
       public static func fromBPM(bpm: String) -> String {
-        String(format: String(localized: "ios.stage.fromBPM", bundle: .module), bpm)
+        String(format: String(localized: "ios.stage.fromBPM", bundle: L10nRuntime.bundle), bpm)
       }
       /// Increase
-      public static var increase: String { String(localized: "ios.stage.increase", bundle: .module) }
+      public static var increase: String { String(localized: "ios.stage.increase", bundle: L10nRuntime.bundle) }
       /// Key
-      public static var key: String { String(localized: "ios.stage.key", bundle: .module) }
+      public static var key: String { String(localized: "ios.stage.key", bundle: L10nRuntime.bundle) }
       /// Layout
-      public static var layout: String { String(localized: "ios.stage.layout", bundle: .module) }
+      public static var layout: String { String(localized: "ios.stage.layout", bundle: L10nRuntime.bundle) }
       /// More
-      public static var more: String { String(localized: "ios.stage.more", bundle: .module) }
+      public static var more: String { String(localized: "ios.stage.more", bundle: L10nRuntime.bundle) }
       /// Next
-      public static var next: String { String(localized: "ios.stage.next", bundle: .module) }
+      public static var next: String { String(localized: "ios.stage.next", bundle: L10nRuntime.bundle) }
       /// Next song: {title}
       public static func nextSong(title: String) -> String {
-        String(format: String(localized: "ios.stage.nextSong", bundle: .module), title)
+        String(format: String(localized: "ios.stage.nextSong", bundle: L10nRuntime.bundle), title)
       }
       /// Play
-      public static var play: String { String(localized: "ios.stage.play", bundle: .module) }
+      public static var play: String { String(localized: "ios.stage.play", bundle: L10nRuntime.bundle) }
       /// Play shapes in
-      public static var playShapesIn: String { String(localized: "ios.stage.playShapesIn", bundle: .module) }
+      public static var playShapesIn: String { String(localized: "ios.stage.playShapesIn", bundle: L10nRuntime.bundle) }
       /// Scroll
-      public static var scroll: String { String(localized: "ios.stage.scroll", bundle: .module) }
+      public static var scroll: String { String(localized: "ios.stage.scroll", bundle: L10nRuntime.bundle) }
       /// Show controls
-      public static var showControls: String { String(localized: "ios.stage.showControls", bundle: .module) }
+      public static var showControls: String { String(localized: "ios.stage.showControls", bundle: L10nRuntime.bundle) }
       /// Sounds in
-      public static var soundsIn: String { String(localized: "ios.stage.soundsIn", bundle: .module) }
+      public static var soundsIn: String { String(localized: "ios.stage.soundsIn", bundle: L10nRuntime.bundle) }
       /// Text size
-      public static var textSize: String { String(localized: "ios.stage.textSize", bundle: .module) }
+      public static var textSize: String { String(localized: "ios.stage.textSize", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Sync {
       /// Conflicts: {count}
       public static func conflictCount(count: String) -> String {
-        String(format: String(localized: "ios.sync.conflictCount", bundle: .module), count)
+        String(format: String(localized: "ios.sync.conflictCount", bundle: L10nRuntime.bundle), count)
       }
       /// Sync failed
-      public static var error: String { String(localized: "ios.sync.error", bundle: .module) }
+      public static var error: String { String(localized: "ios.sync.error", bundle: L10nRuntime.bundle) }
       /// Failed changes: {count}
       public static func failedChanges(count: String) -> String {
-        String(format: String(localized: "ios.sync.failedChanges", bundle: .module), count)
+        String(format: String(localized: "ios.sync.failedChanges", bundle: L10nRuntime.bundle), count)
       }
       /// Up to date
-      public static var idle: String { String(localized: "ios.sync.idle", bundle: .module) }
+      public static var idle: String { String(localized: "ios.sync.idle", bundle: L10nRuntime.bundle) }
       /// Last synced {time}
       public static func lastSync(time: String) -> String {
-        String(format: String(localized: "ios.sync.lastSync", bundle: .module), time)
+        String(format: String(localized: "ios.sync.lastSync", bundle: L10nRuntime.bundle), time)
       }
       /// Never synced
-      public static var never: String { String(localized: "ios.sync.never", bundle: .module) }
+      public static var never: String { String(localized: "ios.sync.never", bundle: L10nRuntime.bundle) }
       /// Offline
-      public static var offline: String { String(localized: "ios.sync.offline", bundle: .module) }
+      public static var offline: String { String(localized: "ios.sync.offline", bundle: L10nRuntime.bundle) }
       /// Waiting to sync
-      public static var pending: String { String(localized: "ios.sync.pending", bundle: .module) }
+      public static var pending: String { String(localized: "ios.sync.pending", bundle: L10nRuntime.bundle) }
       /// Pending changes: {count}
       public static func pendingChanges(count: String) -> String {
-        String(format: String(localized: "ios.sync.pendingChanges", bundle: .module), count)
+        String(format: String(localized: "ios.sync.pendingChanges", bundle: L10nRuntime.bundle), count)
       }
       /// Fetching updates…
-      public static var pulling: String { String(localized: "ios.sync.pulling", bundle: .module) }
+      public static var pulling: String { String(localized: "ios.sync.pulling", bundle: L10nRuntime.bundle) }
       /// Sending changes…
-      public static var pushing: String { String(localized: "ios.sync.pushing", bundle: .module) }
+      public static var pushing: String { String(localized: "ios.sync.pushing", bundle: L10nRuntime.bundle) }
       /// Sync now
-      public static var syncNow: String { String(localized: "ios.sync.syncNow", bundle: .module) }
+      public static var syncNow: String { String(localized: "ios.sync.syncNow", bundle: L10nRuntime.bundle) }
       /// Syncing…
-      public static var syncing: String { String(localized: "ios.sync.syncing", bundle: .module) }
+      public static var syncing: String { String(localized: "ios.sync.syncing", bundle: L10nRuntime.bundle) }
       /// Up to date
-      public static var upToDate: String { String(localized: "ios.sync.upToDate", bundle: .module) }
+      public static var upToDate: String { String(localized: "ios.sync.upToDate", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Table {
       /// Active
-      public static var active: String { String(localized: "ios.table.active", bundle: .module) }
+      public static var active: String { String(localized: "ios.table.active", bundle: L10nRuntime.bundle) }
       /// Add to Playlist
-      public static var addToPlaylist: String { String(localized: "ios.table.addToPlaylist", bundle: .module) }
+      public static var addToPlaylist: String { String(localized: "ios.table.addToPlaylist", bundle: L10nRuntime.bundle) }
       /// Archived
-      public static var archived: String { String(localized: "ios.table.archived", bundle: .module) }
+      public static var archived: String { String(localized: "ios.table.archived", bundle: L10nRuntime.bundle) }
       /// Clear
-      public static var clear: String { String(localized: "ios.table.clear", bundle: .module) }
+      public static var clear: String { String(localized: "ios.table.clear", bundle: L10nRuntime.bundle) }
       /// BPM
-      public static var colBpm: String { String(localized: "ios.table.colBpm", bundle: .module) }
+      public static var colBpm: String { String(localized: "ios.table.colBpm", bundle: L10nRuntime.bundle) }
       /// Date
-      public static var colDate: String { String(localized: "ios.table.colDate", bundle: .module) }
+      public static var colDate: String { String(localized: "ios.table.colDate", bundle: L10nRuntime.bundle) }
       /// Key
-      public static var colKey: String { String(localized: "ios.table.colKey", bundle: .module) }
+      public static var colKey: String { String(localized: "ios.table.colKey", bundle: L10nRuntime.bundle) }
       /// Name
-      public static var colName: String { String(localized: "ios.table.colName", bundle: .module) }
+      public static var colName: String { String(localized: "ios.table.colName", bundle: L10nRuntime.bundle) }
       /// Owner
-      public static var colOwner: String { String(localized: "ios.table.colOwner", bundle: .module) }
+      public static var colOwner: String { String(localized: "ios.table.colOwner", bundle: L10nRuntime.bundle) }
       /// Played
-      public static var colPlayed: String { String(localized: "ios.table.colPlayed", bundle: .module) }
+      public static var colPlayed: String { String(localized: "ios.table.colPlayed", bundle: L10nRuntime.bundle) }
       /// Sharing
-      public static var colSharing: String { String(localized: "ios.table.colSharing", bundle: .module) }
+      public static var colSharing: String { String(localized: "ios.table.colSharing", bundle: L10nRuntime.bundle) }
       /// Songs
-      public static var colSongs: String { String(localized: "ios.table.colSongs", bundle: .module) }
+      public static var colSongs: String { String(localized: "ios.table.colSongs", bundle: L10nRuntime.bundle) }
       /// Tags
-      public static var colTags: String { String(localized: "ios.table.colTags", bundle: .module) }
+      public static var colTags: String { String(localized: "ios.table.colTags", bundle: L10nRuntime.bundle) }
       /// Title
-      public static var colTitle: String { String(localized: "ios.table.colTitle", bundle: .module) }
+      public static var colTitle: String { String(localized: "ios.table.colTitle", bundle: L10nRuntime.bundle) }
       /// Done
-      public static var done: String { String(localized: "ios.table.done", bundle: .module) }
+      public static var done: String { String(localized: "ios.table.done", bundle: L10nRuntime.bundle) }
       /// Group: {value}
       public static func groupValue(value: String) -> String {
-        String(format: String(localized: "ios.table.groupValue", bundle: .module), value)
+        String(format: String(localized: "ios.table.groupValue", bundle: L10nRuntime.bundle), value)
       }
       /// Alphabet index
-      public static var indexLabel: String { String(localized: "ios.table.indexLabel", bundle: .module) }
+      public static var indexLabel: String { String(localized: "ios.table.indexLabel", bundle: L10nRuntime.bundle) }
       /// Never
-      public static var never: String { String(localized: "ios.table.never", bundle: .module) }
+      public static var never: String { String(localized: "ios.table.never", bundle: L10nRuntime.bundle) }
       /// Private
-      public static var `private`: String { String(localized: "ios.table.private", bundle: .module) }
+      public static var `private`: String { String(localized: "ios.table.private", bundle: L10nRuntime.bundle) }
       /// Public
-      public static var `public`: String { String(localized: "ios.table.public", bundle: .module) }
+      public static var `public`: String { String(localized: "ios.table.public", bundle: L10nRuntime.bundle) }
       /// Select
-      public static var select: String { String(localized: "ios.table.select", bundle: .module) }
+      public static var select: String { String(localized: "ios.table.select", bundle: L10nRuntime.bundle) }
       /// {count} selected
       public static func selectedCount(count: String) -> String {
-        String(format: String(localized: "ios.table.selectedCount", bundle: .module), count)
+        String(format: String(localized: "ios.table.selectedCount", bundle: L10nRuntime.bundle), count)
       }
       /// Sorted ascending
-      public static var sortAscending: String { String(localized: "ios.table.sortAscending", bundle: .module) }
+      public static var sortAscending: String { String(localized: "ios.table.sortAscending", bundle: L10nRuntime.bundle) }
       /// Sort by
-      public static var sortBy: String { String(localized: "ios.table.sortBy", bundle: .module) }
+      public static var sortBy: String { String(localized: "ios.table.sortBy", bundle: L10nRuntime.bundle) }
       /// Sorted descending
-      public static var sortDescending: String { String(localized: "ios.table.sortDescending", bundle: .module) }
+      public static var sortDescending: String { String(localized: "ios.table.sortDescending", bundle: L10nRuntime.bundle) }
       /// Recently added
-      public static var sortRecent: String { String(localized: "ios.table.sortRecent", bundle: .module) }
+      public static var sortRecent: String { String(localized: "ios.table.sortRecent", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Teams {
       /// Decline
-      public static var decline: String { String(localized: "ios.teams.decline", bundle: .module) }
+      public static var decline: String { String(localized: "ios.teams.decline", bundle: L10nRuntime.bundle) }
       /// Email
-      public static var email: String { String(localized: "ios.teams.email", bundle: .module) }
+      public static var email: String { String(localized: "ios.teams.email", bundle: L10nRuntime.bundle) }
       /// Icon (emoji)
-      public static var icon: String { String(localized: "ios.teams.icon", bundle: .module) }
+      public static var icon: String { String(localized: "ios.teams.icon", bundle: L10nRuntime.bundle) }
       /// Choose an icon
-      public static var iconPickerTitle: String { String(localized: "ios.teams.iconPickerTitle", bundle: .module) }
+      public static var iconPickerTitle: String { String(localized: "ios.teams.iconPickerTitle", bundle: L10nRuntime.bundle) }
       /// Copy invite link
-      public static var inviteLinkCopy: String { String(localized: "ios.teams.inviteLinkCopy", bundle: .module) }
+      public static var inviteLinkCopy: String { String(localized: "ios.teams.inviteLinkCopy", bundle: L10nRuntime.bundle) }
       /// {count} Members
       public static func memberCount(count: String) -> String {
-        String(format: String(localized: "ios.teams.memberCount", bundle: .module), count)
+        String(format: String(localized: "ios.teams.memberCount", bundle: L10nRuntime.bundle), count)
       }
       /// 1 Member
-      public static var memberCountOne: String { String(localized: "ios.teams.memberCountOne", bundle: .module) }
+      public static var memberCountOne: String { String(localized: "ios.teams.memberCountOne", bundle: L10nRuntime.bundle) }
       /// No pending invitations
-      public static var noInvitations: String { String(localized: "ios.teams.noInvitations", bundle: .module) }
+      public static var noInvitations: String { String(localized: "ios.teams.noInvitations", bundle: L10nRuntime.bundle) }
       /// No teams match your search
-      public static var noTeamMatches: String { String(localized: "ios.teams.noTeamMatches", bundle: .module) }
+      public static var noTeamMatches: String { String(localized: "ios.teams.noTeamMatches", bundle: L10nRuntime.bundle) }
       /// You are offline. Team changes need a connection.
-      public static var offline: String { String(localized: "ios.teams.offline", bundle: .module) }
+      public static var offline: String { String(localized: "ios.teams.offline", bundle: L10nRuntime.bundle) }
       /// Try again
-      public static var retry: String { String(localized: "ios.teams.retry", bundle: .module) }
+      public static var retry: String { String(localized: "ios.teams.retry", bundle: L10nRuntime.bundle) }
       /// Role
-      public static var role: String { String(localized: "ios.teams.role", bundle: .module) }
+      public static var role: String { String(localized: "ios.teams.role", bundle: L10nRuntime.bundle) }
       /// Owner
-      public static var roleOwner: String { String(localized: "ios.teams.roleOwner", bundle: .module) }
+      public static var roleOwner: String { String(localized: "ios.teams.roleOwner", bundle: L10nRuntime.bundle) }
       /// Search teams…
-      public static var searchTeams: String { String(localized: "ios.teams.searchTeams", bundle: .module) }
+      public static var searchTeams: String { String(localized: "ios.teams.searchTeams", bundle: L10nRuntime.bundle) }
       /// Anyone with this link can view the setlist.
-      public static var shareHint: String { String(localized: "ios.teams.shareHint", bundle: .module) }
+      public static var shareHint: String { String(localized: "ios.teams.shareHint", bundle: L10nRuntime.bundle) }
       /// Share link
-      public static var shareLink: String { String(localized: "ios.teams.shareLink", bundle: .module) }
+      public static var shareLink: String { String(localized: "ios.teams.shareLink", bundle: L10nRuntime.bundle) }
       /// Share setlist
-      public static var shareTitle: String { String(localized: "ios.teams.shareTitle", bundle: .module) }
+      public static var shareTitle: String { String(localized: "ios.teams.shareTitle", bundle: L10nRuntime.bundle) }
       /// You are not a member of any team that can receive songs.
-      public static var transferNoTeams: String { String(localized: "ios.teams.transferNoTeams", bundle: .module) }
+      public static var transferNoTeams: String { String(localized: "ios.teams.transferNoTeams", bundle: L10nRuntime.bundle) }
     }
   }
   public nonisolated enum Landing {
     public nonisolated enum Cta {
       /// Get started for free
-      public static var button: String { String(localized: "landing.cta.button", bundle: .module) }
+      public static var button: String { String(localized: "landing.cta.button", bundle: L10nRuntime.bundle) }
       /// Join musicians who use Capo to stay organized, rehearse smarter, and perform with confidence.
-      public static var description: String { String(localized: "landing.cta.description", bundle: .module) }
+      public static var description: String { String(localized: "landing.cta.description", bundle: L10nRuntime.bundle) }
       /// Ready to play?
-      public static var headline: String { String(localized: "landing.cta.headline", bundle: .module) }
+      public static var headline: String { String(localized: "landing.cta.headline", bundle: L10nRuntime.bundle) }
       /// Sign in securely · No credit card required
-      public static var signInMethod: String { String(localized: "landing.cta.signInMethod", bundle: .module) }
+      public static var signInMethod: String { String(localized: "landing.cta.signInMethod", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Features {
       public nonisolated enum ChordDiagrams {
         /// Tap any chord to see a fingering diagram. Color-coded by section: verse, chorus, bridge, and more.
-        public static var description: String { String(localized: "landing.features.chordDiagrams.description", bundle: .module) }
+        public static var description: String { String(localized: "landing.features.chordDiagrams.description", bundle: L10nRuntime.bundle) }
         /// Chord Diagrams
-        public static var title: String { String(localized: "landing.features.chordDiagrams.title", bundle: .module) }
+        public static var title: String { String(localized: "landing.features.chordDiagrams.title", bundle: L10nRuntime.bundle) }
       }
       public nonisolated enum ChordproEditor {
         /// Write and edit songs in ChordPro format with a live-preview split-pane editor and syntax highlighting.
-        public static var description: String { String(localized: "landing.features.chordproEditor.description", bundle: .module) }
+        public static var description: String { String(localized: "landing.features.chordproEditor.description", bundle: L10nRuntime.bundle) }
         /// ChordPro Editor
-        public static var title: String { String(localized: "landing.features.chordproEditor.title", bundle: .module) }
+        public static var title: String { String(localized: "landing.features.chordproEditor.title", bundle: L10nRuntime.bundle) }
       }
       public nonisolated enum InstantSharing {
         /// Share any playlist via a unique link — no account needed. Perfect for session players and venue staff.
-        public static var description: String { String(localized: "landing.features.instantSharing.description", bundle: .module) }
+        public static var description: String { String(localized: "landing.features.instantSharing.description", bundle: L10nRuntime.bundle) }
         /// Instant Sharing
-        public static var title: String { String(localized: "landing.features.instantSharing.title", bundle: .module) }
+        public static var title: String { String(localized: "landing.features.instantSharing.title", bundle: L10nRuntime.bundle) }
       }
       public nonisolated enum SmartSetlists {
         /// Build playlists for rehearsals and gigs. Drag and drop to reorder. Export and share in seconds.
-        public static var description: String { String(localized: "landing.features.smartSetlists.description", bundle: .module) }
+        public static var description: String { String(localized: "landing.features.smartSetlists.description", bundle: L10nRuntime.bundle) }
         /// Smart Setlists
-        public static var title: String { String(localized: "landing.features.smartSetlists.title", bundle: .module) }
+        public static var title: String { String(localized: "landing.features.smartSetlists.title", bundle: L10nRuntime.bundle) }
       }
       public nonisolated enum SongLibrary {
         /// Keep your entire catalog in one place. Filter by key, BPM, or status. Find the right song in seconds.
-        public static var description: String { String(localized: "landing.features.songLibrary.description", bundle: .module) }
+        public static var description: String { String(localized: "landing.features.songLibrary.description", bundle: L10nRuntime.bundle) }
         /// Song Library
-        public static var title: String { String(localized: "landing.features.songLibrary.title", bundle: .module) }
+        public static var title: String { String(localized: "landing.features.songLibrary.title", bundle: L10nRuntime.bundle) }
       }
       public nonisolated enum TeamCollab {
         /// Invite your bandmates to a shared library. Everyone stays in sync with the same songs and setlists.
-        public static var description: String { String(localized: "landing.features.teamCollab.description", bundle: .module) }
+        public static var description: String { String(localized: "landing.features.teamCollab.description", bundle: L10nRuntime.bundle) }
         /// Team Collaboration
-        public static var title: String { String(localized: "landing.features.teamCollab.title", bundle: .module) }
+        public static var title: String { String(localized: "landing.features.teamCollab.title", bundle: L10nRuntime.bundle) }
       }
       /// Everything you need
-      public static var sectionBadge: String { String(localized: "landing.features.sectionBadge", bundle: .module) }
+      public static var sectionBadge: String { String(localized: "landing.features.sectionBadge", bundle: L10nRuntime.bundle) }
       /// From the first rehearsal to the last encore, Capo has you covered.
-      public static var sectionDescription: String { String(localized: "landing.features.sectionDescription", bundle: .module) }
+      public static var sectionDescription: String { String(localized: "landing.features.sectionDescription", bundle: L10nRuntime.bundle) }
       /// Features built for the stage
-      public static var sectionTitle: String { String(localized: "landing.features.sectionTitle", bundle: .module) }
+      public static var sectionTitle: String { String(localized: "landing.features.sectionTitle", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Feedback {
       /// Share your thoughts
-      public static var badge: String { String(localized: "landing.feedback.badge", bundle: .module) }
+      public static var badge: String { String(localized: "landing.feedback.badge", bundle: L10nRuntime.bundle) }
       /// Got an idea, found a bug, or just want to say hi? Drop us a message.
-      public static var description: String { String(localized: "landing.feedback.description", bundle: .module) }
+      public static var description: String { String(localized: "landing.feedback.description", bundle: L10nRuntime.bundle) }
       /// Email
-      public static var emailLabel: String { String(localized: "landing.feedback.emailLabel", bundle: .module) }
+      public static var emailLabel: String { String(localized: "landing.feedback.emailLabel", bundle: L10nRuntime.bundle) }
       /// your@email.com (optional)
-      public static var emailPlaceholder: String { String(localized: "landing.feedback.emailPlaceholder", bundle: .module) }
+      public static var emailPlaceholder: String { String(localized: "landing.feedback.emailPlaceholder", bundle: L10nRuntime.bundle) }
       /// Something went wrong. Please try again.
-      public static var errorMessage: String { String(localized: "landing.feedback.errorMessage", bundle: .module) }
+      public static var errorMessage: String { String(localized: "landing.feedback.errorMessage", bundle: L10nRuntime.bundle) }
       /// We'd love to hear from you
-      public static var headline: String { String(localized: "landing.feedback.headline", bundle: .module) }
+      public static var headline: String { String(localized: "landing.feedback.headline", bundle: L10nRuntime.bundle) }
       /// Your message
-      public static var messageLabel: String { String(localized: "landing.feedback.messageLabel", bundle: .module) }
+      public static var messageLabel: String { String(localized: "landing.feedback.messageLabel", bundle: L10nRuntime.bundle) }
       /// Tell us what you think — feature requests, bug reports, or just a hello.
-      public static var messagePlaceholder: String { String(localized: "landing.feedback.messagePlaceholder", bundle: .module) }
+      public static var messagePlaceholder: String { String(localized: "landing.feedback.messagePlaceholder", bundle: L10nRuntime.bundle) }
       /// Name
-      public static var nameLabel: String { String(localized: "landing.feedback.nameLabel", bundle: .module) }
+      public static var nameLabel: String { String(localized: "landing.feedback.nameLabel", bundle: L10nRuntime.bundle) }
       /// Your name (optional)
-      public static var namePlaceholder: String { String(localized: "landing.feedback.namePlaceholder", bundle: .module) }
+      public static var namePlaceholder: String { String(localized: "landing.feedback.namePlaceholder", bundle: L10nRuntime.bundle) }
       /// I'd like to receive news and updates about Capo
-      public static var newsletterLabel: String { String(localized: "landing.feedback.newsletterLabel", bundle: .module) }
+      public static var newsletterLabel: String { String(localized: "landing.feedback.newsletterLabel", bundle: L10nRuntime.bundle) }
       /// Send Feedback
-      public static var submit: String { String(localized: "landing.feedback.submit", bundle: .module) }
+      public static var submit: String { String(localized: "landing.feedback.submit", bundle: L10nRuntime.bundle) }
       /// Sending...
-      public static var submitting: String { String(localized: "landing.feedback.submitting", bundle: .module) }
+      public static var submitting: String { String(localized: "landing.feedback.submitting", bundle: L10nRuntime.bundle) }
       /// Your message has been received. We appreciate you taking the time.
-      public static var successDescription: String { String(localized: "landing.feedback.successDescription", bundle: .module) }
+      public static var successDescription: String { String(localized: "landing.feedback.successDescription", bundle: L10nRuntime.bundle) }
       /// Thanks for your feedback!
-      public static var successTitle: String { String(localized: "landing.feedback.successTitle", bundle: .module) }
+      public static var successTitle: String { String(localized: "landing.feedback.successTitle", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Footer {
       /// Made by
-      public static var madeBy: String { String(localized: "landing.footer.madeBy", bundle: .module) }
+      public static var madeBy: String { String(localized: "landing.footer.madeBy", bundle: L10nRuntime.bundle) }
       /// Sign In
-      public static var signIn: String { String(localized: "landing.footer.signIn", bundle: .module) }
+      public static var signIn: String { String(localized: "landing.footer.signIn", bundle: L10nRuntime.bundle) }
       /// Song library for musicians
-      public static var tagline: String { String(localized: "landing.footer.tagline", bundle: .module) }
+      public static var tagline: String { String(localized: "landing.footer.tagline", bundle: L10nRuntime.bundle) }
       /// View on GitHub
-      public static var viewOnGitHub: String { String(localized: "landing.footer.viewOnGitHub", bundle: .module) }
+      public static var viewOnGitHub: String { String(localized: "landing.footer.viewOnGitHub", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Hero {
       /// D chord diagram
-      public static var chordDiagramLabel: String { String(localized: "landing.hero.chordDiagramLabel", bundle: .module) }
+      public static var chordDiagramLabel: String { String(localized: "landing.hero.chordDiagramLabel", bundle: L10nRuntime.bundle) }
       /// Chorus
-      public static var chorusLabel: String { String(localized: "landing.hero.chorusLabel", bundle: .module) }
+      public static var chorusLabel: String { String(localized: "landing.hero.chorusLabel", bundle: L10nRuntime.bundle) }
       /// Manage your complete song catalog with chords and lyrics. Build setlists, collaborate with your band, and share with the world — all in one place.
-      public static var description: String { String(localized: "landing.hero.description", bundle: .module) }
+      public static var description: String { String(localized: "landing.hero.description", bundle: L10nRuntime.bundle) }
       /// Explore features
-      public static var exploreFeatures: String { String(localized: "landing.hero.exploreFeatures", bundle: .module) }
+      public static var exploreFeatures: String { String(localized: "landing.hero.exploreFeatures", bundle: L10nRuntime.bundle) }
       /// Your Song Library,
-      public static var headline1: String { String(localized: "landing.hero.headline1", bundle: .module) }
+      public static var headline1: String { String(localized: "landing.hero.headline1", bundle: L10nRuntime.bundle) }
       /// Perfectly Tuned
-      public static var headline2: String { String(localized: "landing.hero.headline2", bundle: .module) }
+      public static var headline2: String { String(localized: "landing.hero.headline2", bundle: L10nRuntime.bundle) }
       /// Live Preview
-      public static var livePreview: String { String(localized: "landing.hero.livePreview", bundle: .module) }
+      public static var livePreview: String { String(localized: "landing.hero.livePreview", bundle: L10nRuntime.bundle) }
       /// Start for free
-      public static var startFree: String { String(localized: "landing.hero.startFree", bundle: .module) }
+      public static var startFree: String { String(localized: "landing.hero.startFree", bundle: L10nRuntime.bundle) }
       /// Verse 1
-      public static var verseLabel: String { String(localized: "landing.hero.verseLabel", bundle: .module) }
+      public static var verseLabel: String { String(localized: "landing.hero.verseLabel", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Highlights {
       /// ChordPro format support
-      public static var chordpro: String { String(localized: "landing.highlights.chordpro", bundle: .module) }
+      public static var chordpro: String { String(localized: "landing.highlights.chordpro", bundle: L10nRuntime.bundle) }
       /// Drag-and-drop setlists
-      public static var dragdrop: String { String(localized: "landing.highlights.dragdrop", bundle: .module) }
+      public static var dragdrop: String { String(localized: "landing.highlights.dragdrop", bundle: L10nRuntime.bundle) }
       /// Multi-language support
-      public static var multilanguage: String { String(localized: "landing.highlights.multilanguage", bundle: .module) }
+      public static var multilanguage: String { String(localized: "landing.highlights.multilanguage", bundle: L10nRuntime.bundle) }
       /// Public playlist links
-      public static var publicLinks: String { String(localized: "landing.highlights.publicLinks", bundle: .module) }
+      public static var publicLinks: String { String(localized: "landing.highlights.publicLinks", bundle: L10nRuntime.bundle) }
       /// Real-time collaboration
-      public static var realtime: String { String(localized: "landing.highlights.realtime", bundle: .module) }
+      public static var realtime: String { String(localized: "landing.highlights.realtime", bundle: L10nRuntime.bundle) }
       /// Dark & light themes
-      public static var themes: String { String(localized: "landing.highlights.themes", bundle: .module) }
+      public static var themes: String { String(localized: "landing.highlights.themes", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Nav {
       /// Sign In
-      public static var signIn: String { String(localized: "landing.nav.signIn", bundle: .module) }
+      public static var signIn: String { String(localized: "landing.nav.signIn", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum SharingSection {
       /// Instant Sharing
-      public static var badge: String { String(localized: "landing.sharingSection.badge", bundle: .module) }
+      public static var badge: String { String(localized: "landing.sharingSection.badge", bundle: L10nRuntime.bundle) }
       /// Copy
-      public static var copy: String { String(localized: "landing.sharingSection.copy", bundle: .module) }
+      public static var copy: String { String(localized: "landing.sharingSection.copy", bundle: L10nRuntime.bundle) }
       /// Generate a unique link for any playlist and share it with session players, sound engineers, or the venue. They can view songs and lyrics without creating an account.
-      public static var description: String { String(localized: "landing.sharingSection.description", bundle: .module) }
+      public static var description: String { String(localized: "landing.sharingSection.description", bundle: L10nRuntime.bundle) }
       /// Unique share code for every playlist
-      public static var feature1: String { String(localized: "landing.sharingSection.feature1", bundle: .module) }
+      public static var feature1: String { String(localized: "landing.sharingSection.feature1", bundle: L10nRuntime.bundle) }
       /// No account required for viewers
-      public static var feature2: String { String(localized: "landing.sharingSection.feature2", bundle: .module) }
+      public static var feature2: String { String(localized: "landing.sharingSection.feature2", bundle: L10nRuntime.bundle) }
       /// Full song lyrics and chords visible
-      public static var feature3: String { String(localized: "landing.sharingSection.feature3", bundle: .module) }
+      public static var feature3: String { String(localized: "landing.sharingSection.feature3", bundle: L10nRuntime.bundle) }
       /// Works on any device
-      public static var feature4: String { String(localized: "landing.sharingSection.feature4", bundle: .module) }
+      public static var feature4: String { String(localized: "landing.sharingSection.feature4", bundle: L10nRuntime.bundle) }
       /// Share your setlist
-      public static var headline1: String { String(localized: "landing.sharingSection.headline1", bundle: .module) }
+      public static var headline1: String { String(localized: "landing.sharingSection.headline1", bundle: L10nRuntime.bundle) }
       /// in one click
-      public static var headline2: String { String(localized: "landing.sharingSection.headline2", bundle: .module) }
+      public static var headline2: String { String(localized: "landing.sharingSection.headline2", bundle: L10nRuntime.bundle) }
       /// songs · Shared playlist
-      public static var mockSubtitle: String { String(localized: "landing.sharingSection.mockSubtitle", bundle: .module) }
+      public static var mockSubtitle: String { String(localized: "landing.sharingSection.mockSubtitle", bundle: L10nRuntime.bundle) }
       /// more songs...
-      public static var moreSongs: String { String(localized: "landing.sharingSection.moreSongs", bundle: .module) }
+      public static var moreSongs: String { String(localized: "landing.sharingSection.moreSongs", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum SongLibrarySection {
       /// Song Library
-      public static var badge: String { String(localized: "landing.songLibrarySection.badge", bundle: .module) }
+      public static var badge: String { String(localized: "landing.songLibrarySection.badge", bundle: L10nRuntime.bundle) }
       /// Import and organize all your songs with rich metadata — key, BPM, tags, and status. Powerful filters help you find the right song in seconds, even with hundreds in your library.
-      public static var description: String { String(localized: "landing.songLibrarySection.description", bundle: .module) }
+      public static var description: String { String(localized: "landing.songLibrarySection.description", bundle: L10nRuntime.bundle) }
       /// Filter by key, BPM, and status
-      public static var feature1: String { String(localized: "landing.songLibrarySection.feature1", bundle: .module) }
+      public static var feature1: String { String(localized: "landing.songLibrarySection.feature1", bundle: L10nRuntime.bundle) }
       /// Custom tags for any genre or mood
-      public static var feature2: String { String(localized: "landing.songLibrarySection.feature2", bundle: .module) }
+      public static var feature2: String { String(localized: "landing.songLibrarySection.feature2", bundle: L10nRuntime.bundle) }
       /// Archive songs without losing them
-      public static var feature3: String { String(localized: "landing.songLibrarySection.feature3", bundle: .module) }
+      public static var feature3: String { String(localized: "landing.songLibrarySection.feature3", bundle: L10nRuntime.bundle) }
       /// Instant full-text search
-      public static var feature4: String { String(localized: "landing.songLibrarySection.feature4", bundle: .module) }
+      public static var feature4: String { String(localized: "landing.songLibrarySection.feature4", bundle: L10nRuntime.bundle) }
       /// A Major
-      public static var filterAMajor: String { String(localized: "landing.songLibrarySection.filterAMajor", bundle: .module) }
+      public static var filterAMajor: String { String(localized: "landing.songLibrarySection.filterAMajor", bundle: L10nRuntime.bundle) }
       /// Active
-      public static var filterActive: String { String(localized: "landing.songLibrarySection.filterActive", bundle: .module) }
+      public static var filterActive: String { String(localized: "landing.songLibrarySection.filterActive", bundle: L10nRuntime.bundle) }
       /// All
-      public static var filterAll: String { String(localized: "landing.songLibrarySection.filterAll", bundle: .module) }
+      public static var filterAll: String { String(localized: "landing.songLibrarySection.filterAll", bundle: L10nRuntime.bundle) }
       /// G Major
-      public static var filterGMajor: String { String(localized: "landing.songLibrarySection.filterGMajor", bundle: .module) }
+      public static var filterGMajor: String { String(localized: "landing.songLibrarySection.filterGMajor", bundle: L10nRuntime.bundle) }
       /// Your entire catalog,
-      public static var headline1: String { String(localized: "landing.songLibrarySection.headline1", bundle: .module) }
+      public static var headline1: String { String(localized: "landing.songLibrarySection.headline1", bundle: L10nRuntime.bundle) }
       /// always at hand
-      public static var headline2: String { String(localized: "landing.songLibrarySection.headline2", bundle: .module) }
+      public static var headline2: String { String(localized: "landing.songLibrarySection.headline2", bundle: L10nRuntime.bundle) }
       /// Song Library
-      public static var mockTitle: String { String(localized: "landing.songLibrarySection.mockTitle", bundle: .module) }
+      public static var mockTitle: String { String(localized: "landing.songLibrarySection.mockTitle", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum TeamsSection {
       /// Team Collaboration
-      public static var badge: String { String(localized: "landing.teamsSection.badge", bundle: .module) }
+      public static var badge: String { String(localized: "landing.teamsSection.badge", bundle: L10nRuntime.bundle) }
       /// Invite bandmates to a shared library. Everyone works from the same songs and setlists, so nobody shows up to rehearsal with outdated charts.
-      public static var description: String { String(localized: "landing.teamsSection.description", bundle: .module) }
+      public static var description: String { String(localized: "landing.teamsSection.description", bundle: L10nRuntime.bundle) }
       /// Shared song libraries across the team
-      public static var feature1: String { String(localized: "landing.teamsSection.feature1", bundle: .module) }
+      public static var feature1: String { String(localized: "landing.teamsSection.feature1", bundle: L10nRuntime.bundle) }
       /// Invite members by email
-      public static var feature2: String { String(localized: "landing.teamsSection.feature2", bundle: .module) }
+      public static var feature2: String { String(localized: "landing.teamsSection.feature2", bundle: L10nRuntime.bundle) }
       /// Switch between personal and team context
-      public static var feature3: String { String(localized: "landing.teamsSection.feature3", bundle: .module) }
+      public static var feature3: String { String(localized: "landing.teamsSection.feature3", bundle: L10nRuntime.bundle) }
       /// Real-time updates for everyone
-      public static var feature4: String { String(localized: "landing.teamsSection.feature4", bundle: .module) }
+      public static var feature4: String { String(localized: "landing.teamsSection.feature4", bundle: L10nRuntime.bundle) }
       /// Your whole band,
-      public static var headline1: String { String(localized: "landing.teamsSection.headline1", bundle: .module) }
+      public static var headline1: String { String(localized: "landing.teamsSection.headline1", bundle: L10nRuntime.bundle) }
       /// in perfect harmony
-      public static var headline2: String { String(localized: "landing.teamsSection.headline2", bundle: .module) }
+      public static var headline2: String { String(localized: "landing.teamsSection.headline2", bundle: L10nRuntime.bundle) }
       /// + Invite
-      public static var invite: String { String(localized: "landing.teamsSection.invite", bundle: .module) }
+      public static var invite: String { String(localized: "landing.teamsSection.invite", bundle: L10nRuntime.bundle) }
       /// Worship Team
-      public static var mockTitle: String { String(localized: "landing.teamsSection.mockTitle", bundle: .module) }
+      public static var mockTitle: String { String(localized: "landing.teamsSection.mockTitle", bundle: L10nRuntime.bundle) }
       /// Admin
-      public static var roleAdmin: String { String(localized: "landing.teamsSection.roleAdmin", bundle: .module) }
+      public static var roleAdmin: String { String(localized: "landing.teamsSection.roleAdmin", bundle: L10nRuntime.bundle) }
       /// Invited
-      public static var roleInvited: String { String(localized: "landing.teamsSection.roleInvited", bundle: .module) }
+      public static var roleInvited: String { String(localized: "landing.teamsSection.roleInvited", bundle: L10nRuntime.bundle) }
       /// Member
-      public static var roleMember: String { String(localized: "landing.teamsSection.roleMember", bundle: .module) }
+      public static var roleMember: String { String(localized: "landing.teamsSection.roleMember", bundle: L10nRuntime.bundle) }
       /// Shared Setlists
-      public static var sharedSetlists: String { String(localized: "landing.teamsSection.sharedSetlists", bundle: .module) }
+      public static var sharedSetlists: String { String(localized: "landing.teamsSection.sharedSetlists", bundle: L10nRuntime.bundle) }
     }
     /// Built for musicians, by musicians
-    public static var badge: String { String(localized: "landing.badge", bundle: .module) }
+    public static var badge: String { String(localized: "landing.badge", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum Metadata {
     /// A modern song library app for musicians featuring chords and lyrics, built with Next.js and ChordPro format.
-    public static var description: String { String(localized: "metadata.description", bundle: .module) }
+    public static var description: String { String(localized: "metadata.description", bundle: L10nRuntime.bundle) }
     /// Capo
-    public static var title: String { String(localized: "metadata.title", bundle: .module) }
+    public static var title: String { String(localized: "metadata.title", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum Nav {
     /// Account
-    public static var account: String { String(localized: "nav.account", bundle: .module) }
+    public static var account: String { String(localized: "nav.account", bundle: L10nRuntime.bundle) }
     /// Chords
-    public static var chords: String { String(localized: "nav.chords", bundle: .module) }
+    public static var chords: String { String(localized: "nav.chords", bundle: L10nRuntime.bundle) }
     /// Create team
-    public static var createTeam: String { String(localized: "nav.createTeam", bundle: .module) }
+    public static var createTeam: String { String(localized: "nav.createTeam", bundle: L10nRuntime.bundle) }
     /// Dashboard
-    public static var dashboard: String { String(localized: "nav.dashboard", bundle: .module) }
+    public static var dashboard: String { String(localized: "nav.dashboard", bundle: L10nRuntime.bundle) }
     /// Filter view
-    public static var filterContext: String { String(localized: "nav.filterContext", bundle: .module) }
+    public static var filterContext: String { String(localized: "nav.filterContext", bundle: L10nRuntime.bundle) }
     /// Go to team dashboard
-    public static var goToTeamDashboard: String { String(localized: "nav.goToTeamDashboard", bundle: .module) }
+    public static var goToTeamDashboard: String { String(localized: "nav.goToTeamDashboard", bundle: L10nRuntime.bundle) }
     /// Home
-    public static var home: String { String(localized: "nav.home", bundle: .module) }
+    public static var home: String { String(localized: "nav.home", bundle: L10nRuntime.bundle) }
     /// Invitations
-    public static var invitations: String { String(localized: "nav.invitations", bundle: .module) }
+    public static var invitations: String { String(localized: "nav.invitations", bundle: L10nRuntime.bundle) }
     /// Logout
-    public static var logout: String { String(localized: "nav.logout", bundle: .module) }
+    public static var logout: String { String(localized: "nav.logout", bundle: L10nRuntime.bundle) }
     /// Manage teams
-    public static var manageTeams: String { String(localized: "nav.manageTeams", bundle: .module) }
+    public static var manageTeams: String { String(localized: "nav.manageTeams", bundle: L10nRuntime.bundle) }
     /// My Teams
-    public static var myTeams: String { String(localized: "nav.myTeams", bundle: .module) }
+    public static var myTeams: String { String(localized: "nav.myTeams", bundle: L10nRuntime.bundle) }
     /// Personal
-    public static var personal: String { String(localized: "nav.personal", bundle: .module) }
+    public static var personal: String { String(localized: "nav.personal", bundle: L10nRuntime.bundle) }
     /// Your personal account
-    public static var personalAccount: String { String(localized: "nav.personalAccount", bundle: .module) }
+    public static var personalAccount: String { String(localized: "nav.personalAccount", bundle: L10nRuntime.bundle) }
     /// Playlists
-    public static var playlists: String { String(localized: "nav.playlists", bundle: .module) }
+    public static var playlists: String { String(localized: "nav.playlists", bundle: L10nRuntime.bundle) }
     /// Profile
-    public static var profile: String { String(localized: "nav.profile", bundle: .module) }
+    public static var profile: String { String(localized: "nav.profile", bundle: L10nRuntime.bundle) }
     /// Settings
-    public static var settings: String { String(localized: "nav.settings", bundle: .module) }
+    public static var settings: String { String(localized: "nav.settings", bundle: L10nRuntime.bundle) }
     /// Songs
-    public static var songs: String { String(localized: "nav.songs", bundle: .module) }
+    public static var songs: String { String(localized: "nav.songs", bundle: L10nRuntime.bundle) }
     /// Switch context
-    public static var switchContext: String { String(localized: "nav.switchContext", bundle: .module) }
+    public static var switchContext: String { String(localized: "nav.switchContext", bundle: L10nRuntime.bundle) }
     /// Switch team
-    public static var switchTeam: String { String(localized: "nav.switchTeam", bundle: .module) }
+    public static var switchTeam: String { String(localized: "nav.switchTeam", bundle: L10nRuntime.bundle) }
     /// Teams
-    public static var teams: String { String(localized: "nav.teams", bundle: .module) }
+    public static var teams: String { String(localized: "nav.teams", bundle: L10nRuntime.bundle) }
     /// All
-    public static var viewAll: String { String(localized: "nav.viewAll", bundle: .module) }
+    public static var viewAll: String { String(localized: "nav.viewAll", bundle: L10nRuntime.bundle) }
     /// Songs and playlists from all buckets
-    public static var viewAllDescription: String { String(localized: "nav.viewAllDescription", bundle: .module) }
+    public static var viewAllDescription: String { String(localized: "nav.viewAllDescription", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum Offline {
     /// This page is not available offline. Check your connection and try again.
-    public static var description: String { String(localized: "offline.description", bundle: .module) }
+    public static var description: String { String(localized: "offline.description", bundle: L10nRuntime.bundle) }
     /// You are offline
-    public static var title: String { String(localized: "offline.title", bundle: .module) }
+    public static var title: String { String(localized: "offline.title", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum PlaylistDetail {
     /// Add a description...
-    public static var addDescription: String { String(localized: "playlistDetail.addDescription", bundle: .module) }
+    public static var addDescription: String { String(localized: "playlistDetail.addDescription", bundle: L10nRuntime.bundle) }
     /// Add {count} songs
     public static func addSelectedSongs(count: String) -> String {
-      String(format: String(localized: "playlistDetail.addSelectedSongs", bundle: .module), count)
+      String(format: String(localized: "playlistDetail.addSelectedSongs", bundle: L10nRuntime.bundle), count)
     }
     /// Add Songs
-    public static var addSongsButton: String { String(localized: "playlistDetail.addSongsButton", bundle: .module) }
+    public static var addSongsButton: String { String(localized: "playlistDetail.addSongsButton", bundle: L10nRuntime.bundle) }
     /// Add songs to get started
-    public static var addSongsDescription: String { String(localized: "playlistDetail.addSongsDescription", bundle: .module) }
+    public static var addSongsDescription: String { String(localized: "playlistDetail.addSongsDescription", bundle: L10nRuntime.bundle) }
     /// Anyone with the link can view
-    public static var anyoneWithLink: String { String(localized: "playlistDetail.anyoneWithLink", bundle: .module) }
+    public static var anyoneWithLink: String { String(localized: "playlistDetail.anyoneWithLink", bundle: L10nRuntime.bundle) }
     /// Hides this playlist from active view
-    public static var archiveDescription: String { String(localized: "playlistDetail.archiveDescription", bundle: .module) }
+    public static var archiveDescription: String { String(localized: "playlistDetail.archiveDescription", bundle: L10nRuntime.bundle) }
     /// Link copied to clipboard!
-    public static var copied: String { String(localized: "playlistDetail.copied", bundle: .module) }
+    public static var copied: String { String(localized: "playlistDetail.copied", bundle: L10nRuntime.bundle) }
     /// Copy
-    public static var copy: String { String(localized: "playlistDetail.copy", bundle: .module) }
+    public static var copy: String { String(localized: "playlistDetail.copy", bundle: L10nRuntime.bundle) }
     /// Danger Zone
-    public static var dangerZone: String { String(localized: "playlistDetail.dangerZone", bundle: .module) }
+    public static var dangerZone: String { String(localized: "playlistDetail.dangerZone", bundle: L10nRuntime.bundle) }
     /// Delete Playlist
-    public static var deletePlaylist: String { String(localized: "playlistDetail.deletePlaylist", bundle: .module) }
+    public static var deletePlaylist: String { String(localized: "playlistDetail.deletePlaylist", bundle: L10nRuntime.bundle) }
     /// This will permanently delete "{name}". This action cannot be undone.
     public static func deletePlaylistConfirmDescription(name: String) -> String {
-      String(format: String(localized: "playlistDetail.deletePlaylistConfirmDescription", bundle: .module), name)
+      String(format: String(localized: "playlistDetail.deletePlaylistConfirmDescription", bundle: L10nRuntime.bundle), name)
     }
     /// Delete this playlist?
-    public static var deletePlaylistConfirmTitle: String { String(localized: "playlistDetail.deletePlaylistConfirmTitle", bundle: .module) }
+    public static var deletePlaylistConfirmTitle: String { String(localized: "playlistDetail.deletePlaylistConfirmTitle", bundle: L10nRuntime.bundle) }
     /// Permanently delete this playlist. This action cannot be undone.
-    public static var deletePlaylistDescription: String { String(localized: "playlistDetail.deletePlaylistDescription", bundle: .module) }
+    public static var deletePlaylistDescription: String { String(localized: "playlistDetail.deletePlaylistDescription", bundle: L10nRuntime.bundle) }
     /// Details
-    public static var details: String { String(localized: "playlistDetail.details", bundle: .module) }
+    public static var details: String { String(localized: "playlistDetail.details", bundle: L10nRuntime.bundle) }
     /// Drop here to remove
-    public static var dropToRemove: String { String(localized: "playlistDetail.dropToRemove", bundle: .module) }
+    public static var dropToRemove: String { String(localized: "playlistDetail.dropToRemove", bundle: L10nRuntime.bundle) }
     /// View and edit playlist
-    public static var editDescription: String { String(localized: "playlistDetail.editDescription", bundle: .module) }
+    public static var editDescription: String { String(localized: "playlistDetail.editDescription", bundle: L10nRuntime.bundle) }
     /// Guest Editing
-    public static var guestEditing: String { String(localized: "playlistDetail.guestEditing", bundle: .module) }
+    public static var guestEditing: String { String(localized: "playlistDetail.guestEditing", bundle: L10nRuntime.bundle) }
     /// Only available when playlist is public
-    public static var guestEditingDisabledHint: String { String(localized: "playlistDetail.guestEditingDisabledHint", bundle: .module) }
+    public static var guestEditingDisabledHint: String { String(localized: "playlistDetail.guestEditingDisabledHint", bundle: L10nRuntime.bundle) }
     /// Guests can reorder songs
-    public static var guestsCanReorder: String { String(localized: "playlistDetail.guestsCanReorder", bundle: .module) }
+    public static var guestsCanReorder: String { String(localized: "playlistDetail.guestsCanReorder", bundle: L10nRuntime.bundle) }
     /// No songs in this playlist
-    public static var noSongsInPlaylist: String { String(localized: "playlistDetail.noSongsInPlaylist", bundle: .module) }
+    public static var noSongsInPlaylist: String { String(localized: "playlistDetail.noSongsInPlaylist", bundle: L10nRuntime.bundle) }
     /// All your songs are already in this playlist
-    public static var noSongsToAdd: String { String(localized: "playlistDetail.noSongsToAdd", bundle: .module) }
+    public static var noSongsToAdd: String { String(localized: "playlistDetail.noSongsToAdd", bundle: L10nRuntime.bundle) }
     /// Pick a date
-    public static var pickDate: String { String(localized: "playlistDetail.pickDate", bundle: .module) }
+    public static var pickDate: String { String(localized: "playlistDetail.pickDate", bundle: L10nRuntime.bundle) }
     /// Privacy & Sharing
-    public static var privacySharing: String { String(localized: "playlistDetail.privacySharing", bundle: .module) }
+    public static var privacySharing: String { String(localized: "playlistDetail.privacySharing", bundle: L10nRuntime.bundle) }
     /// Public URL:
-    public static var publicUrl: String { String(localized: "playlistDetail.publicUrl", bundle: .module) }
+    public static var publicUrl: String { String(localized: "playlistDetail.publicUrl", bundle: L10nRuntime.bundle) }
     /// Public Visibility
-    public static var publicVisibility: String { String(localized: "playlistDetail.publicVisibility", bundle: .module) }
+    public static var publicVisibility: String { String(localized: "playlistDetail.publicVisibility", bundle: L10nRuntime.bundle) }
     /// Search songs...
-    public static var searchSongs: String { String(localized: "playlistDetail.searchSongs", bundle: .module) }
+    public static var searchSongs: String { String(localized: "playlistDetail.searchSongs", bundle: L10nRuntime.bundle) }
     /// song
-    public static var song: String { String(localized: "playlistDetail.song", bundle: .module) }
+    public static var song: String { String(localized: "playlistDetail.song", bundle: L10nRuntime.bundle) }
     /// Songs
-    public static var songs: String { String(localized: "playlistDetail.songs", bundle: .module) }
+    public static var songs: String { String(localized: "playlistDetail.songs", bundle: L10nRuntime.bundle) }
     /// songs
-    public static var songsPlural: String { String(localized: "playlistDetail.songsPlural", bundle: .module) }
+    public static var songsPlural: String { String(localized: "playlistDetail.songsPlural", bundle: L10nRuntime.bundle) }
     /// Restores this playlist to active view
-    public static var unarchiveDescription: String { String(localized: "playlistDetail.unarchiveDescription", bundle: .module) }
+    public static var unarchiveDescription: String { String(localized: "playlistDetail.unarchiveDescription", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum PlaylistDraft {
     /// Add {count} songs
     public static func addButton(count: String) -> String {
-      String(format: String(localized: "playlistDraft.addButton", bundle: .module), count)
+      String(format: String(localized: "playlistDraft.addButton", bundle: L10nRuntime.bundle), count)
     }
     /// Add to Playlist
-    public static var addToPlaylist: String { String(localized: "playlistDraft.addToPlaylist", bundle: .module) }
+    public static var addToPlaylist: String { String(localized: "playlistDraft.addToPlaylist", bundle: L10nRuntime.bundle) }
     /// Clear
-    public static var clearButton: String { String(localized: "playlistDraft.clearButton", bundle: .module) }
+    public static var clearButton: String { String(localized: "playlistDraft.clearButton", bundle: L10nRuntime.bundle) }
     /// Open playlist draft
-    public static var openDraft: String { String(localized: "playlistDraft.openDraft", bundle: .module) }
+    public static var openDraft: String { String(localized: "playlistDraft.openDraft", bundle: L10nRuntime.bundle) }
     /// + Create new playlist
-    public static var selectNewPlaylist: String { String(localized: "playlistDraft.selectNewPlaylist", bundle: .module) }
+    public static var selectNewPlaylist: String { String(localized: "playlistDraft.selectNewPlaylist", bundle: L10nRuntime.bundle) }
     /// Select a playlist...
-    public static var selectPlaylist: String { String(localized: "playlistDraft.selectPlaylist", bundle: .module) }
+    public static var selectPlaylist: String { String(localized: "playlistDraft.selectPlaylist", bundle: L10nRuntime.bundle) }
     /// songs selected
-    public static var songsSelected: String { String(localized: "playlistDraft.songsSelected", bundle: .module) }
+    public static var songsSelected: String { String(localized: "playlistDraft.songsSelected", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum PlaylistItem {
     /// Private playlist
-    public static var privatePlaylist: String { String(localized: "playlistItem.privatePlaylist", bundle: .module) }
+    public static var privatePlaylist: String { String(localized: "playlistItem.privatePlaylist", bundle: L10nRuntime.bundle) }
     /// Public - Guest editing enabled
-    public static var publicGuestEditing: String { String(localized: "playlistItem.publicGuestEditing", bundle: .module) }
+    public static var publicGuestEditing: String { String(localized: "playlistItem.publicGuestEditing", bundle: L10nRuntime.bundle) }
     /// Public - View only
-    public static var publicViewOnly: String { String(localized: "playlistItem.publicViewOnly", bundle: .module) }
+    public static var publicViewOnly: String { String(localized: "playlistItem.publicViewOnly", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum PlaylistShare {
     /// Edit songs
-    public static var editSongs: String { String(localized: "playlistShare.editSongs", bundle: .module) }
+    public static var editSongs: String { String(localized: "playlistShare.editSongs", bundle: L10nRuntime.bundle) }
     /// Guest editing from shared links is coming soon.
-    public static var editSongsHint: String { String(localized: "playlistShare.editSongsHint", bundle: .module) }
+    public static var editSongsHint: String { String(localized: "playlistShare.editSongsHint", bundle: L10nRuntime.bundle) }
     /// This playlist is currently empty
-    public static var emptyDescription: String { String(localized: "playlistShare.emptyDescription", bundle: .module) }
+    public static var emptyDescription: String { String(localized: "playlistShare.emptyDescription", bundle: L10nRuntime.bundle) }
     /// Guest Editing
-    public static var guestEditing: String { String(localized: "playlistShare.guestEditing", bundle: .module) }
+    public static var guestEditing: String { String(localized: "playlistShare.guestEditing", bundle: L10nRuntime.bundle) }
     /// Next song
-    public static var nextSong: String { String(localized: "playlistShare.nextSong", bundle: .module) }
+    public static var nextSong: String { String(localized: "playlistShare.nextSong", bundle: L10nRuntime.bundle) }
     /// This playlist doesn't exist, was deleted, or was made private.
-    public static var notFoundDescription: String { String(localized: "playlistShare.notFoundDescription", bundle: .module) }
+    public static var notFoundDescription: String { String(localized: "playlistShare.notFoundDescription", bundle: L10nRuntime.bundle) }
     /// The link may have expired or the owner changed their sharing settings.
-    public static var notFoundSubtext: String { String(localized: "playlistShare.notFoundSubtext", bundle: .module) }
+    public static var notFoundSubtext: String { String(localized: "playlistShare.notFoundSubtext", bundle: L10nRuntime.bundle) }
     /// Playlist not found
-    public static var notFoundTitle: String { String(localized: "playlistShare.notFoundTitle", bundle: .module) }
+    public static var notFoundTitle: String { String(localized: "playlistShare.notFoundTitle", bundle: L10nRuntime.bundle) }
     /// Previous song
-    public static var previousSong: String { String(localized: "playlistShare.previousSong", bundle: .module) }
+    public static var previousSong: String { String(localized: "playlistShare.previousSong", bundle: L10nRuntime.bundle) }
     /// Public Playlist
-    public static var publicPlaylist: String { String(localized: "playlistShare.publicPlaylist", bundle: .module) }
+    public static var publicPlaylist: String { String(localized: "playlistShare.publicPlaylist", bundle: L10nRuntime.bundle) }
     /// Copy link
-    public static var share: String { String(localized: "playlistShare.share", bundle: .module) }
+    public static var share: String { String(localized: "playlistShare.share", bundle: L10nRuntime.bundle) }
     /// Shared playlist
-    public static var sharedPlaylist: String { String(localized: "playlistShare.sharedPlaylist", bundle: .module) }
+    public static var sharedPlaylist: String { String(localized: "playlistShare.sharedPlaylist", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum Playlists {
     /// Add to Playlist
-    public static var addToPlaylist: String { String(localized: "playlists.addToPlaylist", bundle: .module) }
+    public static var addToPlaylist: String { String(localized: "playlists.addToPlaylist", bundle: L10nRuntime.bundle) }
     /// All Playlists
-    public static var allPlaylists: String { String(localized: "playlists.allPlaylists", bundle: .module) }
+    public static var allPlaylists: String { String(localized: "playlists.allPlaylists", bundle: L10nRuntime.bundle) }
     /// Archive
-    public static var archive: String { String(localized: "playlists.archive", bundle: .module) }
+    public static var archive: String { String(localized: "playlists.archive", bundle: L10nRuntime.bundle) }
     /// Archived
-    public static var archivedBadge: String { String(localized: "playlists.archivedBadge", bundle: .module) }
+    public static var archivedBadge: String { String(localized: "playlists.archivedBadge", bundle: L10nRuntime.bundle) }
     /// Save to
-    public static var bucket: String { String(localized: "playlists.bucket", bundle: .module) }
+    public static var bucket: String { String(localized: "playlists.bucket", bundle: L10nRuntime.bundle) }
     /// Completed
-    public static var completed: String { String(localized: "playlists.completed", bundle: .module) }
+    public static var completed: String { String(localized: "playlists.completed", bundle: L10nRuntime.bundle) }
     /// Create Playlist
-    public static var createPlaylist: String { String(localized: "playlists.createPlaylist", bundle: .module) }
+    public static var createPlaylist: String { String(localized: "playlists.createPlaylist", bundle: L10nRuntime.bundle) }
     /// Draft
-    public static var draft: String { String(localized: "playlists.draft", bundle: .module) }
+    public static var draft: String { String(localized: "playlists.draft", bundle: L10nRuntime.bundle) }
     /// Drafts
-    public static var drafts: String { String(localized: "playlists.drafts", bundle: .module) }
+    public static var drafts: String { String(localized: "playlists.drafts", bundle: L10nRuntime.bundle) }
     /// No playlists found
-    public static var noPlaylists: String { String(localized: "playlists.noPlaylists", bundle: .module) }
+    public static var noPlaylists: String { String(localized: "playlists.noPlaylists", bundle: L10nRuntime.bundle) }
     /// Open Playlist
-    public static var openPlaylist: String { String(localized: "playlists.openPlaylist", bundle: .module) }
+    public static var openPlaylist: String { String(localized: "playlists.openPlaylist", bundle: L10nRuntime.bundle) }
     /// Playlist Details
-    public static var playlistDetails: String { String(localized: "playlists.playlistDetails", bundle: .module) }
+    public static var playlistDetails: String { String(localized: "playlists.playlistDetails", bundle: L10nRuntime.bundle) }
     /// Playlist Name
-    public static var playlistName: String { String(localized: "playlists.playlistName", bundle: .module) }
+    public static var playlistName: String { String(localized: "playlists.playlistName", bundle: L10nRuntime.bundle) }
     /// e.g. Sunday Worship
-    public static var playlistNamePlaceholder: String { String(localized: "playlists.playlistNamePlaceholder", bundle: .module) }
+    public static var playlistNamePlaceholder: String { String(localized: "playlists.playlistNamePlaceholder", bundle: L10nRuntime.bundle) }
     /// Search playlists...
-    public static var searchPlaceholder: String { String(localized: "playlists.searchPlaceholder", bundle: .module) }
+    public static var searchPlaceholder: String { String(localized: "playlists.searchPlaceholder", bundle: L10nRuntime.bundle) }
     /// Select a playlist
-    public static var selectPlaylist: String { String(localized: "playlists.selectPlaylist", bundle: .module) }
+    public static var selectPlaylist: String { String(localized: "playlists.selectPlaylist", bundle: L10nRuntime.bundle) }
     /// Choose a playlist from the list to view songs and manage it
-    public static var selectPlaylistDescription: String { String(localized: "playlists.selectPlaylistDescription", bundle: .module) }
+    public static var selectPlaylistDescription: String { String(localized: "playlists.selectPlaylistDescription", bundle: L10nRuntime.bundle) }
     /// Suggest a name
-    public static var suggestName: String { String(localized: "playlists.suggestName", bundle: .module) }
+    public static var suggestName: String { String(localized: "playlists.suggestName", bundle: L10nRuntime.bundle) }
     /// Playlists
-    public static var title: String { String(localized: "playlists.title", bundle: .module) }
+    public static var title: String { String(localized: "playlists.title", bundle: L10nRuntime.bundle) }
     /// Unarchive
-    public static var unarchive: String { String(localized: "playlists.unarchive", bundle: .module) }
+    public static var unarchive: String { String(localized: "playlists.unarchive", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum Settings {
+    public nonisolated enum ApiTokens {
+      /// Close
+      public static var close: String { String(localized: "settings.apiTokens.close", bundle: L10nRuntime.bundle) }
+      /// Copied
+      public static var copied: String { String(localized: "settings.apiTokens.copied", bundle: L10nRuntime.bundle) }
+      /// Copy
+      public static var copy: String { String(localized: "settings.apiTokens.copy", bundle: L10nRuntime.bundle) }
+      /// Create token
+      public static var create: String { String(localized: "settings.apiTokens.create", bundle: L10nRuntime.bundle) }
+      /// Could not create the token.
+      public static var createError: String { String(localized: "settings.apiTokens.createError", bundle: L10nRuntime.bundle) }
+      /// Created {date}
+      public static func createdOn(date: String) -> String {
+        String(format: String(localized: "settings.apiTokens.createdOn", bundle: L10nRuntime.bundle), date)
+      }
+      /// Creating...
+      public static var creating: String { String(localized: "settings.apiTokens.creating", bundle: L10nRuntime.bundle) }
+      /// Tokens let external tools such as HollyShow read your songs.
+      public static var description: String { String(localized: "settings.apiTokens.description", bundle: L10nRuntime.bundle) }
+      /// No tokens yet.
+      public static var empty: String { String(localized: "settings.apiTokens.empty", bundle: L10nRuntime.bundle) }
+      /// Last used {date}
+      public static func lastUsed(date: String) -> String {
+        String(format: String(localized: "settings.apiTokens.lastUsed", bundle: L10nRuntime.bundle), date)
+      }
+      /// Could not load tokens.
+      public static var loadError: String { String(localized: "settings.apiTokens.loadError", bundle: L10nRuntime.bundle) }
+      /// Token name
+      public static var nameLabel: String { String(localized: "settings.apiTokens.nameLabel", bundle: L10nRuntime.bundle) }
+      /// e.g. Church laptop
+      public static var namePlaceholder: String { String(localized: "settings.apiTokens.namePlaceholder", bundle: L10nRuntime.bundle) }
+      /// Never used
+      public static var neverUsed: String { String(localized: "settings.apiTokens.neverUsed", bundle: L10nRuntime.bundle) }
+      /// Copy your new token
+      public static var revealTitle: String { String(localized: "settings.apiTokens.revealTitle", bundle: L10nRuntime.bundle) }
+      /// This token will not be shown again. Store it somewhere safe.
+      public static var revealWarning: String { String(localized: "settings.apiTokens.revealWarning", bundle: L10nRuntime.bundle) }
+      /// Revoke
+      public static var revoke: String { String(localized: "settings.apiTokens.revoke", bundle: L10nRuntime.bundle) }
+      /// Revoke token {name}
+      public static func revokeAria(name: String) -> String {
+        String(format: String(localized: "settings.apiTokens.revokeAria", bundle: L10nRuntime.bundle), name)
+      }
+      /// Could not revoke the token.
+      public static var revokeError: String { String(localized: "settings.apiTokens.revokeError", bundle: L10nRuntime.bundle) }
+      /// Revoked
+      public static var revoked: String { String(localized: "settings.apiTokens.revoked", bundle: L10nRuntime.bundle) }
+      /// API tokens
+      public static var title: String { String(localized: "settings.apiTokens.title", bundle: L10nRuntime.bundle) }
+    }
     /// Appearance
-    public static var appearance: String { String(localized: "settings.appearance", bundle: .module) }
+    public static var appearance: String { String(localized: "settings.appearance", bundle: L10nRuntime.bundle) }
     /// Chord diagrams
-    public static var chordHand: String { String(localized: "settings.chordHand", bundle: .module) }
+    public static var chordHand: String { String(localized: "settings.chordHand", bundle: L10nRuntime.bundle) }
     /// Choose how chord diagrams are oriented for your playing style.
-    public static var chordHandDescription: String { String(localized: "settings.chordHandDescription", bundle: .module) }
+    public static var chordHandDescription: String { String(localized: "settings.chordHandDescription", bundle: L10nRuntime.bundle) }
     /// Connected via {provider}
     public static func connectedVia(provider: String) -> String {
-      String(format: String(localized: "settings.connectedVia", bundle: .module), provider)
+      String(format: String(localized: "settings.connectedVia", bundle: L10nRuntime.bundle), provider)
     }
     /// Danger Zone
-    public static var dangerZone: String { String(localized: "settings.dangerZone", bundle: .module) }
+    public static var dangerZone: String { String(localized: "settings.dangerZone", bundle: L10nRuntime.bundle) }
     /// Permanently delete your account and all associated data. This cannot be undone.
-    public static var dangerZoneDescription: String { String(localized: "settings.dangerZoneDescription", bundle: .module) }
+    public static var dangerZoneDescription: String { String(localized: "settings.dangerZoneDescription", bundle: L10nRuntime.bundle) }
     /// Delete account
-    public static var deleteAccount: String { String(localized: "settings.deleteAccount", bundle: .module) }
+    public static var deleteAccount: String { String(localized: "settings.deleteAccount", bundle: L10nRuntime.bundle) }
     /// Are you sure? This is irreversible.
-    public static var deleteAccountConfirm: String { String(localized: "settings.deleteAccountConfirm", bundle: .module) }
+    public static var deleteAccountConfirm: String { String(localized: "settings.deleteAccountConfirm", bundle: L10nRuntime.bundle) }
     /// Yes, delete my account
-    public static var deleteAccountConfirmButton: String { String(localized: "settings.deleteAccountConfirmButton", bundle: .module) }
+    public static var deleteAccountConfirmButton: String { String(localized: "settings.deleteAccountConfirmButton", bundle: L10nRuntime.bundle) }
     /// Deleting…
-    public static var deleteAccountPending: String { String(localized: "settings.deleteAccountPending", bundle: .module) }
+    public static var deleteAccountPending: String { String(localized: "settings.deleteAccountPending", bundle: L10nRuntime.bundle) }
     /// Font
-    public static var font: String { String(localized: "settings.font", bundle: .module) }
+    public static var font: String { String(localized: "settings.font", bundle: L10nRuntime.bundle) }
     /// Choose the UI typeface
-    public static var fontDescription: String { String(localized: "settings.fontDescription", bundle: .module) }
+    public static var fontDescription: String { String(localized: "settings.fontDescription", bundle: L10nRuntime.bundle) }
     /// Language
-    public static var language: String { String(localized: "settings.language", bundle: .module) }
+    public static var language: String { String(localized: "settings.language", bundle: L10nRuntime.bundle) }
     /// Select your preferred language
-    public static var languageDescription: String { String(localized: "settings.languageDescription", bundle: .module) }
+    public static var languageDescription: String { String(localized: "settings.languageDescription", bundle: L10nRuntime.bundle) }
     /// Left hand
-    public static var leftHand: String { String(localized: "settings.leftHand", bundle: .module) }
+    public static var leftHand: String { String(localized: "settings.leftHand", bundle: L10nRuntime.bundle) }
     /// Color Palette
-    public static var palette: String { String(localized: "settings.palette", bundle: .module) }
+    public static var palette: String { String(localized: "settings.palette", bundle: L10nRuntime.bundle) }
     /// Choose your preferred color palette
-    public static var paletteDescription: String { String(localized: "settings.paletteDescription", bundle: .module) }
+    public static var paletteDescription: String { String(localized: "settings.paletteDescription", bundle: L10nRuntime.bundle) }
     /// Profile
-    public static var profile: String { String(localized: "settings.profile", bundle: .module) }
+    public static var profile: String { String(localized: "settings.profile", bundle: L10nRuntime.bundle) }
     /// Your account information
-    public static var profileDescription: String { String(localized: "settings.profileDescription", bundle: .module) }
+    public static var profileDescription: String { String(localized: "settings.profileDescription", bundle: L10nRuntime.bundle) }
     /// Right hand
-    public static var rightHand: String { String(localized: "settings.rightHand", bundle: .module) }
+    public static var rightHand: String { String(localized: "settings.rightHand", bundle: L10nRuntime.bundle) }
     /// Surprise me
-    public static var surpriseMe: String { String(localized: "settings.surpriseMe", bundle: .module) }
+    public static var surpriseMe: String { String(localized: "settings.surpriseMe", bundle: L10nRuntime.bundle) }
     /// Theme
-    public static var theme: String { String(localized: "settings.theme", bundle: .module) }
+    public static var theme: String { String(localized: "settings.theme", bundle: L10nRuntime.bundle) }
     /// Dark
-    public static var themeDark: String { String(localized: "settings.themeDark", bundle: .module) }
+    public static var themeDark: String { String(localized: "settings.themeDark", bundle: L10nRuntime.bundle) }
     /// Choose your preferred theme
-    public static var themeDescription: String { String(localized: "settings.themeDescription", bundle: .module) }
+    public static var themeDescription: String { String(localized: "settings.themeDescription", bundle: L10nRuntime.bundle) }
     /// Light
-    public static var themeLight: String { String(localized: "settings.themeLight", bundle: .module) }
+    public static var themeLight: String { String(localized: "settings.themeLight", bundle: L10nRuntime.bundle) }
     /// System
-    public static var themeSystem: String { String(localized: "settings.themeSystem", bundle: .module) }
+    public static var themeSystem: String { String(localized: "settings.themeSystem", bundle: L10nRuntime.bundle) }
     /// Settings
-    public static var title: String { String(localized: "settings.title", bundle: .module) }
+    public static var title: String { String(localized: "settings.title", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum SongSections {
     /// Bridge
-    public static var bridge: String { String(localized: "songSections.bridge", bundle: .module) }
+    public static var bridge: String { String(localized: "songSections.bridge", bundle: L10nRuntime.bundle) }
     /// Chorus
-    public static var chorus: String { String(localized: "songSections.chorus", bundle: .module) }
+    public static var chorus: String { String(localized: "songSections.chorus", bundle: L10nRuntime.bundle) }
     /// Comment
-    public static var comment: String { String(localized: "songSections.comment", bundle: .module) }
+    public static var comment: String { String(localized: "songSections.comment", bundle: L10nRuntime.bundle) }
     /// Grid
-    public static var grid: String { String(localized: "songSections.grid", bundle: .module) }
+    public static var grid: String { String(localized: "songSections.grid", bundle: L10nRuntime.bundle) }
     /// Intro
-    public static var intro: String { String(localized: "songSections.intro", bundle: .module) }
+    public static var intro: String { String(localized: "songSections.intro", bundle: L10nRuntime.bundle) }
     /// Outro
-    public static var outro: String { String(localized: "songSections.outro", bundle: .module) }
+    public static var outro: String { String(localized: "songSections.outro", bundle: L10nRuntime.bundle) }
     /// Pre-Chorus
-    public static var pre_chorus: String { String(localized: "songSections.pre_chorus", bundle: .module) }
+    public static var pre_chorus: String { String(localized: "songSections.pre_chorus", bundle: L10nRuntime.bundle) }
     /// Tab
-    public static var tab: String { String(localized: "songSections.tab", bundle: .module) }
+    public static var tab: String { String(localized: "songSections.tab", bundle: L10nRuntime.bundle) }
     /// Verse
-    public static var verse: String { String(localized: "songSections.verse", bundle: .module) }
+    public static var verse: String { String(localized: "songSections.verse", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum Songs {
     public nonisolated enum CifraImport {
       public nonisolated enum Errors {
         /// Enter a valid URL
-        public static var invalidUrl: String { String(localized: "songs.cifraImport.errors.invalidUrl", bundle: .module) }
+        public static var invalidUrl: String { String(localized: "songs.cifraImport.errors.invalidUrl", bundle: L10nRuntime.bundle) }
         /// Couldn't reach CifraClub. Please try again.
-        public static var network: String { String(localized: "songs.cifraImport.errors.network", bundle: .module) }
+        public static var network: String { String(localized: "songs.cifraImport.errors.network", bundle: L10nRuntime.bundle) }
         /// Couldn't read this CifraClub page — try pasting the lyrics manually.
-        public static var parseFailed: String { String(localized: "songs.cifraImport.errors.parseFailed", bundle: .module) }
+        public static var parseFailed: String { String(localized: "songs.cifraImport.errors.parseFailed", bundle: L10nRuntime.bundle) }
         /// Too many imports — please wait a minute and try again.
-        public static var rateLimited: String { String(localized: "songs.cifraImport.errors.rateLimited", bundle: .module) }
+        public static var rateLimited: String { String(localized: "songs.cifraImport.errors.rateLimited", bundle: L10nRuntime.bundle) }
         /// Something went wrong. Please try again.
-        public static var unknown: String { String(localized: "songs.cifraImport.errors.unknown", bundle: .module) }
+        public static var unknown: String { String(localized: "songs.cifraImport.errors.unknown", bundle: L10nRuntime.bundle) }
         /// Only cifraclub.com URLs are supported
-        public static var unsupportedHost: String { String(localized: "songs.cifraImport.errors.unsupportedHost", bundle: .module) }
+        public static var unsupportedHost: String { String(localized: "songs.cifraImport.errors.unsupportedHost", bundle: L10nRuntime.bundle) }
       }
       /// Import
-      public static var button: String { String(localized: "songs.cifraImport.button", bundle: .module) }
+      public static var button: String { String(localized: "songs.cifraImport.button", bundle: L10nRuntime.bundle) }
       /// This will replace your current lyrics with the imported ones. This cannot be undone.
-      public static var confirmReplaceDescription: String { String(localized: "songs.cifraImport.confirmReplaceDescription", bundle: .module) }
+      public static var confirmReplaceDescription: String { String(localized: "songs.cifraImport.confirmReplaceDescription", bundle: L10nRuntime.bundle) }
       /// Replace lyrics
-      public static var confirmReplaceTitle: String { String(localized: "songs.cifraImport.confirmReplaceTitle", bundle: .module) }
+      public static var confirmReplaceTitle: String { String(localized: "songs.cifraImport.confirmReplaceTitle", bundle: L10nRuntime.bundle) }
       /// Import song from CifraClub
-      public static var dialogTitleCreate: String { String(localized: "songs.cifraImport.dialogTitleCreate", bundle: .module) }
+      public static var dialogTitleCreate: String { String(localized: "songs.cifraImport.dialogTitleCreate", bundle: L10nRuntime.bundle) }
       /// Import lyrics from CifraClub
-      public static var dialogTitleReplace: String { String(localized: "songs.cifraImport.dialogTitleReplace", bundle: .module) }
+      public static var dialogTitleReplace: String { String(localized: "songs.cifraImport.dialogTitleReplace", bundle: L10nRuntime.bundle) }
       /// Import
-      public static var importButton: String { String(localized: "songs.cifraImport.importButton", bundle: .module) }
+      public static var importButton: String { String(localized: "songs.cifraImport.importButton", bundle: L10nRuntime.bundle) }
       /// Importing…
-      public static var importing: String { String(localized: "songs.cifraImport.importing", bundle: .module) }
+      public static var importing: String { String(localized: "songs.cifraImport.importing", bundle: L10nRuntime.bundle) }
       /// CifraClub URL
-      public static var urlLabel: String { String(localized: "songs.cifraImport.urlLabel", bundle: .module) }
+      public static var urlLabel: String { String(localized: "songs.cifraImport.urlLabel", bundle: L10nRuntime.bundle) }
       /// https://www.cifraclub.com/artist/song/
-      public static var urlPlaceholder: String { String(localized: "songs.cifraImport.urlPlaceholder", bundle: .module) }
+      public static var urlPlaceholder: String { String(localized: "songs.cifraImport.urlPlaceholder", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Lyrics {
       public nonisolated enum AutoScroll {
         /// Decrease speed
-        public static var decreaseSpeed: String { String(localized: "songs.lyrics.autoScroll.decreaseSpeed", bundle: .module) }
+        public static var decreaseSpeed: String { String(localized: "songs.lyrics.autoScroll.decreaseSpeed", bundle: L10nRuntime.bundle) }
         /// Increase speed
-        public static var increaseSpeed: String { String(localized: "songs.lyrics.autoScroll.increaseSpeed", bundle: .module) }
+        public static var increaseSpeed: String { String(localized: "songs.lyrics.autoScroll.increaseSpeed", bundle: L10nRuntime.bundle) }
         /// Speed
-        public static var speed: String { String(localized: "songs.lyrics.autoScroll.speed", bundle: .module) }
+        public static var speed: String { String(localized: "songs.lyrics.autoScroll.speed", bundle: L10nRuntime.bundle) }
         /// Start auto-scroll
-        public static var start: String { String(localized: "songs.lyrics.autoScroll.start", bundle: .module) }
+        public static var start: String { String(localized: "songs.lyrics.autoScroll.start", bundle: L10nRuntime.bundle) }
         /// Stop auto-scroll
-        public static var stop: String { String(localized: "songs.lyrics.autoScroll.stop", bundle: .module) }
+        public static var stop: String { String(localized: "songs.lyrics.autoScroll.stop", bundle: L10nRuntime.bundle) }
       }
       public nonisolated enum Reference {
         /// Chords & Formatting
-        public static var chord: String { String(localized: "songs.lyrics.reference.chord", bundle: .module) }
+        public static var chord: String { String(localized: "songs.lyrics.reference.chord", bundle: L10nRuntime.bundle) }
         /// Comments
-        public static var comment: String { String(localized: "songs.lyrics.reference.comment", bundle: .module) }
+        public static var comment: String { String(localized: "songs.lyrics.reference.comment", bundle: L10nRuntime.bundle) }
         /// Example
-        public static var example: String { String(localized: "songs.lyrics.reference.example", bundle: .module) }
+        public static var example: String { String(localized: "songs.lyrics.reference.example", bundle: L10nRuntime.bundle) }
         /// Custom Directives
-        public static var formatting: String { String(localized: "songs.lyrics.reference.formatting", bundle: .module) }
+        public static var formatting: String { String(localized: "songs.lyrics.reference.formatting", bundle: L10nRuntime.bundle) }
         /// Metadata
-        public static var metadata: String { String(localized: "songs.lyrics.reference.metadata", bundle: .module) }
+        public static var metadata: String { String(localized: "songs.lyrics.reference.metadata", bundle: L10nRuntime.bundle) }
         /// Performance Flags
-        public static var performanceFlags: String { String(localized: "songs.lyrics.reference.performanceFlags", bundle: .module) }
+        public static var performanceFlags: String { String(localized: "songs.lyrics.reference.performanceFlags", bundle: L10nRuntime.bundle) }
         /// Add flags after the name (or count) on any section directive.
-        public static var performanceFlagsDescription: String { String(localized: "songs.lyrics.reference.performanceFlagsDescription", bundle: .module) }
+        public static var performanceFlagsDescription: String { String(localized: "songs.lyrics.reference.performanceFlagsDescription", bundle: L10nRuntime.bundle) }
         /// Sections
-        public static var section: String { String(localized: "songs.lyrics.reference.section", bundle: .module) }
+        public static var section: String { String(localized: "songs.lyrics.reference.section", bundle: L10nRuntime.bundle) }
         /// or
-        public static var shorthand: String { String(localized: "songs.lyrics.reference.shorthand", bundle: .module) }
+        public static var shorthand: String { String(localized: "songs.lyrics.reference.shorthand", bundle: L10nRuntime.bundle) }
       }
       /// ChordPro Reference
-      public static var chordproReference: String { String(localized: "songs.lyrics.chordproReference", bundle: .module) }
+      public static var chordproReference: String { String(localized: "songs.lyrics.chordproReference", bundle: L10nRuntime.bundle) }
       /// Layout
-      public static var columnLayout: String { String(localized: "songs.lyrics.columnLayout", bundle: .module) }
+      public static var columnLayout: String { String(localized: "songs.lyrics.columnLayout", bundle: L10nRuntime.bundle) }
       /// Display Settings
-      public static var displaySettings: String { String(localized: "songs.lyrics.displaySettings", bundle: .module) }
+      public static var displaySettings: String { String(localized: "songs.lyrics.displaySettings", bundle: L10nRuntime.bundle) }
       /// Adjust font size, transpose, and capo
-      public static var displaySettingsDescription: String { String(localized: "songs.lyrics.displaySettingsDescription", bundle: .module) }
+      public static var displaySettingsDescription: String { String(localized: "songs.lyrics.displaySettingsDescription", bundle: L10nRuntime.bundle) }
       /// Docs
-      public static var docs: String { String(localized: "songs.lyrics.docs", bundle: .module) }
+      public static var docs: String { String(localized: "songs.lyrics.docs", bundle: L10nRuntime.bundle) }
       /// Font Size
-      public static var fontSize: String { String(localized: "songs.lyrics.fontSize", bundle: .module) }
+      public static var fontSize: String { String(localized: "songs.lyrics.fontSize", bundle: L10nRuntime.bundle) }
       /// Import from CifraClub
-      public static var importFromCifraClub: String { String(localized: "songs.lyrics.importFromCifraClub", bundle: .module) }
+      public static var importFromCifraClub: String { String(localized: "songs.lyrics.importFromCifraClub", bundle: L10nRuntime.bundle) }
       /// Minimalist view
-      public static var minimalistView: String { String(localized: "songs.lyrics.minimalistView", bundle: .module) }
+      public static var minimalistView: String { String(localized: "songs.lyrics.minimalistView", bundle: L10nRuntime.bundle) }
       /// 1 column
-      public static var oneColumn: String { String(localized: "songs.lyrics.oneColumn", bundle: .module) }
+      public static var oneColumn: String { String(localized: "songs.lyrics.oneColumn", bundle: L10nRuntime.bundle) }
       /// Parse chords
-      public static var parseChords: String { String(localized: "songs.lyrics.parseChords", bundle: .module) }
+      public static var parseChords: String { String(localized: "songs.lyrics.parseChords", bundle: L10nRuntime.bundle) }
       /// Lyrics are already in ChordPro format
-      public static var parseChordsAlreadyChordPro: String { String(localized: "songs.lyrics.parseChordsAlreadyChordPro", bundle: .module) }
+      public static var parseChordsAlreadyChordPro: String { String(localized: "songs.lyrics.parseChordsAlreadyChordPro", bundle: L10nRuntime.bundle) }
+      /// semitone
+      public static var semitone: String { String(localized: "songs.lyrics.semitone", bundle: L10nRuntime.bundle) }
       /// Settings
-      public static var settings: String { String(localized: "songs.lyrics.settings", bundle: .module) }
+      public static var settings: String { String(localized: "songs.lyrics.settings", bundle: L10nRuntime.bundle) }
+      /// Shift chords
+      public static var shiftChords: String { String(localized: "songs.lyrics.shiftChords", bundle: L10nRuntime.bundle) }
+      /// Rewrites the chords in the lyrics (selection, or all if nothing is selected). Key, capo and transpose settings are not changed.
+      public static var shiftChordsHint: String { String(localized: "songs.lyrics.shiftChordsHint", bundle: L10nRuntime.bundle) }
       /// Chords
-      public static var showChordsLabel: String { String(localized: "songs.lyrics.showChordsLabel", bundle: .module) }
+      public static var showChordsLabel: String { String(localized: "songs.lyrics.showChordsLabel", bundle: L10nRuntime.bundle) }
       /// Lyrics
-      public static var showLyricsLabel: String { String(localized: "songs.lyrics.showLyricsLabel", bundle: .module) }
+      public static var showLyricsLabel: String { String(localized: "songs.lyrics.showLyricsLabel", bundle: L10nRuntime.bundle) }
       /// Standard view
-      public static var standardView: String { String(localized: "songs.lyrics.standardView", bundle: .module) }
+      public static var standardView: String { String(localized: "songs.lyrics.standardView", bundle: L10nRuntime.bundle) }
       /// 2 columns
-      public static var twoColumns: String { String(localized: "songs.lyrics.twoColumns", bundle: .module) }
+      public static var twoColumns: String { String(localized: "songs.lyrics.twoColumns", bundle: L10nRuntime.bundle) }
       /// Visibility
-      public static var visibility: String { String(localized: "songs.lyrics.visibility", bundle: .module) }
+      public static var visibility: String { String(localized: "songs.lyrics.visibility", bundle: L10nRuntime.bundle) }
       /// Wrap as
-      public static var wrapAs: String { String(localized: "songs.lyrics.wrapAs", bundle: .module) }
+      public static var wrapAs: String { String(localized: "songs.lyrics.wrapAs", bundle: L10nRuntime.bundle) }
     }
     public nonisolated enum Tags {
       /// Add tag
-      public static var addTag: String { String(localized: "songs.tags.addTag", bundle: .module) }
+      public static var addTag: String { String(localized: "songs.tags.addTag", bundle: L10nRuntime.bundle) }
       /// Create
-      public static var create: String { String(localized: "songs.tags.create", bundle: .module) }
+      public static var create: String { String(localized: "songs.tags.create", bundle: L10nRuntime.bundle) }
       /// Create tag
-      public static var createTag: String { String(localized: "songs.tags.createTag", bundle: .module) }
+      public static var createTag: String { String(localized: "songs.tags.createTag", bundle: L10nRuntime.bundle) }
       /// Delete tag
-      public static var deleteTag: String { String(localized: "songs.tags.deleteTag", bundle: .module) }
+      public static var deleteTag: String { String(localized: "songs.tags.deleteTag", bundle: L10nRuntime.bundle) }
       /// No tags yet
-      public static var noTags: String { String(localized: "songs.tags.noTags", bundle: .module) }
+      public static var noTags: String { String(localized: "songs.tags.noTags", bundle: L10nRuntime.bundle) }
       /// Search or create tag…
-      public static var searchOrCreate: String { String(localized: "songs.tags.searchOrCreate", bundle: .module) }
+      public static var searchOrCreate: String { String(localized: "songs.tags.searchOrCreate", bundle: L10nRuntime.bundle) }
       /// Tags
-      public static var title: String { String(localized: "songs.tags.title", bundle: .module) }
+      public static var title: String { String(localized: "songs.tags.title", bundle: L10nRuntime.bundle) }
     }
     /// Add Lyrics
-    public static var addLyrics: String { String(localized: "songs.addLyrics", bundle: .module) }
+    public static var addLyrics: String { String(localized: "songs.addLyrics", bundle: L10nRuntime.bundle) }
     /// Add lyrics to your song using ChordPro format
-    public static var addLyricsDescription: String { String(localized: "songs.addLyricsDescription", bundle: .module) }
+    public static var addLyricsDescription: String { String(localized: "songs.addLyricsDescription", bundle: L10nRuntime.bundle) }
     /// Add Song
-    public static var addSong: String { String(localized: "songs.addSong", bundle: .module) }
+    public static var addSong: String { String(localized: "songs.addSong", bundle: L10nRuntime.bundle) }
     /// Add to Playlist
-    public static var addToPlaylist: String { String(localized: "songs.addToPlaylist", bundle: .module) }
+    public static var addToPlaylist: String { String(localized: "songs.addToPlaylist", bundle: L10nRuntime.bundle) }
     /// Added to selection
-    public static var addedToSelection: String { String(localized: "songs.addedToSelection", bundle: .module) }
+    public static var addedToSelection: String { String(localized: "songs.addedToSelection", bundle: L10nRuntime.bundle) }
     /// All
-    public static var all: String { String(localized: "songs.all", bundle: .module) }
+    public static var all: String { String(localized: "songs.all", bundle: L10nRuntime.bundle) }
     /// All Songs
-    public static var allSongs: String { String(localized: "songs.allSongs", bundle: .module) }
+    public static var allSongs: String { String(localized: "songs.allSongs", bundle: L10nRuntime.bundle) }
     /// Artist
-    public static var artist: String { String(localized: "songs.artist", bundle: .module) }
+    public static var artist: String { String(localized: "songs.artist", bundle: L10nRuntime.bundle) }
     /// Artist name
-    public static var artistPlaceholder: String { String(localized: "songs.artistPlaceholder", bundle: .module) }
+    public static var artistPlaceholder: String { String(localized: "songs.artistPlaceholder", bundle: L10nRuntime.bundle) }
     /// BPM
-    public static var bpm: String { String(localized: "songs.bpm", bundle: .module) }
+    public static var bpm: String { String(localized: "songs.bpm", bundle: L10nRuntime.bundle) }
     /// Slow: <90 • Medium: 90-120 • Fast: >120
-    public static var bpmDescription: String { String(localized: "songs.bpmDescription", bundle: .module) }
+    public static var bpmDescription: String { String(localized: "songs.bpmDescription", bundle: L10nRuntime.bundle) }
     /// BPM Range
-    public static var bpmRange: String { String(localized: "songs.bpmRange", bundle: .module) }
+    public static var bpmRange: String { String(localized: "songs.bpmRange", bundle: L10nRuntime.bundle) }
     /// Save to
-    public static var bucket: String { String(localized: "songs.bucket", bundle: .module) }
+    public static var bucket: String { String(localized: "songs.bucket", bundle: L10nRuntime.bundle) }
     /// By Artist
-    public static var byArtist: String { String(localized: "songs.byArtist", bundle: .module) }
+    public static var byArtist: String { String(localized: "songs.byArtist", bundle: L10nRuntime.bundle) }
     /// By Key
-    public static var byKey: String { String(localized: "songs.byKey", bundle: .module) }
+    public static var byKey: String { String(localized: "songs.byKey", bundle: L10nRuntime.bundle) }
     /// Capo
-    public static var capo: String { String(localized: "songs.capo", bundle: .module) }
+    public static var capo: String { String(localized: "songs.capo", bundle: L10nRuntime.bundle) }
     /// Click on the key badge to select songs for a playlist
-    public static var clickKeyBadgeInstruction: String { String(localized: "songs.clickKeyBadgeInstruction", bundle: .module) }
+    public static var clickKeyBadgeInstruction: String { String(localized: "songs.clickKeyBadgeInstruction", bundle: L10nRuntime.bundle) }
     /// Completed
-    public static var completed: String { String(localized: "songs.completed", bundle: .module) }
+    public static var completed: String { String(localized: "songs.completed", bundle: L10nRuntime.bundle) }
     /// Create Song
-    public static var createSong: String { String(localized: "songs.createSong", bundle: .module) }
+    public static var createSong: String { String(localized: "songs.createSong", bundle: L10nRuntime.bundle) }
     /// Danger Zone
-    public static var dangerZone: String { String(localized: "songs.dangerZone", bundle: .module) }
+    public static var dangerZone: String { String(localized: "songs.dangerZone", bundle: L10nRuntime.bundle) }
     /// Delete Song
-    public static var deleteSong: String { String(localized: "songs.deleteSong", bundle: .module) }
+    public static var deleteSong: String { String(localized: "songs.deleteSong", bundle: L10nRuntime.bundle) }
     /// This will permanently delete "{title}". This action cannot be undone.
     public static func deleteSongConfirmDescription(title: String) -> String {
-      String(format: String(localized: "songs.deleteSongConfirmDescription", bundle: .module), title)
+      String(format: String(localized: "songs.deleteSongConfirmDescription", bundle: L10nRuntime.bundle), title)
     }
     /// Delete this song?
-    public static var deleteSongConfirmTitle: String { String(localized: "songs.deleteSongConfirmTitle", bundle: .module) }
+    public static var deleteSongConfirmTitle: String { String(localized: "songs.deleteSongConfirmTitle", bundle: L10nRuntime.bundle) }
     /// Permanently delete this song. This action cannot be undone.
-    public static var deleteSongDescription: String { String(localized: "songs.deleteSongDescription", bundle: .module) }
+    public static var deleteSongDescription: String { String(localized: "songs.deleteSongDescription", bundle: L10nRuntime.bundle) }
     /// Draft
-    public static var draft: String { String(localized: "songs.draft", bundle: .module) }
+    public static var draft: String { String(localized: "songs.draft", bundle: L10nRuntime.bundle) }
     /// Drafts
-    public static var drafts: String { String(localized: "songs.drafts", bundle: .module) }
+    public static var drafts: String { String(localized: "songs.drafts", bundle: L10nRuntime.bundle) }
     /// Edit Details
-    public static var editDetails: String { String(localized: "songs.editDetails", bundle: .module) }
+    public static var editDetails: String { String(localized: "songs.editDetails", bundle: L10nRuntime.bundle) }
     /// Edit Lyrics
-    public static var editLyrics: String { String(localized: "songs.editLyrics", bundle: .module) }
+    public static var editLyrics: String { String(localized: "songs.editLyrics", bundle: L10nRuntime.bundle) }
     /// Enter the basic song information. You can add lyrics in the next step.
-    public static var enterSongDetails: String { String(localized: "songs.enterSongDetails", bundle: .module) }
+    public static var enterSongDetails: String { String(localized: "songs.enterSongDetails", bundle: L10nRuntime.bundle) }
     /// Fast
-    public static var fast: String { String(localized: "songs.fast", bundle: .module) }
+    public static var fast: String { String(localized: "songs.fast", bundle: L10nRuntime.bundle) }
     /// Filters
-    public static var filters: String { String(localized: "songs.filters", bundle: .module) }
+    public static var filters: String { String(localized: "songs.filters", bundle: L10nRuntime.bundle) }
     /// Filter and organize your songs
-    public static var filtersDescription: String { String(localized: "songs.filtersDescription", bundle: .module) }
+    public static var filtersDescription: String { String(localized: "songs.filtersDescription", bundle: L10nRuntime.bundle) }
     /// Fret
-    public static var fret: String { String(localized: "songs.fret", bundle: .module) }
+    public static var fret: String { String(localized: "songs.fret", bundle: L10nRuntime.bundle) }
     /// Group by
-    public static var groupBy: String { String(localized: "songs.groupBy", bundle: .module) }
+    public static var groupBy: String { String(localized: "songs.groupBy", bundle: L10nRuntime.bundle) }
     /// Key
-    public static var key: String { String(localized: "songs.key", bundle: .module) }
+    public static var key: String { String(localized: "songs.key", bundle: L10nRuntime.bundle) }
     /// Lyrics are available for this song.
-    public static var lyricsAvailable: String { String(localized: "songs.lyricsAvailable", bundle: .module) }
+    public static var lyricsAvailable: String { String(localized: "songs.lyricsAvailable", bundle: L10nRuntime.bundle) }
     /// Enter lyrics in ChordPro format. Chords are displayed inline with the lyrics.
-    public static var lyricsFormatInfo: String { String(localized: "songs.lyricsFormatInfo", bundle: .module) }
+    public static var lyricsFormatInfo: String { String(localized: "songs.lyricsFormatInfo", bundle: L10nRuntime.bundle) }
     /// Lyrics
-    public static var lyricsTitle: String { String(localized: "songs.lyricsTitle", bundle: .module) }
+    public static var lyricsTitle: String { String(localized: "songs.lyricsTitle", bundle: L10nRuntime.bundle) }
     /// Med
-    public static var medium: String { String(localized: "songs.medium", bundle: .module) }
+    public static var medium: String { String(localized: "songs.medium", bundle: L10nRuntime.bundle) }
     /// Next
-    public static var next: String { String(localized: "songs.next", bundle: .module) }
+    public static var next: String { String(localized: "songs.next", bundle: L10nRuntime.bundle) }
     /// No Capo
-    public static var noCapo: String { String(localized: "songs.noCapo", bundle: .module) }
+    public static var noCapo: String { String(localized: "songs.noCapo", bundle: L10nRuntime.bundle) }
     /// This song does not have lyrics yet.
-    public static var noLyrics: String { String(localized: "songs.noLyrics", bundle: .module) }
+    public static var noLyrics: String { String(localized: "songs.noLyrics", bundle: L10nRuntime.bundle) }
     /// No songs found
-    public static var noSongs: String { String(localized: "songs.noSongs", bundle: .module) }
+    public static var noSongs: String { String(localized: "songs.noSongs", bundle: L10nRuntime.bundle) }
     /// None
-    public static var none: String { String(localized: "songs.none", bundle: .module) }
+    public static var none: String { String(localized: "songs.none", bundle: L10nRuntime.bundle) }
     /// Open song
-    public static var openSong: String { String(localized: "songs.openSong", bundle: .module) }
+    public static var openSong: String { String(localized: "songs.openSong", bundle: L10nRuntime.bundle) }
     /// Original key
-    public static var originalKey: String { String(localized: "songs.originalKey", bundle: .module) }
+    public static var originalKey: String { String(localized: "songs.originalKey", bundle: L10nRuntime.bundle) }
     /// Play in
-    public static var playIn: String { String(localized: "songs.playIn", bundle: .module) }
+    public static var playIn: String { String(localized: "songs.playIn", bundle: L10nRuntime.bundle) }
     /// Preview
-    public static var preview: String { String(localized: "songs.preview", bundle: .module) }
+    public static var preview: String { String(localized: "songs.preview", bundle: L10nRuntime.bundle) }
     /// Reset
-    public static var reset: String { String(localized: "songs.reset", bundle: .module) }
+    public static var reset: String { String(localized: "songs.reset", bundle: L10nRuntime.bundle) }
     /// Save as Draft
-    public static var saveAsDraft: String { String(localized: "songs.saveAsDraft", bundle: .module) }
+    public static var saveAsDraft: String { String(localized: "songs.saveAsDraft", bundle: L10nRuntime.bundle) }
     /// Search songs, artists, lyrics…
-    public static var searchPlaceholder: String { String(localized: "songs.searchPlaceholder", bundle: .module) }
+    public static var searchPlaceholder: String { String(localized: "songs.searchPlaceholder", bundle: L10nRuntime.bundle) }
     /// Select key
-    public static var selectKey: String { String(localized: "songs.selectKey", bundle: .module) }
+    public static var selectKey: String { String(localized: "songs.selectKey", bundle: L10nRuntime.bundle) }
     /// Select a song
-    public static var selectSong: String { String(localized: "songs.selectSong", bundle: .module) }
+    public static var selectSong: String { String(localized: "songs.selectSong", bundle: L10nRuntime.bundle) }
     /// Choose a song from the list to view details, edit, or add to a playlist
-    public static var selectSongDescription: String { String(localized: "songs.selectSongDescription", bundle: .module) }
+    public static var selectSongDescription: String { String(localized: "songs.selectSongDescription", bundle: L10nRuntime.bundle) }
     /// semitones
-    public static var semitones: String { String(localized: "songs.semitones", bundle: .module) }
+    public static var semitones: String { String(localized: "songs.semitones", bundle: L10nRuntime.bundle) }
     /// Share
-    public static var shareLyrics: String { String(localized: "songs.shareLyrics", bundle: .module) }
+    public static var shareLyrics: String { String(localized: "songs.shareLyrics", bundle: L10nRuntime.bundle) }
     /// Slow
-    public static var slow: String { String(localized: "songs.slow", bundle: .module) }
+    public static var slow: String { String(localized: "songs.slow", bundle: L10nRuntime.bundle) }
     /// Song Details
-    public static var songDetails: String { String(localized: "songs.songDetails", bundle: .module) }
+    public static var songDetails: String { String(localized: "songs.songDetails", bundle: L10nRuntime.bundle) }
     /// Settings like capo and transpose will be available after the song is created.
-    public static var songSettingsInfo: String { String(localized: "songs.songSettingsInfo", bundle: .module) }
+    public static var songSettingsInfo: String { String(localized: "songs.songSettingsInfo", bundle: L10nRuntime.bundle) }
     /// Song Title
-    public static var songTitle: String { String(localized: "songs.songTitle", bundle: .module) }
+    public static var songTitle: String { String(localized: "songs.songTitle", bundle: L10nRuntime.bundle) }
     /// Song title
-    public static var songTitlePlaceholder: String { String(localized: "songs.songTitlePlaceholder", bundle: .module) }
+    public static var songTitlePlaceholder: String { String(localized: "songs.songTitlePlaceholder", bundle: L10nRuntime.bundle) }
     /// Status
-    public static var status: String { String(localized: "songs.status", bundle: .module) }
+    public static var status: String { String(localized: "songs.status", bundle: L10nRuntime.bundle) }
     /// Tempo
-    public static var tempo: String { String(localized: "songs.tempo", bundle: .module) }
+    public static var tempo: String { String(localized: "songs.tempo", bundle: L10nRuntime.bundle) }
     /// Songs
-    public static var title: String { String(localized: "songs.title", bundle: .module) }
+    public static var title: String { String(localized: "songs.title", bundle: L10nRuntime.bundle) }
     /// Transfer to team
-    public static var transferToTeam: String { String(localized: "songs.transferToTeam", bundle: .module) }
+    public static var transferToTeam: String { String(localized: "songs.transferToTeam", bundle: L10nRuntime.bundle) }
     /// Transfer
-    public static var transferToTeamConfirm: String { String(localized: "songs.transferToTeamConfirm", bundle: .module) }
+    public static var transferToTeamConfirm: String { String(localized: "songs.transferToTeamConfirm", bundle: L10nRuntime.bundle) }
     /// Select a team to transfer "{title}" to. The song will be moved from your personal library to the selected team.
     public static func transferToTeamDescription(title: String) -> String {
-      String(format: String(localized: "songs.transferToTeamDescription", bundle: .module), title)
+      String(format: String(localized: "songs.transferToTeamDescription", bundle: L10nRuntime.bundle), title)
     }
     /// Select a team
-    public static var transferToTeamSelectPlaceholder: String { String(localized: "songs.transferToTeamSelectPlaceholder", bundle: .module) }
+    public static var transferToTeamSelectPlaceholder: String { String(localized: "songs.transferToTeamSelectPlaceholder", bundle: L10nRuntime.bundle) }
     /// Transfer song to team
-    public static var transferToTeamTitle: String { String(localized: "songs.transferToTeamTitle", bundle: .module) }
+    public static var transferToTeamTitle: String { String(localized: "songs.transferToTeamTitle", bundle: L10nRuntime.bundle) }
     /// This action is permanent. The song will no longer appear in your personal library.
-    public static var transferToTeamWarning: String { String(localized: "songs.transferToTeamWarning", bundle: .module) }
+    public static var transferToTeamWarning: String { String(localized: "songs.transferToTeamWarning", bundle: L10nRuntime.bundle) }
     /// Transpose
-    public static var transpose: String { String(localized: "songs.transpose", bundle: .module) }
+    public static var transpose: String { String(localized: "songs.transpose", bundle: L10nRuntime.bundle) }
     /// Transposed
-    public static var transposed: String { String(localized: "songs.transposed", bundle: .module) }
+    public static var transposed: String { String(localized: "songs.transposed", bundle: L10nRuntime.bundle) }
     /// View Lyrics
-    public static var viewLyrics: String { String(localized: "songs.viewLyrics", bundle: .module) }
+    public static var viewLyrics: String { String(localized: "songs.viewLyrics", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum Teams {
     /// Active
-    public static var active: String { String(localized: "teams.active", bundle: .module) }
+    public static var active: String { String(localized: "teams.active", bundle: L10nRuntime.bundle) }
     /// Add Member
-    public static var addMember: String { String(localized: "teams.addMember", bundle: .module) }
+    public static var addMember: String { String(localized: "teams.addMember", bundle: L10nRuntime.bundle) }
     /// Cancel Invitation
-    public static var cancelInvitation: String { String(localized: "teams.cancelInvitation", bundle: .module) }
+    public static var cancelInvitation: String { String(localized: "teams.cancelInvitation", bundle: L10nRuntime.bundle) }
     /// Are you sure you want to cancel the invitation for {email}?
     public static func cancelInvitationConfirm(email: String) -> String {
-      String(format: String(localized: "teams.cancelInvitationConfirm", bundle: .module), email)
+      String(format: String(localized: "teams.cancelInvitationConfirm", bundle: L10nRuntime.bundle), email)
     }
     /// They will need a new invite to join the team.
-    public static var cancelInvitationWarning: String { String(localized: "teams.cancelInvitationWarning", bundle: .module) }
+    public static var cancelInvitationWarning: String { String(localized: "teams.cancelInvitationWarning", bundle: L10nRuntime.bundle) }
     /// Change Role
-    public static var changeRole: String { String(localized: "teams.changeRole", bundle: .module) }
+    public static var changeRole: String { String(localized: "teams.changeRole", bundle: L10nRuntime.bundle) }
     /// . Click the icon to change it.
-    public static var clickIconToChange: String { String(localized: "teams.clickIconToChange", bundle: .module) }
+    public static var clickIconToChange: String { String(localized: "teams.clickIconToChange", bundle: L10nRuntime.bundle) }
     /// Copy Link
-    public static var copyInvitationLink: String { String(localized: "teams.copyInvitationLink", bundle: .module) }
+    public static var copyInvitationLink: String { String(localized: "teams.copyInvitationLink", bundle: L10nRuntime.bundle) }
     /// Create New Team
-    public static var createNewTeam: String { String(localized: "teams.createNewTeam", bundle: .module) }
+    public static var createNewTeam: String { String(localized: "teams.createNewTeam", bundle: L10nRuntime.bundle) }
     /// Set up a new team to collaborate with others
-    public static var createNewTeamDescription: String { String(localized: "teams.createNewTeamDescription", bundle: .module) }
+    public static var createNewTeamDescription: String { String(localized: "teams.createNewTeamDescription", bundle: L10nRuntime.bundle) }
     /// Create Team
-    public static var createTeam: String { String(localized: "teams.createTeam", bundle: .module) }
+    public static var createTeam: String { String(localized: "teams.createTeam", bundle: L10nRuntime.bundle) }
     /// Created
-    public static var created: String { String(localized: "teams.created", bundle: .module) }
+    public static var created: String { String(localized: "teams.created", bundle: L10nRuntime.bundle) }
     /// Creating...
-    public static var creating: String { String(localized: "teams.creating", bundle: .module) }
+    public static var creating: String { String(localized: "teams.creating", bundle: L10nRuntime.bundle) }
     /// Delete Team
-    public static var deleteAndLeave: String { String(localized: "teams.deleteAndLeave", bundle: .module) }
+    public static var deleteAndLeave: String { String(localized: "teams.deleteAndLeave", bundle: L10nRuntime.bundle) }
     /// Delete Team
-    public static var deleteTeam: String { String(localized: "teams.deleteTeam", bundle: .module) }
+    public static var deleteTeam: String { String(localized: "teams.deleteTeam", bundle: L10nRuntime.bundle) }
     /// This will permanently delete "{name}" and all associated data. This action cannot be undone.
     public static func deleteTeamConfirmDescription(name: String) -> String {
-      String(format: String(localized: "teams.deleteTeamConfirmDescription", bundle: .module), name)
+      String(format: String(localized: "teams.deleteTeamConfirmDescription", bundle: L10nRuntime.bundle), name)
     }
     /// Delete Team
-    public static var deleteTeamConfirmTitle: String { String(localized: "teams.deleteTeamConfirmTitle", bundle: .module) }
+    public static var deleteTeamConfirmTitle: String { String(localized: "teams.deleteTeamConfirmTitle", bundle: L10nRuntime.bundle) }
     /// Once you delete a team, there is no going back. Please be certain.
-    public static var deleteTeamDescription: String { String(localized: "teams.deleteTeamDescription", bundle: .module) }
+    public static var deleteTeamDescription: String { String(localized: "teams.deleteTeamDescription", bundle: L10nRuntime.bundle) }
     /// Expired Invitations
-    public static var expiredInvitations: String { String(localized: "teams.expiredInvitations", bundle: .module) }
+    public static var expiredInvitations: String { String(localized: "teams.expiredInvitations", bundle: L10nRuntime.bundle) }
     /// Expired
-    public static var invitationExpired: String { String(localized: "teams.invitationExpired", bundle: .module) }
+    public static var invitationExpired: String { String(localized: "teams.invitationExpired", bundle: L10nRuntime.bundle) }
     /// Invitation link copied
-    public static var invitationLinkCopied: String { String(localized: "teams.invitationLinkCopied", bundle: .module) }
+    public static var invitationLinkCopied: String { String(localized: "teams.invitationLinkCopied", bundle: L10nRuntime.bundle) }
     /// Pending
-    public static var invitationPending: String { String(localized: "teams.invitationPending", bundle: .module) }
+    public static var invitationPending: String { String(localized: "teams.invitationPending", bundle: L10nRuntime.bundle) }
     /// Invite Member
-    public static var inviteMember: String { String(localized: "teams.inviteMember", bundle: .module) }
+    public static var inviteMember: String { String(localized: "teams.inviteMember", bundle: L10nRuntime.bundle) }
     /// Invited {date}
     public static func invitedOn(date: String) -> String {
-      String(format: String(localized: "teams.invitedOn", bundle: .module), date)
+      String(format: String(localized: "teams.invitedOn", bundle: L10nRuntime.bundle), date)
     }
     /// Joined
-    public static var joined: String { String(localized: "teams.joined", bundle: .module) }
+    public static var joined: String { String(localized: "teams.joined", bundle: L10nRuntime.bundle) }
     /// As the owner, you must transfer ownership to another member before leaving.
-    public static var leaveAsOwner: String { String(localized: "teams.leaveAsOwner", bundle: .module) }
+    public static var leaveAsOwner: String { String(localized: "teams.leaveAsOwner", bundle: L10nRuntime.bundle) }
     /// Leave
-    public static var leaveShort: String { String(localized: "teams.leaveShort", bundle: .module) }
+    public static var leaveShort: String { String(localized: "teams.leaveShort", bundle: L10nRuntime.bundle) }
     /// Leave Team
-    public static var leaveTeam: String { String(localized: "teams.leaveTeam", bundle: .module) }
+    public static var leaveTeam: String { String(localized: "teams.leaveTeam", bundle: L10nRuntime.bundle) }
     /// Are you sure you want to leave "{name}"? You will lose access to all team content.
     public static func leaveTeamConfirm(name: String) -> String {
-      String(format: String(localized: "teams.leaveTeamConfirm", bundle: .module), name)
+      String(format: String(localized: "teams.leaveTeamConfirm", bundle: L10nRuntime.bundle), name)
     }
     /// This action cannot be undone. You will need to be invited again to rejoin the team.
-    public static var leaveTeamWarning: String { String(localized: "teams.leaveTeamWarning", bundle: .module) }
+    public static var leaveTeamWarning: String { String(localized: "teams.leaveTeamWarning", bundle: L10nRuntime.bundle) }
     /// Leaving...
-    public static var leaving: String { String(localized: "teams.leaving", bundle: .module) }
+    public static var leaving: String { String(localized: "teams.leaving", bundle: L10nRuntime.bundle) }
     /// Manage Team
-    public static var manageTeam: String { String(localized: "teams.manageTeam", bundle: .module) }
+    public static var manageTeam: String { String(localized: "teams.manageTeam", bundle: L10nRuntime.bundle) }
     /// Manage your teams and members
-    public static var manageTeams: String { String(localized: "teams.manageTeams", bundle: .module) }
+    public static var manageTeams: String { String(localized: "teams.manageTeams", bundle: L10nRuntime.bundle) }
     /// Members
-    public static var members: String { String(localized: "teams.members", bundle: .module) }
+    public static var members: String { String(localized: "teams.members", bundle: L10nRuntime.bundle) }
     /// a new team member
-    public static var newTeamMember: String { String(localized: "teams.newTeamMember", bundle: .module) }
+    public static var newTeamMember: String { String(localized: "teams.newTeamMember", bundle: L10nRuntime.bundle) }
     /// No members yet
-    public static var noMembersYet: String { String(localized: "teams.noMembersYet", bundle: .module) }
+    public static var noMembersYet: String { String(localized: "teams.noMembersYet", bundle: L10nRuntime.bundle) }
     /// You are the only member. Leaving will delete this team.
-    public static var noOtherMembers: String { String(localized: "teams.noOtherMembers", bundle: .module) }
+    public static var noOtherMembers: String { String(localized: "teams.noOtherMembers", bundle: L10nRuntime.bundle) }
     /// No teams found
-    public static var noTeamsFound: String { String(localized: "teams.noTeamsFound", bundle: .module) }
+    public static var noTeamsFound: String { String(localized: "teams.noTeamsFound", bundle: L10nRuntime.bundle) }
     /// Pending Invitations
-    public static var pendingInvitations: String { String(localized: "teams.pendingInvitations", bundle: .module) }
+    public static var pendingInvitations: String { String(localized: "teams.pendingInvitations", bundle: L10nRuntime.bundle) }
     /// Public Team
-    public static var publicTeam: String { String(localized: "teams.publicTeam", bundle: .module) }
+    public static var publicTeam: String { String(localized: "teams.publicTeam", bundle: L10nRuntime.bundle) }
     /// Allow others to discover and request to join this team
-    public static var publicTeamDescription: String { String(localized: "teams.publicTeamDescription", bundle: .module) }
+    public static var publicTeamDescription: String { String(localized: "teams.publicTeamDescription", bundle: L10nRuntime.bundle) }
     /// Remove Member
-    public static var removeMember: String { String(localized: "teams.removeMember", bundle: .module) }
+    public static var removeMember: String { String(localized: "teams.removeMember", bundle: L10nRuntime.bundle) }
     /// Are you sure you want to remove {name} from the team?
     public static func removeMemberConfirm(name: String) -> String {
-      String(format: String(localized: "teams.removeMemberConfirm", bundle: .module), name)
+      String(format: String(localized: "teams.removeMemberConfirm", bundle: L10nRuntime.bundle), name)
     }
     /// This action cannot be undone. They will need to be invited again to rejoin.
-    public static var removeMemberWarning: String { String(localized: "teams.removeMemberWarning", bundle: .module) }
+    public static var removeMemberWarning: String { String(localized: "teams.removeMemberWarning", bundle: L10nRuntime.bundle) }
     /// Resend
-    public static var resendInvitation: String { String(localized: "teams.resendInvitation", bundle: .module) }
+    public static var resendInvitation: String { String(localized: "teams.resendInvitation", bundle: L10nRuntime.bundle) }
     /// Admin
-    public static var roleAdmin: String { String(localized: "teams.roleAdmin", bundle: .module) }
+    public static var roleAdmin: String { String(localized: "teams.roleAdmin", bundle: L10nRuntime.bundle) }
     /// Member
-    public static var roleMember: String { String(localized: "teams.roleMember", bundle: .module) }
+    public static var roleMember: String { String(localized: "teams.roleMember", bundle: L10nRuntime.bundle) }
     /// Viewer
-    public static var roleViewer: String { String(localized: "teams.roleViewer", bundle: .module) }
+    public static var roleViewer: String { String(localized: "teams.roleViewer", bundle: L10nRuntime.bundle) }
     /// Select New Owner
-    public static var selectNewOwner: String { String(localized: "teams.selectNewOwner", bundle: .module) }
+    public static var selectNewOwner: String { String(localized: "teams.selectNewOwner", bundle: L10nRuntime.bundle) }
     /// Send Invitation
-    public static var sendInvitation: String { String(localized: "teams.sendInvitation", bundle: .module) }
+    public static var sendInvitation: String { String(localized: "teams.sendInvitation", bundle: L10nRuntime.bundle) }
     /// Send an invitation to
-    public static var sendInvitationTo: String { String(localized: "teams.sendInvitationTo", bundle: .module) }
+    public static var sendInvitationTo: String { String(localized: "teams.sendInvitationTo", bundle: L10nRuntime.bundle) }
     /// Switch to Team
-    public static var switchToTeam: String { String(localized: "teams.switchToTeam", bundle: .module) }
+    public static var switchToTeam: String { String(localized: "teams.switchToTeam", bundle: L10nRuntime.bundle) }
     /// Team Information
-    public static var teamInformation: String { String(localized: "teams.teamInformation", bundle: .module) }
+    public static var teamInformation: String { String(localized: "teams.teamInformation", bundle: L10nRuntime.bundle) }
     /// Team Name
-    public static var teamName: String { String(localized: "teams.teamName", bundle: .module) }
+    public static var teamName: String { String(localized: "teams.teamName", bundle: L10nRuntime.bundle) }
     /// Choose a name for your team
-    public static var teamNameDescription: String { String(localized: "teams.teamNameDescription", bundle: .module) }
+    public static var teamNameDescription: String { String(localized: "teams.teamNameDescription", bundle: L10nRuntime.bundle) }
     /// e.g. Worship Team Alpha
-    public static var teamNamePlaceholder: String { String(localized: "teams.teamNamePlaceholder", bundle: .module) }
+    public static var teamNamePlaceholder: String { String(localized: "teams.teamNamePlaceholder", bundle: L10nRuntime.bundle) }
     /// Teams
-    public static var title: String { String(localized: "teams.title", bundle: .module) }
+    public static var title: String { String(localized: "teams.title", bundle: L10nRuntime.bundle) }
     /// Transfer & Leave
-    public static var transferAndLeave: String { String(localized: "teams.transferAndLeave", bundle: .module) }
+    public static var transferAndLeave: String { String(localized: "teams.transferAndLeave", bundle: L10nRuntime.bundle) }
     /// Transfer & Stay
-    public static var transferAndStay: String { String(localized: "teams.transferAndStay", bundle: .module) }
+    public static var transferAndStay: String { String(localized: "teams.transferAndStay", bundle: L10nRuntime.bundle) }
     /// Transfer Ownership
-    public static var transferOwnership: String { String(localized: "teams.transferOwnership", bundle: .module) }
+    public static var transferOwnership: String { String(localized: "teams.transferOwnership", bundle: L10nRuntime.bundle) }
     /// Transfer ownership to another member before leaving
-    public static var transferOwnershipDescription: String { String(localized: "teams.transferOwnershipDescription", bundle: .module) }
+    public static var transferOwnershipDescription: String { String(localized: "teams.transferOwnershipDescription", bundle: L10nRuntime.bundle) }
     /// Transfer ownership to another member and stay as admin
-    public static var transferOwnershipStayDescription: String { String(localized: "teams.transferOwnershipStayDescription", bundle: .module) }
+    public static var transferOwnershipStayDescription: String { String(localized: "teams.transferOwnershipStayDescription", bundle: L10nRuntime.bundle) }
     /// Transfer
-    public static var transferShort: String { String(localized: "teams.transferShort", bundle: .module) }
+    public static var transferShort: String { String(localized: "teams.transferShort", bundle: L10nRuntime.bundle) }
     /// Transferring...
-    public static var transferring: String { String(localized: "teams.transferring", bundle: .module) }
+    public static var transferring: String { String(localized: "teams.transferring", bundle: L10nRuntime.bundle) }
     /// User
-    public static var user: String { String(localized: "teams.user", bundle: .module) }
+    public static var user: String { String(localized: "teams.user", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum Toasts {
     /// Failed to delete account
-    public static var accountDeleteFailed: String { String(localized: "toasts.accountDeleteFailed", bundle: .module) }
+    public static var accountDeleteFailed: String { String(localized: "toasts.accountDeleteFailed", bundle: L10nRuntime.bundle) }
     /// Account deleted
-    public static var accountDeleted: String { String(localized: "toasts.accountDeleted", bundle: .module) }
+    public static var accountDeleted: String { String(localized: "toasts.accountDeleted", bundle: L10nRuntime.bundle) }
     /// Imported from CifraClub
-    public static var cifraImportSuccess: String { String(localized: "toasts.cifraImportSuccess", bundle: .module) }
+    public static var cifraImportSuccess: String { String(localized: "toasts.cifraImportSuccess", bundle: L10nRuntime.bundle) }
     /// Something went wrong
-    public static var error: String { String(localized: "toasts.error", bundle: .module) }
+    public static var error: String { String(localized: "toasts.error", bundle: L10nRuntime.bundle) }
     /// Invitation canceled
-    public static var invitationCanceled: String { String(localized: "toasts.invitationCanceled", bundle: .module) }
+    public static var invitationCanceled: String { String(localized: "toasts.invitationCanceled", bundle: L10nRuntime.bundle) }
     /// Invitation resent successfully
-    public static var invitationResent: String { String(localized: "toasts.invitationResent", bundle: .module) }
+    public static var invitationResent: String { String(localized: "toasts.invitationResent", bundle: L10nRuntime.bundle) }
     /// Invitation sent successfully
-    public static var invitationSent: String { String(localized: "toasts.invitationSent", bundle: .module) }
+    public static var invitationSent: String { String(localized: "toasts.invitationSent", bundle: L10nRuntime.bundle) }
     /// Pasted text converted to ChordPro
-    public static var lyricsConvertedToChordPro: String { String(localized: "toasts.lyricsConvertedToChordPro", bundle: .module) }
+    public static var lyricsConvertedToChordPro: String { String(localized: "toasts.lyricsConvertedToChordPro", bundle: L10nRuntime.bundle) }
     /// Lyrics copied to clipboard
-    public static var lyricsCopied: String { String(localized: "toasts.lyricsCopied", bundle: .module) }
+    public static var lyricsCopied: String { String(localized: "toasts.lyricsCopied", bundle: L10nRuntime.bundle) }
     /// Failed to remove member. Please try again.
-    public static var memberRemovalFailed: String { String(localized: "toasts.memberRemovalFailed", bundle: .module) }
+    public static var memberRemovalFailed: String { String(localized: "toasts.memberRemovalFailed", bundle: L10nRuntime.bundle) }
     /// Member removed from team
-    public static var memberRemoved: String { String(localized: "toasts.memberRemoved", bundle: .module) }
+    public static var memberRemoved: String { String(localized: "toasts.memberRemoved", bundle: L10nRuntime.bundle) }
     /// Failed to transfer ownership. Please try again.
-    public static var ownershipTransferFailed: String { String(localized: "toasts.ownershipTransferFailed", bundle: .module) }
+    public static var ownershipTransferFailed: String { String(localized: "toasts.ownershipTransferFailed", bundle: L10nRuntime.bundle) }
     /// Ownership transferred successfully
-    public static var ownershipTransferred: String { String(localized: "toasts.ownershipTransferred", bundle: .module) }
+    public static var ownershipTransferred: String { String(localized: "toasts.ownershipTransferred", bundle: L10nRuntime.bundle) }
     /// Playlist archived
-    public static var playlistArchived: String { String(localized: "toasts.playlistArchived", bundle: .module) }
+    public static var playlistArchived: String { String(localized: "toasts.playlistArchived", bundle: L10nRuntime.bundle) }
     /// Playlist created successfully
-    public static var playlistCreated: String { String(localized: "toasts.playlistCreated", bundle: .module) }
+    public static var playlistCreated: String { String(localized: "toasts.playlistCreated", bundle: L10nRuntime.bundle) }
     /// Playlist deleted
-    public static var playlistDeleted: String { String(localized: "toasts.playlistDeleted", bundle: .module) }
+    public static var playlistDeleted: String { String(localized: "toasts.playlistDeleted", bundle: L10nRuntime.bundle) }
     /// Playlist unarchived
-    public static var playlistUnarchived: String { String(localized: "toasts.playlistUnarchived", bundle: .module) }
+    public static var playlistUnarchived: String { String(localized: "toasts.playlistUnarchived", bundle: L10nRuntime.bundle) }
     /// Playlist updated
-    public static var playlistUpdated: String { String(localized: "toasts.playlistUpdated", bundle: .module) }
+    public static var playlistUpdated: String { String(localized: "toasts.playlistUpdated", bundle: L10nRuntime.bundle) }
     /// Admins can only assign Member or Viewer
-    public static var roleChangeAdminLimit: String { String(localized: "toasts.roleChangeAdminLimit", bundle: .module) }
+    public static var roleChangeAdminLimit: String { String(localized: "toasts.roleChangeAdminLimit", bundle: L10nRuntime.bundle) }
     /// Failed to change member role. Please try again.
-    public static var roleChangeFailed: String { String(localized: "toasts.roleChangeFailed", bundle: .module) }
+    public static var roleChangeFailed: String { String(localized: "toasts.roleChangeFailed", bundle: L10nRuntime.bundle) }
     /// Cannot change the team owner
-    public static var roleChangeOwnerNotAllowed: String { String(localized: "toasts.roleChangeOwnerNotAllowed", bundle: .module) }
+    public static var roleChangeOwnerNotAllowed: String { String(localized: "toasts.roleChangeOwnerNotAllowed", bundle: L10nRuntime.bundle) }
     /// You do not have permission to change roles
-    public static var roleChangePermissionDenied: String { String(localized: "toasts.roleChangePermissionDenied", bundle: .module) }
+    public static var roleChangePermissionDenied: String { String(localized: "toasts.roleChangePermissionDenied", bundle: L10nRuntime.bundle) }
     /// Member role updated successfully
-    public static var roleChanged: String { String(localized: "toasts.roleChanged", bundle: .module) }
+    public static var roleChanged: String { String(localized: "toasts.roleChanged", bundle: L10nRuntime.bundle) }
     /// Failed to sign in with Google. Please try again.
-    public static var signInFailed: String { String(localized: "toasts.signInFailed", bundle: .module) }
+    public static var signInFailed: String { String(localized: "toasts.signInFailed", bundle: L10nRuntime.bundle) }
     /// Failed to sign out. Please try again.
-    public static var signOutFailed: String { String(localized: "toasts.signOutFailed", bundle: .module) }
+    public static var signOutFailed: String { String(localized: "toasts.signOutFailed", bundle: L10nRuntime.bundle) }
     /// Song created successfully
-    public static var songCreated: String { String(localized: "toasts.songCreated", bundle: .module) }
+    public static var songCreated: String { String(localized: "toasts.songCreated", bundle: L10nRuntime.bundle) }
     /// Song deleted
-    public static var songDeleted: String { String(localized: "toasts.songDeleted", bundle: .module) }
+    public static var songDeleted: String { String(localized: "toasts.songDeleted", bundle: L10nRuntime.bundle) }
     /// Song transferred to team
-    public static var songTransferred: String { String(localized: "toasts.songTransferred", bundle: .module) }
+    public static var songTransferred: String { String(localized: "toasts.songTransferred", bundle: L10nRuntime.bundle) }
     /// Song updated
-    public static var songUpdated: String { String(localized: "toasts.songUpdated", bundle: .module) }
+    public static var songUpdated: String { String(localized: "toasts.songUpdated", bundle: L10nRuntime.bundle) }
     /// Songs added to playlist
-    public static var songsAdded: String { String(localized: "toasts.songsAdded", bundle: .module) }
+    public static var songsAdded: String { String(localized: "toasts.songsAdded", bundle: L10nRuntime.bundle) }
     /// All songs are already in this playlist
-    public static var songsAlreadyInPlaylist: String { String(localized: "toasts.songsAlreadyInPlaylist", bundle: .module) }
+    public static var songsAlreadyInPlaylist: String { String(localized: "toasts.songsAlreadyInPlaylist", bundle: L10nRuntime.bundle) }
     /// Team created successfully!
-    public static var teamCreated: String { String(localized: "toasts.teamCreated", bundle: .module) }
+    public static var teamCreated: String { String(localized: "toasts.teamCreated", bundle: L10nRuntime.bundle) }
     /// You must be logged in to create a team
-    public static var teamCreatedAuthRequired: String { String(localized: "toasts.teamCreatedAuthRequired", bundle: .module) }
+    public static var teamCreatedAuthRequired: String { String(localized: "toasts.teamCreatedAuthRequired", bundle: L10nRuntime.bundle) }
     /// Failed to create team. Please try again.
-    public static var teamCreatedFailed: String { String(localized: "toasts.teamCreatedFailed", bundle: .module) }
+    public static var teamCreatedFailed: String { String(localized: "toasts.teamCreatedFailed", bundle: L10nRuntime.bundle) }
     /// Team deleted
-    public static var teamDeleted: String { String(localized: "toasts.teamDeleted", bundle: .module) }
+    public static var teamDeleted: String { String(localized: "toasts.teamDeleted", bundle: L10nRuntime.bundle) }
     /// Failed to delete team. Please try again.
-    public static var teamDeletedFailed: String { String(localized: "toasts.teamDeletedFailed", bundle: .module) }
+    public static var teamDeletedFailed: String { String(localized: "toasts.teamDeletedFailed", bundle: L10nRuntime.bundle) }
     /// You have left the team
-    public static var teamLeft: String { String(localized: "toasts.teamLeft", bundle: .module) }
+    public static var teamLeft: String { String(localized: "toasts.teamLeft", bundle: L10nRuntime.bundle) }
     /// Failed to leave team. Please try again.
-    public static var teamLeftFailed: String { String(localized: "toasts.teamLeftFailed", bundle: .module) }
+    public static var teamLeftFailed: String { String(localized: "toasts.teamLeftFailed", bundle: L10nRuntime.bundle) }
     /// Switched to {name}
     public static func teamSwitched(name: String) -> String {
-      String(format: String(localized: "toasts.teamSwitched", bundle: .module), name)
+      String(format: String(localized: "toasts.teamSwitched", bundle: L10nRuntime.bundle), name)
     }
     /// Team updated
-    public static var teamUpdated: String { String(localized: "toasts.teamUpdated", bundle: .module) }
+    public static var teamUpdated: String { String(localized: "toasts.teamUpdated", bundle: L10nRuntime.bundle) }
     /// Failed to update team. Please try again.
-    public static var teamUpdatedFailed: String { String(localized: "toasts.teamUpdatedFailed", bundle: .module) }
+    public static var teamUpdatedFailed: String { String(localized: "toasts.teamUpdatedFailed", bundle: L10nRuntime.bundle) }
     /// View playlists
-    public static var viewPlaylists: String { String(localized: "toasts.viewPlaylists", bundle: .module) }
+    public static var viewPlaylists: String { String(localized: "toasts.viewPlaylists", bundle: L10nRuntime.bundle) }
   }
   public nonisolated enum Validation {
     /// Artist name
-    public static var artistName: String { String(localized: "validation.artistName", bundle: .module) }
+    public static var artistName: String { String(localized: "validation.artistName", bundle: L10nRuntime.bundle) }
     /// Description
-    public static var description: String { String(localized: "validation.description", bundle: .module) }
+    public static var description: String { String(localized: "validation.description", bundle: L10nRuntime.bundle) }
     /// Key
-    public static var key: String { String(localized: "validation.key", bundle: .module) }
+    public static var key: String { String(localized: "validation.key", bundle: L10nRuntime.bundle) }
     /// BPM must be at most {max}
     public static func maxBpm(max: String) -> String {
-      String(format: String(localized: "validation.maxBpm", bundle: .module), max)
+      String(format: String(localized: "validation.maxBpm", bundle: L10nRuntime.bundle), max)
     }
     /// BPM must be at least {min}
     public static func minBpm(min: String) -> String {
-      String(format: String(localized: "validation.minBpm", bundle: .module), min)
+      String(format: String(localized: "validation.minBpm", bundle: L10nRuntime.bundle), min)
     }
     /// {field} is required
     public static func required(field: String) -> String {
-      String(format: String(localized: "validation.required", bundle: .module), field)
+      String(format: String(localized: "validation.required", bundle: L10nRuntime.bundle), field)
     }
     /// Song title
-    public static var songTitle: String { String(localized: "validation.songTitle", bundle: .module) }
+    public static var songTitle: String { String(localized: "validation.songTitle", bundle: L10nRuntime.bundle) }
     /// Team name
-    public static var teamName: String { String(localized: "validation.teamName", bundle: .module) }
+    public static var teamName: String { String(localized: "validation.teamName", bundle: L10nRuntime.bundle) }
     /// {field} is too long
     public static func tooLong(field: String) -> String {
-      String(format: String(localized: "validation.tooLong", bundle: .module), field)
+      String(format: String(localized: "validation.tooLong", bundle: L10nRuntime.bundle), field)
     }
   }
 }

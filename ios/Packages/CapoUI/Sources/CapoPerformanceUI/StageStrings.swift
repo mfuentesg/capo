@@ -16,11 +16,14 @@ enum StageStrings {
   static var increase: String { L10n.Ios.Stage.increase }
   static var more: String { L10n.Ios.Stage.more }
   static var chordsToggle: String { L10n.Ios.Stage.chords }
+  static var lyricsToggle: String { L10n.Songs.Lyrics.showLyricsLabel }
   static var columnsToggle: String { L10n.Ios.Stage.columns }
   static var enterFullscreen: String { L10n.Ios.Stage.enterFullscreen }
   static var exitFullscreen: String { L10n.Ios.Stage.exitFullscreen }
   static var collapseControls: String { L10n.Ios.Stage.collapseControls }
   static var showControls: String { L10n.Ios.Stage.showControls }
+  static var floatControls: String { L10n.Ios.Stage.floatControls }
+  static var dockControls: String { L10n.Ios.Stage.dockControls }
   static var controlsToolbar: String { L10n.Ios.Stage.controlsToolbar }
   static func fromBPM(_ bpm: String) -> String { L10n.Ios.Stage.fromBPM(bpm: bpm) }
   static func nextSong(_ title: String) -> String { L10n.Ios.Stage.nextSong(title: title) }

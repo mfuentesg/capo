@@ -10,7 +10,8 @@ public struct SongEditorView: View {
 
   @Environment(\.userServices) private var services
   @Environment(\.appContext) private var context
-  @Environment(\.currentTeamRole) private var role
+  @Environment(\.creationContext) private var creationContext
+  @Environment(\.teamRoles) private var teamRoles
   @State private var model = SongEditorModel()
   @State private var confirmDelete = false
   @State private var confirmDiscard = false
@@ -22,6 +23,8 @@ public struct SongEditorView: View {
   @State private var showReference = false
   @State private var notice: String?
   @State private var controller = LyricsEditorController()
+  /// Where a new song is saved (web `BucketSelector`); seeded from the creation context.
+  @State private var bucket: AppContext?
   @Environment(\.horizontalSizeClass) private var sizeClass
 
   public init(request: SongEditorRequest, onFinish: @escaping (SongID?) -> Void) {
@@ -29,7 +32,11 @@ public struct SongEditorView: View {
     self.onFinish = onFinish
   }
 
-  private var isViewer: Bool { role == .viewer }
+  private var isViewer: Bool {
+    let teamID = model.original.map(\.teamID) ?? creationContext.teamID
+    return !teamRoles.canEdit(teamID: teamID)
+  }
+  private var canDelete: Bool { teamRoles.canDelete(teamID: model.original?.teamID) }
 
   public var body: some View {
     VStack(spacing: 0) {
@@ -120,7 +127,7 @@ public struct SongEditorView: View {
         PreviewResizeHandle(layout: $panel, containerWidth: containerWidth)
         VStack(spacing: 14) {
           LivePreviewPanel(rendered: renderedPreview, showChords: $showChords) { setCollapsed(true) }
-          if model.isEditing { deleteButton }
+          if model.isEditing && canDelete { deleteButton }
         }
         .padding(20)
         .frame(width: panel.resolvedWidth(containerWidth: containerWidth))
@@ -138,6 +145,7 @@ public struct SongEditorView: View {
     VStack(spacing: 0) {
       metadata
       Divider().overlay(CapoTheme.border)
+      ShiftChordsToolbar { controller.shiftChords(by: $0) }
       if controller.hasSelection {
         SectionWrapToolbar { controller.wrap($0) }
       }
@@ -146,7 +154,7 @@ public struct SongEditorView: View {
   }
 
   private var showDeleteInExtras: Bool {
-    model.isEditing && (sizeClass != .regular || panel.isCollapsed)
+    model.isEditing && canDelete && (sizeClass != .regular || panel.isCollapsed)
   }
 
   private var header: some View {
@@ -176,7 +184,7 @@ public struct SongEditorView: View {
         previewToggle
         Button(EditorStrings.save) {
           Task {
-            if let id = await model.save(songs: services.songs, context: context) { onFinish(id) }
+            if let id = await model.save(songs: services.songs, context: bucket ?? creationContext) { onFinish(id) }
           }
         }
         .buttonStyle(CapoPrimaryButtonStyle())
@@ -259,6 +267,12 @@ public struct SongEditorView: View {
         }
       }
       if model.form.issues.contains(.bpmInvalid) { errorText(EditorStrings.bpmInvalid) }
+      ForEach(EditorForm.LimitedField.allCases, id: \.self) { field in
+        if model.form.issues.contains(.tooLong(field)) { errorText(EditorStrings.tooLong(field)) }
+      }
+      if !model.isEditing {
+        BucketPicker(selection: Binding(get: { bucket ?? creationContext }, set: { bucket = $0 })).padding(.top, 4)
+      }
       DisclosureGroup(isExpanded: $showExtras) {
         extras.padding(.top, 8)
       } label: {

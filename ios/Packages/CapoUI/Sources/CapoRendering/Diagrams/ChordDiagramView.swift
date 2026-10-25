@@ -104,6 +104,7 @@ public struct ChordDiagramView: View {
   @State private var hand: ChordHand
   @State private var index = 0
   @State private var forward = true
+  @State private var audio = ChordAudioPlayer.shared
   @Environment(\.colorScheme) private var scheme
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
   @Environment(\.horizontalSizeClass) private var sizeClass
@@ -181,11 +182,14 @@ public struct ChordDiagramView: View {
   private var header: some View {
     HStack(alignment: .top) {
       VStack(alignment: .leading, spacing: 4) {
-        Text(chordName)
-          .font(CapoFont.ui(36, weight: .bold))
-          .foregroundStyle(CapoTheme.foreground)
-          .minimumScaleFactor(0.6)
-          .lineLimit(1)
+        HStack(spacing: 8) {
+          Text(chordName)
+            .font(CapoFont.ui(36, weight: .bold))
+            .foregroundStyle(CapoTheme.foreground)
+            .minimumScaleFactor(0.6)
+            .lineLimit(1)
+          playButton
+        }
         Text(result.isGenerated ? ChordDiagramStrings.generated : ChordDiagramStrings.verified)
           .font(CapoFont.ui(12, weight: .medium))
           .tracking(1.8)
@@ -194,6 +198,25 @@ public struct ChordDiagramView: View {
       }
       Spacer()
       handToggle
+    }
+  }
+
+  /// Speaker next to the title (`ChordPlayButton`); plays the shown fingering and highlights while it rings.
+  @ViewBuilder private var playButton: some View {
+    let notes = ChordAudioMath.midiNotes(for: positions[current])
+    if !notes.isEmpty {
+      Button { ChordAudioPlayer.shared.play(notes) } label: {
+        Image(systemName: "speaker.wave.2")
+          .font(.system(size: 18, weight: .medium))
+          .scaleEffect(audio.isPlaying && !reduceMotion ? 1.1 : 1)
+          .foregroundStyle(audio.isPlaying ? CapoTheme.primary : CapoTheme.mutedForeground)
+          .frame(width: 44, height: 44)
+          .contentShape(Rectangle())
+          .animation(.easeOut(duration: 0.15), value: audio.isPlaying)
+      }
+      .buttonStyle(.plain)
+      .disabled(audio.isPlaying)
+      .accessibilityLabel(L10n.Chords.playChord)
     }
   }
 

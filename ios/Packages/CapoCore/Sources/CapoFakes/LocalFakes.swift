@@ -253,8 +253,7 @@ public struct FakeTeamRepository: TeamRepository {
     try await remote.invitations(teamID: teamID)
   }
   public func pendingInvitationsForMe() async throws -> [PendingInvitation] {
-    let email = await backend.snapshot().profile?.email ?? ""
-    return try await remote.pendingInvitations(email: email)
+    try await remote.pendingInvitations()
   }
   public func createTeam(name: String, icon: String?, isPublic: Bool) async throws -> Team {
     try await remote.createTeam(name: name, icon: icon, isPublic: isPublic)
@@ -268,6 +267,12 @@ public struct FakeTeamRepository: TeamRepository {
     try await remote.invite(email: email, role: role, teamID: teamID)
   }
   public func revokeInvitation(id: UUID) async throws { try await remote.revokeInvitation(id: id) }
+  public func declineInvitation(token: String) async throws {
+    try await remote.declineInvitation(token: token)
+  }
+  public func resendInvitation(id: UUID) async throws -> TeamInvitation {
+    try await remote.resendInvitation(id: id)
+  }
   public func acceptInvitation(token: String) async throws -> TeamID {
     try await remote.acceptInvitation(token: token)
   }
@@ -306,6 +311,10 @@ public struct FakeConflictRepository: ConflictRepository {
   public func conflicts() -> AsyncStream<[SongConflict]> {
     backend.observe { $0.conflicts }
   }
+
+  public func failedOperations() -> AsyncStream<[FailedOperation]> { backend.observe { _ in [] } }
+  public func retryFailed(_ id: UUID) async throws {}
+  public func discardFailed(_ id: UUID) async throws {}
 
   public func resolve(_ conflictID: UUID, with resolution: ConflictResolution) async throws {
     try await backend.mutate { state in
@@ -372,6 +381,7 @@ public final class FakeAuthService: AuthService {
   public func sessionStream() -> AsyncStream<AuthSession?> { subject.stream() }
   public func currentSession() async -> AuthSession? { subject.value }
   public func signInWithGoogle() async throws { subject.send(Self.demoSession) }
+  public func signInWithApple() async throws { subject.send(Self.demoSession) }
 
   public func signIn(email: String, password: String) async throws {
     guard !email.isEmpty, !password.isEmpty else { throw CapoError.invalidInput("credentials") }

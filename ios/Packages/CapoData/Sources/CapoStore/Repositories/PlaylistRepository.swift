@@ -55,7 +55,10 @@ struct GRDBPlaylistRepository: PlaylistRepository {
 
   func create(_ draft: PlaylistDraft, in context: AppContext) async throws -> Playlist {
     let name = draft.name.trimmingCharacters(in: .whitespacesAndNewlines)
-    guard !name.isEmpty else { throw CapoError.invalidInput("name") }
+    guard !name.isEmpty, name.count <= PlaylistLimits.name else { throw CapoError.invalidInput("name") }
+    if (draft.description ?? "").count > PlaylistLimits.description {
+      throw CapoError.invalidInput("description")
+    }
     var owner: UserID?
     var team: TeamID?
     switch context {
@@ -70,7 +73,9 @@ struct GRDBPlaylistRepository: PlaylistRepository {
       updatedAt: now)
     var seen = Set<SongID>()
     let songIDs = draft.songIDs.filter { seen.insert($0).inserted }
+    let bucketTeam = team
     try await database.writer.write { db in
+      try Self.requireSameBucket(db, songIDs, teamID: bucketTeam)
       try playlist.upsert(db)
       for (index, songID) in songIDs.enumerated() {
         try Self.insertEntry(db, playlistID: playlist.id, songID: songID, position: index)
@@ -83,6 +88,11 @@ struct GRDBPlaylistRepository: PlaylistRepository {
   func update(id: PlaylistID, _ patch: PlaylistPatch) async throws {
     if let name = patch.name, name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
       throw CapoError.invalidInput("name")
+    }
+    if (patch.name ?? "").count > PlaylistLimits.name
+      || (patch.description ?? "").count > PlaylistLimits.description
+    {
+      throw CapoError.invalidInput("length")
     }
     try await database.writer.write { db in
       guard var playlist = try Self.fetchPlaylist(db, id: id) else { throw CapoError.notFound }
@@ -130,7 +140,8 @@ struct GRDBPlaylistRepository: PlaylistRepository {
 
   func addSongs(_ songIDs: [SongID], to playlistID: PlaylistID) async throws {
     try await database.writer.write { db in
-      guard try Self.fetchPlaylist(db, id: playlistID) != nil else { throw CapoError.notFound }
+      guard let playlist = try Self.fetchPlaylist(db, id: playlistID) else { throw CapoError.notFound }
+      try Self.requireSameBucket(db, songIDs, teamID: playlist.teamID)
       var present = Set(
         try Row.fetchAll(
           db, sql: "SELECT song_id FROM playlist_songs WHERE playlist_id = ?",
@@ -195,6 +206,19 @@ struct GRDBPlaylistRepository: PlaylistRepository {
   }
 
   // MARK: Helpers
+
+  /// A playlist only holds songs of its own bucket (personal or one team): teammates cannot read
+  /// anyone's personal songs, and the web picker enforces the same.
+  static func requireSameBucket(_ db: Database, _ songIDs: [SongID], teamID: TeamID?) throws {
+    for songID in songIDs {
+      guard
+        let row = try Row.fetchOne(
+          db, sql: "SELECT team_id FROM songs WHERE id = ?", arguments: [songID.dbString])
+      else { continue }
+      let songTeam: String? = row["team_id"]
+      if songTeam != teamID?.dbString { throw CapoError.invalidInput("bucket") }
+    }
+  }
 
   static func fetchPlaylist(_ db: Database, id: PlaylistID) throws -> Playlist? {
     try Row.fetchOne(db, sql: "SELECT * FROM playlists WHERE id = ?", arguments: [id.dbString])

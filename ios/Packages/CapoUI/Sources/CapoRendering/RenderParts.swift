@@ -187,8 +187,13 @@ struct PairColumn: View {
     VStack(alignment: .leading, spacing: 0) {
       if reserveChordRow {
         if pair.chord.isEmpty {
-          Text("\u{200B}").font(CapoFont.chord(scale: context.style.fontScale))
-            .padding(.vertical, 1)
+          // Hidden zero-width stand-in with the badge's exact font, so every column's chord row
+          // has the same height and the lyric baselines line up. A real glyph is needed: U+200B
+          // falls back to another font whose line height differs from the chord font's.
+          Text(verbatim: "C").font(CapoFont.chord(scale: context.style.fontScale))
+            .fixedSize()
+            .hidden()
+            .frame(width: 0, alignment: .leading)
         } else {
           chordBadge
             // 0.5em gap after the chord so neighbouring badges never touch.

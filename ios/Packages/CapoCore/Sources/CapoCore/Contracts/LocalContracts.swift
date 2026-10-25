@@ -76,6 +76,8 @@ public protocol TeamRepository: Sendable {
   func leaveTeam(id: TeamID) async throws
   func invite(email: String, role: TeamRole, teamID: TeamID) async throws -> TeamInvitation
   func revokeInvitation(id: UUID) async throws
+  func declineInvitation(token: String) async throws
+  func resendInvitation(id: UUID) async throws -> TeamInvitation
   func acceptInvitation(token: String) async throws -> TeamID
   func changeRole(userID: UserID, teamID: TeamID, role: TeamRole) async throws
   func removeMember(userID: UserID, teamID: TeamID) async throws
@@ -87,9 +89,34 @@ public protocol SharingService: Sendable {
   func shareURL(forCode code: String) -> URL  // webBaseURL/shared/<code> (web route app/(app)/shared/[shareCode])
 }
 
+/// A queued change the server refused (or that kept failing). It stays visible, and the local
+/// copy is protected from the next pull, until the user retries or discards it.
+public struct FailedOperation: Identifiable, Hashable, Sendable {
+  public var id: UUID
+  /// Outbox kind, e.g. "deleteSong", "setSongTags".
+  public var kind: String
+  /// Song title, playlist or tag name; nil when the entity is gone locally.
+  public var subject: String?
+  public var error: String?
+  public var createdAt: Date
+
+  public init(id: UUID, kind: String, subject: String?, error: String?, createdAt: Date) {
+    self.id = id
+    self.kind = kind
+    self.subject = subject
+    self.error = error
+    self.createdAt = createdAt
+  }
+}
+
 public protocol ConflictRepository: Sendable {
   func conflicts() -> AsyncStream<[SongConflict]>
   func resolve(_ conflictID: UUID, with resolution: ConflictResolution) async throws
+  func failedOperations() -> AsyncStream<[FailedOperation]>
+  /// Queues the operation again (attempts reset).
+  func retryFailed(_ id: UUID) async throws
+  /// Drops the operation and rolls the local copy back to the server's state at the next pull.
+  func discardFailed(_ id: UUID) async throws
 }
 
 public protocol SyncService: Sendable {
@@ -103,6 +130,8 @@ public protocol AuthService: Sendable {
   func sessionStream() -> AsyncStream<AuthSession?>  // first element = restored local session (offline-safe)
   func currentSession() async -> AuthSession?
   func signInWithGoogle() async throws
+  /// Native Sign in with Apple (nonce + identity token exchanged with Supabase).
+  func signInWithApple() async throws
   func signIn(email: String, password: String) async throws
   func signUp(email: String, password: String) async throws
   func signOut() async throws
@@ -123,13 +152,16 @@ public struct UserServices: Sendable {
   /// Permanently deletes the signed-in account (`delete_user_account` RPC). nil when unavailable
   /// (demo mode, fakes); the shell additionally hides it in release builds.
   public var deleteAccount: (@Sendable () async throws -> Void)?
+  /// Inserts into `feedback` like the web form. nil when unavailable (demo mode, fakes).
+  public var submitFeedback: (@Sendable (FeedbackDraft) async throws -> Void)?
 
   public init(
     userID: UserID, songs: any SongRepository, tags: any TagRepository,
     playlists: any PlaylistRepository, settings: any SettingsRepository,
     teams: any TeamRepository, sharing: any SharingService, conflicts: any ConflictRepository,
     sync: any SyncService, tearDown: @escaping @Sendable (_ eraseLocalData: Bool) async -> Void,
-    deleteAccount: (@Sendable () async throws -> Void)? = nil
+    deleteAccount: (@Sendable () async throws -> Void)? = nil,
+    submitFeedback: (@Sendable (FeedbackDraft) async throws -> Void)? = nil
   ) {
     self.userID = userID
     self.songs = songs
@@ -142,6 +174,7 @@ public struct UserServices: Sendable {
     self.sync = sync
     self.tearDown = tearDown
     self.deleteAccount = deleteAccount
+    self.submitFeedback = submitFeedback
   }
 }
 

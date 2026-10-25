@@ -14,17 +14,11 @@ final class LibraryModel {
   var hasLoaded = false
   /// Teams the user belongs to, sorted by name (bucket colours and names for the "All" view).
   var teams: [Team] = []
-  /// Songs queued to add to a playlist (the web's draft cart), in tap order.
-  var cart: [SongID] = []
   /// Column the table is sorted by. Until the user picks one, a search keeps its relevance order.
   var tableSort = SongTableSort.default
   var sortChosen = false
   /// "Select" mode: row taps toggle the selection instead of opening the song.
   var selecting = false
-
-  func toggleCart(_ id: SongID) {
-    if let index = cart.firstIndex(of: id) { cart.remove(at: index) } else { cart.append(id) }
-  }
 
   /// Sort actually applied to the table; nil keeps the service order (relevance while searching).
   var effectiveTableSort: SongTableSort? {
@@ -41,10 +35,9 @@ final class LibraryModel {
     sortChosen = true
   }
 
-  /// Leaves select mode and drops the selection.
+  /// Leaves select mode; the queued songs stay in the shared playlist draft.
   func finishSelecting() {
     selecting = false
-    cart = []
   }
 
   /// Songs in table order for the current sort.

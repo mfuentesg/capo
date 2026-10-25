@@ -182,6 +182,15 @@ final class StubRealtime: RealtimeNotifier {
     continuations.withLock { $0.append(continuation) }
     return stream
   }
+  var subscriptions: Int { continuations.withLock { $0.count } }
+  /// Ends every open stream, like a dropped channel.
+  func drop() {
+    let all = continuations.withLock { c -> [AsyncStream<RealtimeChange>.Continuation] in
+      defer { c.removeAll() }
+      return c
+    }
+    for c in all { c.finish() }
+  }
   func emit(_ table: String = "songs") {
     for c in continuations.withLock({ $0 }) { c.yield(RealtimeChange(table: table)) }
   }

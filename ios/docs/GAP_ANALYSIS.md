@@ -500,6 +500,12 @@ Format: ID, title, size, acceptance criteria (AC), files, tests.
 
 - AC: re-run `RowsDriftTests` after migrations; confirm Realtime publication for `team_invitations` if live invitations are wanted; AASA hosting verified; `PrivacyInfo.xcprivacy` reviewed for new APIs.
 
+**GAP-030 status (wp-sync, 2026-10-25)**
+
+- `RowsTests` (drift guard against `database.types.ts` fixtures) passes with the current migrations; re-run `ios/scripts/test-packages.sh` after every schema migration.
+- Realtime publication audit: `supabase_realtime` contains `songs`, `user_song_settings`, `playlists`, `playlist_songs`, `team_members`, `teams` (and `activity_log`). `song_tags`, `song_tag_assignments`, `profiles` and `team_invitations` are NOT published, so iOS subscriptions to the first three never fire. Because the incremental pull (GAP-014) refetches tags, assignments and profile only on a full refresh, changes made on another device show up on foreground, manual sync, reachability change or the 5-minute full refresh, not instantly. If instant propagation is wanted, add those tables to the publication in a CLI-created migration (needs a web/DB owner; not done here).
+- AASA hosting: not applicable (links stay web-only, see GAP-006).
+
 ---
 
 ## 5. Work packages for parallel agents

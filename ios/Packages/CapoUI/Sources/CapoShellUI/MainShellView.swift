@@ -20,7 +20,8 @@ struct MainShellView: View {
     @Bindable var nav = model.navigation
     ShellContainer(model: model)
     .capoTheme()
-    .id(model.context)
+    // No `.id(model.context)`: switching the view filter reloads the queries (`.task(id: context)`)
+    // but keeps tab navigation, open sheets and the playlist draft.
     .shellEnvironment(model)
     .task { await model.observeTeams() }
     .task { await model.observeSync() }

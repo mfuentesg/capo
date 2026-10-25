@@ -289,10 +289,46 @@ private struct Harness {
   @Test func realtimeEventsAreDebouncedIntoOneSync() async throws {
     let h = Harness()
     await h.engine.start()
+    #expect(await eventually { h.realtime.subscriptions == 1 })
     for _ in 0..<5 { h.realtime.emit() }
     #expect(await eventually { h.store.snapshot.applyCount >= 1 })
     try await Task.sleep(for: .milliseconds(200))
     #expect(h.store.snapshot.applyCount == 1)
+    await h.engine.stop()
+  }
+
+  @Test func secondaryTablesAreRefetchedOnlyWhenNeeded() async throws {
+    let h = Harness()
+    await h.engine.syncNow(reason: .appLaunch)
+    var batch = try #require(h.store.snapshot.lastBatch)
+    #expect(batch.tags != nil && batch.tagAssignments != nil && batch.userSongSettings != nil)
+    #expect(batch.profile != nil && batch.playlistEntries != nil)
+
+    await h.engine.syncNow(reason: .realtime)
+    batch = try #require(h.store.snapshot.lastBatch)
+    #expect(batch.tags == nil && batch.tagAssignments == nil && batch.userSongSettings == nil)
+    #expect(batch.profile == nil && batch.playlistEntries == nil)
+
+    await h.engine.start()
+    #expect(await eventually { h.realtime.subscriptions == 1 })
+    h.realtime.emit("song_tag_assignments")
+    #expect(await eventually { h.store.snapshot.lastBatch?.tagAssignments != nil })
+    batch = try #require(h.store.snapshot.lastBatch)
+    #expect(batch.tags == nil && batch.userSongSettings == nil)
+
+    await h.engine.syncNow(reason: .manual)
+    #expect(h.store.snapshot.lastBatch?.tags != nil)
+    await h.engine.stop()
+  }
+
+  @Test func droppedRealtimeChannelResubscribesAndRunsAFullSync() async throws {
+    let h = Harness()
+    await h.engine.start()
+    #expect(await eventually { h.realtime.subscriptions == 1 })
+    h.realtime.drop()
+    #expect(await eventually(timeout: .seconds(5)) { h.realtime.subscriptions == 1 })
+    #expect(await eventually(timeout: .seconds(5)) { h.store.snapshot.applyCount >= 1 })
+    #expect(h.store.snapshot.lastBatch?.tags != nil)
     await h.engine.stop()
   }
 

@@ -11,6 +11,7 @@ struct ShellEnvironment: ViewModifier {
     content
       .environment(\.userServices, model.services)
       .environment(\.appContext, model.context)
+      .environment(\.playlistDraft, model.navigation.draft)
       .environment(\.creationContext, model.contextStore.creationContext)
       .environment(\.currentTeamRole, model.contextStore.role)
       .environment(\.settingsContext, model.settingsContext)

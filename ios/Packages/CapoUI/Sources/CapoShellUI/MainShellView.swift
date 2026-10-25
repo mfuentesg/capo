@@ -43,8 +43,8 @@ struct MainShellView: View {
       }
       .shellEnvironment(model)
     }
-    .sheet(item: $nav.pendingAdd) { pending in
-      AddToPlaylistView(songIDs: pending.songIDs) { model.navigation.pendingAdd = nil }
+    .sheet(item: $nav.pendingAdd) { _ in
+      AddToPlaylistView { model.navigation.pendingAdd = nil }
         .shellEnvironment(model)
     }
     .sheet(item: $nav.pendingShare) { share in

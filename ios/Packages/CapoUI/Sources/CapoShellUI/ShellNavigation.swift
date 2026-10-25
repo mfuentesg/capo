@@ -48,7 +48,6 @@ struct PendingShare: Identifiable {
 }
 
 struct PendingAdd: Identifiable {
-  let songIDs: [SongID]
   let id = UUID()
 }
 
@@ -64,6 +63,8 @@ final class ShellNavigation {
   var editor: EditorItem?
   var setlistRun: SetlistRun?
   var pendingAdd: PendingAdd?
+  /// Songs queued for a playlist; outlives the draft dialog.
+  let draft = PlaylistDraftStore()
   var pendingShare: PendingShare?
   var showConflicts = false
   var showSettings = false
@@ -103,7 +104,10 @@ final class ShellNavigation {
       openSong: { [self] id in openSong(id) },
       openEditor: { [self] request in editor = EditorItem(request: request) },
       performSetlist: { [self] id, index in setlistRun = SetlistRun(playlistID: id, startIndex: index) },
-      addSongsToPlaylist: { [self] ids in pendingAdd = PendingAdd(songIDs: ids) },
+      addSongsToPlaylist: { [self] ids in
+        draft.add(ids)
+        pendingAdd = PendingAdd()
+      },
       showConflicts: { [self] in showConflicts = true },
       sharePlaylist: { [self] id in pendingShare = PendingShare(playlistID: id) })
   }

@@ -4,15 +4,15 @@ import SwiftUI
 
 /// The web's draft-cart dialog (`playlist-draft.tsx`), presented by the shell for
 /// `capoActions.addSongsToPlaylist`: the selected songs (removable), a "new playlist" or existing
-/// playlist target, a name for new ones, Clear and "Add N songs".
+/// playlist target, a name for new ones, Clear and "Add N songs". It edits the shared
+/// `PlaylistDraftStore`, so closing it keeps the selection; the songs can be dragged into order.
 public struct AddToPlaylistView: View {
-  let songIDs: [SongID]
   let onFinish: () -> Void
 
   @Environment(\.userServices) private var services
   @Environment(\.appContext) private var context
   @Environment(\.creationContext) private var creationContext
-  @State private var ids: [SongID]
+  @Environment(\.playlistDraft) private var draft
   @State private var titles: [SongID: (title: String, artist: String?)] = [:]
   @State private var playlists: [PlaylistSummary] = []
   @State private var target: Target?
@@ -23,11 +23,9 @@ public struct AddToPlaylistView: View {
 
   enum Target: Hashable { case new, existing(PlaylistID) }
 
-  public init(songIDs: [SongID], onFinish: @escaping () -> Void) {
-    self.songIDs = songIDs
-    self.onFinish = onFinish
-    _ids = State(initialValue: songIDs)
-  }
+  public init(onFinish: @escaping () -> Void) { self.onFinish = onFinish }
+
+  private var ids: [SongID] { draft.ids }
 
   private var canAdd: Bool {
     guard !ids.isEmpty, !isWorking, let target else { return false }
@@ -37,15 +35,15 @@ public struct AddToPlaylistView: View {
 
   public var body: some View {
     NavigationStack {
-      ScrollView {
-        VStack(alignment: .leading, spacing: 20) {
-          header
-          songList
-          targetPicker
-          if target == .new { nameField }
-        }
-        .padding(16)
+      List {
+        header.listRow()
+        songList
+        targetPicker.listRow()
+        if target == .new { nameField.listRow() }
       }
+      .listStyle(.plain)
+      .scrollContentBackground(.hidden)
+      .environment(\.editMode, .constant(.active))  // drag handles to sort the songs
       .background(CapoTheme.background)
       .safeAreaInset(edge: .bottom, spacing: 0) { actionBar }
       .navigationBarTitleDisplayMode(.inline)
@@ -61,7 +59,7 @@ public struct AddToPlaylistView: View {
           playlists = items
         }
       }
-      .task { await loadTitles() }
+      .task(id: draft.ids) { await loadTitles() }
     }
   }
 
@@ -80,30 +78,31 @@ public struct AddToPlaylistView: View {
   }
 
   private var songList: some View {
-    VStack(spacing: 6) {
-      ForEach(ids, id: \.self) { id in
-        HStack(spacing: 8) {
-          CapoIcon(.music2, size: 12).foregroundStyle(CapoTheme.mutedForeground)
-          VStack(alignment: .leading, spacing: 0) {
-            Text(titles[id]?.title ?? "…").capoText(.sm, weight: .medium).lineLimit(1)
-            if let artist = titles[id]?.artist, !artist.isEmpty {
-              Text(artist).capoText(.xs).foregroundStyle(CapoTheme.mutedForeground).lineLimit(1)
-            }
+    ForEach(ids, id: \.self) { id in
+      HStack(spacing: 8) {
+        CapoIcon(.music2, size: 12).foregroundStyle(CapoTheme.mutedForeground)
+        VStack(alignment: .leading, spacing: 0) {
+          Text(titles[id]?.title ?? "…").capoText(.sm, weight: .medium).lineLimit(1)
+          if let artist = titles[id]?.artist, !artist.isEmpty {
+            Text(artist).capoText(.xs).foregroundStyle(CapoTheme.mutedForeground).lineLimit(1)
           }
-          Spacer(minLength: 8)
-          Button { ids.removeAll { $0 == id } } label: {
-            CapoIcon(.x, size: 16).foregroundStyle(CapoTheme.mutedForeground)
-              .frame(width: 36, height: 36).contentShape(Rectangle())
-          }
-          .buttonStyle(.plain)
-          .accessibilityLabel(PlaylistStrings.remove)
         }
-        .padding(.leading, 12)
-        .padding(.trailing, 4)
-        .frame(minHeight: 44)
-        .playlistCard()
+        Spacer(minLength: 8)
+        Button { withAnimation(.snappy(duration: 0.2)) { draft.remove(id) } } label: {
+          CapoIcon(.x, size: 16).foregroundStyle(CapoTheme.mutedForeground)
+            .frame(width: 36, height: 36).contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(PlaylistStrings.remove)
       }
+      .padding(.leading, 12)
+      .padding(.trailing, 4)
+      .frame(minHeight: 44)
+      .playlistCard()
+      .deleteDisabled(true)
+      .listRow()
     }
+    .onMove { draft.move(from: $0, to: $1) }
   }
 
   private var targetPicker: some View {
@@ -166,7 +165,7 @@ public struct AddToPlaylistView: View {
   private var actionBar: some View {
     HStack(spacing: 12) {
       Button(L10n.PlaylistDraft.clearButton) {
-        ids = []
+        draft.clear()
         onFinish()
       }
       .buttonStyle(CapoSecondaryButtonStyle())
@@ -184,7 +183,7 @@ public struct AddToPlaylistView: View {
   // MARK: Actions
 
   private func loadTitles() async {
-    for id in songIDs {
+    for id in draft.ids where titles[id] == nil {
       if let song = try? await services.songs.fetchSong(id: id) {
         titles[id] = (song.title, song.artist)
       }
@@ -219,8 +218,18 @@ public struct AddToPlaylistView: View {
   }
 
   private func finish(_ message: String) async {
+    draft.clear()
     toast = message
     try? await Task.sleep(for: .milliseconds(900))
     onFinish()
+  }
+}
+
+private extension View {
+  /// Plain, separator-free list row so the cards keep their own chrome.
+  func listRow() -> some View {
+    listRowBackground(Color.clear)
+      .listRowSeparator(.hidden)
+      .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
   }
 }

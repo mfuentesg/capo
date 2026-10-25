@@ -10,6 +10,7 @@ public struct LibraryView: View {
   @Environment(\.appContext) private var context
   @Environment(\.currentTeamRole) private var role
   @Environment(\.capoActions) private var actions
+  @Environment(\.playlistDraft) private var draft
   @Environment(\.horizontalSizeClass) private var sizeClass
   @State private var model = LibraryModel()
   @State private var showTagManagement = false
@@ -134,17 +135,17 @@ public struct LibraryView: View {
   private func rows(_ items: [SongListItem], layout: SongTableLogic.Layout) -> some View {
     ForEach(items) { item in
       let state = SongTableRowState(
-        inCart: model.cart.contains(item.id), selecting: model.selecting,
+        inCart: draft.contains(item.id), selecting: model.selecting,
         ownership: model.ownership(for: item, in: context), layout: layout)
       Group {
         if layout.mode == .regular {
-          SongTableRow(item: item, state: state) { model.toggleCart(item.id) }
+          SongTableRow(item: item, state: state) { draft.toggle(item.id) }
         } else {
-          SongCompactRow(item: item, state: state) { model.toggleCart(item.id) }
+          SongCompactRow(item: item, state: state) { draft.toggle(item.id) }
         }
       }
       .onTapGesture {
-        if model.selecting { model.toggleCart(item.id) } else { actions.openSong(item.id) }
+        if model.selecting { draft.toggle(item.id) } else { actions.openSong(item.id) }
       }
       .accessibilityAddTraits(.isButton)
       .listRowBackground(Color.clear)
@@ -184,13 +185,12 @@ public struct LibraryView: View {
 
   /// Floating "n selected · Clear · Add to Playlist" once songs are queued.
   @ViewBuilder private var selectionBar: some View {
-    if !model.cart.isEmpty {
+    if !draft.ids.isEmpty {
       SelectionBar(
-        count: model.cart.count,
-        onClear: { withAnimation(.snappy(duration: 0.2)) { model.cart = [] } },
+        count: draft.ids.count,
+        onClear: { withAnimation(.snappy(duration: 0.2)) { draft.clear() } },
         onAdd: {
-          actions.addSongsToPlaylist(model.cart)
-          model.finishSelecting()
+          actions.addSongsToPlaylist(draft.ids)
         }
       )
       .padding(.bottom, 12)

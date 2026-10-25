@@ -5,14 +5,22 @@ import SwiftUI
 struct ChordLyricsLineLayout: Layout {
   var rowSpacing: CGFloat = 2
 
-  func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-    arrange(proposal: proposal, subviews: subviews).size
+  /// Ideal sizes don't depend on the proposal, so measure once instead of on every probe.
+  /// SwiftUI rebuilds the cache whenever the subviews change.
+  func makeCache(subviews: Subviews) -> [CGSize] {
+    subviews.map { $0.sizeThatFits(.unspecified) }
+  }
+
+  func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout [CGSize])
+    -> CGSize
+  {
+    arrange(proposal: proposal, sizes: cache).size
   }
 
   func placeSubviews(
-    in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()
+    in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout [CGSize]
   ) {
-    let arrangement = arrange(proposal: proposal, subviews: subviews)
+    let arrangement = arrange(proposal: proposal, sizes: cache)
     for (index, frame) in arrangement.frames.enumerated() {
       subviews[index].place(
         at: CGPoint(x: bounds.minX + frame.minX, y: bounds.minY + frame.minY),
@@ -21,9 +29,8 @@ struct ChordLyricsLineLayout: Layout {
     }
   }
 
-  private func arrange(proposal: ProposedViewSize, subviews: Subviews) -> ChordLyricsArrangement {
-    let sizes = subviews.map { $0.sizeThatFits(.unspecified) }
-    return ChordLyricsArrangeMath.arrange(
+  private func arrange(proposal: ProposedViewSize, sizes: [CGSize]) -> ChordLyricsArrangement {
+    ChordLyricsArrangeMath.arrange(
       sizes: sizes, maxWidth: proposal.width ?? .infinity, rowSpacing: rowSpacing)
   }
 }

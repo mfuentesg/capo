@@ -2330,6 +2330,23 @@
         }
       }
     },
+    "invitations.decline" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Decline"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechazar"
+          }
+        }
+      }
+    },
     "invitations.emptyDescription" : {
       "extractionState" : "manual",
       "localizations" : {

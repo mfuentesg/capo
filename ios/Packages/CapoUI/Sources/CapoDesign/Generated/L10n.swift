@@ -315,6 +315,8 @@ public nonisolated enum L10n {
     public static var backToTeams: String { String(localized: "invitations.backToTeams", bundle: L10nRuntime.bundle) }
     /// Create Account or Sign In
     public static var createAccountOrSignIn: String { String(localized: "invitations.createAccountOrSignIn", bundle: L10nRuntime.bundle) }
+    /// Decline
+    public static var decline: String { String(localized: "invitations.decline", bundle: L10nRuntime.bundle) }
     /// You don't have any pending team invitations at the moment.
     public static var emptyDescription: String { String(localized: "invitations.emptyDescription", bundle: L10nRuntime.bundle) }
     /// No pending invitations

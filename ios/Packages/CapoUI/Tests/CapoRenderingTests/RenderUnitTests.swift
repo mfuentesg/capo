@@ -91,7 +91,11 @@ import UIKit
     let song = RenderedSong(segments: [.normal(SongBody(lines: lines))])
     _ = height(of: song, width: 1000, columns: 2)  // warm up
     let clock = ContinuousClock()
-    let elapsed = clock.measure { _ = height(of: song, width: 1000, columns: 2) }
+    // Best of three: other suites run in parallel on the same runner, so a single sample can be
+    // inflated by scheduling noise unrelated to layout cost.
+    let elapsed = (0..<3).map { _ in
+      clock.measure { _ = height(of: song, width: 1000, columns: 2) }
+    }.min()!
     print("WP7a perf: 300-line hosted layout = \(elapsed)")
     // Coarse guard only: debug build on a simulator, hosted layout. The real 16 ms/frame budget
     // must be measured with a Release build on a device (see ios/docs/wp-notes/WP7a.md).

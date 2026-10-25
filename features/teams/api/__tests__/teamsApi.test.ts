@@ -1,4 +1,10 @@
-import { getTeamsWithClient, getTeamInvitations } from "../teamsApi"
+import {
+  getTeamsWithClient,
+  getTeamInvitations,
+  getPendingInvitations,
+  declineTeamInvitation,
+  resendTeamInvitation
+} from "../teamsApi"
 
 function makeTeamRow(overrides: {
   all_members?: [{ count: number }] | null
@@ -205,5 +211,43 @@ describe("getTeamInvitations", () => {
     const { supabase } = makeSupabase({ data: null, error: new Error("db error") })
 
     await expect(getTeamInvitations(supabase as never, "team-1")).rejects.toThrow("db error")
+  })
+})
+
+describe("invitation RPCs", () => {
+  const row = {
+    id: "i1",
+    team_id: "t1",
+    email: "a@b.co",
+    role: "member",
+    token: "tok",
+    invited_by: "u1",
+    expires_at: "2026-02-01T00:00:00Z",
+    accepted_at: null,
+    created_at: "2026-01-01T00:00:00Z",
+    team_name: "Band",
+    inviter_name: "Ana"
+  }
+
+  it("lists the invitee's pending invitations through the RPC", async () => {
+    const rpc = jest.fn().mockResolvedValue({ data: [row], error: null })
+    const result = await getPendingInvitations({ rpc } as never)
+    expect(rpc).toHaveBeenCalledWith("get_my_pending_invitations")
+    expect(result[0]).toMatchObject({ id: "i1", teamName: "Band", inviterName: "Ana", token: "tok" })
+    expect(result[0]).not.toHaveProperty("team_name")
+  })
+
+  it("declines by token", async () => {
+    const rpc = jest.fn().mockResolvedValue({ data: true, error: null })
+    expect(await declineTeamInvitation({ rpc } as never, "tok")).toBe(true)
+    expect(rpc).toHaveBeenCalledWith("decline_team_invitation", { p_token: "tok" })
+  })
+
+  it("resends by id and surfaces errors", async () => {
+    const rpc = jest.fn().mockResolvedValue({ data: { id: "i2" }, error: null })
+    expect(await resendTeamInvitation({ rpc } as never, "i1")).toEqual({ id: "i2" })
+    expect(rpc).toHaveBeenCalledWith("resend_team_invitation", { p_invitation_id: "i1" })
+    const failing = jest.fn().mockResolvedValue({ data: null, error: new Error("nope") })
+    await expect(resendTeamInvitation({ rpc: failing } as never, "i1")).rejects.toThrow("nope")
   })
 })

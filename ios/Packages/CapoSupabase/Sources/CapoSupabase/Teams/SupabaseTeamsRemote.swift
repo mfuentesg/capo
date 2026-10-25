@@ -37,14 +37,11 @@ public final class SupabaseTeamsRemote: TeamsRemote {
     }
   }
 
-  public func pendingInvitations(email: String) async throws -> [PendingInvitation] {
+  public func pendingInvitations() async throws -> [PendingInvitation] {
+    // An RPC: the team_invitations SELECT policy only shows rows to members of the inviting team.
     try await run {
-      let rows: [PendingInvitationRow] = try await client.from("team_invitations")
-        .select("*, team:teams(name), inviter:profiles(full_name,email)")
-        .ilike("email", pattern: Self.escapeLikePattern(email))
-        .is("accepted_at", value: nil)
-        .gt("expires_at", value: ServerTimestamp.now().raw)
-        .order("created_at", ascending: false).execute().value
+      let rows: [PendingInvitationRow] = try await client.rpc("get_my_pending_invitations")
+        .execute().value
       return rows.map(\.model)
     }
   }
@@ -113,6 +110,25 @@ public final class SupabaseTeamsRemote: TeamsRemote {
     try await run {
       try await client.from("team_invitations").delete(returning: .minimal)
         .eq("id", value: id.pg).execute()
+    }
+  }
+
+  public func declineInvitation(token: String) async throws {
+    try await run {
+      try await client.rpc("decline_team_invitation", params: ["p_token": token]).execute()
+    }
+  }
+
+  public func resendInvitation(id: UUID) async throws -> TeamInvitation {
+    try await run {
+      let data = try await client.rpc("resend_team_invitation", params: ["p_invitation_id": id.pg])
+        .execute().data
+      let decoder = JSONDecoder()
+      if let row = try? decoder.decode(TeamInvitationRow.self, from: data) { return row.model }
+      guard let row = try decoder.decode([TeamInvitationRow].self, from: data).first else {
+        throw CapoError.server("Failed to resend invitation")
+      }
+      return row.model
     }
   }
 

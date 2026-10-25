@@ -39,11 +39,7 @@ struct GRDBTeamRepository: TeamRepository {
   }
 
   func pendingInvitationsForMe() async throws -> [PendingInvitation] {
-    let email = try await database.writer.read { db in
-      try String.fetchOne(db, sql: "SELECT email FROM profile WHERE id = ?", arguments: [database.userID.dbString])
-    }
-    guard let email, !email.isEmpty else { return [] }
-    return try await online { try await $0.pendingInvitations(email: email) }
+    try await online { try await $0.pendingInvitations() }
   }
 
   // MARK: Online-only mutations (the sync engine pulls the result afterwards)
@@ -70,6 +66,14 @@ struct GRDBTeamRepository: TeamRepository {
 
   func revokeInvitation(id: UUID) async throws {
     try await mutate { try await $0.revokeInvitation(id: id) }
+  }
+
+  func declineInvitation(token: String) async throws {
+    try await mutate { try await $0.declineInvitation(token: token) }
+  }
+
+  func resendInvitation(id: UUID) async throws -> TeamInvitation {
+    try await mutate { try await $0.resendInvitation(id: id) }
   }
 
   func acceptInvitation(token: String) async throws -> TeamID {

@@ -306,46 +306,51 @@ export async function removeTeamMember(
   if (error) throw error
 }
 
-/**
- * Team invitation with related data
- */
-interface InvitationWithRelations extends Tables<"team_invitations"> {
-  team: { name: string } | null
-  inviter: { full_name: string | null; email: string | null } | null
+type PendingInvitationRow = Database["public"]["Functions"]["get_my_pending_invitations"]["Returns"][number]
+
+export function mapPendingInvitation(row: PendingInvitationRow): PendingInvitation {
+  const { team_name, inviter_name, ...invitation } = row
+  return { ...invitation, teamName: team_name, inviterName: inviter_name }
 }
 
 /**
- * Fetches all pending invitations for the current user by email.
+ * Fetches all pending invitations for the current user by email. Goes through an RPC because the
+ * team_invitations SELECT policy only exposes rows to members of the inviting team.
  */
 export async function getPendingInvitations(
   supabase: SupabaseClient<Database>
 ): Promise<PendingInvitation[]> {
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
-
-  if (!user?.email) return []
-
-  const { data, error } = await supabase
-    .from("team_invitations")
-    .select(
-      `
-      *,
-      team:teams(name),
-      inviter:profiles(full_name, email)
-    `
-    )
-    .ilike("email", user.email)
-    .is("accepted_at", null)
-    .gt("expires_at", new Date().toISOString())
-    .order("created_at", { ascending: false })
+  const { data, error } = await supabase.rpc("get_my_pending_invitations")
 
   if (error) throw error
+  return (data ?? []).map(mapPendingInvitation)
+}
 
-  const invitations = (data ?? []) as unknown as InvitationWithRelations[]
-  return invitations.map((inv) => ({
-    ...inv,
-    teamName: inv.team?.name ?? undefined,
-    inviterName: inv.inviter?.full_name ?? inv.inviter?.email ?? "A team member"
-  }))
+/**
+ * Declines (removes) the current user's own invitation. Returns false when nothing matched.
+ */
+export async function declineTeamInvitation(
+  supabase: SupabaseClient<Database>,
+  token: string
+): Promise<boolean> {
+  const { data, error } = await supabase.rpc("decline_team_invitation", { p_token: token })
+
+  if (error) throw error
+  return data
+}
+
+/**
+ * Replaces an invitation with a fresh one (new token and expiry) in a single transaction.
+ */
+export async function resendTeamInvitation(
+  supabase: SupabaseClient<Database>,
+  invitationId: string
+): Promise<Tables<"team_invitations">> {
+  const { data, error } = await supabase.rpc("resend_team_invitation", {
+    p_invitation_id: invitationId
+  })
+
+  if (error) throw error
+  if (!data) throw new Error("Failed to resend invitation")
+  return data
 }

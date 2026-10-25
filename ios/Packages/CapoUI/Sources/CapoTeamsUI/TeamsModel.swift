@@ -171,11 +171,10 @@ final class TeamDetailModel: OnlineActionModel {
     }
   }
 
-  /// The contract has no resend call: an expired invitation is replaced by a fresh one.
+  /// Replaces the invitation with a fresh one in a single server transaction.
   func resend(_ repo: any TeamRepository, teamID: TeamID, invitation: TeamInvitation) async {
     let ok = await perform(failure: L10n.Toasts.error) {
-      try await repo.revokeInvitation(id: invitation.id)
-      _ = try await repo.invite(email: invitation.email, role: invitation.role, teamID: teamID)
+      _ = try await repo.resendInvitation(id: invitation.id)
     }
     if ok { await load(repo, teamID: teamID) }
   }
@@ -216,10 +215,10 @@ final class PendingInvitationsModel: OnlineActionModel {
     }
   }
 
-  /// There is no decline call in the contract; declining removes the invitation like a revoke.
+  /// Declining goes through its own RPC: RLS only lets team admins delete invitation rows.
   func decline(_ repo: any TeamRepository, _ item: PendingInvitation) async {
     if await perform(failure: L10n.Toasts.error, {
-      try await repo.revokeInvitation(id: item.invitation.id)
+      try await repo.declineInvitation(token: item.invitation.token)
     }) {
       items.removeAll { $0.id == item.id }
     }

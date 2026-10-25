@@ -193,8 +193,9 @@ public struct FakeTeamsRemote: TeamsRemote {
     await backend.snapshot().invitations.filter { $0.teamID == teamID && $0.acceptedAt == nil }
   }
 
-  public func pendingInvitations(email: String) async throws -> [PendingInvitation] {
+  public func pendingInvitations() async throws -> [PendingInvitation] {
     let state = await backend.snapshot()
+    let email = state.profile?.email ?? ""
     return state.invitations.filter { $0.email == email && $0.acceptedAt == nil }.map { invitation in
       PendingInvitation(
         invitation: invitation,
@@ -252,6 +253,24 @@ public struct FakeTeamsRemote: TeamsRemote {
 
   public func revokeInvitation(id: UUID) async throws {
     await backend.mutate { state in state.invitations.removeAll { $0.id == id } }
+  }
+
+  public func declineInvitation(token: String) async throws {
+    await backend.mutate { state in state.invitations.removeAll { $0.token == token } }
+  }
+
+  public func resendInvitation(id: UUID) async throws -> TeamInvitation {
+    try await backend.mutate { state in
+      guard let index = state.invitations.firstIndex(where: { $0.id == id }) else {
+        throw CapoError.notFound
+      }
+      var fresh = state.invitations[index]
+      fresh.id = UUID()
+      fresh.token = UUID().uuidString
+      fresh.expiresAt = FakeSeed.timestamp(minutesAgo: -7 * 24 * 60)
+      state.invitations[index] = fresh
+      return fresh
+    }
   }
 
   public func acceptInvitation(token: String) async throws -> TeamID {

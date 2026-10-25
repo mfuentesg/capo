@@ -332,7 +332,7 @@ describe("upsertUserPreferencesAction", () => {
     expect(upsertUserPreferencesApi).not.toHaveBeenCalled()
   })
 
-  it("calls upsertUserPreferences with supabase, userId, and preferences", async () => {
+  it("calls upsertUserPreferences with supabase and preferences", async () => {
     const prefs = { lyricsColumns: 1 as const }
     const mockSupabase = {
       auth: { getUser: jest.fn().mockResolvedValue({ data: { user: { id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } } }) }
@@ -342,7 +342,7 @@ describe("upsertUserPreferencesAction", () => {
 
     const result = await upsertUserPreferencesAction(prefs)
 
-    expect(upsertUserPreferencesApi).toHaveBeenCalledWith(mockSupabase, "cccccccc-cccc-4ccc-8ccc-cccccccccccc", prefs)
+    expect(upsertUserPreferencesApi).toHaveBeenCalledWith(mockSupabase, prefs)
     expect(result).toEqual(prefs)
   })
 })

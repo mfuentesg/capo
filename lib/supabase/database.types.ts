@@ -632,6 +632,7 @@ export type Database = {
         Returns: undefined
       }
       cleanup_expired_shares: { Args: never; Returns: number }
+      decline_team_invitation: { Args: { p_token: string }; Returns: boolean }
       create_team_with_owner: {
         Args: {
           team_icon?: string
@@ -685,6 +686,22 @@ export type Database = {
         }
         Returns: boolean
       }
+      get_my_pending_invitations: {
+        Args: never
+        Returns: {
+          accepted_at: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          invited_by: string
+          inviter_name: string
+          role: Database["public"]["Enums"]["team_role_enum"]
+          team_id: string
+          team_name: string
+          token: string
+        }[]
+      }
       invite_team_member: {
         Args: {
           member_email: string
@@ -718,9 +735,30 @@ export type Database = {
         Args: { p_key: string; p_user_id: string; p_value: string }
         Returns: undefined
       }
+      merge_user_preferences: { Args: { p_patch: Json }; Returns: Json }
       remove_team_member: {
         Args: { target_team_id: string; target_user_id: string }
         Returns: undefined
+      }
+      resend_team_invitation: {
+        Args: { p_invitation_id: string }
+        Returns: {
+          accepted_at: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          invited_by: string
+          role: Database["public"]["Enums"]["team_role_enum"]
+          team_id: string
+          token: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "team_invitations"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       transfer_team_ownership: {
         Args: { new_owner_id: string; target_team_id: string }

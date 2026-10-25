@@ -25,6 +25,9 @@ export {
   getTeamInvitations,
   acceptTeamInvitation,
   deleteTeamInvitation,
+  getPendingInvitations,
+  declineTeamInvitation,
+  resendTeamInvitation,
   changeTeamMemberRole,
   transferTeamOwnership
 } from "./teamsApi"

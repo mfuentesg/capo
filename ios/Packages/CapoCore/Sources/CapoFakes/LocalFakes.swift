@@ -253,8 +253,7 @@ public struct FakeTeamRepository: TeamRepository {
     try await remote.invitations(teamID: teamID)
   }
   public func pendingInvitationsForMe() async throws -> [PendingInvitation] {
-    let email = await backend.snapshot().profile?.email ?? ""
-    return try await remote.pendingInvitations(email: email)
+    try await remote.pendingInvitations()
   }
   public func createTeam(name: String, icon: String?, isPublic: Bool) async throws -> Team {
     try await remote.createTeam(name: name, icon: icon, isPublic: isPublic)
@@ -268,6 +267,12 @@ public struct FakeTeamRepository: TeamRepository {
     try await remote.invite(email: email, role: role, teamID: teamID)
   }
   public func revokeInvitation(id: UUID) async throws { try await remote.revokeInvitation(id: id) }
+  public func declineInvitation(token: String) async throws {
+    try await remote.declineInvitation(token: token)
+  }
+  public func resendInvitation(id: UUID) async throws -> TeamInvitation {
+    try await remote.resendInvitation(id: id)
+  }
   public func acceptInvitation(token: String) async throws -> TeamID {
     try await remote.acceptInvitation(token: token)
   }

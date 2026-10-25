@@ -169,7 +169,7 @@ struct SongPerformanceScreen: View {
       if let song = model.song {
         stage(song)
       } else if model.isLoaded {
-        EmptyStateView(title: L10n.Chords.notFound, message: nil, systemImage: "music.note")
+        EmptyStateView(title: L10n.Chords.notFound, message: nil, icon: .music)
       } else {
         ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity)
       }
@@ -254,7 +254,7 @@ struct SongPerformanceScreen: View {
   @ViewBuilder
   private func content(_ song: Song) -> some View {
     if (song.lyrics ?? "").isEmpty {
-      EmptyStateView(title: L10n.Songs.noLyrics, message: nil, systemImage: "music.note.list")
+      EmptyStateView(title: L10n.Songs.noLyrics, message: nil, icon: .listMusic)
     } else {
       PerformanceScrollView(
         proxy: scrollProxy,

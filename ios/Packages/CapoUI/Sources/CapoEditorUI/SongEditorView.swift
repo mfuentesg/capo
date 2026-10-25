@@ -103,13 +103,13 @@ public struct SongEditorView: View {
 
   @ViewBuilder private var content: some View {
     if isViewer {
-      EmptyStateView(title: EditorStrings.viewerNotice, message: nil, systemImage: "lock")
+      EmptyStateView(title: EditorStrings.viewerNotice, message: nil, icon: .lock)
     } else {
       switch model.loadState {
       case .loading:
         ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity)
       case .missing:
-        EmptyStateView(title: EditorStrings.notFound, message: nil, systemImage: "music.note")
+        EmptyStateView(title: EditorStrings.notFound, message: nil, icon: .music)
       case .ready:
         GeometryReader { geo in
           if sizeClass == .regular { regularLayout(containerWidth: geo.size.width) } else { editorColumn }

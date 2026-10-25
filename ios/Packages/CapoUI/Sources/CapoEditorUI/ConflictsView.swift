@@ -88,7 +88,7 @@ public struct ConflictsView: View {
               VStack(alignment: .leading, spacing: 4) {
                 Text(EditorStrings.failedTitle).font(CapoFont.style(.headline))
                 Text(EditorStrings.failedHint).font(CapoFont.style(.footnote))
-                  .foregroundStyle(.secondary).textCase(nil)
+                  .foregroundStyle(CapoTheme.mutedForeground).textCase(nil)
               }
               .padding(.vertical, 4)
             }
@@ -124,7 +124,7 @@ private struct FailedOperationRow: View {
       Text(operation.subject ?? EditorStrings.failedKind(operation.kind))
         .font(CapoFont.style(.headline))
       Text(EditorStrings.failedKind(operation.kind))
-        .font(CapoFont.style(.subheadline)).foregroundStyle(.secondary)
+        .font(CapoFont.style(.subheadline)).foregroundStyle(CapoTheme.mutedForeground)
       if let error = operation.error {
         Text(error).font(CapoFont.style(.caption)).foregroundStyle(.orange).lineLimit(3)
       }
@@ -153,7 +153,7 @@ private struct ConflictCard: View {
         Text(EditorStrings.mine).font(CapoFont.style(.caption, weight: .semibold)).frame(maxWidth: .infinity, alignment: .leading)
         Text(EditorStrings.theirs).font(CapoFont.style(.caption, weight: .semibold)).frame(maxWidth: .infinity, alignment: .leading)
       }
-      .foregroundStyle(.secondary)
+      .foregroundStyle(CapoTheme.mutedForeground)
       ForEach(ConflictComparison.fields(local: conflict.local, server: conflict.server)) { field in
         fieldRow(field)
       }
@@ -177,7 +177,7 @@ private struct ConflictCard: View {
   private func fieldRow(_ field: ConflictField) -> some View {
     VStack(alignment: .leading, spacing: 4) {
       HStack {
-        Text(field.label).font(CapoFont.style(.caption)).foregroundStyle(.secondary)
+        Text(field.label).font(CapoFont.style(.caption)).foregroundStyle(CapoTheme.mutedForeground)
         if field.differs {
           Text(EditorStrings.differs).font(CapoFont.style(.caption2, weight: .bold)).foregroundStyle(.orange)
         }

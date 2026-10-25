@@ -28,6 +28,7 @@ let package = Package(
     .target(
       name: "CapoDesign",
       dependencies: [
+        "CapoIcons",
         .product(name: "CapoCore", package: "CapoCore"),
         .product(name: "CapoChordPro", package: "CapoCore"),
         .product(name: "CapoFakes", package: "CapoCore")

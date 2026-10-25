@@ -125,6 +125,15 @@ import UIKit
     #expect(CapoRadius.base == 10.4 && CapoRadius.md == 8.4 && CapoRadius.xl == 14.4 && CapoRadius.xxl == 16)
   }
 
+  @Test func buttonSizesFollowTheWebVariants() {
+    // components/ui/button.tsx: xs h-6 px-2 text-xs, sm h-8 px-3, default h-9 px-4, lg h-10 px-6.
+    #expect(CapoButtonSize.extraSmall.height == 24 && CapoButtonSize.extraSmall.horizontalPadding == 8)
+    #expect(CapoButtonSize.small.height == 32 && CapoButtonSize.small.horizontalPadding == 12)
+    #expect(CapoButtonSize.regular.height == 36 && CapoButtonSize.regular.horizontalPadding == 16)
+    #expect(CapoButtonSize.large.height == 40 && CapoButtonSize.large.horizontalPadding == 24)
+    #expect(CapoButtonSize.extraSmall.textSize == .xs && CapoButtonSize.regular.textSize == .sm)
+  }
+
   @Test func lyricsAndChordsUseGeistMono() {
     #expect(CapoFont.postScriptName(.regular, mono: true) == "GeistMono-Regular")
     #expect(CapoTextSize.sm.size == 14 && CapoTextSize.xl2.size == 24 && CapoTextSize.px12.lineHeight == nil)

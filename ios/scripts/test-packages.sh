@@ -7,6 +7,9 @@ set -euo pipefail
 IOS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DERIVED="${1:-$IOS_DIR/build/dd-tests}"
 
+echo "==> design tokens (web vs iOS)"
+node "$IOS_DIR/scripts/check-design-tokens.mjs"
+
 for pkg in CapoCore CapoData CapoSupabase; do
   echo "==> swift test ($pkg)"
   (cd "$IOS_DIR/Packages/$pkg" && swift test)

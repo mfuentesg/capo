@@ -125,20 +125,31 @@ nonisolated extension UIColor {
 
 // MARK: - Button styles
 
-/// Visual heights from `components/ui/button.tsx` (h-9, h-8, h-10). The hit area is always at least
-/// `CapoMetrics.minHitTarget` tall; the extra area is invisible.
+/// Visual heights from `components/ui/button.tsx` (h-9, h-8, h-10, xs h-6). The hit area is always at
+/// least `CapoMetrics.minHitTarget` tall; the extra area is invisible.
 public enum CapoButtonSize: Sendable {
-  case regular, small, large
+  case extraSmall, regular, small, large
 
   var height: CGFloat {
     switch self {
+    case .extraSmall: 24
     case .regular: 36
     case .small: 32
     case .large: 40
     }
   }
 
-  var horizontalPadding: CGFloat { self == .large ? 24 : (self == .small ? 12 : 16) }
+  var horizontalPadding: CGFloat {
+    switch self {
+    case .extraSmall: 8
+    case .small: 12
+    case .regular: 16
+    case .large: 24
+    }
+  }
+
+  /// `text-xs` for the xs button, `text-sm` otherwise.
+  var textSize: CapoTextSize { self == .extraSmall ? .xs : .sm }
 }
 
 private struct CapoButtonChrome: ViewModifier {
@@ -149,7 +160,7 @@ private struct CapoButtonChrome: ViewModifier {
     let height = size.height * scale
     let extra = max(0, (CapoMetrics.minHitTarget - height) / 2)
     content
-      .capoText(.sm, weight: .medium)
+      .capoText(size.textSize, weight: .medium)
       .lineLimit(1)
       .padding(.horizontal, size.horizontalPadding * scale)
       .frame(minHeight: height)
@@ -176,10 +187,12 @@ public struct CapoPrimaryButtonStyle: ButtonStyle {
   }
 }
 
-/// The web's `outline` variant: background fill, 1px border, `shadow-xs`.
+/// The web's `outline` variant: background fill, 1px border, `shadow-xs`. In dark mode the fill is
+/// `input/30` (`dark:bg-input/30`, hover `input/50`).
 public struct CapoSecondaryButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var isEnabled
   @Environment(\.capoUIScale) private var scale
+  @Environment(\.colorScheme) private var colorScheme
   let size: CapoButtonSize
   public init(size: CapoButtonSize = .regular) { self.size = size }
   public func makeBody(configuration: Configuration) -> some View {
@@ -187,25 +200,53 @@ public struct CapoSecondaryButtonStyle: ButtonStyle {
     configuration.label
       .foregroundStyle(CapoTheme.foreground)
       .modifier(CapoButtonChrome(size: size))
-      .background(configuration.isPressed ? CapoTheme.accent : CapoTheme.background, in: shape)
+      .background(fill(pressed: configuration.isPressed), in: shape)
       .overlay(shape.strokeBorder(CapoTheme.input, lineWidth: 1))
       .shadow(color: .black.opacity(0.05), radius: 1, y: 1)
       .opacity(isEnabled ? 1 : 0.5)
       .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
   }
+
+  private func fill(pressed: Bool) -> Color {
+    if colorScheme == .dark { return CapoTheme.input.opacity(pressed ? 0.5 : 0.3) }
+    return pressed ? CapoTheme.accent : CapoTheme.background
+  }
 }
 
-/// The web's `destructive` variant.
+/// The web's `ghost` variant: transparent until pressed, then the accent fill (`accent/50` in dark).
+public struct CapoGhostButtonStyle: ButtonStyle {
+  @Environment(\.isEnabled) private var isEnabled
+  @Environment(\.capoUIScale) private var scale
+  @Environment(\.colorScheme) private var colorScheme
+  let size: CapoButtonSize
+  public init(size: CapoButtonSize = .regular) { self.size = size }
+  public func makeBody(configuration: Configuration) -> some View {
+    let shape = RoundedRectangle(cornerRadius: CapoRadius.md * scale, style: .continuous)
+    let pressed = CapoTheme.accent.opacity(colorScheme == .dark ? 0.5 : 1)
+    configuration.label
+      .foregroundStyle(CapoTheme.foreground)  // accent-foreground equals foreground in every palette
+      .modifier(CapoButtonChrome(size: size))
+      .background(configuration.isPressed ? pressed : Color.clear, in: shape)
+      .opacity(isEnabled ? 1 : 0.5)
+      .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
+  }
+}
+
+/// The web's `destructive` variant (`dark:bg-destructive/60`).
 public struct CapoDestructiveButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var isEnabled
   @Environment(\.capoUIScale) private var scale
+  @Environment(\.colorScheme) private var colorScheme
   let size: CapoButtonSize
   public init(size: CapoButtonSize = .regular) { self.size = size }
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .foregroundStyle(Color.white)
       .modifier(CapoButtonChrome(size: size))
-      .background(CapoTheme.destructive, in: RoundedRectangle(cornerRadius: CapoRadius.md * scale, style: .continuous))
+      .background(
+        CapoTheme.destructive.opacity(colorScheme == .dark ? 0.6 : 1),
+        in: RoundedRectangle(cornerRadius: CapoRadius.md * scale, style: .continuous)
+      )
       .opacity(isEnabled ? (configuration.isPressed ? 0.9 : 1) : 0.5)
       .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
   }
@@ -224,6 +265,32 @@ public struct CapoIconButtonStyle: ButtonStyle {
       )
       .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
   }
+}
+
+// MARK: - Text field
+
+private struct CapoFieldModifier: ViewModifier {
+  @Environment(\.capoUIScale) private var scale
+  @Environment(\.colorScheme) private var colorScheme
+  @Environment(\.isEnabled) private var isEnabled
+
+  func body(content: Content) -> some View {
+    let shape = RoundedRectangle(cornerRadius: CapoRadius.md * scale, style: .continuous)
+    content
+      .capoText(.sm)
+      .padding(.horizontal, 12 * scale)
+      .frame(minHeight: CapoMetrics.minHitTarget)
+      // components/ui/input.tsx: transparent, `dark:bg-input/30`, 1px `border-input`, shadow-xs.
+      .background(colorScheme == .dark ? CapoTheme.input.opacity(0.3) : Color.clear, in: shape)
+      .overlay(shape.strokeBorder(CapoTheme.input, lineWidth: 1))
+      .shadow(color: .black.opacity(0.05), radius: 1, y: 1)
+      .opacity(isEnabled ? 1 : 0.5)
+  }
+}
+
+extension View {
+  /// The web `Input` chrome for a `TextField` or a menu-style picker label.
+  public func capoField() -> some View { modifier(CapoFieldModifier()) }
 }
 
 // MARK: - Modifier

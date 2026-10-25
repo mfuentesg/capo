@@ -15,6 +15,7 @@ Needs Xcode 26 or newer.
 
 ```bash
 ios/scripts/build-sim.sh            # app for the simulator, unsigned (derived data in ios/build/dd-sim)
+ios/scripts/check-design-tokens.mjs # web CSS tokens vs iOS palette tables (also run by test-packages.sh)
 ios/scripts/test-packages.sh        # swift test for CapoCore, CapoData, CapoSupabase, then CapoUI on a simulator
 ios/scripts/install-device.sh [iphone|ipad]   # signed build, install and launch on a connected device
 ```

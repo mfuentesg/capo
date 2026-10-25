@@ -1,4 +1,5 @@
 @_exported import CapoChordPro
+import CapoIcons
 import SwiftUI
 import UIKit
 
@@ -167,28 +168,48 @@ public struct SyncStatusBadge: View {
 /// The web's `Empty` block (`components/ui/empty.tsx`): a 40px tinted icon tile, a medium title and a
 /// muted description. `tint` colours the tile (default: muted); `bordered` adds the dashed outline.
 public struct EmptyStateView: View {
+  /// The tile glyph: the web uses a lucide icon; SF Symbols remain for screens not yet converted.
+  enum Glyph { case system(String), lucide(CapoIconName) }
+
   @Environment(\.capoUIScale) private var scale
   let title: String
   let message: String?
-  let systemImage: String
+  let glyph: Glyph
   let tint: Color?
   let bordered: Bool
 
   public init(
     title: String, message: String?, systemImage: String, tint: Color? = nil, bordered: Bool = false
   ) {
+    self.init(title: title, message: message, glyph: .system(systemImage), tint: tint, bordered: bordered)
+  }
+
+  /// Same block with a lucide icon, as on the web (`<EmptyMedia variant="icon"><Icon/></EmptyMedia>`).
+  public init(
+    title: String, message: String?, icon: CapoIconName, tint: Color? = nil, bordered: Bool = false
+  ) {
+    self.init(title: title, message: message, glyph: .lucide(icon), tint: tint, bordered: bordered)
+  }
+
+  init(title: String, message: String?, glyph: Glyph, tint: Color?, bordered: Bool) {
     self.title = title
     self.message = message
-    self.systemImage = systemImage
+    self.glyph = glyph
     self.tint = tint
     self.bordered = bordered
+  }
+
+  @ViewBuilder private var glyphView: some View {
+    switch glyph {
+    case .system(let name): Image(systemName: name).font(.system(size: 24 * scale, weight: .regular))
+    case .lucide(let icon): CapoIcon(icon, size: 24 * scale)
+    }
   }
 
   public var body: some View {
     let tile = RoundedRectangle(cornerRadius: CapoRadius.base * scale, style: .continuous)
     VStack(spacing: 16) {
-      Image(systemName: systemImage)
-        .font(.system(size: 24 * scale, weight: .regular))
+      glyphView
         .foregroundStyle(tint ?? CapoTheme.foreground)
         .frame(width: 40 * scale, height: 40 * scale)
         .background(tint.map { $0.opacity(0.10) } ?? CapoTheme.muted, in: tile)

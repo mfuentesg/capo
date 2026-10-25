@@ -253,7 +253,7 @@ export async function upsertUserPreferencesAction(
     data: { user }
   } = await supabase.auth.getUser()
   if (!user) return null
-  return upsertUserPreferencesApi(supabase, user.id, preferences)
+  return upsertUserPreferencesApi(supabase, preferences)
 }
 
 const cifraClubUrlSchema = z.string().trim().min(1).max(2000)

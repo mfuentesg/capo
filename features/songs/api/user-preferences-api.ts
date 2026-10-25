@@ -92,40 +92,17 @@ export async function getUserProfileData(
 
 export async function upsertUserPreferences(
   supabase: SupabaseClient<Database>,
-  userId: string,
   preferences: UserPreferences
 ): Promise<UserPreferences> {
-  // Merge into the stored JSON so keys this call does not carry (palette, uiFont, chordHand,
-  // or anything a newer client added) are never wiped by a partial update.
-  const { data: current, error: readError } = await supabase
-    .from("profiles")
-    .select("preferences")
-    .eq("id", userId)
-    .single()
-
-  if (readError) throw readError
-
-  const stored =
-    typeof current.preferences === "object" &&
-    current.preferences !== null &&
-    !Array.isArray(current.preferences)
-      ? current.preferences
-      : {}
-
+  // The merge happens in the database (one atomic JSONB `||`), so keys this call does not carry
+  // (palette, uiFont, chordHand, theme, locale, or anything a newer client added) are never wiped
+  // and two concurrent partial updates cannot lose each other.
   const defined = Object.fromEntries(
     Object.entries(preferences).filter(([, value]) => value !== undefined)
   )
 
-  const { data, error } = await supabase
-    .from("profiles")
-    .update({
-      preferences: { ...stored, ...defined },
-      updated_at: new Date().toISOString()
-    })
-    .eq("id", userId)
-    .select("preferences")
-    .single()
+  const { data, error } = await supabase.rpc("merge_user_preferences", { p_patch: defined })
 
   if (error) throw error
-  return mapJsonToPreferences(data.preferences)
+  return mapJsonToPreferences(data)
 }

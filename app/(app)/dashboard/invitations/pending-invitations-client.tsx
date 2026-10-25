@@ -3,7 +3,12 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useUser } from "@/features/auth"
-import { useAcceptTeamInvitation, usePendingInvitations, mapInvitationAcceptError } from "@/features/teams"
+import {
+  useAcceptTeamInvitation,
+  useDeclineTeamInvitation,
+  usePendingInvitations,
+  mapInvitationAcceptError
+} from "@/features/teams"
 import type { PendingInvitation } from "@/features/teams"
 import type { Translations } from "@/lib/i18n/translations"
 import { Button } from "@/components/ui/button"
@@ -59,6 +64,7 @@ export function PendingInvitationsClient({
     error: fetchError
   } = usePendingInvitations(initialInvitations)
   const acceptInvitationMutation = useAcceptTeamInvitation()
+  const declineInvitationMutation = useDeclineTeamInvitation()
   const [error, setError] = useState<string>("")
   const [acceptingId, setAcceptingId] = useState<string | null>(null)
 
@@ -68,6 +74,17 @@ export function PendingInvitationsClient({
       await acceptInvitationMutation.mutateAsync({ token })
     } catch (err) {
       setError(mapInvitationAcceptError(err, t))
+      setAcceptingId(null)
+    }
+  }
+
+  const handleDeclineInvitation = async (token: string, invitationId: string) => {
+    try {
+      setAcceptingId(invitationId)
+      await declineInvitationMutation.mutateAsync({ token })
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t.invitations.loadFailed)
+    } finally {
       setAcceptingId(null)
     }
   }
@@ -217,6 +234,15 @@ export function PendingInvitationsClient({
                             className="w-full text-muted-foreground hover:text-foreground"
                           >
                             {t.invitations.view}
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDeclineInvitation(invitation.token, invitation.id)}
+                            disabled={acceptingId === invitation.id}
+                            className="w-full text-muted-foreground hover:text-destructive"
+                          >
+                            {t.invitations.decline}
                           </Button>
                         </div>
                       )}

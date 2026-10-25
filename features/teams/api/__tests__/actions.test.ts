@@ -5,11 +5,13 @@ import {
   changeTeamMemberRole as changeTeamMemberRoleApi,
   createTeam as createTeamApi,
   deleteTeam as deleteTeamApi,
+  declineTeamInvitation as declineTeamInvitationApi,
   deleteTeamInvitation as deleteTeamInvitationApi,
   getPendingInvitations as getPendingInvitationsApi,
   inviteTeamMember as inviteTeamMemberApi,
   leaveTeam as leaveTeamApi,
   removeTeamMember as removeTeamMemberApi,
+  resendTeamInvitation as resendTeamInvitationApi,
   transferTeamOwnership as transferTeamOwnershipApi,
   updateTeam as updateTeamApi
 } from "../teamsApi"
@@ -17,12 +19,14 @@ import {
   acceptTeamInvitationAction,
   changeTeamMemberRoleAction,
   createTeamAction,
+  declineTeamInvitationAction,
   deleteTeamAction,
   deleteTeamInvitationAction,
   getPendingInvitationsAction,
   inviteTeamMemberAction,
   leaveTeamAction,
   removeTeamMemberAction,
+  resendTeamInvitationAction,
   transferTeamOwnershipAction,
   updateTeamAction
 } from "../actions"
@@ -46,7 +50,9 @@ jest.mock("../teamsApi", () => ({
   removeTeamMember: jest.fn(),
   changeTeamMemberRole: jest.fn(),
   deleteTeamInvitation: jest.fn(),
-  getPendingInvitations: jest.fn()
+  getPendingInvitations: jest.fn(),
+  declineTeamInvitation: jest.fn(),
+  resendTeamInvitation: jest.fn()
 }))
 
 describe("team actions", () => {
@@ -241,6 +247,33 @@ describe("getPendingInvitationsAction", () => {
 
     expect(getPendingInvitationsApi).toHaveBeenCalledWith(mockSupabase)
     expect(result).toEqual(invitations)
+  })
+})
+
+describe("declineTeamInvitationAction", () => {
+  it("declines through the RPC and refreshes the invitations page", async () => {
+    const mockSupabase = { id: "supabase-client" }
+    ;(createClient as jest.Mock).mockResolvedValue(mockSupabase)
+    ;(declineTeamInvitationApi as jest.Mock).mockResolvedValue(true)
+
+    const token = "a".repeat(32)
+    expect(await declineTeamInvitationAction(token)).toBe(true)
+    expect(declineTeamInvitationApi).toHaveBeenCalledWith(mockSupabase, token)
+    expect(revalidatePath).toHaveBeenCalledWith("/dashboard/invitations")
+  })
+})
+
+describe("resendTeamInvitationAction", () => {
+  it("resends atomically and revalidates the team page", async () => {
+    const mockSupabase = { id: "supabase-client" }
+    ;(createClient as jest.Mock).mockResolvedValue(mockSupabase)
+    ;(resendTeamInvitationApi as jest.Mock).mockResolvedValue({ id: "i2", team_id: "t1" })
+
+    const id = "11111111-1111-4111-8111-111111111111"
+    const result = await resendTeamInvitationAction(id)
+    expect(resendTeamInvitationApi).toHaveBeenCalledWith(mockSupabase, id)
+    expect(result).toEqual({ id: "i2", team_id: "t1" })
+    expect(revalidatePath).toHaveBeenCalledWith("/dashboard/teams/t1")
   })
 })
 

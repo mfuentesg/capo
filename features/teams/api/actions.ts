@@ -16,7 +16,9 @@ import {
   removeTeamMember as removeTeamMemberApi,
   changeTeamMemberRole as changeTeamMemberRoleApi,
   deleteTeamInvitation as deleteTeamInvitationApi,
-  getPendingInvitations as getPendingInvitationsApi
+  getPendingInvitations as getPendingInvitationsApi,
+  declineTeamInvitation as declineTeamInvitationApi,
+  resendTeamInvitation as resendTeamInvitationApi
 } from "./teamsApi"
 import type { PendingInvitation } from "../types"
 
@@ -111,6 +113,24 @@ export async function deleteTeamInvitationAction(invitationId: string): Promise<
   // We don't have teamId here easily, but we can revalidate the invitations dashboard
   await deleteTeamInvitationApi(supabase, invitationId)
   revalidatePath("/dashboard/invitations")
+}
+
+export async function resendTeamInvitationAction(
+  invitationId: string
+): Promise<Tables<"team_invitations">> {
+  uuidSchema.parse(invitationId)
+  const supabase = await createClient()
+  const invitation = await resendTeamInvitationApi(supabase, invitationId)
+  revalidatePath(`/dashboard/teams/${invitation.team_id}`)
+  return invitation
+}
+
+export async function declineTeamInvitationAction(token: string): Promise<boolean> {
+  tokenSchema.parse(token)
+  const supabase = await createClient()
+  const declined = await declineTeamInvitationApi(supabase, token)
+  revalidatePath("/dashboard/invitations")
+  return declined
 }
 
 export async function getPendingInvitationsAction(): Promise<PendingInvitation[]> {

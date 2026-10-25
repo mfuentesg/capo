@@ -8,6 +8,7 @@ export {
   useTransferAndLeave,
   useInviteTeamMember,
   useAcceptTeamInvitation,
+  useDeclineTeamInvitation,
   usePendingInvitations,
   useRemoveTeamMember,
   useChangeTeamMemberRole,

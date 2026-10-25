@@ -1,4 +1,5 @@
 import CapoCore
+import CapoDesign
 import CapoShellUI
 import SwiftUI
 
@@ -14,6 +15,7 @@ public struct CapoAppScene: Scene {
     WindowGroup {
       CapoRootView(dependencies: dependencies)
         .modifier(StageManagerMinimumSize())
+        .liveLanguage()
         .onOpenURL { url in
           let auth = dependencies.auth
           Task { _ = await auth.handleOpenURL(url) }

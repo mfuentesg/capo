@@ -31,18 +31,34 @@ final class SettingsModel {
     String((Bundle.main.preferredLocalizations.first ?? "en").prefix(2))
   }
 
-  /// Stored `preferences.locale`, else the running language.
-  var currentLanguageCode: String { preferences.locale ?? Self.runningLanguageCode }
-
-  /// The in-app strings follow the process language, so the choice is stored for the next launch.
-  static func storeLanguage(_ code: String, defaults: UserDefaults = .standard) {
-    defaults.set([code], forKey: "AppleLanguages")
+  /// The in-app choice, else the stored `preferences.locale`, else the process language.
+  var currentLanguageCode: String {
+    AppLanguage.shared.code ?? preferences.locale ?? Self.runningLanguageCode
   }
 
   static func currentLanguageName(locale: Locale = .current) -> String {
     let code = Bundle.main.preferredLocalizations.first ?? locale.identifier
     let name = locale.localizedString(forIdentifier: code) ?? code
     return name.prefix(1).uppercased() + name.dropFirst()
+  }
+
+  /// Names of owned teams that other people also belong to; deleting the account deletes them.
+  var sharedOwnedTeams: [String] = []
+
+  func loadSharedOwnedTeams(_ teams: any TeamRepository) async {
+    var owned: [Team] = []
+    for await list in teams.teams() {
+      owned = list.filter { $0.role == .owner }.map(\.team)
+      break
+    }
+    var shared: [String] = []
+    for team in owned {
+      // Offline or failing lookups just skip the team; the generic confirmation still applies.
+      if let members = try? await teams.members(teamID: team.id), members.count > 1 {
+        shared.append(team.name)
+      }
+    }
+    sharedOwnedTeams = shared
   }
 
   static func appVersion(bundle: Bundle = .main) -> String {

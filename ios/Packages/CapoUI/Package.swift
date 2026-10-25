@@ -85,6 +85,7 @@ let package = Package(
     .testTarget(name: "CapoDesignTests", dependencies: ["CapoDesign"]),
     .testTarget(name: "CapoIconsTests", dependencies: ["CapoIcons"]),
     .testTarget(name: "CapoAuthUITests", dependencies: ["CapoAuthUI"]),
+    .testTarget(name: "CapoSettingsUITests", dependencies: ["CapoSettingsUI"]),
     .testTarget(name: "CapoShellUITests", dependencies: ["CapoShellUI"]),
     .testTarget(name: "CapoRenderingTests", dependencies: ["CapoRendering"]),
     .testTarget(name: "CapoLibraryUITests", dependencies: ["CapoLibraryUI"]),

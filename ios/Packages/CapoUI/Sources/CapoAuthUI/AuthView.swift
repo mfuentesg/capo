@@ -1,7 +1,8 @@
 import CapoDesign
 import SwiftUI
 
-/// Signed-out screen: Google plus email/password. Sign-up appears only when the shell allows it
+/// Signed-out screen, laid out like the web login: Google and Apple (outline buttons), an
+/// uppercase divider, then email/password. Sign-up appears only when the shell allows it
 /// (`AuthActions.allowsSignUp`, i.e. environment != production).
 public struct AuthView: View {
   @Environment(\.authActions) private var actions
@@ -18,6 +19,7 @@ public struct AuthView: View {
         header
         VStack(spacing: 16) {
           googleButton
+          appleButton
           devSessionButton
           divider
           form
@@ -44,7 +46,7 @@ public struct AuthView: View {
         .accessibilityHidden(true)
       Text("Capo")
         .font(CapoFont.style(.largeTitle, weight: .bold))
-      Text(L10n.Ios.Auth.tagline)
+      Text(L10n.Auth.tagline)
         .font(CapoFont.style(.subheadline))
         .foregroundStyle(CapoTheme.subtext)
         .multilineTextAlignment(.center)
@@ -55,14 +57,29 @@ public struct AuthView: View {
     Button {
       Task { await model.signInWithGoogle(with: actions) }
     } label: {
-      Label(
-        L10n.Ios.Auth.google,
-        systemImage: "globe"
-      )
-      .font(CapoFont.style(.headline))
+      HStack(spacing: 12) {
+        Text("G").font(CapoFont.ui(17, weight: .bold)).accessibilityHidden(true)
+        Text(model.isBusy ? L10n.Auth.loggingIn : L10n.Auth.loginWith(provider: L10n.Common.google))
+          .font(CapoFont.style(.headline))
+      }
       .frame(maxWidth: .infinity, minHeight: CapoMetrics.minTouchTarget)
     }
-    .buttonStyle(CapoPrimaryButtonStyle())
+    .buttonStyle(CapoSecondaryButtonStyle())
+    .disabled(model.isBusy)
+  }
+
+  /// Apple's guideline: same prominence as the other providers, the system logo, never smaller.
+  private var appleButton: some View {
+    Button {
+      Task { await model.signInWithApple(with: actions) }
+    } label: {
+      HStack(spacing: 12) {
+        Image(systemName: "applelogo").font(CapoFont.ui(17, weight: .semibold)).accessibilityHidden(true)
+        Text(L10n.Auth.loginWith(provider: "Apple")).font(CapoFont.style(.headline))
+      }
+      .frame(maxWidth: .infinity, minHeight: CapoMetrics.minTouchTarget)
+    }
+    .buttonStyle(CapoSecondaryButtonStyle())
     .disabled(model.isBusy)
   }
 
@@ -84,8 +101,9 @@ public struct AuthView: View {
   private var divider: some View {
     HStack {
       Rectangle().fill(.separator).frame(height: 1)
-      Text(L10n.Ios.Auth.or)
-        .font(CapoFont.style(.footnote))
+      Text(L10n.Auth.orContinueWith.uppercased())
+        .font(CapoFont.style(.caption2, weight: .medium))
+        .tracking(0.8)
         .foregroundStyle(CapoTheme.subtext)
       Rectangle().fill(.separator).frame(height: 1)
     }

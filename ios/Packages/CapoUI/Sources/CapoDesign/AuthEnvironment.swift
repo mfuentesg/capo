@@ -4,6 +4,7 @@ import SwiftUI
 /// this through the environment (the frozen Environment.swift has no auth entry).
 public struct AuthActions: Sendable {
   public var signInWithGoogle: @Sendable () async throws -> Void
+  public var signInWithApple: @Sendable () async throws -> Void
   public var signIn: @Sendable (_ email: String, _ password: String) async throws -> Void
   public var signUp: @Sendable (_ email: String, _ password: String) async throws -> Void
   /// Sign-up is offered only when the environment is not production.
@@ -13,6 +14,7 @@ public struct AuthActions: Sendable {
 
   public init(
     signInWithGoogle: @escaping @Sendable () async throws -> Void = {},
+    signInWithApple: @escaping @Sendable () async throws -> Void = {},
     signIn: @escaping @Sendable (String, String) async throws -> Void = { _, _ in },
     signUp: @escaping @Sendable (String, String) async throws -> Void = { _, _ in },
     allowsSignUp: Bool = false,
@@ -20,6 +22,7 @@ public struct AuthActions: Sendable {
   ) {
     self.devSignIn = devSignIn
     self.signInWithGoogle = signInWithGoogle
+    self.signInWithApple = signInWithApple
     self.signIn = signIn
     self.signUp = signUp
     self.allowsSignUp = allowsSignUp

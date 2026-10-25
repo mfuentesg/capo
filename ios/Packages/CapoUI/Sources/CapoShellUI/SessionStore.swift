@@ -33,6 +33,7 @@ final class SessionStore {
     let environment = dependencies.config?.environmentName
     return AuthActions(
       signInWithGoogle: { try await auth.signInWithGoogle() },
+      signInWithApple: { try await auth.signInWithApple() },
       signIn: { try await auth.signIn(email: $0, password: $1) },
       signUp: { try await auth.signUp(email: $0, password: $1) },
       allowsSignUp: Self.allowsSignUp(environmentName: environment, isDemo: dependencies.isDemo),

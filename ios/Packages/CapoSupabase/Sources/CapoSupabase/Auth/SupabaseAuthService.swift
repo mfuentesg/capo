@@ -59,6 +59,24 @@ public final class SupabaseAuthService: AuthService {
     }
   }
 
+  /// Native Sign in with Apple: the raw nonce goes to Supabase, its hash to Apple. Cancelling the
+  /// system sheet surfaces as `CancellationError`.
+  public func signInWithApple() async throws {
+    #if canImport(AuthenticationServices) && canImport(UIKit)
+      let nonce = AppleNonce.random()
+      let credential = try await AppleSignInCoordinator.authorize(hashedNonce: AppleNonce.sha256(nonce))
+      try await client.auth.signInWithIdToken(
+        credentials: OpenIDConnectCredentials(
+          provider: .apple, idToken: credential.identityToken, nonce: nonce))
+      // Apple sends the name once; keep it so the profile card has one on later sign-ins.
+      if let name = credential.fullName {
+        _ = try? await client.auth.update(user: UserAttributes(data: ["full_name": .string(name)]))
+      }
+    #else
+      throw CapoError.permissionDenied
+    #endif
+  }
+
   public func signIn(email: String, password: String) async throws {
     try await client.auth.signIn(email: email, password: password)
   }

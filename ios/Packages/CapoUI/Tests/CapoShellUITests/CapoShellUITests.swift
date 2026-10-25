@@ -176,12 +176,8 @@ import Testing
     #expect(calls.count == 1)
   }
 
-  @Test func releaseBuildsKeepDeletionHidden() {
-    #if DEBUG
-      #expect(ShellSettings.allowsAccountDeletion)
-    #else
-      #expect(!ShellSettings.allowsAccountDeletion)
-    #endif
+  @Test func accountDeletionShipsInEveryBuild() {
+    #expect(ShellSettings.allowsAccountDeletion)
   }
 }
 

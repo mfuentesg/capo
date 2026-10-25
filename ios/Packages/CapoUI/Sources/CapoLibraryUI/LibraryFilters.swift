@@ -1,22 +1,21 @@
 import CapoDesign
 import Foundation
 
-/// BPM filter bucket with the thresholds the web filter actually applies (`song-list.tsx`):
-/// slow < 100, medium 100...140, fast > 140. (The web's help text says 90/120; its badges use 90/120/130.)
+/// BPM filter bucket with the web's shared thresholds (`lib/bpm.ts`): slow < 90, medium 90...120, fast > 120.
 nonisolated enum BPMBucket: String, CaseIterable, Hashable, Sendable {
   case slow, medium, fast
 
   var range: ClosedRange<Int> {
     switch self {
-    case .slow: 0...99
-    case .medium: 100...140
-    case .fast: 141...Int(Int32.max)
+    case .slow: 0...89
+    case .medium: 90...120
+    case .fast: 121...Int(Int32.max)
     }
   }
 
   /// Help text matching the applied thresholds.
   static func description(slow: String, medium: String, fast: String) -> String {
-    "\(slow): <100 • \(medium): 100-140 • \(fast): >140"
+    "\(slow): <90 • \(medium): 90-120 • \(fast): >120"
   }
 }
 

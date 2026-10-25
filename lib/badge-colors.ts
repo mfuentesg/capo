@@ -13,7 +13,7 @@ export function getKeyColorClasses(_key: string): string {
  */
 export function getBpmColorClasses(bpm: number): string {
   if (bpm < 90) return "text-muted-foreground bg-muted border-border"
-  if (bpm <= 130)
+  if (bpm <= 120)
     return "text-[var(--accent-activity)] bg-[color-mix(in_oklch,var(--accent-activity)_10%,transparent)] border-[color-mix(in_oklch,var(--accent-activity)_30%,transparent)]"
   return "text-rose-600 dark:text-rose-400 bg-rose-500/10 border-rose-500/30"
 }

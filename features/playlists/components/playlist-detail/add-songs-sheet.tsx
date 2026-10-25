@@ -1,5 +1,6 @@
 "use client"
 
+import { BPM_FAST_ABOVE, BPM_SLOW_BELOW } from "@/lib/bpm"
 import { useMemo, useState } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
@@ -83,10 +84,10 @@ export function AddSongsSheet({
       const matchesBpm =
         filterBpm === "all" ||
         (filterBpm === "slow"
-          ? bpm < 100
+          ? bpm < BPM_SLOW_BELOW
           : filterBpm === "medium"
-            ? bpm >= 100 && bpm <= 140
-            : bpm > 140)
+            ? bpm >= BPM_SLOW_BELOW && bpm <= BPM_FAST_ABOVE
+            : bpm > BPM_FAST_ABOVE)
 
       return matchesSearch && matchesKey && matchesBpm
     })

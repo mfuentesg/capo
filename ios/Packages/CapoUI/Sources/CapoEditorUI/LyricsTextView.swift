@@ -1,3 +1,4 @@
+import CapoDesign
 import SwiftUI
 import UIKit
 
@@ -154,8 +155,14 @@ struct LyricsTextView: UIViewRepresentable {
     init(_ parent: LyricsTextView) { self.parent = parent }
 
     static var font: UIFont {
-      UIFontMetrics(forTextStyle: .body).scaledFont(
-        for: .monospacedSystemFont(ofSize: 17, weight: .regular))
+      UIFontMetrics(forTextStyle: .body).scaledFont(for: mono(size: 17, bold: false))
+    }
+
+    /// Geist Mono, the face the preview renders lyrics in, so columns and accents line up in both.
+    static func mono(size: CGFloat, bold: Bool) -> UIFont {
+      CapoFonts.register()
+      return UIFont(name: bold ? "GeistMono-Bold" : "GeistMono-Regular", size: size)
+        ?? .monospacedSystemFont(ofSize: size, weight: bold ? .bold : .regular)
     }
 
     static var lineHeight: CGFloat { 28 }
@@ -167,7 +174,7 @@ struct LyricsTextView: UIViewRepresentable {
       let style = NSMutableParagraphStyle()
       style.minimumLineHeight = lineHeight
       style.maximumLineHeight = lineHeight
-      let bold = UIFont.monospacedSystemFont(ofSize: font.pointSize, weight: .bold)
+      let bold = mono(size: font.pointSize, bold: true)
       let italic = UIFont(
         descriptor: font.fontDescriptor.withSymbolicTraits(.traitItalic) ?? font.fontDescriptor,
         size: font.pointSize)

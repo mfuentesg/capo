@@ -49,9 +49,22 @@ public nonisolated struct CifraClubImporter: Sendable {
       guard (200..<300).contains(response.statusCode), data.count <= Self.maxBytes else {
         return .failure(.httpStatus)
       }
-      return .success(String(decoding: data, as: UTF8.self))
+      return .success(Self.decode(data, response))
     }
     return .failure(.httpStatus)
+  }
+
+  /// Honors the response charset (CifraClub has served Latin-1 pages); UTF-8 otherwise. Without this a
+  /// non-UTF-8 page turns every accented letter into U+FFFD.
+  static func decode(_ data: Data, _ response: HTTPURLResponse) -> String {
+    if let name = response.textEncodingName {
+      let cf = CFStringConvertIANACharSetNameToEncoding(name as CFString)
+      if cf != kCFStringEncodingInvalidId {
+        let encoding = String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(cf))
+        if let text = String(data: data, encoding: encoding) { return text }
+      }
+    }
+    return String(decoding: data, as: UTF8.self)
   }
 
   /// URLSession without automatic redirects, with the web's browser-like headers.

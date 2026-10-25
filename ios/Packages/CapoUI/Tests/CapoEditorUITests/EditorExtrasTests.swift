@@ -79,6 +79,15 @@ private let samplePage = """
   """
 
 @MainActor @Suite struct CifraClubImporterTests {
+  @Test func decodesLatin1PagesByCharset() {
+    let url = URL(string: "https://www.cifraclub.com/x/y/")!
+    let data = Data([0x63, 0x6F, 0x72, 0x61, 0xE7, 0xE3, 0x6F])  // "coração" in ISO-8859-1
+    let response = httpResponse(url, 200, headers: ["Content-Type": "text/html; charset=iso-8859-1"])
+    #expect(CifraClubImporter.decode(data, response) == "cora\u{E7}\u{E3}o")
+    let utf8 = httpResponse(url, 200, headers: ["Content-Type": "text/html; charset=utf-8"])
+    #expect(CifraClubImporter.decode(Data("cora\u{E7}\u{E3}o".utf8), utf8) == "cora\u{E7}\u{E3}o")
+  }
+
 
   @Test func importsAfterValidation() async {
     let importer = CifraClubImporter { url in (Data(samplePage.utf8), httpResponse(url, 200)) }

@@ -14587,6 +14587,23 @@
         }
       }
     },
+    "songs.lyrics.semitone" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "semitone"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "semitono"
+          }
+        }
+      }
+    },
     "songs.lyrics.settings" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -14600,6 +14617,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Configuración"
+          }
+        }
+      }
+    },
+    "songs.lyrics.shiftChords" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shift chords"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover acordes"
+          }
+        }
+      }
+    },
+    "songs.lyrics.shiftChordsHint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rewrites the chords in the lyrics (selection, or all if nothing is selected). Key, capo and transpose settings are not changed."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reescribe los acordes de la letra (la selección, o todo si no hay selección). No cambia la tonalidad, el capo ni la transposición."
           }
         }
       }

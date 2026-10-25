@@ -128,6 +128,8 @@ public protocol AuthService: Sendable {
   func sessionStream() -> AsyncStream<AuthSession?>  // first element = restored local session (offline-safe)
   func currentSession() async -> AuthSession?
   func signInWithGoogle() async throws
+  /// Native Sign in with Apple (nonce + identity token exchanged with Supabase).
+  func signInWithApple() async throws
   func signIn(email: String, password: String) async throws
   func signUp(email: String, password: String) async throws
   func signOut() async throws
@@ -148,13 +150,16 @@ public struct UserServices: Sendable {
   /// Permanently deletes the signed-in account (`delete_user_account` RPC). nil when unavailable
   /// (demo mode, fakes); the shell additionally hides it in release builds.
   public var deleteAccount: (@Sendable () async throws -> Void)?
+  /// Inserts into `feedback` like the web form. nil when unavailable (demo mode, fakes).
+  public var submitFeedback: (@Sendable (FeedbackDraft) async throws -> Void)?
 
   public init(
     userID: UserID, songs: any SongRepository, tags: any TagRepository,
     playlists: any PlaylistRepository, settings: any SettingsRepository,
     teams: any TeamRepository, sharing: any SharingService, conflicts: any ConflictRepository,
     sync: any SyncService, tearDown: @escaping @Sendable (_ eraseLocalData: Bool) async -> Void,
-    deleteAccount: (@Sendable () async throws -> Void)? = nil
+    deleteAccount: (@Sendable () async throws -> Void)? = nil,
+    submitFeedback: (@Sendable (FeedbackDraft) async throws -> Void)? = nil
   ) {
     self.userID = userID
     self.songs = songs
@@ -167,6 +172,7 @@ public struct UserServices: Sendable {
     self.sync = sync
     self.tearDown = tearDown
     self.deleteAccount = deleteAccount
+    self.submitFeedback = submitFeedback
   }
 }
 

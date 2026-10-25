@@ -165,7 +165,7 @@ function emit(node, indent) {
       const key = value
       lines.push(`${pad}/// ${docLine(tables.en[key])}`)
       const names = params[key]
-      const lookup = `String(localized: "${key}", bundle: .module)`
+      const lookup = `String(localized: "${key}", bundle: L10nRuntime.bundle)`
       if (!names.length) {
         lines.push(`${pad}public static var ${ident(name)}: String { ${lookup} }`)
       } else {

@@ -67,6 +67,28 @@ import Testing
   }
 }
 
+@MainActor @Suite struct AppleSignInTests {
+  @Test func appleSignInRunsTheAction() async {
+    let box = Box()
+    let model = AuthFormModel()
+    await model.signInWithApple(with: AuthActions(signInWithApple: { await box.set("apple") }))
+    #expect(await box.value == "apple")
+    #expect(model.errorMessage == nil)
+  }
+
+  @Test func cancellingTheAppleSheetIsSilent() async {
+    let model = AuthFormModel()
+    await model.signInWithApple(with: AuthActions(signInWithApple: { throw CancellationError() }))
+    #expect(model.errorMessage == nil)
+  }
+
+  @Test func appleFailuresAreShown() async {
+    let model = AuthFormModel()
+    await model.signInWithApple(with: AuthActions(signInWithApple: { throw CapoError.offlineUnavailable }))
+    #expect(model.errorMessage != nil)
+  }
+}
+
 private actor Box {
   var value: String?
   func set(_ v: String) { value = v }

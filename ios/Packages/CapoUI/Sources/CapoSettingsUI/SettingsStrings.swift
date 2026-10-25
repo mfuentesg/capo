@@ -18,7 +18,6 @@ enum SettingsStrings {
   static var openLanguageSettings: String {
     L10n.Ios.Settings.openLanguageSettings
   }
-  static var restartForLanguage: String { L10n.Ios.Settings.restartForLanguage }
   static var sync: String { L10n.Ios.Settings.sync }
   static var status: String { L10n.Ios.Settings.status }
   static var lastSync: String {
@@ -35,6 +34,9 @@ enum SettingsStrings {
   static var data: String { L10n.Ios.Settings.data }
   static var eraseAndSignOut: String {
     L10n.Ios.Settings.eraseAndSignOut
+  }
+  static func deleteTeamsWarning(_ teams: String) -> String {
+    L10n.Ios.Settings.deleteTeamsWarning(teams: teams)
   }
   static var deleteFailed: String {
     L10n.Ios.Settings.deleteFailed

@@ -6801,6 +6801,23 @@
         }
       }
     },
+    "ios.settings.deleteTeamsWarning" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You own %@, which has other members. Deleting your account also deletes it, with its songs and playlists, for everyone. Transfer ownership first if you want to keep it."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eres propietario de %@, que tiene otros miembros. Eliminar tu cuenta también lo elimina, con sus canciones y playlists, para todos. Transfiere la propiedad primero si quieres conservarlo."
+          }
+        }
+      }
+    },
     "ios.settings.eraseAndSignOut" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -6882,23 +6899,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cambios pendientes"
-          }
-        }
-      }
-    },
-    "ios.settings.restartForLanguage" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Restart Capo to apply the new language."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reinicia Capo para aplicar el nuevo idioma."
           }
         }
       }

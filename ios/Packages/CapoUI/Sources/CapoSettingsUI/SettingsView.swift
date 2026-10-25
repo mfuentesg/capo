@@ -49,8 +49,8 @@ public struct SettingsView: View {
   @State private var confirmSignOut = false
   @State private var confirmErase = false
   @State private var confirmDelete = false
+  @State private var showFeedback = false
   @State private var toast: String?
-  @State private var languageChanged = false
   @State private var wide = false
 
   public init() {}
@@ -111,7 +111,10 @@ public struct SettingsView: View {
       }
       Button(L10n.Common.cancel, role: .cancel) {}
     } message: {
-      Text(L10n.Settings.deleteAccountConfirm)
+      Text(deleteMessage)
+    }
+    .sheet(isPresented: $showFeedback) {
+      if let submit = context.submitFeedback { FeedbackView(submit: submit) }
     }
   }
 
@@ -348,9 +351,6 @@ public struct SettingsView: View {
           ) { chooseLanguage(language.code) }
         }
       }
-      if languageChanged {
-        Text(SettingsStrings.restartForLanguage).capoText(.xs).foregroundStyle(CapoTheme.mutedForeground)
-      }
     }
   }
 
@@ -382,6 +382,15 @@ public struct SettingsView: View {
         }
       }
       .buttonStyle(CapoSecondaryButtonStyle())
+      if context.submitFeedback != nil {
+        Button { showFeedback = true } label: {
+          HStack(spacing: 6 * scale) {
+            CapoIcon(.mail, size: 14)
+            Text(L10n.Landing.Feedback.badge)
+          }
+        }
+        .buttonStyle(CapoSecondaryButtonStyle())
+      }
       divider
       sectionHeader(SettingsStrings.data)
       Button(SettingsStrings.eraseAndSignOut) { confirmErase = true }
@@ -413,7 +422,10 @@ public struct SettingsView: View {
       Text(L10n.Settings.dangerZone).capoText(.base, weight: .semibold).foregroundStyle(CapoTheme.destructive)
       Text(L10n.Settings.dangerZoneDescription).capoText(.sm).foregroundStyle(CapoTheme.mutedForeground)
       Button(model.isDeleting ? L10n.Settings.deleteAccountPending : L10n.Settings.deleteAccount) {
-        confirmDelete = true
+        Task {
+          await model.loadSharedOwnedTeams(services.teams)
+          confirmDelete = true
+        }
       }
       .buttonStyle(CapoDestructiveButtonStyle())
       .disabled(model.isDeleting)
@@ -468,8 +480,7 @@ public struct SettingsView: View {
   private func chooseLanguage(_ code: String) {
     guard code != model.currentLanguageCode else { return }
     model.preferences.locale = code
-    SettingsModel.storeLanguage(code)
-    languageChanged = code != SettingsModel.runningLanguageCode
+    AppLanguage.shared.set(code)
     save(PreferencesPatch(locale: code))
   }
 
@@ -491,6 +502,12 @@ public struct SettingsView: View {
     let base = L10n.Ios.EraseData.message
     let pending = model.status.pendingOperations
     return pending > 0 ? base + "\n" + L10n.Ios.EraseData.pendingWarning(count: String(pending)) : base
+  }
+
+  private var deleteMessage: String {
+    let base = L10n.Settings.deleteAccountConfirm
+    guard !model.sharedOwnedTeams.isEmpty else { return base }
+    return base + "\n" + SettingsStrings.deleteTeamsWarning(model.sharedOwnedTeams.joined(separator: ", "))
   }
 
   private func deleteAccount() async {

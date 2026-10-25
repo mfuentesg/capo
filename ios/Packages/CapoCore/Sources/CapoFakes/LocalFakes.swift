@@ -376,6 +376,7 @@ public final class FakeAuthService: AuthService {
   public func sessionStream() -> AsyncStream<AuthSession?> { subject.stream() }
   public func currentSession() async -> AuthSession? { subject.value }
   public func signInWithGoogle() async throws { subject.send(Self.demoSession) }
+  public func signInWithApple() async throws { subject.send(Self.demoSession) }
 
   public func signIn(email: String, password: String) async throws {
     guard !email.isEmpty, !password.isEmpty else { throw CapoError.invalidInput("credentials") }

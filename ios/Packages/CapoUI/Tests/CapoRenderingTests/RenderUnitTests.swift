@@ -99,7 +99,9 @@ import UIKit
     print("WP7a perf: 300-line hosted layout = \(elapsed)")
     // Coarse guard only: debug build on a simulator, hosted layout. The real 16 ms/frame budget
     // must be measured with a Release build on a device (see ios/docs/wp-notes/WP7a.md).
-    #expect(elapsed < .seconds(1))
+    // Shared CI runners measured 1.3 s for this debug build, so the guard only catches a
+    // regression of an order of magnitude.
+    #expect(elapsed < .seconds(3))
   }
 
   @Test func pureMathIsUnderOneFrame() {

@@ -42,7 +42,7 @@ final class SongEditorModel {
   /// Wand: converts chord-above-lyrics blocks in the lyrics to ChordPro (web `handleParseChords`).
   @discardableResult
   func parseChords() -> ParseOutcome {
-    let result = ChordProConverter.convertChordAboveLyricsBlocks(form.lyrics)
+    let result = ChordProConverter.convertChordAboveLyricsBlocks(LyricsText.canonical(form.lyrics))
     guard result.converted else { return .alreadyChordPro }
     form.lyrics = result.output
     return .converted

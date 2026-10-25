@@ -78,7 +78,7 @@ import Testing
   }
 
   @Test func invitationLinkKeepsOriginAndCarriesToken() {
-    let share = URL(string: "https://capo.example/playlists/x")!
+    let share = URL(string: "https://capo.example/shared/x")!
     #expect(
       TeamInvitationLink.url(token: "abc", base: share)?.absoluteString
         == "https://capo.example/teams/accept-invitation?token=abc")

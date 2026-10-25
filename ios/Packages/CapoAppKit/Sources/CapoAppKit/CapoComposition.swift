@@ -130,6 +130,6 @@ nonisolated struct RemoteSharingService: SharingService {
   }
 
   func shareURL(forCode code: String) -> URL {
-    webBaseURL.appendingPathComponent("playlists").appendingPathComponent(code)
+    webBaseURL.appendingPathComponent("shared").appendingPathComponent(code)
   }
 }

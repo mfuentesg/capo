@@ -54,7 +54,7 @@ public nonisolated enum CifraClubParser {
     // "[Estribillo]" style labels are not chords: drop the brackets before converting.
     let unbracketed = stripSectionBrackets(block)
     let trimmed = String(units: JSTrim.trim(unbracketed.utf16.map { $0 }))
-    let lyrics = ChordProConverter.convertChordAboveLyricsBlocks(trimmed).output
+    let lyrics = ChordProConverter.convertChordAboveLyricsBlocks(LyricsText.canonical(trimmed)).output
     return .success(CifraClubSong(title: title, artist: artist, key: key, lyrics: lyrics, keyFound: keyFound))
   }
 

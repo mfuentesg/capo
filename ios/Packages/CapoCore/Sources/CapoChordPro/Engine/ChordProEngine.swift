@@ -6,6 +6,7 @@ public enum ChordProEngine {
   /// When the web pipeline throws (unparseable ChordPro, invalid `{key}`, ...), rendered-song.tsx
   /// shows the raw lyrics instead; this returns a single normal segment of raw text lines.
   public static func render(_ lyrics: String, options: ChordProRenderOptions) -> RenderedSong {
+    let lyrics = LyricsText.normalized(lyrics)
     let units = lyrics.units
     let processor = ContentProcessor(
       transpose: options.transpose, capo: options.capo, sectionLabels: options.sectionLabels)

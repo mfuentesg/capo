@@ -81,7 +81,7 @@ import { usePlaylistDraft } from "@/features/playlist-draft/contexts/playlist-dr
 
 ### App Router
 
-Routes live in `app/`. Protected routes are under `app/dashboard/`. Public routes include `app/playlists/[shareCode]/` and `app/teams/accept-invitation/`.
+Routes live in `app/`. Protected routes are under `app/dashboard/`. Public routes include `app/(app)/shared/[shareCode]/` and `app/teams/accept-invitation/`.
 
 ### Data Layer
 

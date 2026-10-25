@@ -84,7 +84,7 @@ public protocol TeamRepository: Sendable {
 
 public protocol SharingService: Sendable {
   func ensureShareCode(playlistID: PlaylistID) async throws -> String  // online, rpc ensure_share_code
-  func shareURL(forCode code: String) -> URL  // webBaseURL/playlists/<code>
+  func shareURL(forCode code: String) -> URL  // webBaseURL/shared/<code> (web route app/(app)/shared/[shareCode])
 }
 
 public protocol ConflictRepository: Sendable {

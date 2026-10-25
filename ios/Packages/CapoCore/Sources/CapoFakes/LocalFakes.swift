@@ -295,7 +295,7 @@ public struct FakeSharingService: SharingService {
   }
 
   public func shareURL(forCode code: String) -> URL {
-    webBaseURL.appendingPathComponent("playlists").appendingPathComponent(code)
+    webBaseURL.appendingPathComponent("shared").appendingPathComponent(code)
   }
 }
 

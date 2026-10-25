@@ -431,7 +431,7 @@ Every WP's DoD includes four items:
   - `TeamsView`: list with role; create (name, icon); member list (online); invite by email and role; revoke; change role; remove; transfer ownership; leave; delete (owner). Admin actions are gated by role.
   - `PendingInvitationsView`: accept and decline.
   - Online-only actions show an offline state.
-  - Share sheet for a playlist: `sharing.ensureShareCode` then `shareURL` (`CAPO_WEB_URL/playlists/<code>`).
+  - Share sheet for a playlist: `sharing.ensureShareCode` then `shareURL` (`CAPO_WEB_URL/shared/<code>`).
 
 ### WP11: Settings (Wave 2, WP5 agent)
 - **Owns:** `CapoSettingsUI/**`.
@@ -701,7 +701,7 @@ public protocol TeamRepository: Sendable {
 }
 public protocol SharingService: Sendable {
   func ensureShareCode(playlistID: PlaylistID) async throws -> String   // online, rpc ensure_share_code
-  func shareURL(forCode code: String) -> URL                            // webBaseURL/playlists/<code>
+  func shareURL(forCode code: String) -> URL                            // webBaseURL/shared/<code>
 }
 public protocol ConflictRepository: Sendable {
   func conflicts() -> AsyncStream<[SongConflict]>

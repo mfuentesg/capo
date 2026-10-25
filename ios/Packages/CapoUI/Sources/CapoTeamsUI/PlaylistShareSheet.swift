@@ -2,7 +2,8 @@ import CapoCore
 import CapoDesign
 import SwiftUI
 
-/// Resolves a playlist's share code (online) and offers the `/playlists/<code>` link.
+/// Resolves a playlist's share code (online) and offers the `/shared/<code>` link. A link only
+/// resolves while the playlist is public, so a private playlist is offered a switch instead.
 public struct PlaylistShareSheet: View {
   let playlistID: PlaylistID
 
@@ -15,7 +16,16 @@ public struct PlaylistShareSheet: View {
   public var body: some View {
     NavigationStack {
       VStack(spacing: 16) {
-        if let url = model.url {
+        if model.needsPublic {
+          Toggle(isOn: Binding(get: { false }, set: { if $0 { Task { await makePublic() } } })) {
+            VStack(alignment: .leading, spacing: 2) {
+              Text(L10n.PlaylistDetail.publicVisibility).font(CapoFont.style(.headline))
+              Text(L10n.PlaylistDetail.anyoneWithLink).font(CapoFont.style(.footnote))
+                .foregroundStyle(CapoTheme.subtext)
+            }
+          }
+          .tint(CapoTheme.primary)
+        } else if let url = model.url {
           Text(url.absoluteString).font(CapoFont.mono(16)).textSelection(.enabled)
             .multilineTextAlignment(.center)
           Text(TeamsStrings.shareHint).font(CapoFont.style(.footnote)).foregroundStyle(CapoTheme.subtext)
@@ -46,16 +56,30 @@ public struct PlaylistShareSheet: View {
   }
 
   private func load() async {
-    await model.load(services.sharing, playlistID: playlistID)
+    await model.load(services.sharing, playlists: services.playlists, playlistID: playlistID)
+  }
+
+  private func makePublic() async {
+    try? await services.playlists.update(id: playlistID, PlaylistPatch(isPublic: true))
+    await load()
   }
 }
 
 @MainActor @Observable
 final class ShareModel: OnlineActionModel {
   var url: URL?
+  /// The playlist is private, so a share link would 404 (the web page only serves public playlists).
+  var needsPublic = false
 
-  func load(_ sharing: any SharingService, playlistID: PlaylistID) async {
+  func load(
+    _ sharing: any SharingService, playlists: any PlaylistRepository, playlistID: PlaylistID
+  ) async {
     message = nil
+    for await detail in playlists.playlist(id: playlistID) {
+      needsPublic = !(detail?.playlist.isPublic ?? false)
+      break
+    }
+    guard !needsPublic else { return }
     await perform(failure: L10n.Toasts.error) {
       let code = try await sharing.ensureShareCode(playlistID: playlistID)
       url = sharing.shareURL(forCode: code)

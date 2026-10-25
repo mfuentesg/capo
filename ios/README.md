@@ -40,7 +40,7 @@ For local debugging, `ios/scripts/mint-dev-session.sh` writes a git-ignored `Dev
 
 ## Navigation and debug launch arguments
 
-One shell for iPhone and iPad: slim top bar plus a bottom bar (Songs, Playlists, Chords, Teams). Settings opens from the avatar menu. Debug builds accept launch arguments for simulator checks: `-CapoDemo YES` (demo data), `-CapoSidebar songs|playlists|chords|teams|settings` (start tab), `-CapoOpenFirstSong YES`, `-CapoStageFullscreen YES`, `-CapoSettingsTab appearance|account`, `-CapoDebugPalette`, `-CapoDebugFont`, `-CapoDevSession YES`.
+One shell for iPhone and iPad: slim top bar plus a bottom bar (Songs, Playlists, Chords, Teams). Settings opens from the avatar menu. Debug builds accept launch arguments for simulator checks: `-CapoDemo YES` (demo data), `-CapoSidebar songs|playlists|chords|teams|settings` (start tab), `-CapoOpenFirstSong YES`, `-CapoOpenDraft YES` (queue three songs, open the draft dialog), `-CapoFloatingOpen YES` with `-ios.stage.floatingControls YES` (floating controls, panel open), `-CapoStageFullscreen YES`, `-CapoSettingsTab appearance|account`, `-CapoDebugPalette`, `-CapoDebugFont`, `-CapoDevSession YES`.
 
 Production is configured with `ios/scripts/use-supabase.sh production`; the app then reads and writes the real account. Status and open items: `ios/docs/STATUS.md`.
 

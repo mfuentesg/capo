@@ -15,6 +15,7 @@ final class ShellModel {
   var conflictCount = 0
   var songCount = 0
   private var didDebugOpen = false
+  private var didDebugDraft = false
   var theme: AppTheme?
   let settingsContext: SettingsContext
 
@@ -100,6 +101,12 @@ final class ShellModel {
         if !didDebugOpen, UserDefaults.standard.bool(forKey: "CapoOpenFirstSong"), let first = items.first {
           didDebugOpen = true
           navigation.openSong(first.id)
+        }
+        // `-CapoOpenDraft YES`: queue the first three songs and open the draft dialog.
+        if !didDebugDraft, UserDefaults.standard.bool(forKey: "CapoOpenDraft"), items.count >= 3 {
+          didDebugDraft = true
+          navigation.draft.add(items.prefix(3).map(\.id))
+          navigation.pendingAdd = PendingAdd()
         }
       #endif
     }

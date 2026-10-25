@@ -125,7 +125,13 @@ struct SongPerformanceScreen: View {
   @State private var showQueue = false
   @AppStorage(StageDockPreference.defaultsKey) private var dockExpanded = true
   @AppStorage(FloatingControlsPreference.enabledKey) private var floatingControls = false
-  @State private var floatingOpen = false
+  @State private var floatingOpen = {
+    #if DEBUG
+      UserDefaults.standard.bool(forKey: "CapoFloatingOpen")  // screenshot hook
+    #else
+      false
+    #endif
+  }()
   @Environment(\.currentTeamRole) private var role
   @Environment(\.capoActions) private var actions
   @Environment(\.horizontalSizeClass) private var sizeClass

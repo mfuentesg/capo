@@ -3622,6 +3622,23 @@
         }
       }
     },
+    "ios.editor.conflicts.discard" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discard"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descartar"
+          }
+        }
+      }
+    },
     "ios.editor.conflicts.empty" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3669,6 +3686,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sin conflictos"
+          }
+        }
+      }
+    },
+    "ios.editor.conflicts.failedHint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server refused these changes. Retry them, or discard them to restore the server's version."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El servidor rechazó estos cambios. Reinténtalos o descártalos para restaurar la versión del servidor."
+          }
+        }
+      }
+    },
+    "ios.editor.conflicts.failedTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changes that didn't sync"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambios que no se sincronizaron"
           }
         }
       }
@@ -3724,6 +3775,125 @@
         }
       }
     },
+    "ios.editor.conflicts.kindOther" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambio"
+          }
+        }
+      }
+    },
+    "ios.editor.conflicts.kindPlaylist" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Playlist change"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambio de playlist"
+          }
+        }
+      }
+    },
+    "ios.editor.conflicts.kindPlaylistDeleted" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Playlist deletion"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminación de playlist"
+          }
+        }
+      }
+    },
+    "ios.editor.conflicts.kindPlaylistSongs" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Playlist songs"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canciones de la playlist"
+          }
+        }
+      }
+    },
+    "ios.editor.conflicts.kindSong" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Song change"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambio de canción"
+          }
+        }
+      }
+    },
+    "ios.editor.conflicts.kindSongDeleted" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Song deletion"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminación de canción"
+          }
+        }
+      }
+    },
+    "ios.editor.conflicts.kindTags" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tag change"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambio de etiquetas"
+          }
+        }
+      }
+    },
     "ios.editor.conflicts.mine" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3754,6 +3924,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se pudo resolver el conflicto"
+          }
+        }
+      }
+    },
+    "ios.editor.conflicts.retry" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
           }
         }
       }

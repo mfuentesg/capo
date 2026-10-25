@@ -12,7 +12,10 @@ final class ShellModel {
   let contextStore: ContextStore
   let navigation = ShellNavigation()
   var syncStatus = SyncStatus(phase: .idle, lastSuccessAt: nil, pendingOperations: 0, conflicts: 0, failedOperations: 0)
-  var conflictCount = 0
+  private var openConflicts = 0
+  private var failedCount = 0
+  /// Conflicts plus refused changes: everything the sync-issues screen lists.
+  var conflictCount: Int { openConflicts + failedCount }
   var songCount = 0
   private var didDebugOpen = false
   private var didDebugDraft = false
@@ -88,7 +91,12 @@ final class ShellModel {
   }
 
   func observeConflicts() async {
-    for await list in services.conflicts.conflicts() { conflictCount = list.count }
+    for await list in services.conflicts.conflicts() { openConflicts = list.count }
+  }
+
+  /// Refused changes count with conflicts: the sync-issues screen lists both.
+  func observeFailedOperations() async {
+    for await list in services.conflicts.failedOperations() { failedCount = list.count }
   }
 
   /// Songs saved on this device for the current context, for the sidebar footer.

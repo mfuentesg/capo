@@ -258,8 +258,8 @@ public struct SettingsView: View {
         }
         .buttonStyle(CapoSecondaryButtonStyle(size: .small))
         .disabled(model.isSyncing)
-        if model.status.conflicts > 0 {
-          Button("\(SettingsStrings.viewConflicts) (\(model.status.conflicts))") { actions.showConflicts() }
+        if model.status.conflicts + model.status.failedOperations > 0 {
+          Button("\(SettingsStrings.viewConflicts) (\(model.status.conflicts + model.status.failedOperations))") { actions.showConflicts() }
             .buttonStyle(CapoSecondaryButtonStyle(size: .small))
         }
       }

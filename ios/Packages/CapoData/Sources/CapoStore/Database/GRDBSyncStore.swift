@@ -132,7 +132,7 @@ public struct GRDBSyncStore: LocalSyncStore {
           db,
           sql: """
             SELECT DISTINCT entity_key FROM outbox
-            WHERE state IN ('pending', 'inflight', 'conflict')
+            WHERE state IN ('pending', 'inflight', 'conflict', 'failed')
             """))
     }
   }

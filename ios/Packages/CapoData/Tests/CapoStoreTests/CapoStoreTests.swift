@@ -197,8 +197,32 @@ import Testing
     #expect(again.count == 1 && again[0].attempts == 1 && again[0].lastError == "x")
     try await store.complete(op.id, outcome: .rejected(.permissionDenied))
     #expect(try await store.statusCounts() == (pending: 0, conflicts: 0, failed: 1))
+    // A refused change keeps its entity out of the next pull until the user resolves it.
+    #expect(try await store.pendingEntityKeys() == [OutboxOperation.key("song", song.id)])
+  }
+
+  @Test func failedOperationsCanBeRetriedOrDiscarded() async throws {
+    let env = try Env()
+    let song = try await env.repos.songs.create(SongDraft(title: "Keep"), in: .personal(userID: me))
+    let store = env.repos.syncStore
+    let op = try await store.nextPendingOperations(limit: 5, now: .now)[0]
+    try await store.complete(op.id, outcome: .rejected(.permissionDenied))
+
+    let failed = try #require(await first(env.repos.conflicts.failedOperations()))
+    #expect(failed.count == 1 && failed[0].kind == "createSong" && failed[0].subject == "Keep")
+
+    try await env.repos.conflicts.retryFailed(failed[0].id)
+    #expect(try await store.nextPendingOperations(limit: 5, now: .now).count == 1)
+    #expect(try await store.statusCounts().failed == 0)
+
+    let again = try await store.nextPendingOperations(limit: 5, now: .now)[0]
+    try await store.complete(again.id, outcome: .rejected(.permissionDenied))
+    let listed = try #require(await first(env.repos.conflicts.failedOperations()))
+    try await env.repos.conflicts.discardFailed(listed[0].id)
+    #expect(try await store.statusCounts().failed == 0)
     #expect(try await store.pendingEntityKeys().isEmpty)
-    _ = song
+    // The song's version is blanked so the next pull fetches it again (or purges it).
+    #expect(try await store.localVersions(of: .songs)[song.id]?.raw == "")
   }
 
   // MARK: Apply

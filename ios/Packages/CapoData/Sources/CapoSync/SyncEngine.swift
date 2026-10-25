@@ -261,10 +261,17 @@ public actor SyncEngine: SyncService {
       case .rejected(let error): return .rejected(error)
       }
     } catch {
+      // Offline never counts against an operation; anything else that keeps failing is surfaced
+      // for review instead of retrying forever and blocking the entity.
+      if !(error is URLError), record.attempts + 1 >= Self.maxAttempts {
+        return .rejected(.server(describe(error)))
+      }
       return .retryLater(
         error: describe(error), nextAttemptAt: clock().addingTimeInterval(Self.backoff(record.attempts)))
     }
   }
+
+  static let maxAttempts = 8
 
   static func backoff(_ attempts: Int) -> TimeInterval {
     min(pow(2, Double(max(0, min(attempts, 20)))), maxBackoff)

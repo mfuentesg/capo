@@ -194,6 +194,14 @@ private struct Harness {
     #expect(h.store.snapshot.ops.isEmpty)
   }
 
+  @Test func errorsThatKeepFailingAreSurfacedInsteadOfRetriedForever() async throws {
+    let h = Harness()
+    h.store.enqueue(.deleteSong(id: UUID()), attempts: SyncEngine.maxAttempts - 1)
+    h.writer.enqueue { _ in throw StubRemote.Offline() }
+    await h.engine.syncNow(reason: .manual)
+    #expect(h.store.snapshot.ops[0].state == .failed)
+  }
+
   @Test func backoffIsCappedAtFiveMinutes() {
     #expect(SyncEngine.backoff(0) == 1)
     #expect(SyncEngine.backoff(3) == 8)

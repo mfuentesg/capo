@@ -105,7 +105,7 @@ import Testing
 
   @Test func reorderRunsOffsetPhaseBeforeFinalPhase() async throws {
     let server = StubServer()
-    server.handle { _ in .json(204, "") }
+    server.handle { _ in .ok("[{\"playlist_id\":\"x\"}]") }
     _ = try await writer(server).apply(
       .reorderPlaylist(playlistID: Ids.playlist, songIDs: [Ids.song2, Ids.song]))
     let positions = server.restRequests.compactMap { ($0.jsonObject?["position"] as? NSNumber)?.intValue }
@@ -125,12 +125,53 @@ import Testing
     #expect(request.jsonObject?["p_playlist_id"] as? String == Ids.playlist.pg)
   }
 
-  @Test func setSongTagsDeletesThenInserts() async throws {
+  @Test func setSongTagsInsertsMissingBeforeDeletingStale() async throws {
     let server = StubServer()
-    server.handle { _ in .json(204, "") }
-    _ = try await writer(server).apply(.setSongTags(songID: Ids.song, tagIDs: [Ids.tag]))
-    #expect(server.restRequests.map(\.method) == ["DELETE", "POST"])
+    let stale = UUID()
+    server.handle { request in
+      switch request.method {
+      case "POST": .json(201, "")
+      default: .ok("[{\"tag_id\":\"\(stale.pg)\"}]")
+      }
+    }
+    let result = try await writer(server).apply(.setSongTags(songID: Ids.song, tagIDs: [Ids.tag]))
+    #expect(result == .applied(serverSong: nil))
+    #expect(server.restRequests.map(\.method) == ["GET", "POST", "DELETE"])
     #expect(server.restRequests[1].jsonArray?.first?["tag_id"] as? String == Ids.tag.pg)
+    #expect(server.restRequests[2].query["tag_id"]?.contains(stale.pg) == true)
+  }
+
+  @Test func rejectedTagInsertNeverDeletesServerTags() async throws {
+    let server = StubServer()
+    server.handle { request in
+      request.method == "GET"
+        ? .ok("[{\"tag_id\":\"\(UUID().pg)\"}]") : .postgrestError(403, code: "42501")
+    }
+    let result = try await writer(server).apply(.setSongTags(songID: Ids.song, tagIDs: [Ids.tag]))
+    #expect(result == .rejected(.permissionDenied))
+    #expect(!server.restRequests.map(\.method).contains("DELETE"))
+  }
+
+  @Test func deleteThatRlsSilentlyIgnoredIsRejected() async throws {
+    let server = StubServer()
+    server.sequence([.ok("[]"), .ok("[{\"id\":\"x\"}]")])  // zero rows deleted, row still visible
+    let result = try await writer(server).apply(.deleteSong(id: Ids.song))
+    #expect(result == .rejected(.permissionDenied))
+  }
+
+  @Test func deleteOfAnAlreadyGoneRowIsApplied() async throws {
+    let server = StubServer()
+    server.sequence([.ok("[]"), .ok("[]")])
+    let result = try await writer(server).apply(.deleteSong(id: Ids.song))
+    #expect(result == .applied(serverSong: nil))
+  }
+
+  @Test func archiveThatRlsSilentlyIgnoredIsRejected() async throws {
+    let server = StubServer()
+    server.sequence([.ok("[]"), .ok("[{\"id\":\"x\"}]")])
+    let result = try await writer(server).apply(
+      .setPlaylistArchived(id: Ids.playlist, archivedAt: nil))
+    #expect(result == .rejected(.permissionDenied))
   }
 
   @Test func upsertSettingsUsesCompositeConflictTarget() async throws {
@@ -181,7 +222,7 @@ import Testing
 
   @Test func archiveSetsAndClearsArchivedAt() async throws {
     let server = StubServer()
-    server.handle { _ in .json(204, "") }
+    server.handle { _ in .ok("[{\"id\":\"x\"}]") }
     _ = try await writer(server).apply(
       .setPlaylistArchived(id: Ids.playlist, archivedAt: ServerTimestamp("2024-08-01T00:00:00Z")))
     _ = try await writer(server).apply(.setPlaylistArchived(id: Ids.playlist, archivedAt: nil))

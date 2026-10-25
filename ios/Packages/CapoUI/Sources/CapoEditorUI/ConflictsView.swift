@@ -31,6 +31,7 @@ enum ConflictComparison {
 @Observable
 final class ConflictsModel {
   var conflicts: [SongConflict] = []
+  var failed: [FailedOperation] = []
   var errorText: String?
   private(set) var resolving: Set<UUID> = []
 
@@ -53,16 +54,45 @@ public struct ConflictsView: View {
 
   public var body: some View {
     Group {
-      if model.conflicts.isEmpty {
+      if model.conflicts.isEmpty && model.failed.isEmpty {
         EmptyStateView(
           title: EditorStrings.conflictsEmptyTitle, message: EditorStrings.conflictsEmptyMessage,
           systemImage: "checkmark.circle")
       } else {
-        List(model.conflicts) { conflict in
-          ConflictCard(conflict: conflict, busy: model.resolving.contains(conflict.id)) { resolution in
-            Task { await model.resolve(conflict, resolution, repo: services.conflicts) }
+        List {
+          ForEach(model.conflicts) { conflict in
+            ConflictCard(conflict: conflict, busy: model.resolving.contains(conflict.id)) { resolution in
+              Task { await model.resolve(conflict, resolution, repo: services.conflicts) }
+            }
+            .listRowSeparator(.hidden)
           }
-          .listRowSeparator(.hidden)
+          if !model.failed.isEmpty {
+            Section {
+              ForEach(model.failed) { op in
+                FailedOperationRow(
+                  operation: op,
+                  onRetry: {
+                    Task {
+                      try? await services.conflicts.retryFailed(op.id)
+                      await services.sync.syncNow(reason: .manual)
+                    }
+                  },
+                  onDiscard: {
+                    Task {
+                      try? await services.conflicts.discardFailed(op.id)
+                      await services.sync.syncNow(reason: .manual)
+                    }
+                  })
+              }
+            } header: {
+              VStack(alignment: .leading, spacing: 4) {
+                Text(EditorStrings.failedTitle).font(CapoFont.style(.headline))
+                Text(EditorStrings.failedHint).font(CapoFont.style(.footnote))
+                  .foregroundStyle(.secondary).textCase(nil)
+              }
+              .padding(.vertical, 4)
+            }
+          }
         }
         .listStyle(.plain)
       }
@@ -71,6 +101,9 @@ public struct ConflictsView: View {
     .task {
       for await list in services.conflicts.conflicts() { model.conflicts = list }
     }
+    .task {
+      for await list in services.conflicts.failedOperations() { model.failed = list }
+    }
     .alert(
       EditorStrings.resolveFailed,
       isPresented: Binding(
@@ -78,6 +111,29 @@ public struct ConflictsView: View {
     ) {
       Button(L10n.Common.close, role: .cancel) {}
     }
+  }
+}
+
+private struct FailedOperationRow: View {
+  let operation: FailedOperation
+  let onRetry: () -> Void
+  let onDiscard: () -> Void
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: 8) {
+      Text(operation.subject ?? EditorStrings.failedKind(operation.kind))
+        .font(CapoFont.style(.headline))
+      Text(EditorStrings.failedKind(operation.kind))
+        .font(CapoFont.style(.subheadline)).foregroundStyle(.secondary)
+      if let error = operation.error {
+        Text(error).font(CapoFont.style(.caption)).foregroundStyle(.orange).lineLimit(3)
+      }
+      HStack(spacing: 8) {
+        Button(EditorStrings.retry, action: onRetry).buttonStyle(.borderedProminent)
+        Button(EditorStrings.discardFailed, role: .destructive, action: onDiscard).buttonStyle(.bordered)
+      }
+    }
+    .padding(.vertical, 4)
   }
 }
 

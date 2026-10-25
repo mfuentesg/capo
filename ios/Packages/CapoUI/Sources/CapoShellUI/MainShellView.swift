@@ -25,6 +25,7 @@ struct MainShellView: View {
     .task { await model.observeTeams() }
     .task { await model.observeSync() }
     .task { await model.observeConflicts() }
+    .task { await model.observeFailedOperations() }
     .task(id: model.context) { await model.observeSongCount() }
     .task { await model.observePreferences() }
     .onChange(of: scenePhase) { _, phase in

@@ -87,9 +87,34 @@ public protocol SharingService: Sendable {
   func shareURL(forCode code: String) -> URL  // webBaseURL/shared/<code> (web route app/(app)/shared/[shareCode])
 }
 
+/// A queued change the server refused (or that kept failing). It stays visible, and the local
+/// copy is protected from the next pull, until the user retries or discards it.
+public struct FailedOperation: Identifiable, Hashable, Sendable {
+  public var id: UUID
+  /// Outbox kind, e.g. "deleteSong", "setSongTags".
+  public var kind: String
+  /// Song title, playlist or tag name; nil when the entity is gone locally.
+  public var subject: String?
+  public var error: String?
+  public var createdAt: Date
+
+  public init(id: UUID, kind: String, subject: String?, error: String?, createdAt: Date) {
+    self.id = id
+    self.kind = kind
+    self.subject = subject
+    self.error = error
+    self.createdAt = createdAt
+  }
+}
+
 public protocol ConflictRepository: Sendable {
   func conflicts() -> AsyncStream<[SongConflict]>
   func resolve(_ conflictID: UUID, with resolution: ConflictResolution) async throws
+  func failedOperations() -> AsyncStream<[FailedOperation]>
+  /// Queues the operation again (attempts reset).
+  func retryFailed(_ id: UUID) async throws
+  /// Drops the operation and rolls the local copy back to the server's state at the next pull.
+  func discardFailed(_ id: UUID) async throws
 }
 
 public protocol SyncService: Sendable {

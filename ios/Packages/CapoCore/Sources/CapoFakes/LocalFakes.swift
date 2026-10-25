@@ -307,6 +307,10 @@ public struct FakeConflictRepository: ConflictRepository {
     backend.observe { $0.conflicts }
   }
 
+  public func failedOperations() -> AsyncStream<[FailedOperation]> { backend.observe { _ in [] } }
+  public func retryFailed(_ id: UUID) async throws {}
+  public func discardFailed(_ id: UUID) async throws {}
+
   public func resolve(_ conflictID: UUID, with resolution: ConflictResolution) async throws {
     try await backend.mutate { state in
       guard let conflict = state.conflicts.first(where: { $0.id == conflictID }) else {

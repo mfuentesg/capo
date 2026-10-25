@@ -477,22 +477,44 @@ public nonisolated enum L10n {
         public static var deletedRemotely: String { String(localized: "ios.editor.conflicts.deletedRemotely", bundle: .module) }
         /// Differs
         public static var differs: String { String(localized: "ios.editor.conflicts.differs", bundle: .module) }
+        /// Discard
+        public static var discard: String { String(localized: "ios.editor.conflicts.discard", bundle: .module) }
         /// (empty)
         public static var empty: String { String(localized: "ios.editor.conflicts.empty", bundle: .module) }
         /// Everything you edited offline has been synced.
         public static var emptyMessage: String { String(localized: "ios.editor.conflicts.emptyMessage", bundle: .module) }
         /// No conflicts
         public static var emptyTitle: String { String(localized: "ios.editor.conflicts.emptyTitle", bundle: .module) }
+        /// The server refused these changes. Retry them, or discard them to restore the server's version.
+        public static var failedHint: String { String(localized: "ios.editor.conflicts.failedHint", bundle: .module) }
+        /// Changes that didn't sync
+        public static var failedTitle: String { String(localized: "ios.editor.conflicts.failedTitle", bundle: .module) }
         /// Keep both
         public static var keepBoth: String { String(localized: "ios.editor.conflicts.keepBoth", bundle: .module) }
         /// Keep mine
         public static var keepMine: String { String(localized: "ios.editor.conflicts.keepMine", bundle: .module) }
         /// Keep server version
         public static var keepTheirs: String { String(localized: "ios.editor.conflicts.keepTheirs", bundle: .module) }
+        /// Change
+        public static var kindOther: String { String(localized: "ios.editor.conflicts.kindOther", bundle: .module) }
+        /// Playlist change
+        public static var kindPlaylist: String { String(localized: "ios.editor.conflicts.kindPlaylist", bundle: .module) }
+        /// Playlist deletion
+        public static var kindPlaylistDeleted: String { String(localized: "ios.editor.conflicts.kindPlaylistDeleted", bundle: .module) }
+        /// Playlist songs
+        public static var kindPlaylistSongs: String { String(localized: "ios.editor.conflicts.kindPlaylistSongs", bundle: .module) }
+        /// Song change
+        public static var kindSong: String { String(localized: "ios.editor.conflicts.kindSong", bundle: .module) }
+        /// Song deletion
+        public static var kindSongDeleted: String { String(localized: "ios.editor.conflicts.kindSongDeleted", bundle: .module) }
+        /// Tag change
+        public static var kindTags: String { String(localized: "ios.editor.conflicts.kindTags", bundle: .module) }
         /// Mine
         public static var mine: String { String(localized: "ios.editor.conflicts.mine", bundle: .module) }
         /// Couldn't resolve the conflict
         public static var resolveFailed: String { String(localized: "ios.editor.conflicts.resolveFailed", bundle: .module) }
+        /// Retry
+        public static var retry: String { String(localized: "ios.editor.conflicts.retry", bundle: .module) }
         /// Server
         public static var theirs: String { String(localized: "ios.editor.conflicts.theirs", bundle: .module) }
         /// Sync conflicts

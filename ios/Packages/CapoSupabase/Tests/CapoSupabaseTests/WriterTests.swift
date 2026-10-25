@@ -187,9 +187,26 @@ import Testing
     #expect(request.jsonObject?["updated_at"] as? String == "2024-07-01T00:00:00.000Z")
   }
 
-  @Test func preferencesAreMergedKeepingUnknownKeys() async throws {
+  @Test func preferencesUseTheServerSideMergeRpc() async throws {
     let server = StubServer()
-    server.sequence([.ok("[" + (try fixtureString("profile_row")) + "]"), .json(204, "")])
+    server.handle { _ in .json(204, "") }
+    let result = try await writer(server).apply(
+      .updatePreferences(PreferencesPatch(lyricsColumns: 2), userID: Ids.user))
+    #expect(result == .applied(serverSong: nil))
+    let request = try #require(server.restRequests.first)
+    #expect(server.restRequests.count == 1)
+    #expect(request.path == "/rest/v1/rpc/merge_user_preferences")
+    let patch = try #require(request.jsonObject?["p_patch"] as? [String: Any])
+    #expect((patch["lyricsColumns"] as? NSNumber)?.intValue == 2)
+    #expect(patch["theme"] == nil)  // only the changed key travels
+  }
+
+  @Test func preferencesFallBackToReadMergeWriteWhenTheRpcIsMissing() async throws {
+    let server = StubServer()
+    server.sequence([
+      .postgrestError(404, code: "PGRST202"),
+      .ok("[" + (try fixtureString("profile_row")) + "]"), .json(204, "")
+    ])
     _ = try await writer(server).apply(
       .updatePreferences(PreferencesPatch(lyricsColumns: 2), userID: Ids.user))
     let update = try #require(server.restRequests.last)

@@ -47,6 +47,12 @@ enum RemoteErrors {
     return nil
   }
 
+  /// PostgREST "function not found in the schema cache" (PGRST202) or Postgres undefined_function.
+  static func isMissingFunction(_ error: Error) -> Bool {
+    guard let code = code(error) else { return false }
+    return code == "PGRST202" || code == "42883"
+  }
+
   static func isUniqueViolation(_ error: Error) -> Bool { code(error) == "23505" }
 
   /// Permanent failures; `nil` means transient (network, 5xx, anything unrecognised) so the

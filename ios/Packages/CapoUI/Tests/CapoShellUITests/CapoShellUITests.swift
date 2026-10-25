@@ -208,6 +208,22 @@ import Testing
     #expect(nav.songPath == [id])
   }
 
+  @Test func switchingContextKeepsNavigationAndTheDraft() {
+    let user = UUID()
+    let defaults = UserDefaults(suiteName: "ctx-nav-\(UUID().uuidString)")!
+    let store = ContextStore(userID: user, defaults: defaults)
+    let nav = ShellNavigation()
+    let song = UUID()
+    nav.openSong(song)
+    nav.draft.add([song])
+    store.selectPersonal()
+    store.selectAll()
+    // Navigation and the draft live outside the context store, and the shell view no longer
+    // recreates itself with `.id(context)`, so none of this is reset by a filter change.
+    #expect(nav.songPath == [song])
+    #expect(nav.draft.ids == [song])
+  }
+
   @Test func openingTheSameSongTwiceDoesNotStackDuplicates() {
     let nav = ShellNavigation()
     let id = UUID()

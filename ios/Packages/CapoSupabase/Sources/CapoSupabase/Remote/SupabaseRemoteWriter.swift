@@ -178,7 +178,23 @@ public final class SupabaseRemoteWriter: RemoteWriter {
 
   // MARK: Preferences
 
+  /// Server-side JSONB merge (`merge_user_preferences`) so concurrent writers of other keys, such
+  /// as the web, never lose an update. Falls back to read-merge-write while the RPC is not deployed.
   private func updatePreferences(_ patch: PreferencesPatch, _ userID: UserID) async throws
+    -> RemoteApplyResult
+  {
+    let changed = UserPreferences(json: [:]).json(applying: patch)
+    do {
+      try await client.rpc(
+        "merge_user_preferences", params: ["p_patch": JSONValue.object(changed)]
+      ).execute()
+      return .applied(serverSong: nil)
+    } catch where RemoteErrors.isMissingFunction(error) {
+      return try await readMergeWritePreferences(patch, userID)
+    }
+  }
+
+  private func readMergeWritePreferences(_ patch: PreferencesPatch, _ userID: UserID) async throws
     -> RemoteApplyResult
   {
     let rows: [ProfileRow] = try await client.from("profiles").select()

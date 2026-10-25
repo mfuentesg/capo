@@ -48,6 +48,8 @@ public struct LibraryView: View {
     .sheet(item: $assignTagsFor) { target in
       AssignTagsView(songID: target.id, allTags: model.tags).presentationDetents([.medium, .large])
     }
+    // Tags belong to a context, so a selection from the previous one would match nothing.
+    .onChange(of: context) { model.filters.tagIDs = [] }
     .task(id: model.searchInput) { await model.commitSearchAfterDebounce() }
     .task(id: model.query(context: context)) {
       for await items in services.songs.songs(model.query(context: context)) {

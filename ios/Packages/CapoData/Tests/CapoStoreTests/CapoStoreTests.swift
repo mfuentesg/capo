@@ -398,6 +398,26 @@ import Testing
     #expect(teams?.map(\.role) == [.admin])
   }
 
+  @Test func leavingATeamPurgesItsRowsAndQueuedOperations() async throws {
+    let env = try Env()
+    let team = Team(
+      id: teamA, name: "Band", icon: nil, avatarURL: nil, isPublic: false, createdBy: me,
+      createdAt: .now(), updatedAt: .now())
+    let membership = TeamMembership(id: UUID(), teamID: teamA, userID: me, role: .member, joinedAt: .now())
+    let teamSong = makeSong("Shared", user: nil, team: teamA)
+    let mine = makeSong("Mine")
+    let store = env.repos.syncStore
+    try await store.apply(PullBatch(teams: [team], memberships: [membership], upsertSongs: [teamSong, mine]))
+    try await env.repos.songs.update(id: teamSong.id, SongPatch(artist: "edited"))
+    #expect(try await store.pendingEntityKeys().contains(OutboxOperation.key("song", teamSong.id)))
+
+    // Membership is gone: the pending edit could never be applied, so it must not pin the row.
+    try await store.apply(PullBatch(teams: [], memberships: []))
+    #expect(try await store.localVersions(of: .songs).keys.contains(teamSong.id) == false)
+    #expect(try await store.localVersions(of: .songs).keys.contains(mine.id))
+    #expect(try await store.pendingEntityKeys().isEmpty)
+  }
+
   // MARK: Erase & metadata
 
   @Test func eraseAndMetadata() async throws {

@@ -1018,10 +1018,14 @@ public nonisolated enum L10n {
       public static var controlsToolbar: String { String(localized: "ios.stage.controlsToolbar", bundle: .module) }
       /// Decrease
       public static var decrease: String { String(localized: "ios.stage.decrease", bundle: .module) }
+      /// Dock controls
+      public static var dockControls: String { String(localized: "ios.stage.dockControls", bundle: .module) }
       /// Enter full screen
       public static var enterFullscreen: String { String(localized: "ios.stage.enterFullscreen", bundle: .module) }
       /// Exit full screen
       public static var exitFullscreen: String { String(localized: "ios.stage.exitFullscreen", bundle: .module) }
+      /// Float controls
+      public static var floatControls: String { String(localized: "ios.stage.floatControls", bundle: .module) }
       /// from {bpm}
       public static func fromBPM(bpm: String) -> String {
         String(format: String(localized: "ios.stage.fromBPM", bundle: .module), bpm)
@@ -1629,6 +1633,56 @@ public nonisolated enum L10n {
     public static var unarchive: String { String(localized: "playlists.unarchive", bundle: .module) }
   }
   public nonisolated enum Settings {
+    public nonisolated enum ApiTokens {
+      /// Close
+      public static var close: String { String(localized: "settings.apiTokens.close", bundle: .module) }
+      /// Copied
+      public static var copied: String { String(localized: "settings.apiTokens.copied", bundle: .module) }
+      /// Copy
+      public static var copy: String { String(localized: "settings.apiTokens.copy", bundle: .module) }
+      /// Create token
+      public static var create: String { String(localized: "settings.apiTokens.create", bundle: .module) }
+      /// Could not create the token.
+      public static var createError: String { String(localized: "settings.apiTokens.createError", bundle: .module) }
+      /// Created {date}
+      public static func createdOn(date: String) -> String {
+        String(format: String(localized: "settings.apiTokens.createdOn", bundle: .module), date)
+      }
+      /// Creating...
+      public static var creating: String { String(localized: "settings.apiTokens.creating", bundle: .module) }
+      /// Tokens let external tools such as HollyShow read your songs.
+      public static var description: String { String(localized: "settings.apiTokens.description", bundle: .module) }
+      /// No tokens yet.
+      public static var empty: String { String(localized: "settings.apiTokens.empty", bundle: .module) }
+      /// Last used {date}
+      public static func lastUsed(date: String) -> String {
+        String(format: String(localized: "settings.apiTokens.lastUsed", bundle: .module), date)
+      }
+      /// Could not load tokens.
+      public static var loadError: String { String(localized: "settings.apiTokens.loadError", bundle: .module) }
+      /// Token name
+      public static var nameLabel: String { String(localized: "settings.apiTokens.nameLabel", bundle: .module) }
+      /// e.g. Church laptop
+      public static var namePlaceholder: String { String(localized: "settings.apiTokens.namePlaceholder", bundle: .module) }
+      /// Never used
+      public static var neverUsed: String { String(localized: "settings.apiTokens.neverUsed", bundle: .module) }
+      /// Copy your new token
+      public static var revealTitle: String { String(localized: "settings.apiTokens.revealTitle", bundle: .module) }
+      /// This token will not be shown again. Store it somewhere safe.
+      public static var revealWarning: String { String(localized: "settings.apiTokens.revealWarning", bundle: .module) }
+      /// Revoke
+      public static var revoke: String { String(localized: "settings.apiTokens.revoke", bundle: .module) }
+      /// Revoke token {name}
+      public static func revokeAria(name: String) -> String {
+        String(format: String(localized: "settings.apiTokens.revokeAria", bundle: .module), name)
+      }
+      /// Could not revoke the token.
+      public static var revokeError: String { String(localized: "settings.apiTokens.revokeError", bundle: .module) }
+      /// Revoked
+      public static var revoked: String { String(localized: "settings.apiTokens.revoked", bundle: .module) }
+      /// API tokens
+      public static var title: String { String(localized: "settings.apiTokens.title", bundle: .module) }
+    }
     /// Appearance
     public static var appearance: String { String(localized: "settings.appearance", bundle: .module) }
     /// Chord diagrams

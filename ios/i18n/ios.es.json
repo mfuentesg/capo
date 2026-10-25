@@ -356,6 +356,8 @@
       "exitFullscreen": "Salir de pantalla completa",
       "collapseControls": "Contraer controles",
       "showControls": "Mostrar controles",
+      "floatControls": "Flotar controles",
+      "dockControls": "Acoplar controles",
       "controlsToolbar": "Controles de la presentación",
       "fromBPM": "desde {bpm}",
       "nextSong": "Siguiente canción: {title}",

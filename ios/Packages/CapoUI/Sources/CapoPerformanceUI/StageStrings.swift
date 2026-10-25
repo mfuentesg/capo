@@ -21,6 +21,8 @@ enum StageStrings {
   static var exitFullscreen: String { L10n.Ios.Stage.exitFullscreen }
   static var collapseControls: String { L10n.Ios.Stage.collapseControls }
   static var showControls: String { L10n.Ios.Stage.showControls }
+  static var floatControls: String { L10n.Ios.Stage.floatControls }
+  static var dockControls: String { L10n.Ios.Stage.dockControls }
   static var controlsToolbar: String { L10n.Ios.Stage.controlsToolbar }
   static func fromBPM(_ bpm: String) -> String { L10n.Ios.Stage.fromBPM(bpm: bpm) }
   static func nextSong(_ title: String) -> String { L10n.Ios.Stage.nextSong(title: title) }

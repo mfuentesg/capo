@@ -31,6 +31,43 @@ nonisolated struct StageDockPreference {
   }
 }
 
+/// The controls as one draggable button instead of the docked bar. Persisted per device.
+nonisolated enum FloatingControlsPreference {
+  static let enabledKey = "ios.stage.floatingControls"
+  static let xKey = "ios.stage.floatingControls.x"
+  static let yKey = "ios.stage.floatingControls.y"
+  /// Bottom-right, above the home indicator, until the player moves it.
+  static let defaultFraction = CGPoint(x: 0.88, y: 0.86)
+}
+
+/// Placement of the floating controls button inside the lyrics area (pure; unit-tested).
+nonisolated enum FloatingControlsMath {
+  static let buttonSize: CGFloat = 60
+  static let margin: CGFloat = 12
+
+  /// Button centre for a stored fraction (0...1 of the area), kept fully inside the area.
+  static func center(fraction: CGPoint, in size: CGSize) -> CGPoint {
+    clamp(CGPoint(x: fraction.x * size.width, y: fraction.y * size.height), in: size)
+  }
+
+  /// Fraction to store for a button centre, clamped to the area.
+  static func fraction(center: CGPoint, in size: CGSize) -> CGPoint {
+    guard size.width > 0, size.height > 0 else { return FloatingControlsPreference.defaultFraction }
+    let c = clamp(center, in: size)
+    return CGPoint(x: c.x / size.width, y: c.y / size.height)
+  }
+
+  /// The panel opens above the button when it sits in the lower half, below otherwise.
+  static func opensAbove(center: CGPoint, in size: CGSize) -> Bool { center.y > size.height / 2 }
+
+  static func clamp(_ point: CGPoint, in size: CGSize) -> CGPoint {
+    let inset = buttonSize / 2 + margin
+    return CGPoint(
+      x: min(max(point.x, inset), max(inset, size.width - inset)),
+      y: min(max(point.y, inset), max(inset, size.height - inset)))
+  }
+}
+
 /// Full-screen stage: lyrics grow, chrome hides, the dock shrinks to a pill.
 nonisolated enum StageFullscreen {
   /// Extra lyric scale applied on top of the user's own text size.

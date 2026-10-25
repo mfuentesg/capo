@@ -356,6 +356,8 @@
       "exitFullscreen": "Exit full screen",
       "collapseControls": "Collapse controls",
       "showControls": "Show controls",
+      "floatControls": "Float controls",
+      "dockControls": "Dock controls",
       "controlsToolbar": "Performance controls",
       "fromBPM": "from {bpm}",
       "nextSong": "Next song: {title}",

@@ -41,6 +41,8 @@ export function useUpsertUserPreferences() {
     mutationFn: async (updates: Partial<UserPreferences>) => {
       const existing = queryClient.getQueryData<UserPreferences | null>(queryKey)
       const merged: UserPreferences = {
+        ...existing,
+        ...updates,
         lyricsColumns: updates.lyricsColumns ?? existing?.lyricsColumns ?? 2
       }
       return upsertUserPreferencesAction(merged)
@@ -49,6 +51,8 @@ export function useUpsertUserPreferences() {
       await queryClient.cancelQueries({ queryKey })
       const previous = queryClient.getQueryData<UserPreferences | null>(queryKey)
       queryClient.setQueryData<UserPreferences>(queryKey, (old) => ({
+        ...old,
+        ...updates,
         lyricsColumns: updates.lyricsColumns ?? old?.lyricsColumns ?? 2
       }))
       return { previous }

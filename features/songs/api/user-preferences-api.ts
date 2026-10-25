@@ -95,14 +95,31 @@ export async function upsertUserPreferences(
   userId: string,
   preferences: UserPreferences
 ): Promise<UserPreferences> {
+  // Merge into the stored JSON so keys this call does not carry (palette, uiFont, chordHand,
+  // or anything a newer client added) are never wiped by a partial update.
+  const { data: current, error: readError } = await supabase
+    .from("profiles")
+    .select("preferences")
+    .eq("id", userId)
+    .single()
+
+  if (readError) throw readError
+
+  const stored =
+    typeof current.preferences === "object" &&
+    current.preferences !== null &&
+    !Array.isArray(current.preferences)
+      ? current.preferences
+      : {}
+
+  const defined = Object.fromEntries(
+    Object.entries(preferences).filter(([, value]) => value !== undefined)
+  )
+
   const { data, error } = await supabase
     .from("profiles")
     .update({
-      preferences: {
-        lyricsColumns: preferences.lyricsColumns,
-        ...(preferences.locale !== undefined && { locale: preferences.locale }),
-        ...(preferences.theme !== undefined && { theme: preferences.theme })
-      },
+      preferences: { ...stored, ...defined },
       updated_at: new Date().toISOString()
     })
     .eq("id", userId)

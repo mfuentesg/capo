@@ -35,7 +35,7 @@ private let ctx = AppContext.personal(userID: UUID())
   }
 
   @Test func bpmBuckets() {
-    // Thresholds the web filter applies (song-list.tsx): <100, 100...140, >140.
+    // Shared web thresholds (lib/bpm.ts): <90, 90...120, >120.
     #expect(BPMBucket.slow.range.contains(89) && !BPMBucket.slow.range.contains(90))
     #expect(BPMBucket.medium.range == 90...120)
     #expect(BPMBucket.fast.range.contains(121) && !BPMBucket.fast.range.contains(120))

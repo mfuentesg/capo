@@ -33,6 +33,13 @@ public struct PlaylistDetailView: View {
     self.backLabel = backLabel
   }
 
+  /// The playlist's own bucket, which limits the songs the picker offers.
+  private var bucket: AppContext? {
+    guard let playlist = detail?.playlist else { return nil }
+    if let teamID = playlist.teamID { return .team(teamID: teamID) }
+    return playlist.userID.map { .personal(userID: $0) }
+  }
+
   private var canEdit: Bool { role?.canEditContent ?? true }
   /// Songs left, sharing column right; below this the sections stack.
   private var wide: Bool { PlaylistDetailLayout.isWide(paneWidth: Double(paneWidth)) }
@@ -59,7 +66,7 @@ public struct PlaylistDetailView: View {
     }
     .capoToast($toast)
     .sheet(isPresented: $showPicker) {
-      SongPickerView(excluding: Set(songs.map(\.id))) { ids in
+      SongPickerView(excluding: Set(songs.map(\.id)), bucket: bucket) { ids in
         Task { try? await services.playlists.addSongs(ids, to: playlistID) }
       }
     }

@@ -546,6 +546,10 @@ public nonisolated enum L10n {
       public static var livePreview: String { String(localized: "ios.editor.livePreview", bundle: .module) }
       /// Lyrics (ChordPro)
       public static var lyrics: String { String(localized: "ios.editor.lyrics", bundle: .module) }
+      /// Max {max} characters
+      public static func maxLength(max: String) -> String {
+        String(format: String(localized: "ios.editor.maxLength", bundle: .module), max)
+      }
       /// Transpose & notes
       public static var moreOptions: String { String(localized: "ios.editor.moreOptions", bundle: .module) }
       /// New song
@@ -754,6 +758,8 @@ public nonisolated enum L10n {
       public static var copyLink: String { String(localized: "ios.playlists.copyLink", bundle: .module) }
       /// Create
       public static var create: String { String(localized: "ios.playlists.create", bundle: .module) }
+      /// Songs marked in red belong to a different account or team than this playlist. Remove them to continue.
+      public static var crossBucket: String { String(localized: "ios.playlists.crossBucket", bundle: .module) }
       /// Date
       public static var date: String { String(localized: "ios.playlists.date", bundle: .module) }
       /// Delete
@@ -792,6 +798,8 @@ public nonisolated enum L10n {
       public static var notFound: String { String(localized: "ios.playlists.notFound", bundle: .module) }
       /// Ready offline
       public static var offlineReady: String { String(localized: "ios.playlists.offlineReady", bundle: .module) }
+      /// Different account or team
+      public static var otherBucket: String { String(localized: "ios.playlists.otherBucket", bundle: .module) }
       /// Perform
       public static var perform: String { String(localized: "ios.playlists.perform", bundle: .module) }
       /// Keep available offline
@@ -812,6 +820,10 @@ public nonisolated enum L10n {
       public static func songCount(n: String) -> String {
         String(format: String(localized: "ios.playlists.songCount", bundle: .module), n)
       }
+      /// Sunday|Midnight|Golden|Electric|Acoustic|Sacred|Morning|Twilight|Revival|Worship|Vibrant|Eternal
+      public static var suggestAdjectives: String { String(localized: "ios.playlists.suggestAdjectives", bundle: .module) }
+      /// Setlist|Sessions|Worship|Gathering|Anthems|Melodies|Journey|Voices|Moments|Reflections|Praise|Songs
+      public static var suggestNouns: String { String(localized: "ios.playlists.suggestNouns", bundle: .module) }
       /// Setlists
       public static var title: String { String(localized: "ios.playlists.title", bundle: .module) }
       /// Unarchive

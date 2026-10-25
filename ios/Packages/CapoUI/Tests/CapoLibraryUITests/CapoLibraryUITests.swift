@@ -11,7 +11,7 @@ private let ctx = AppContext.personal(userID: UUID())
     let q = LibraryFilters().query(context: ctx)
     #expect(q.searchText == "")
     #expect(q.tagIDs.isEmpty)
-    #expect(q.statuses == [.published, .draft])
+    #expect(q.statuses == Set(SongStatus.allCases))  // like the web: no status filter
     #expect(q.bpmRange == nil)
     #expect(q.sort == .recent)
   }
@@ -44,27 +44,21 @@ private let ctx = AppContext.personal(userID: UUID())
     #expect(f.query(context: ctx).bpmRange == 100...140)
   }
 
-  @Test func tagsToggleAndStatusNeverEmpty() {
+  @Test func tagsToggle() {
     var f = LibraryFilters()
     let tag = UUID()
     f.toggle(tag: tag)
     #expect(f.query(context: ctx).tagIDs == [tag])
     f.toggle(tag: tag)
     #expect(f.tagIDs.isEmpty)
-    f.toggle(status: .draft)
-    f.toggle(status: .published)
-    #expect(f.statuses == [.published])
-    f.toggle(status: .archived)
-    #expect(f.statuses == [.published, .archived])
   }
 
   @Test func activeFilterCountAndReset() {
     var f = LibraryFilters()
     f.toggle(tag: UUID())
     f.bpm = .fast
-    f.toggle(status: .archived)
     f.grouping = .key
-    #expect(f.activeFilterCount == 4)
+    #expect(f.activeFilterCount == 3)
     f.resetFilters()
     #expect(f.activeFilterCount == 0 && !f.isNarrowed)
   }

@@ -14,6 +14,8 @@ public struct AddToPlaylistView: View {
   @Environment(\.creationContext) private var creationContext
   @Environment(\.playlistDraft) private var draft
   @State private var titles: [SongID: (title: String, artist: String?)] = [:]
+  @State private var songTeams: [SongID: TeamID?] = [:]
+  @State private var newBucket: AppContext?
   @State private var playlists: [PlaylistSummary] = []
   @State private var target: Target?
   @State private var newName = ""
@@ -27,8 +29,27 @@ public struct AddToPlaylistView: View {
 
   private var ids: [SongID] { draft.ids }
 
+  /// Team of the playlist the songs would land in (nil = personal); unknown until a target is picked.
+  private var targetTeam: TeamID?? {
+    switch target {
+    case nil:
+      return nil
+    case .new:
+      return .some((newBucket ?? creationContext).teamID)
+    case .existing(let id):
+      guard let summary = playlists.first(where: { $0.id == id }) else { return nil }
+      return .some(summary.playlist.teamID)
+    }
+  }
+
+  /// Songs from another bucket than the target playlist (teammates could not read them).
+  private var mismatched: Set<SongID> {
+    guard let team = targetTeam else { return [] }
+    return Set(PlaylistLogic.crossBucket(ids, teamOf: songTeams, target: team))
+  }
+
   private var canAdd: Bool {
-    guard !ids.isEmpty, !isWorking, let target else { return false }
+    guard !ids.isEmpty, !isWorking, mismatched.isEmpty, let target else { return false }
     if target == .new { return !newName.trimmingCharacters(in: .whitespaces).isEmpty }
     return true
   }
@@ -39,7 +60,17 @@ public struct AddToPlaylistView: View {
         header.listRow()
         songList
         targetPicker.listRow()
-        if target == .new { nameField.listRow() }
+        if target == .new {
+          nameField.listRow()
+          BucketPicker(
+            selection: Binding(get: { newBucket ?? creationContext }, set: { newBucket = $0 }),
+            label: L10n.Playlists.bucket
+          ).listRow()
+        }
+        if !mismatched.isEmpty {
+          Text(L10n.Ios.Playlists.crossBucket).capoText(.xs)
+            .foregroundStyle(CapoTheme.destructive).listRow()
+        }
       }
       .listStyle(.plain)
       .scrollContentBackground(.hidden)
@@ -83,7 +114,10 @@ public struct AddToPlaylistView: View {
         CapoIcon(.music2, size: 12).foregroundStyle(CapoTheme.mutedForeground)
         VStack(alignment: .leading, spacing: 0) {
           Text(titles[id]?.title ?? "…").capoText(.sm, weight: .medium).lineLimit(1)
-          if let artist = titles[id]?.artist, !artist.isEmpty {
+          if mismatched.contains(id) {
+            Text(L10n.Ios.Playlists.otherBucket).capoText(.xs)
+              .foregroundStyle(CapoTheme.destructive).lineLimit(1)
+          } else if let artist = titles[id]?.artist, !artist.isEmpty {
             Text(artist).capoText(.xs).foregroundStyle(CapoTheme.mutedForeground).lineLimit(1)
           }
         }
@@ -99,6 +133,9 @@ public struct AddToPlaylistView: View {
       .padding(.trailing, 4)
       .frame(minHeight: 44)
       .playlistCard()
+      .overlay(
+        RoundedRectangle(cornerRadius: CapoRadius.xl, style: .continuous)
+          .strokeBorder(CapoTheme.destructive, lineWidth: mismatched.contains(id) ? 1 : 0))
       .deleteDisabled(true)
       .listRow()
     }
@@ -186,6 +223,7 @@ public struct AddToPlaylistView: View {
     for id in draft.ids where titles[id] == nil {
       if let song = try? await services.songs.fetchSong(id: id) {
         titles[id] = (song.title, song.artist)
+        songTeams[id] = .some(song.teamID)
       }
     }
   }
@@ -200,7 +238,7 @@ public struct AddToPlaylistView: View {
         case .new:
           _ = try await services.playlists.create(
             PlaylistDraft(name: newName.trimmingCharacters(in: .whitespaces), songIDs: ids),
-            in: creationContext)
+            in: newBucket ?? creationContext)
           await finish(L10n.Toasts.playlistCreated)
         case .existing(let playlistID):
           var existing: [SongID] = []

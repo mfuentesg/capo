@@ -86,3 +86,19 @@ private struct Item: Identifiable, Equatable { let id: Int }
     #expect(!PlaylistDetailLayout.isWide(paneWidth: 393))
   }
 }
+
+@Suite struct PlaylistBucketAndNameTests {
+  @Test func suggestNameJoinsLocalizedWords() {
+    let name = PlaylistLogic.suggestName(adjectives: "Dominical|Dorado", nouns: "Himnos|Voces") { _ in 1 }
+    #expect(name == "Dorado Voces")
+    #expect(PlaylistLogic.suggestName(adjectives: "", nouns: "x") == "")
+  }
+
+  @Test func crossBucketFlagsOnlySongsOfAnotherBucket() {
+    let team = UUID(), other = UUID()
+    let a = UUID(), b = UUID(), c = UUID(), unknown = UUID()
+    let teams: [SongID: TeamID?] = [a: nil, b: team, c: other]
+    #expect(PlaylistLogic.crossBucket([a, b, c, unknown], teamOf: teams, target: team) == [a, c])
+    #expect(PlaylistLogic.crossBucket([a, b], teamOf: teams, target: nil) == [b])
+  }
+}

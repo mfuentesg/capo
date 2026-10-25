@@ -23,6 +23,8 @@ public struct SongEditorView: View {
   @State private var showReference = false
   @State private var notice: String?
   @State private var controller = LyricsEditorController()
+  /// Where a new song is saved (web `BucketSelector`); seeded from the creation context.
+  @State private var bucket: AppContext?
   @Environment(\.horizontalSizeClass) private var sizeClass
 
   public init(request: SongEditorRequest, onFinish: @escaping (SongID?) -> Void) {
@@ -177,7 +179,7 @@ public struct SongEditorView: View {
         previewToggle
         Button(EditorStrings.save) {
           Task {
-            if let id = await model.save(songs: services.songs, context: creationContext) { onFinish(id) }
+            if let id = await model.save(songs: services.songs, context: bucket ?? creationContext) { onFinish(id) }
           }
         }
         .buttonStyle(CapoPrimaryButtonStyle())
@@ -260,6 +262,12 @@ public struct SongEditorView: View {
         }
       }
       if model.form.issues.contains(.bpmInvalid) { errorText(EditorStrings.bpmInvalid) }
+      ForEach(EditorForm.LimitedField.allCases, id: \.self) { field in
+        if model.form.issues.contains(.tooLong(field)) { errorText(EditorStrings.tooLong(field)) }
+      }
+      if !model.isEditing {
+        BucketPicker(selection: Binding(get: { bucket ?? creationContext }, set: { bucket = $0 })).padding(.top, 4)
+      }
       DisclosureGroup(isExpanded: $showExtras) {
         extras.padding(.top, 8)
       } label: {

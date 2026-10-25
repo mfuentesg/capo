@@ -43,11 +43,12 @@ nonisolated enum SongGrouping: String, CaseIterable, Hashable, Sendable {
 /// Pure UI filter state. Everything the library screen lets the user change lives here, so the
 /// mapping to a `SongQuery` can be unit-tested without a view.
 nonisolated struct LibraryFilters: Equatable, Sendable {
-  static let defaultStatuses: Set<SongStatus> = [.published, .draft]
+  /// Every status, like the web list, which has no status filter (and no way to set a status).
+  static let defaultStatuses = Set(SongStatus.allCases)
 
   var searchText = ""
   var tagIDs: Set<TagID> = []
-  var statuses: Set<SongStatus> = LibraryFilters.defaultStatuses
+  let statuses: Set<SongStatus> = LibraryFilters.defaultStatuses
   var bpm: BPMBucket?
   var grouping: SongGrouping = .none
   /// nil = automatic: relevance while searching, otherwise most recent.
@@ -72,7 +73,7 @@ nonisolated struct LibraryFilters: Equatable, Sendable {
 
   /// Number of active non-search filters (badge on the filter button).
   var activeFilterCount: Int {
-    (tagIDs.isEmpty ? 0 : 1) + (statuses == Self.defaultStatuses ? 0 : 1) + (bpm == nil ? 0 : 1)
+    (tagIDs.isEmpty ? 0 : 1) + (bpm == nil ? 0 : 1)
       + (grouping == .none ? 0 : 1)
   }
 
@@ -81,7 +82,6 @@ nonisolated struct LibraryFilters: Equatable, Sendable {
 
   mutating func resetFilters() {
     tagIDs = []
-    statuses = Self.defaultStatuses
     bpm = nil
     grouping = .none
   }
@@ -90,14 +90,6 @@ nonisolated struct LibraryFilters: Equatable, Sendable {
     if !tagIDs.insert(id).inserted { tagIDs.remove(id) }
   }
 
-  /// Toggles a status but never lets the set become empty (an empty set matches nothing).
-  mutating func toggle(status: SongStatus) {
-    if statuses.contains(status) {
-      if statuses.count > 1 { statuses.remove(status) }
-    } else {
-      statuses.insert(status)
-    }
-  }
 
   func query(context: AppContext) -> SongQuery {
     SongQuery(

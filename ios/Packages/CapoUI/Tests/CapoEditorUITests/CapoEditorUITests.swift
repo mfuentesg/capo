@@ -214,3 +214,21 @@ private func song(
     #expect(name("{sov}") == nil)
   }
 }
+
+@MainActor @Suite struct EditorLimitTests {
+  @Test func overlongFieldsAreFlaggedLikeTheServerSchema() {
+    var form = EditorForm()
+    form.title = String(repeating: "t", count: 200)
+    form.key = String(repeating: "k", count: 13)
+    form.notes = String(repeating: "n", count: 10_001)
+    #expect(form.issues == [.tooLong(.key), .tooLong(.notes)])
+    #expect(!form.isValid)
+    form.key = "C"
+    form.notes = ""
+    form.lyrics = String(repeating: "l", count: 100_001)
+    #expect(form.issues == [.tooLong(.lyrics)])
+    form.lyrics = ""
+    form.title = String(repeating: "t", count: 201)
+    #expect(form.issues == [.tooLong(.title)])
+  }
+}

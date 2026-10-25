@@ -67,16 +67,6 @@ struct FiltersPopover: View {
             }
           }
         }
-        divider
-        section(icon: nil, title: LibraryStrings.status) {
-          FlowLayout(spacing: 8) {
-            ForEach(SongStatus.allCases, id: \.self) { status in
-              chip(LibraryStrings.statusName(status), selected: filters.statuses.contains(status), expands: false) {
-                model.filters.toggle(status: status)
-              }
-            }
-          }
-        }
         Button(action: onManageTags) {
           PillLabel(icon: .tag, title: LibraryStrings.manageTags)
         }

@@ -18,6 +18,18 @@ enum EditorStrings {
   static var bpmInvalid: String {
     L10n.Ios.Editor.bpmInvalid
   }
+  /// "Title: Max 200 characters".
+  static func tooLong(_ field: EditorForm.LimitedField) -> String {
+    let name: String =
+      switch field {
+      case .title: L10n.Ios.Editor.title
+      case .artist: L10n.Ios.Editor.artist
+      case .key: L10n.Ios.Editor.key
+      case .notes: L10n.Ios.Editor.notes
+      case .lyrics: L10n.Ios.Editor.lyrics
+      }
+    return "\(name): \(L10n.Ios.Editor.maxLength(max: String(field.maxLength)))"
+  }
   static var transpose: String { L10n.Ios.Editor.transpose }
   static var capo: String { L10n.Ios.Editor.capo }
   static var notes: String { L10n.Ios.Editor.notes }

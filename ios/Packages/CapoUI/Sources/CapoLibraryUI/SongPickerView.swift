@@ -5,6 +5,9 @@ import SwiftUI
 /// order they were tapped.
 public struct SongPickerView: View {
   let excluding: Set<SongID>
+  /// Bucket of the target playlist: a playlist only holds songs of its own personal/team bucket
+  /// (web `add-songs-sheet`), so the list is limited to it. nil = the current view context.
+  let bucket: AppContext?
   let onPick: ([SongID]) -> Void
 
   @Environment(\.userServices) private var services
@@ -13,11 +16,15 @@ public struct SongPickerView: View {
   @State private var model = LibraryModel()
   @State private var picked: [SongID] = []
 
-  public init(excluding: Set<SongID> = [], onPick: @escaping ([SongID]) -> Void) {
+  public init(
+    excluding: Set<SongID> = [], bucket: AppContext? = nil, onPick: @escaping ([SongID]) -> Void
+  ) {
     self.excluding = excluding
+    self.bucket = bucket
     self.onPick = onPick
   }
 
+  private var queryContext: AppContext { bucket ?? context }
   private var visible: [SongListItem] { model.songs.filter { !excluding.contains($0.id) } }
 
   public var body: some View {
@@ -56,8 +63,8 @@ public struct SongPickerView: View {
         }
       }
       .task(id: model.searchInput) { await model.commitSearchAfterDebounce() }
-      .task(id: model.query(context: context)) {
-        for await items in services.songs.songs(model.query(context: context)) {
+      .task(id: model.query(context: queryContext)) {
+        for await items in services.songs.songs(model.query(context: queryContext)) {
           model.songs = items
           model.hasLoaded = true
         }

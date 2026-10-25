@@ -1,0 +1,11 @@
+# Things only a human can do
+
+1. **Redirect URL (done).** Production Supabase, Auth, URL Configuration: add `capo://auth/callback` to Redirect URLs. Locally, `supabase/config.toml` already lists it; restart the stack after changing it (`pnpm supabase stop && pnpm supabase start`).
+2. **Local login is Google only.** Local Google OAuth needs `SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID` and `SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET` in your shell environment before starting the stack. To skip the browser step in Debug builds, run `ios/scripts/mint-dev-session.sh [email]` (local stack only; it writes the git-ignored `ios/Capo/Capo/DevSession.plist`; `--remove` deletes it). Email and password sign-in exists as a fallback in non-production builds.
+3. **Pick a backend.** `ios/scripts/use-supabase.sh local [--device]`, or create `ios/Capo/Secrets.production.plist` (copy `Secrets.example.plist`) and run `ios/scripts/use-supabase.sh production`. A physical device with the local stack needs the Mac and device on one LAN, incoming connections allowed in the macOS firewall, and the iOS Local Network prompt accepted.
+4. **Sign in with Apple (pending, release blocker).** App Store guideline 4.8 requires it because Google login is offered. Create a Services ID and key in the Apple Developer portal, enable the Apple provider in Supabase, and add the Sign in with Apple capability to App ID `com.mfuentesg.capo`. Then add the entitlement and an Apple button to the auth screen.
+5. **Account deletion.** Approve exposing `delete_user_account` in production builds. Until then the Delete account button exists in DEBUG builds only (`ShellSettings.allowsAccountDeletion`); flip it to `true` to ship it. The shell also injects `UserServices.deleteAccount`, which is nil in demo mode.
+6. **CI and PR.** The branch `feat/ios-p0-golden-fixtures` is pushed; no PR is open. Confirm a macOS runner image with Xcode 26 or newer (`macos-26`) and the extra Actions minutes, then open the PR yourself.
+7. **Optional: universal links** for invitation and share links (AASA file on the web domain plus the Associated Domains entitlement).
+8. **App Store Connect.** Create the app record, fill the privacy nutrition labels and review `PrivacyInfo.xcprivacy`.
+9. **Devices.** Keep Developer Mode enabled on both devices and the signing team logged in to Xcode.

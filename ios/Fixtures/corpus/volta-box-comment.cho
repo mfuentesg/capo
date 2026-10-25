@@ -1,0 +1,13 @@
+{comment: Intro}
+[Dm7][G7][Cmaj7][A7]
+{note: Play softly}
+{start_of_volta: 1.}
+[C]Line one [G]ending
+{end_of_volta}
+{start_of_volta: 2.}
+[C]Line two [F]ending
+{end_of_volta}
+{start_of_box: Bridge}
+[Bb]Boxed [F/A]content [Gm7]here
+{end_of_box}
+{c: Outro, label}

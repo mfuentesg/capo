@@ -1,0 +1,701 @@
+{
+  "source": "repeat-and-extend.cho",
+  "sectionLabels": {
+    "chorus": "Chorus",
+    "verse": "Verse",
+    "bridge": "Bridge"
+  },
+  "commentLabel": "Note",
+  "cases": [
+    {
+      "transpose": -6,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Ebm</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "count": 1,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 1",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">First line here</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "repeat",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Ebm</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 1,
+          "html": "Sing <span class=\"chord\">Ebm</span> it loud, <span class=\"chord\">B</span> sing <span class=\"chord\">Gb</span> it proud<span class=\"chord\">Db</span>\nExtra <span class=\"chord\">Bb7</span> tag<span class=\"chord\">Ebm</span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": [
+            "inline"
+          ]
+        }
+      ]
+    },
+    {
+      "transpose": -6,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Dbm</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Fb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Cb</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "count": 1,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 1",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Fb</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Cb</span></span></span><span class=\"clp-lyric-text\">First line here</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "repeat",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Dbm</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Fb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Cb</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 1,
+          "html": "Sing <span class=\"chord\">Dbm</span> it loud, <span class=\"chord\">A</span> sing <span class=\"chord\">Fb</span> it proud<span class=\"chord\">Cb</span>\nExtra <span class=\"chord\">Ab7</span> tag<span class=\"chord\">Dbm</span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": [
+            "inline"
+          ]
+        }
+      ]
+    },
+    {
+      "transpose": -6,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Bbm</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Ab</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "count": 1,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 1",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Ab</span></span></span><span class=\"clp-lyric-text\">First line here</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "repeat",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Bbm</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Db</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Ab</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 1,
+          "html": "Sing <span class=\"chord\">Bbm</span> it loud, <span class=\"chord\">Gb</span> sing <span class=\"chord\">Db</span> it proud<span class=\"chord\">Ab</span>\nExtra <span class=\"chord\">F7</span> tag<span class=\"chord\">Bbm</span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": [
+            "inline"
+          ]
+        }
+      ]
+    },
+    {
+      "transpose": -1,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Abm</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "count": 1,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 1",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">First line here</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "repeat",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Abm</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gb</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 1,
+          "html": "Sing <span class=\"chord\">Abm</span> it loud, <span class=\"chord\">E</span> sing <span class=\"chord\">B</span> it proud<span class=\"chord\">Gb</span>\nExtra <span class=\"chord\">Eb7</span> tag<span class=\"chord\">Abm</span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": [
+            "inline"
+          ]
+        }
+      ]
+    },
+    {
+      "transpose": -1,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gbm</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">D</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Fb</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "count": 1,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 1",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Fb</span></span></span><span class=\"clp-lyric-text\">First line here</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "repeat",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gbm</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">D</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Fb</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 1,
+          "html": "Sing <span class=\"chord\">Gbm</span> it loud, <span class=\"chord\">D</span> sing <span class=\"chord\">A</span> it proud<span class=\"chord\">Fb</span>\nExtra <span class=\"chord\">Db7</span> tag<span class=\"chord\">Gbm</span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": [
+            "inline"
+          ]
+        }
+      ]
+    },
+    {
+      "transpose": -1,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Ebm</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "count": 1,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 1",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">First line here</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "repeat",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Ebm</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Db</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 1,
+          "html": "Sing <span class=\"chord\">Ebm</span> it loud, <span class=\"chord\">B</span> sing <span class=\"chord\">Gb</span> it proud<span class=\"chord\">Db</span>\nExtra <span class=\"chord\">Bb7</span> tag<span class=\"chord\">Ebm</span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": [
+            "inline"
+          ]
+        }
+      ]
+    },
+    {
+      "transpose": 0,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Am</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "count": 1,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 1",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">G</span></span></span><span class=\"clp-lyric-text\">First line here</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "repeat",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Am</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 1,
+          "html": "Sing <span class=\"chord\">Am</span> it loud, <span class=\"chord\">F</span> sing <span class=\"chord\">C</span> it proud<span class=\"chord\">G</span>\nExtra <span class=\"chord\">E7</span> tag<span class=\"chord\">Am</span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": [
+            "inline"
+          ]
+        }
+      ]
+    },
+    {
+      "transpose": 0,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gm</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Eb</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Bb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">F</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "count": 1,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 1",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Bb</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">F</span></span></span><span class=\"clp-lyric-text\">First line here</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "repeat",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Gm</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Eb</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Bb</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">F</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 1,
+          "html": "Sing <span class=\"chord\">Gm</span> it loud, <span class=\"chord\">Eb</span> sing <span class=\"chord\">Bb</span> it proud<span class=\"chord\">F</span>\nExtra <span class=\"chord\">D7</span> tag<span class=\"chord\">Gm</span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": [
+            "inline"
+          ]
+        }
+      ]
+    },
+    {
+      "transpose": 0,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Em</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">D</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "count": 1,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 1",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">D</span></span></span><span class=\"clp-lyric-text\">First line here</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "repeat",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">Em</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">D</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 1,
+          "html": "Sing <span class=\"chord\">Em</span> it loud, <span class=\"chord\">C</span> sing <span class=\"chord\">G</span> it proud<span class=\"chord\">D</span>\nExtra <span class=\"chord\">B7</span> tag<span class=\"chord\">Em</span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": [
+            "inline"
+          ]
+        }
+      ]
+    },
+    {
+      "transpose": 1,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">A#m</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "count": 1,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 1",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">First line here</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "repeat",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">A#m</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 1,
+          "html": "Sing <span class=\"chord\">A#m</span> it loud, <span class=\"chord\">F#</span> sing <span class=\"chord\">C#</span> it proud<span class=\"chord\">G#</span>\nExtra <span class=\"chord\">F7</span> tag<span class=\"chord\">A#m</span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": [
+            "inline"
+          ]
+        }
+      ]
+    },
+    {
+      "transpose": 1,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G#m</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">F#</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "count": 1,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 1",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">F#</span></span></span><span class=\"clp-lyric-text\">First line here</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "repeat",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G#m</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">F#</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 1,
+          "html": "Sing <span class=\"chord\">G#m</span> it loud, <span class=\"chord\">E</span> sing <span class=\"chord\">B</span> it proud<span class=\"chord\">F#</span>\nExtra <span class=\"chord\">Eb7</span> tag<span class=\"chord\">G#m</span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": [
+            "inline"
+          ]
+        }
+      ]
+    },
+    {
+      "transpose": 1,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">E#m</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">D#</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "count": 1,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 1",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">D#</span></span></span><span class=\"clp-lyric-text\">First line here</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "repeat",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">E#m</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">D#</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 1,
+          "html": "Sing <span class=\"chord\">E#m</span> it loud, <span class=\"chord\">C#</span> sing <span class=\"chord\">G#</span> it proud<span class=\"chord\">D#</span>\nExtra <span class=\"chord\">C7</span> tag<span class=\"chord\">E#m</span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": [
+            "inline"
+          ]
+        }
+      ]
+    },
+    {
+      "transpose": 6,
+      "capo": 0,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">D#m</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C#</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "count": 1,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 1",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">C#</span></span></span><span class=\"clp-lyric-text\">First line here</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "repeat",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">D#m</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">B</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">F#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C#</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 1,
+          "html": "Sing <span class=\"chord\">D#m</span> it loud, <span class=\"chord\">B</span> sing <span class=\"chord\">F#</span> it proud<span class=\"chord\">C#</span>\nExtra <span class=\"chord\">A#7</span> tag<span class=\"chord\">D#m</span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": [
+            "inline"
+          ]
+        }
+      ]
+    },
+    {
+      "transpose": 6,
+      "capo": 2,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C#m</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "count": 1,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 1",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">First line here</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "repeat",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C#m</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">A</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">E</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">B</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 1,
+          "html": "Sing <span class=\"chord\">C#m</span> it loud, <span class=\"chord\">A</span> sing <span class=\"chord\">E</span> it proud<span class=\"chord\">B</span>\nExtra <span class=\"chord\">G#7</span> tag<span class=\"chord\">C#m</span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": [
+            "inline"
+          ]
+        }
+      ]
+    },
+    {
+      "transpose": 6,
+      "capo": 5,
+      "segments": [
+        {
+          "type": "section",
+          "name": "Chorus",
+          "sectionType": "chorus",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">A#m</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "count": 1,
+          "flags": [
+            "forte"
+          ],
+          "inline": false
+        },
+        {
+          "type": "section",
+          "name": "Verse 1",
+          "sectionType": "verse",
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:5ch\"></span><span class=\"clp-col\" style=\"min-width:4ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">First line here</span></span>",
+          "count": 1,
+          "flags": [],
+          "inline": false
+        },
+        {
+          "type": "repeat",
+          "name": "Chorus",
+          "count": 2,
+          "html": "<span class=\"clp-pair\"><span class=\"clp-chords\"><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">A#m</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:6ch\"><span class=\"chord\">Gb</span></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">C#</span></span><span class=\"clp-col\" style=\"min-width:3ch\"></span><span class=\"clp-col\" style=\"min-width:5ch\"><span class=\"chord\">G#</span></span></span><span class=\"clp-lyric-text\">Sing it loud, sing it proud</span></span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": []
+        },
+        {
+          "type": "extend",
+          "name": "Chorus",
+          "count": 1,
+          "html": "Sing <span class=\"chord\">A#m</span> it loud, <span class=\"chord\">Gb</span> sing <span class=\"chord\">C#</span> it proud<span class=\"chord\">G#</span>\nExtra <span class=\"chord\">E#7</span> tag<span class=\"chord\">A#m</span>",
+          "found": true,
+          "sectionType": "chorus",
+          "flags": [
+            "inline"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{soc}
+[C]Unnamed chorus [G]line
+{eoc}
+{sov}
+[Am]Unnamed verse [F]line
+{eov}
+{sopc}
+[Dm]Unnamed pre-chorus [G]line
+{eopc}
+{sot}
+e|--0--2--3--|
+{eot}
+{sov: Verse, 2, forte, label: Custom}
+[C]Custom labeled [F]verse
+{eov}
+{c: Intro}
+[C][G][Am][F]
+{repeat: Intro}
+{repeat: Missing}
+{repeat: Verse 1, 3, inline}
+{start_of_extend: Missing, label: "Ext"}
+[D]Extension of [A]nothing
+{end_of_extend}
+{soex: Chorus, 2}
+[E]Extend with no end [B]marker
+{soc: Final}
+[G]Unclosed final [D]section

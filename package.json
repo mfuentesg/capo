@@ -18,6 +18,10 @@
     "ci": "pnpm run lint && pnpm run typecheck && pnpm run build",
     "validate": "pnpm run i18n:validate && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build",
     "i18n:validate": "node lib/i18n/validate-translations.js",
+    "ios:i18n": "node ios/scripts/gen-i18n.mjs",
+    "ios:i18n:check": "node ios/scripts/gen-i18n.mjs --check",
+    "ios:test": "ios/scripts/test-packages.sh",
+    "ios:build": "ios/scripts/build-sim.sh",
     "optimize:logos": "tsx scripts/optimize-logos.ts",
     "supabase": "pnpm dlx supabase@latest",
     "types:generate": "pnpm --silent dlx supabase@latest gen types typescript --local > lib/supabase/database.types.ts"

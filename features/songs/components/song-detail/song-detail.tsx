@@ -30,6 +30,7 @@ import {
 import { cn } from "@/lib/utils"
 import type { Song } from "@/features/songs/types"
 import { KeySelect } from "@/features/songs"
+import { BPM_MAX, BPM_MIN, clampBpm } from "@/lib/bpm"
 import {
   useEffectiveSongSettings,
   useUpsertUserSongSettings
@@ -178,7 +179,7 @@ export function SongDetail({ song, onClose, onUpdate, onDelete, onTransferSucces
       return
     }
 
-    const clampedValue = Math.max(20, Math.min(parsedValue, 500))
+    const clampedValue = clampBpm(parsedValue)
     clearBpmDraft()
     if (clampedValue === song.bpm) return
     onUpdate(song.id, { bpm: clampedValue })
@@ -230,8 +231,8 @@ export function SongDetail({ song, onClose, onUpdate, onDelete, onTransferSucces
                   type="text"
                   inputMode="numeric"
                   pattern="[0-9]*"
-                  min={20}
-                  max={500}
+                  min={BPM_MIN}
+                  max={BPM_MAX}
                   value={bpmInputValue}
                   onChange={(e) => {
                     const nextValue = e.target.value

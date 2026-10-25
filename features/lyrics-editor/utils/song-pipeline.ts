@@ -1,4 +1,5 @@
 import { ChordProParser } from "chordsheetjs"
+import { normalizeLyricsText } from "./lyrics-text"
 
 // Pure ChordPro -> segment pipeline extracted from rendered-song.tsx (no behavior change).
 // Also the source of truth for the iPad app golden fixtures (see scripts/generate-chordpro-fixtures).
@@ -424,7 +425,8 @@ export interface SectionEntry {
   sectionType: string
 }
 
-export function buildSectionMap(lyrics: string): Map<string, SectionEntry> {
+export function buildSectionMap(rawLyrics: string): Map<string, SectionEntry> {
+  const lyrics = normalizeLyricsText(rawLyrics)
   const map = new Map<string, SectionEntry>()
 
   // 1. Named explicit blocks: {soc/sov/sob/soi/soo/sopc/sot/sog: Name}...{end}
@@ -500,13 +502,14 @@ function parseSectionValue(raw: string): {
 }
 
 export function buildSegments(
-  lyrics: string,
+  rawLyrics: string,
   sectionMap: Map<string, SectionEntry>,
   transpose: number,
   capo: number,
   sectionLabels: Record<string, string>,
   commentLabel: string
 ): LyricsSegment[] {
+  const lyrics = normalizeLyricsText(rawLyrics)
   const segments: LyricsSegment[] = []
   let pos = 0
   const scanner = new RegExp(SEGMENT_SCAN_RE.source, "gi")

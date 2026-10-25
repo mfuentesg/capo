@@ -380,42 +380,27 @@ struct TeamMemberWithProfileRow: Decodable, Sendable {
   }
 }
 
-/// `team_invitations` with `team:teams(name)` and `inviter:profiles(full_name,email)` embedded.
+/// One row of the `get_my_pending_invitations()` RPC: the `team_invitations` columns plus the
+/// team name and the inviter's name (already falling back to their email, or "A team member").
 struct PendingInvitationRow: Decodable, Sendable {
-  struct TeamName: Decodable, Sendable { var name: String }
-  struct Inviter: Decodable, Sendable {
-    var fullName: String?
-    var email: String?
-    enum CodingKeys: String, CodingKey {
-      case email
-      case fullName = "full_name"
-    }
-  }
-
   var invitation: TeamInvitationRow
-  var team: TeamName?
-  var inviter: Inviter?
+  var teamName: String?
+  var inviterName: String?
 
-  enum CodingKeys: String, CodingKey { case team, inviter }
+  enum CodingKeys: String, CodingKey {
+    case teamName = "team_name"
+    case inviterName = "inviter_name"
+  }
 
   init(from decoder: Decoder) throws {
     invitation = try TeamInvitationRow(from: decoder)
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    team = Self.decodeOneOrMany(TeamName.self, container, .team)
-    inviter = Self.decodeOneOrMany(Inviter.self, container, .inviter)
-  }
-
-  private static func decodeOneOrMany<T: Decodable>(
-    _ type: T.Type, _ container: KeyedDecodingContainer<CodingKeys>, _ key: CodingKeys
-  ) -> T? {
-    if let single = try? container.decodeIfPresent(T.self, forKey: key) { return single }
-    return (try? container.decodeIfPresent([T].self, forKey: key))?.first
+    teamName = try container.decodeIfPresent(String.self, forKey: .teamName)
+    inviterName = try container.decodeIfPresent(String.self, forKey: .inviterName)
   }
 
   var model: PendingInvitation {
-    PendingInvitation(
-      invitation: invitation.model, teamName: team?.name ?? "",
-      inviterName: inviter.flatMap { $0.fullName ?? $0.email })
+    PendingInvitation(invitation: invitation.model, teamName: teamName ?? "", inviterName: inviterName)
   }
 }
 

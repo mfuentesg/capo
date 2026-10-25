@@ -76,6 +76,8 @@ public protocol TeamRepository: Sendable {
   func leaveTeam(id: TeamID) async throws
   func invite(email: String, role: TeamRole, teamID: TeamID) async throws -> TeamInvitation
   func revokeInvitation(id: UUID) async throws
+  func declineInvitation(token: String) async throws
+  func resendInvitation(id: UUID) async throws -> TeamInvitation
   func acceptInvitation(token: String) async throws -> TeamID
   func changeRole(userID: UserID, teamID: TeamID, role: TeamRole) async throws
   func removeMember(userID: UserID, teamID: TeamID) async throws

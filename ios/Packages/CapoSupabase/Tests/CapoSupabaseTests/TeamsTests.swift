@@ -36,15 +36,31 @@ import Testing
     #expect(server.restRequests[0].query["select"] == "*,profiles(full_name,email,avatar_url)")
   }
 
-  @Test func pendingInvitationsFilterByEmailAndEscapeWildcards() async throws {
+  @Test func pendingInvitationsComeFromTheRpc() async throws {
     let server = StubServer()
     server.handle { _ in .ok("[" + (try! fixtureString("pending_invitation")) + "]") }
-    let pending = try await remote(server).pendingInvitations(email: "a_b@example.test")
+    let pending = try await remote(server).pendingInvitations()
     #expect(pending.first?.teamName == "Worship Team")
-    let query = server.restRequests[0].query
-    #expect(query["email"] == "ilike.a\\_b@example.test")
-    #expect(query["accepted_at"]?.lowercased() == "is.null")
-    #expect(query["expires_at"]?.hasPrefix("gt.") == true)
+    #expect(pending.first?.inviterName == "a@example.test")
+    let request = try #require(server.restRequests.first)
+    #expect(request.path == "/rest/v1/rpc/get_my_pending_invitations")
+  }
+
+  @Test func declineAndResendUseTheirRpcs() async throws {
+    let decline = StubServer()
+    decline.handle { _ in .ok("true") }
+    try await remote(decline).declineInvitation(token: "tok123")
+    let declineRequest = try #require(decline.restRequests.first)
+    #expect(declineRequest.path == "/rest/v1/rpc/decline_team_invitation")
+    #expect(declineRequest.jsonObject?["p_token"] as? String == "tok123")
+
+    let resend = StubServer()
+    resend.handle { _ in .ok(try! fixtureString("pending_invitation")) }
+    let fresh = try await remote(resend).resendInvitation(id: Ids.team)
+    #expect(fresh.token == "tok123")
+    let resendRequest = try #require(resend.restRequests.first)
+    #expect(resendRequest.path == "/rest/v1/rpc/resend_team_invitation")
+    #expect(resendRequest.jsonObject?["p_invitation_id"] as? String == Ids.team.pg)
   }
 
   @Test func acceptInvitationDecodesScalarUUID() async throws {

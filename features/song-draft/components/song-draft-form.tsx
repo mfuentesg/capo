@@ -7,6 +7,7 @@ import * as z from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { KeySelect } from "@/features/songs"
+import { BPM_MAX, BPM_MIN } from "@/lib/bpm"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { X, Info } from "lucide-react"
 import {
@@ -65,8 +66,8 @@ export function SongDraftForm({
     bpm: z
       .number()
       .int()
-      .min(40, t.validation.minBpm.replace("{min}", "40"))
-      .max(300, t.validation.maxBpm.replace("{max}", "300"))
+      .min(BPM_MIN, t.validation.minBpm.replace("{min}", String(BPM_MIN)))
+      .max(BPM_MAX, t.validation.maxBpm.replace("{max}", String(BPM_MAX)))
   })
 
   const form = useForm<SongFormValues>({
@@ -214,8 +215,8 @@ export function SongDraftForm({
                           onBlur={field.onBlur}
                           name={field.name}
                           ref={field.ref}
-                          min="40"
-                          max="300"
+                          min={BPM_MIN}
+                          max={BPM_MAX}
                           className="shadow-none"
                         />
                       </FormControl>

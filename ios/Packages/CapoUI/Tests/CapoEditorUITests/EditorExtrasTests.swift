@@ -165,3 +165,32 @@ extension Result: @retroactive Equatable where Success == CifraClubSong, Failure
     }
   }
 }
+
+@Suite struct ShiftChordsTests {
+  @Test func shiftsDownWithFlats() {
+    #expect(ShiftChords.shiftChord("B", by: -1) == "Bb")
+    #expect(ShiftChords.shiftChord("F#m7", by: -1) == "Fm7")
+    #expect(ShiftChords.shiftChord("E/G#", by: -2) == "D/Gb")
+    #expect(ShiftChords.shiftChord("Bsus4", by: -2) == "Asus4")
+  }
+
+  @Test func shiftsUpWithSharpsAndWraps() {
+    #expect(ShiftChords.shiftChord("A", by: 1) == "A#")
+    #expect(ShiftChords.shiftChord("Bb", by: 2) == "C")
+    #expect(ShiftChords.shiftChord("C", by: -1) == "B")
+    #expect(ShiftChords.shiftChord("B", by: 1) == "C")
+  }
+
+  @Test func leavesNonChordsAlone() {
+    #expect(ShiftChords.shiftChord("N.C.", by: -1) == "N.C.")
+    #expect(ShiftChords.shiftChord("x2", by: -1) == "x2")
+  }
+
+  @Test func rewritesOnlyBracketedChords() {
+    let input = "{title: Bb song}\n{c: Verse}\n[B]Be a [F#m]light [N.C.]now"
+    #expect(
+      ShiftChords.shiftLyrics(input, by: -1)
+        == "{title: Bb song}\n{c: Verse}\n[Bb]Be a [Fm]light [N.C.]now")
+    #expect(ShiftChords.shiftLyrics("[C]a [G]b", by: 0) == "[C]a [G]b")
+  }
+}

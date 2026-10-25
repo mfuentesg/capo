@@ -145,6 +145,7 @@ public struct SongEditorView: View {
     VStack(spacing: 0) {
       metadata
       Divider().overlay(CapoTheme.border)
+      ShiftChordsToolbar { controller.shiftChords(by: $0) }
       if controller.hasSelection {
         SectionWrapToolbar { controller.wrap($0) }
       }

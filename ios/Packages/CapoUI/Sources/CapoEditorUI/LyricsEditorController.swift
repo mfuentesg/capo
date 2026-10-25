@@ -23,4 +23,18 @@ final class LyricsEditorController {
     view.insertText(replacement)  // replaces the selection, keeps undo and fires the delegate
     view.selectedRange = NSRange(location: range.location + (replacement as NSString).length, length: 0)
   }
+
+  /// Shifts the chords in the selection (or the whole text when nothing is selected) by `semitones`.
+  /// Rewrites stored lyrics only; key, capo and transpose settings are untouched.
+  func shiftChords(by semitones: Int) {
+    guard let view = textView else { return }
+    let ns = view.text as NSString
+    let range = view.selectedRange.length > 0 ? view.selectedRange : NSRange(location: 0, length: ns.length)
+    let original = ns.substring(with: range)
+    let shifted = ShiftChords.shiftLyrics(original, by: semitones)
+    guard shifted != original else { return }
+    view.selectedRange = range
+    view.insertText(shifted)  // replaces the range, keeps undo and fires the delegate
+    view.selectedRange = NSRange(location: range.location, length: (shifted as NSString).length)
+  }
 }

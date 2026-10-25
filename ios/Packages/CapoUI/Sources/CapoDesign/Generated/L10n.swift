@@ -1888,8 +1888,14 @@ public nonisolated enum L10n {
       public static var parseChords: String { String(localized: "songs.lyrics.parseChords", bundle: L10nRuntime.bundle) }
       /// Lyrics are already in ChordPro format
       public static var parseChordsAlreadyChordPro: String { String(localized: "songs.lyrics.parseChordsAlreadyChordPro", bundle: L10nRuntime.bundle) }
+      /// semitone
+      public static var semitone: String { String(localized: "songs.lyrics.semitone", bundle: L10nRuntime.bundle) }
       /// Settings
       public static var settings: String { String(localized: "songs.lyrics.settings", bundle: L10nRuntime.bundle) }
+      /// Shift chords
+      public static var shiftChords: String { String(localized: "songs.lyrics.shiftChords", bundle: L10nRuntime.bundle) }
+      /// Rewrites the chords in the lyrics (selection, or all if nothing is selected). Key, capo and transpose settings are not changed.
+      public static var shiftChordsHint: String { String(localized: "songs.lyrics.shiftChordsHint", bundle: L10nRuntime.bundle) }
       /// Chords
       public static var showChordsLabel: String { String(localized: "songs.lyrics.showChordsLabel", bundle: L10nRuntime.bundle) }
       /// Lyrics

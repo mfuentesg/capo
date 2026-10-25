@@ -247,6 +247,7 @@ struct SongPerformanceScreen: View {
         .overlay(alignment: .bottom) { if !floatingControls { dockArea } }
         .overlay { if floatingControls { floatingArea } }
         .overlay { if isFullscreen { fullscreenOverlay(song) } }
+        .background { controlsModeShortcut }
     }
   }
 
@@ -331,9 +332,24 @@ struct SongPerformanceScreen: View {
     .frame(maxWidth: .infinity)
   }
 
+  /// ⌘⇧D switches between the docked bar and the floating button (hardware keyboard).
+  private var controlsModeShortcut: some View {
+    Button(floatingControls ? StageStrings.dockControls : StageStrings.floatControls) {
+      floatingOpen = false
+      floatingControls.toggle()
+    }
+    .keyboardShortcut("d", modifiers: [.command, .shift])
+    .opacity(0)
+    .frame(width: 0, height: 0)
+    .accessibilityHidden(true)
+  }
+
   /// The controls as one draggable button; its panel is the same dock, plus a way back to the bar.
   private var floatingArea: some View {
-    FloatingControls(isOpen: $floatingOpen, isPlaying: model.isAutoScrolling) {
+    FloatingControls(
+      isOpen: $floatingOpen, isPlaying: model.isAutoScrolling,
+      topInset: isFullscreen ? 56 : 0, bottomInset: isFullscreen ? 34 : 0
+    ) {
       VStack(spacing: 8) {
         StageDock(model: model, navigation: navigation, compact: compact)
         Button {

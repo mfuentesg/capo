@@ -10,7 +10,8 @@ public struct PlaylistsView: View {
   let onOpen: (PlaylistID) -> Void
   @Environment(\.userServices) private var services
   @Environment(\.appContext) private var context
-  @Environment(\.currentTeamRole) private var role
+  @Environment(\.teamRoles) private var teamRoles
+  @Environment(\.creationContext) private var creationContext
   @Environment(\.horizontalSizeClass) private var sizeClass
   @State private var all: [PlaylistSummary] = []
   @State private var loaded = false
@@ -25,7 +26,7 @@ public struct PlaylistsView: View {
 
   public init(onOpen: @escaping (PlaylistID) -> Void) { self.onOpen = onOpen }
 
-  private var canEdit: Bool { role?.canEditContent ?? true }
+  private var canCreate: Bool { teamRoles.canEdit(in: creationContext) }
   private var isRegular: Bool { sizeClass == .regular && width >= 600 }
   private var visible: [PlaylistSummary] {
     PlaylistTableLogic.rows(all, query: query, visibility: visibility, archived: showArchived, sort: sort)
@@ -89,7 +90,7 @@ public struct PlaylistsView: View {
         Text("· \(loaded ? visible.count : activeCount)")
           .capoText(.sm).monospacedDigit().foregroundStyle(CapoTheme.mutedForeground)
         Spacer(minLength: 0)
-        if canEdit { createButton }
+        if canCreate { createButton }
       }
       HStack(spacing: 8) {
         searchField
@@ -195,9 +196,9 @@ public struct PlaylistsView: View {
       ForEach(visible) { summary in
         Group {
           if isRegular {
-            PlaylistTableRow(summary: summary, onArchive: canEdit ? { toggleArchive(summary) } : nil)
+            PlaylistTableRow(summary: summary, onArchive: teamRoles.canEdit(teamID: summary.playlist.teamID) ? { toggleArchive(summary) } : nil)
           } else {
-            PlaylistCompactRow(summary: summary, onArchive: canEdit ? { toggleArchive(summary) } : nil)
+            PlaylistCompactRow(summary: summary, onArchive: teamRoles.canEdit(teamID: summary.playlist.teamID) ? { toggleArchive(summary) } : nil)
           }
         }
         .onTapGesture { onOpen(summary.id) }
@@ -206,7 +207,7 @@ public struct PlaylistsView: View {
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets())
         .swipeActions(edge: .trailing) {
-          if canEdit {
+          if teamRoles.canDelete(teamID: summary.playlist.teamID) {
             Button(PlaylistStrings.delete, role: .destructive) { pendingDelete = summary }
           }
         }

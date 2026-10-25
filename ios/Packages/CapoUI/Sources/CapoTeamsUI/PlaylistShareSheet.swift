@@ -9,6 +9,7 @@ public struct PlaylistShareSheet: View {
 
   @Environment(\.userServices) private var services
   @Environment(\.dismiss) private var dismiss
+  @Environment(\.teamRoles) private var teamRoles
   @State private var model = ShareModel()
 
   public init(playlistID: PlaylistID) { self.playlistID = playlistID }
@@ -25,6 +26,7 @@ public struct PlaylistShareSheet: View {
             }
           }
           .tint(CapoTheme.primary)
+          .disabled(!model.canEdit)
         } else if let url = model.url {
           Text(url.absoluteString).font(CapoFont.mono(16)).textSelection(.enabled)
             .multilineTextAlignment(.center)
@@ -56,7 +58,8 @@ public struct PlaylistShareSheet: View {
   }
 
   private func load() async {
-    await model.load(services.sharing, playlists: services.playlists, playlistID: playlistID)
+    await model.load(
+      services.sharing, playlists: services.playlists, playlistID: playlistID, roles: teamRoles)
   }
 
   private func makePublic() async {
@@ -70,16 +73,28 @@ final class ShareModel: OnlineActionModel {
   var url: URL?
   /// The playlist is private, so a share link would 404 (the web page only serves public playlists).
   var needsPublic = false
+  /// Only editors may publish a playlist or have the server mint a code (RPC `ensure_share_code`).
+  var canEdit = true
 
   func load(
-    _ sharing: any SharingService, playlists: any PlaylistRepository, playlistID: PlaylistID
+    _ sharing: any SharingService, playlists: any PlaylistRepository, playlistID: PlaylistID,
+    roles: TeamRoles
   ) async {
     message = nil
+    var playlist: Playlist?
     for await detail in playlists.playlist(id: playlistID) {
-      needsPublic = !(detail?.playlist.isPublic ?? false)
+      playlist = detail?.playlist
       break
     }
+    canEdit = roles.canEdit(teamID: playlist?.teamID)
+    needsPublic = !(playlist?.isPublic ?? false)
     guard !needsPublic else { return }
+    // The code is already on the synced row, so viewers and offline users need no round trip.
+    if let code = playlist?.shareCode, !code.isEmpty {
+      url = sharing.shareURL(forCode: code)
+      return
+    }
+    guard canEdit else { return }
     await perform(failure: L10n.Toasts.error) {
       let code = try await sharing.ensureShareCode(playlistID: playlistID)
       url = sharing.shareURL(forCode: code)

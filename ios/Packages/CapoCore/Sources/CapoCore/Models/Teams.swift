@@ -5,6 +5,28 @@ public enum TeamRole: String, Codable, Sendable, CaseIterable {
 
   public var canEditContent: Bool { self != .viewer }
   public var canManageMembers: Bool { self == .owner || self == .admin }
+  /// RLS: team songs and playlists are deleted by admins and owners only.
+  public var canDeleteContent: Bool { self == .owner || self == .admin }
+}
+
+/// Roles of the signed-in user per team, so permissions follow the item's own bucket instead of
+/// the view filter. Personal items (`teamID == nil`) are always fully editable.
+public struct TeamRoles: Sendable, Equatable {
+  public var roles: [TeamID: TeamRole]
+
+  public init(_ roles: [TeamID: TeamRole] = [:]) { self.roles = roles }
+
+  public func canEdit(teamID: TeamID?) -> Bool {
+    guard let teamID else { return true }
+    return roles[teamID]?.canEditContent ?? false
+  }
+
+  public func canDelete(teamID: TeamID?) -> Bool {
+    guard let teamID else { return true }
+    return roles[teamID]?.canDeleteContent ?? false
+  }
+
+  public func canEdit(in context: AppContext) -> Bool { canEdit(teamID: context.teamID) }
 }
 
 public struct Team: Identifiable, Hashable, Sendable, Codable {

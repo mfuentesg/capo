@@ -11,7 +11,7 @@ public struct SongEditorView: View {
   @Environment(\.userServices) private var services
   @Environment(\.appContext) private var context
   @Environment(\.creationContext) private var creationContext
-  @Environment(\.currentTeamRole) private var role
+  @Environment(\.teamRoles) private var teamRoles
   @State private var model = SongEditorModel()
   @State private var confirmDelete = false
   @State private var confirmDiscard = false
@@ -30,7 +30,11 @@ public struct SongEditorView: View {
     self.onFinish = onFinish
   }
 
-  private var isViewer: Bool { role == .viewer }
+  private var isViewer: Bool {
+    let teamID = model.original.map(\.teamID) ?? creationContext.teamID
+    return !teamRoles.canEdit(teamID: teamID)
+  }
+  private var canDelete: Bool { teamRoles.canDelete(teamID: model.original?.teamID) }
 
   public var body: some View {
     VStack(spacing: 0) {
@@ -121,7 +125,7 @@ public struct SongEditorView: View {
         PreviewResizeHandle(layout: $panel, containerWidth: containerWidth)
         VStack(spacing: 14) {
           LivePreviewPanel(rendered: renderedPreview, showChords: $showChords) { setCollapsed(true) }
-          if model.isEditing { deleteButton }
+          if model.isEditing && canDelete { deleteButton }
         }
         .padding(20)
         .frame(width: panel.resolvedWidth(containerWidth: containerWidth))
@@ -147,7 +151,7 @@ public struct SongEditorView: View {
   }
 
   private var showDeleteInExtras: Bool {
-    model.isEditing && (sizeClass != .regular || panel.isCollapsed)
+    model.isEditing && canDelete && (sizeClass != .regular || panel.isCollapsed)
   }
 
   private var header: some View {

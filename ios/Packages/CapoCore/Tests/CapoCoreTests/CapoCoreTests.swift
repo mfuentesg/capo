@@ -187,6 +187,17 @@ private func roundTrip<T: Codable & Equatable>(_ value: T) throws {
     #expect(AppContext.personal(userID: userID).teamID == nil)
   }
 
+  @Test func permissionsFollowTheItemsTeam() {
+    let other = UUID()
+    let roles = TeamRoles([teamID: .member, other: .viewer])
+    #expect(roles.canEdit(teamID: nil) && roles.canDelete(teamID: nil))
+    #expect(roles.canEdit(teamID: teamID) && !roles.canDelete(teamID: teamID))
+    #expect(!roles.canEdit(teamID: other) && !roles.canDelete(teamID: other))
+    #expect(!roles.canEdit(teamID: UUID()))  // not a member
+    #expect(TeamRoles([teamID: .admin]).canDelete(teamID: teamID))
+    #expect(roles.canEdit(in: .personal(userID: userID)) && !roles.canEdit(in: .team(teamID: other)))
+  }
+
   @Test func appConfigFromPlist() {
     #expect(AppConfig.load(from: ["SUPABASE_URL": "http://127.0.0.1:54321"]) == nil)
     let config = AppConfig.load(from: [

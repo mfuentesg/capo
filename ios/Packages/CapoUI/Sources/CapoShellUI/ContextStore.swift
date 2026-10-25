@@ -56,6 +56,10 @@ final class ContextStore {
     return teams.first { $0.id == teamID }?.role
   }
 
+  var teamRoles: TeamRoles {
+    TeamRoles(Dictionary(teams.map { ($0.id, $0.role) }, uniquingKeysWith: { first, _ in first }))
+  }
+
   var selectedTeam: Team? {
     guard let teamID = context.teamID else { return nil }
     return teams.first { $0.id == teamID }?.team

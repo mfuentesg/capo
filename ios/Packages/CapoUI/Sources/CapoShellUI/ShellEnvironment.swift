@@ -14,6 +14,7 @@ struct ShellEnvironment: ViewModifier {
       .environment(\.playlistDraft, model.navigation.draft)
       .environment(\.creationContext, model.contextStore.creationContext)
       .environment(\.currentTeamRole, model.contextStore.role)
+      .environment(\.teamRoles, model.contextStore.teamRoles)
       .environment(\.settingsContext, model.settingsContext)
       .environment(\.capoActions, model.navigation.makeActions())
       .preferredColorScheme(model.theme.flatMap(Self.scheme))

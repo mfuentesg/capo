@@ -12,7 +12,7 @@ public struct PlaylistDetailView: View {
   let playlistID: PlaylistID
   let backLabel: String?
   @Environment(\.userServices) private var services
-  @Environment(\.currentTeamRole) private var role
+  @Environment(\.teamRoles) private var teamRoles
   @Environment(\.capoActions) private var actions
   @Environment(\.capoUIScale) private var scale
   @Environment(\.isPresented) private var isPresented
@@ -33,7 +33,8 @@ public struct PlaylistDetailView: View {
     self.backLabel = backLabel
   }
 
-  private var canEdit: Bool { role?.canEditContent ?? true }
+  private var canEdit: Bool { teamRoles.canEdit(teamID: detail?.playlist.teamID) }
+  private var canDelete: Bool { teamRoles.canDelete(teamID: detail?.playlist.teamID) }
   /// Songs left, sharing column right; below this the sections stack.
   private var wide: Bool { PlaylistDetailLayout.isWide(paneWidth: Double(paneWidth)) }
 
@@ -126,7 +127,7 @@ public struct PlaylistDetailView: View {
           Task { try? await services.playlists.update(id: playlistID, patch) }
         }, onCopied: { toast = L10n.PlaylistDetail.copied })
       archiveCard(playlist)
-      if canEdit { dangerZone(playlist) }
+      if canDelete { dangerZone(playlist) }
     }
     .padding(20)
     .frame(maxWidth: .infinity, alignment: .leading)

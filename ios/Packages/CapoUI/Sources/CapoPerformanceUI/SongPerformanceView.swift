@@ -132,7 +132,7 @@ struct SongPerformanceScreen: View {
       false
     #endif
   }()
-  @Environment(\.currentTeamRole) private var role
+  @Environment(\.teamRoles) private var teamRoles
   @Environment(\.capoActions) private var actions
   @Environment(\.horizontalSizeClass) private var sizeClass
   @Environment(\.isPresented) private var isPresented
@@ -236,7 +236,7 @@ struct SongPerformanceScreen: View {
       if !isFullscreen && !showsInlineHeading {
         LyricsHeader(
           song: song, model: model, navigation: navigation,
-          canEdit: role?.canEditContent ?? true, compact: compact,
+          canEdit: teamRoles.canEdit(teamID: song.teamID), compact: compact,
           showsBack: !navigation.isEmbedded && isPresented, onBack: { dismiss() },
           onShowList: queueEnabled ? { showQueue = true } : nil,
           onEdit: { actions.openEditor(.edit(song.id)) }, onFullscreen: toggleFullscreen)

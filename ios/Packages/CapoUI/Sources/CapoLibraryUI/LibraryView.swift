@@ -8,7 +8,8 @@ import SwiftUI
 public struct LibraryView: View {
   @Environment(\.userServices) private var services
   @Environment(\.appContext) private var context
-  @Environment(\.currentTeamRole) private var role
+  @Environment(\.teamRoles) private var teamRoles
+  @Environment(\.creationContext) private var creationContext
   @Environment(\.capoActions) private var actions
   @Environment(\.playlistDraft) private var draft
   @Environment(\.horizontalSizeClass) private var sizeClass
@@ -19,7 +20,8 @@ public struct LibraryView: View {
 
   public init() {}
 
-  private var canEdit: Bool { role?.canEditContent ?? true }
+  /// Creating happens in the creation bucket; the rows use their own team.
+  private var canCreate: Bool { teamRoles.canEdit(in: creationContext) }
 
   public var body: some View {
     @Bindable var model = model
@@ -28,7 +30,7 @@ public struct LibraryView: View {
         width: proxy.size.width, isRegularSizeClass: sizeClass == .regular, showsOwnership: context.isAll)
       VStack(spacing: 0) {
         LibraryHeader(
-          model: model, canEdit: canEdit, isRegular: layout.mode == .regular,
+          model: model, canEdit: canCreate, isRegular: layout.mode == .regular,
           onAdd: { actions.openEditor(.create) }, onManageTags: { showTagManagement = true })
         if layout.mode == .regular { columnStrip(layout) } else { CapoTheme.border.frame(height: 1) }
         songList(layout)
@@ -158,7 +160,7 @@ public struct LibraryView: View {
         .tint(CapoTheme.accentPlaylists)
       }
       .swipeActions(edge: .leading) {
-        if canEdit {
+        if teamRoles.canEdit(teamID: item.teamID) {
           Button { assignTagsFor = SongSheetTarget(id: item.id) } label: {
             CapoIconLabel(LibraryStrings.assignTags, icon: .tag)
           }
@@ -169,7 +171,7 @@ public struct LibraryView: View {
         Button { actions.addSongsToPlaylist([item.id]) } label: {
           CapoIconLabel(LibraryStrings.addToSetlist, icon: .listMusic)
         }
-        if canEdit {
+        if teamRoles.canEdit(teamID: item.teamID) {
           Button { assignTagsFor = SongSheetTarget(id: item.id) } label: {
             CapoIconLabel(LibraryStrings.assignTags, icon: .tag)
           }

@@ -47,5 +47,7 @@ extension EnvironmentValues {
   @Entry public var creationContext: AppContext = .personal(userID: FakeIDs.user)
   /// nil = personal (full rights).
   @Entry public var currentTeamRole: TeamRole? = nil
+  /// Roles per team; permissions of an item come from its own team, not from the view filter.
+  @Entry public var teamRoles: TeamRoles = TeamRoles()
   @Entry public var capoActions: CapoActions = .noop
 }

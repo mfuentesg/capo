@@ -19,7 +19,10 @@ public struct AuthView: View {
         header
         VStack(spacing: 16) {
           googleButton
+          #if !DEBUG
+          // Debug builds are signed with a personal team, which cannot carry the Apple capability.
           appleButton
+          #endif
           devSessionButton
           divider
           form

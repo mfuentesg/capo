@@ -22,13 +22,21 @@ export async function fetchCifraClubPage(url: string): Promise<FetchCifraClubPag
 
   try {
     for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
-      const res = await fetch(currentUrl, {
-        // CifraClub sits behind bot protection that rejects non-browser user agents
-        // (403), so send browser-like headers.
+      // CifraClub's bot protection blocks datacenter IPs (e.g. Vercel's), so when a
+      // proxy is configured the request goes through it. The proxy must return
+      // upstream redirects as-is (not follow them) so the host check below still runs.
+      const proxyUrl = process.env.CIFRACLUB_PROXY_URL
+      const requestUrl = proxyUrl
+        ? `${proxyUrl}${proxyUrl.includes("?") ? "&" : "?"}url=${encodeURIComponent(currentUrl)}`
+        : currentUrl
+      const proxySecret = process.env.CIFRACLUB_PROXY_SECRET
+
+      const res = await fetch(requestUrl, {
         headers: {
           "User-Agent": BROWSER_USER_AGENT,
           Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-          "Accept-Language": "en-US,en;q=0.9,pt-BR;q=0.8,es;q=0.7"
+          "Accept-Language": "en-US,en;q=0.9,pt-BR;q=0.8,es;q=0.7",
+          ...(proxyUrl && proxySecret ? { "x-proxy-secret": proxySecret } : {})
         },
         signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
         redirect: "manual"

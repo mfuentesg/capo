@@ -12,7 +12,6 @@ enum LibraryStrings {
   }
   static var filters: String { L10n.Ios.Library.filters }
   static var sort: String { L10n.Ios.Library.sortLabel }
-  static var status: String { L10n.Ios.Library.statusLabel }
   static var tempo: String { L10n.Ios.Library.tempo }
   static var resetFilters: String {
     L10n.Ios.Library.resetFilters
@@ -115,14 +114,6 @@ enum LibraryStrings {
     case .fast: L10n.Ios.Library.Bpm.fast
     }
   }
-  static func statusName(_ status: SongStatus) -> String {
-    switch status {
-    case .published: L10n.Ios.Library.Status.published
-    case .draft: L10n.Ios.Library.Status.draft
-    case .archived: L10n.Ios.Library.Status.archived
-    }
-  }
-
   static func columnName(_ column: SongColumn) -> String {
     switch column {
     case .title: L10n.Ios.Table.colTitle

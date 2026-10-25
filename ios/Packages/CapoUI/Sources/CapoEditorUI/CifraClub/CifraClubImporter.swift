@@ -1,4 +1,29 @@
 import Foundation
+import os
+
+/// Sliding-window limit mirroring the web's `isCifraImportRateLimited` (10 imports per minute).
+public nonisolated final class ImportThrottle: Sendable {
+  private let limit: Int
+  private let window: TimeInterval
+  private let now: @Sendable () -> Date
+  private let attempts = OSAllocatedUnfairLock(initialState: [Date]())
+
+  public init(limit: Int = 10, window: TimeInterval = 60, now: @escaping @Sendable () -> Date = Date.init) {
+    self.limit = limit
+    self.window = window
+    self.now = now
+  }
+
+  /// Records an attempt; true when it exceeds the limit.
+  func isLimited() -> Bool {
+    let current = now()
+    return attempts.withLock { recent in
+      recent = recent.filter { current.timeIntervalSince($0) < window }
+      recent.append(current)
+      return recent.count > limit
+    }
+  }
+}
 
 /// Fetches and parses a CifraClub page on device (the web does this in a server action, which the app
 /// cannot call). Mirrors `fetch-cifraclub-page.ts`: 8 s timeout, 3 MB cap, at most 3 redirects, and
@@ -12,13 +37,21 @@ public nonisolated struct CifraClubImporter: Sendable {
   static let userAgent =
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
-  let load: Loader
+  /// The app's importer: one throttle for the whole process, like the web's module-level map.
+  public static let live = CifraClubImporter(throttle: ImportThrottle())
 
-  public init(load: @escaping Loader = Self.liveLoader) { self.load = load }
+  let load: Loader
+  let throttle: ImportThrottle
+
+  public init(load: @escaping Loader = Self.liveLoader, throttle: ImportThrottle = ImportThrottle()) {
+    self.load = load
+    self.throttle = throttle
+  }
 
   public func importSong(from input: String) async -> Result<CifraClubSong, CifraClubError> {
     let trimmed = input.trimmingCharacters(in: .whitespacesAndNewlines)
     guard !trimmed.isEmpty, trimmed.count <= 2000 else { return .failure(.invalidURL) }
+    if throttle.isLimited() { return .failure(.rateLimited) }
     switch CifraClubParser.validate(trimmed) {
     case .failure(let error): return .failure(error)
     case .success(let url):

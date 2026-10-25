@@ -4268,6 +4268,23 @@
         }
       }
     },
+    "ios.editor.maxLength" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max %@ characters"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Máximo %@ caracteres"
+          }
+        }
+      }
+    },
     "ios.editor.moreOptions" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5815,6 +5832,23 @@
         }
       }
     },
+    "ios.playlists.crossBucket" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Songs marked in red belong to a different account or team than this playlist. Remove them to continue."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las canciones en rojo pertenecen a otra cuenta o equipo distinto al de esta playlist. Quítalas para continuar."
+          }
+        }
+      }
+    },
     "ios.playlists.date" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -6104,6 +6138,23 @@
         }
       }
     },
+    "ios.playlists.otherBucket" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Different account or team"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otra cuenta o equipo"
+          }
+        }
+      }
+    },
     "ios.playlists.perform" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -6253,6 +6304,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ canciones"
+          }
+        }
+      }
+    },
+    "ios.playlists.suggestAdjectives" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sunday|Midnight|Golden|Electric|Acoustic|Sacred|Morning|Twilight|Revival|Worship|Vibrant|Eternal"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dominical|Medianoche|Dorado|Eléctrico|Acústico|Sagrado|Matutino|Crepuscular|Avivamiento|Adoración|Vibrante|Eterno"
+          }
+        }
+      }
+    },
+    "ios.playlists.suggestNouns" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Setlist|Sessions|Worship|Gathering|Anthems|Melodies|Journey|Voices|Moments|Reflections|Praise|Songs"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repertorio|Sesiones|Alabanza|Encuentro|Himnos|Melodías|Camino|Voces|Momentos|Reflexiones|Gozo|Canciones"
           }
         }
       }

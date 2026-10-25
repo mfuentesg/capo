@@ -3,6 +3,29 @@ import Foundation
 
 /// Pure rules of the playlist screens (list filter, reorder by drop, draft cart add).
 nonisolated enum PlaylistLogic {
+  static let maxName = 200
+  static let maxDescription = 2000
+
+  /// "Adjective Noun" like the web's sparkles button; word lists are localized (`|`-separated).
+  static func suggestName(
+    adjectives: String, nouns: String, pick: (Int) -> Int = { Int.random(in: 0..<$0) }
+  ) -> String {
+    let adjs = adjectives.split(separator: "|").map(String.init)
+    let ns = nouns.split(separator: "|").map(String.init)
+    guard !adjs.isEmpty, !ns.isEmpty else { return "" }
+    return "\(adjs[pick(adjs.count)]) \(ns[pick(ns.count)])"
+  }
+
+  /// Draft songs whose bucket (team id, nil = personal) differs from the target playlist's.
+  static func crossBucket(
+    _ ids: [SongID], teamOf: [SongID: TeamID?], target: TeamID?
+  ) -> [SongID] {
+    ids.filter { id in
+      guard let team = teamOf[id] else { return false }  // unknown yet: not flagged
+      return team != target
+    }
+  }
+
   enum Visibility: String, CaseIterable, Sendable { case all, `public`, `private` }
 
   /// Client-side search plus the visibility filter of `playlists-client.tsx`; active playlists come

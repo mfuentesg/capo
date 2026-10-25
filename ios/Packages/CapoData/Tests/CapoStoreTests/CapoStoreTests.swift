@@ -58,7 +58,7 @@ import Testing
     #expect(makeSearchLyrics("[Am]a{t: z}b") == "a b")
   }
 
-  @Test func tagFilterIsAnyOf() async throws {
+  @Test func tagFilterRequiresEveryTag() async throws {
     let env = try Env()
     let ctx = AppContext.personal(userID: me)
     let s1 = makeSong("One"), s2 = makeSong("Two"), s3 = makeSong("Three")
@@ -70,11 +70,63 @@ import Testing
     var q = query(ctx)
     q.tagIDs = [t1.id, t2.id]
     q.sort = .title
-    #expect(await titles(env, q) == ["One", "Two"])
+    try await env.repos.songs.setTags(songID: s3.id, tagIDs: [t1.id, t2.id])
+    #expect(await titles(env, q) == ["Three"])  // AND, like the web
+    q.tagIDs = [t2.id]
+    q.sort = .title
+    #expect(await titles(env, q) == ["Three", "Two"])
+    try await env.repos.songs.setTags(songID: s3.id, tagIDs: [])
     q.tagIDs = [t2.id]
     let items = await first(env.repos.songs.songs(q)) ?? []
     #expect(items.map(\.title) == ["Two"])
     #expect(items.first?.tags.map(\.id) == [t2.id])
+  }
+
+  @Test func playlistsOnlyAcceptSongsOfTheirOwnBucket() async throws {
+    let env = try Env()
+    let personal = makeSong("Mine"), teamSong = makeSong("Shared", user: nil, team: teamA)
+    try await env.repos.syncStore.apply(PullBatch(upsertSongs: [personal, teamSong], skipEntityKeys: []))
+    let list = try await env.repos.playlists.create(
+      PlaylistDraft(name: "L"), in: .personal(userID: me))
+    await #expect(throws: CapoError.self) {
+      try await env.repos.playlists.addSongs([teamSong.id], to: list.id)
+    }
+    try await env.repos.playlists.addSongs([personal.id], to: list.id)
+    await #expect(throws: CapoError.self) {
+      _ = try await env.repos.playlists.create(
+        PlaylistDraft(name: "T", songIDs: [personal.id]), in: .team(teamID: teamA))
+    }
+  }
+
+  @Test func playCountOnlyCountsPlaylistsOfTheSongsBucket() async throws {
+    let env = try Env()
+    let song = makeSong("S")
+    try await env.repos.syncStore.apply(PullBatch(upsertSongs: [song], skipEntityKeys: []))
+    let list = try await env.repos.playlists.create(
+      PlaylistDraft(name: "P", songIDs: [song.id]), in: .personal(userID: me))
+    // A stray entry in a team playlist (legacy data) is not counted for a personal song.
+    let teamList = try await env.repos.playlists.create(PlaylistDraft(name: "T"), in: .team(teamID: teamA))
+    try await env.db.writer.write { db in
+      try GRDBPlaylistRepository.insertEntry(db, playlistID: teamList.id, songID: song.id, position: 0)
+    }
+    _ = list
+    let items = await first(env.repos.songs.songs(query(.personal(userID: me)))) ?? []
+    #expect(items.first?.playCount == 1)
+  }
+
+  @Test func playlistTextLimitsMirrorTheServer() async throws {
+    let env = try Env()
+    let ctx = AppContext.personal(userID: me)
+    await #expect(throws: CapoError.self) {
+      _ = try await env.repos.playlists.create(
+        PlaylistDraft(name: String(repeating: "a", count: 201)), in: ctx)
+    }
+    let ok = try await env.repos.playlists.create(
+      PlaylistDraft(name: String(repeating: "a", count: 200)), in: ctx)
+    await #expect(throws: CapoError.self) {
+      try await env.repos.playlists.update(
+        id: ok.id, PlaylistPatch(description: String(repeating: "d", count: 2001)))
+    }
   }
 
   // MARK: Outbox

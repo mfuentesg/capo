@@ -112,9 +112,11 @@ struct GRDBSongRepository: SongRepository {
     (s.lyrics IS NOT NULL AND s.lyrics <> '') AS has_lyrics,
     EXISTS (SELECT 1 FROM outbox o WHERE o.entity_key = 'song:' || s.id
             AND o.state IN ('pending', 'inflight', 'conflict')) AS has_pending,
-    (SELECT COUNT(*) FROM playlist_songs ps WHERE ps.song_id = s.id) AS play_count,
+    (SELECT COUNT(*) FROM playlist_songs ps JOIN playlists p ON p.id = ps.playlist_id
+       WHERE ps.song_id = s.id AND p.team_id IS s.team_id) AS play_count,
     (SELECT MAX(COALESCE(p.date, p.created_at)) FROM playlist_songs ps
-       JOIN playlists p ON p.id = ps.playlist_id WHERE ps.song_id = s.id) AS last_played
+       JOIN playlists p ON p.id = ps.playlist_id
+       WHERE ps.song_id = s.id AND p.team_id IS s.team_id) AS last_played
     """
 
   /// Runs `SELECT <listColumns> <from>` and attaches tags.
@@ -176,9 +178,11 @@ struct GRDBSongRepository: SongRepository {
       conditions.append(
         """
         s.id IN (SELECT song_id FROM song_tag_assignments
-                 WHERE tag_id IN (\(databaseQuestionMarks(count: tagIDs.count))))
+                 WHERE tag_id IN (\(databaseQuestionMarks(count: tagIDs.count)))
+                 GROUP BY song_id HAVING COUNT(DISTINCT tag_id) = ?)
         """)
       arguments.append(contentsOf: tagIDs)
+      arguments.append(tagIDs.count)
     }
 
     let collation = DatabaseCollation.localizedCaseInsensitiveCompare.name

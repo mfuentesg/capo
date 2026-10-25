@@ -568,6 +568,10 @@ public nonisolated enum L10n {
       public static var livePreview: String { String(localized: "ios.editor.livePreview", bundle: L10nRuntime.bundle) }
       /// Lyrics (ChordPro)
       public static var lyrics: String { String(localized: "ios.editor.lyrics", bundle: L10nRuntime.bundle) }
+      /// Max {max} characters
+      public static func maxLength(max: String) -> String {
+        String(format: String(localized: "ios.editor.maxLength", bundle: L10nRuntime.bundle), max)
+      }
       /// Transpose & notes
       public static var moreOptions: String { String(localized: "ios.editor.moreOptions", bundle: L10nRuntime.bundle) }
       /// New song
@@ -776,6 +780,8 @@ public nonisolated enum L10n {
       public static var copyLink: String { String(localized: "ios.playlists.copyLink", bundle: L10nRuntime.bundle) }
       /// Create
       public static var create: String { String(localized: "ios.playlists.create", bundle: L10nRuntime.bundle) }
+      /// Songs marked in red belong to a different account or team than this playlist. Remove them to continue.
+      public static var crossBucket: String { String(localized: "ios.playlists.crossBucket", bundle: L10nRuntime.bundle) }
       /// Date
       public static var date: String { String(localized: "ios.playlists.date", bundle: L10nRuntime.bundle) }
       /// Delete
@@ -814,6 +820,8 @@ public nonisolated enum L10n {
       public static var notFound: String { String(localized: "ios.playlists.notFound", bundle: L10nRuntime.bundle) }
       /// Ready offline
       public static var offlineReady: String { String(localized: "ios.playlists.offlineReady", bundle: L10nRuntime.bundle) }
+      /// Different account or team
+      public static var otherBucket: String { String(localized: "ios.playlists.otherBucket", bundle: L10nRuntime.bundle) }
       /// Perform
       public static var perform: String { String(localized: "ios.playlists.perform", bundle: L10nRuntime.bundle) }
       /// Keep available offline
@@ -834,6 +842,10 @@ public nonisolated enum L10n {
       public static func songCount(n: String) -> String {
         String(format: String(localized: "ios.playlists.songCount", bundle: L10nRuntime.bundle), n)
       }
+      /// Sunday|Midnight|Golden|Electric|Acoustic|Sacred|Morning|Twilight|Revival|Worship|Vibrant|Eternal
+      public static var suggestAdjectives: String { String(localized: "ios.playlists.suggestAdjectives", bundle: L10nRuntime.bundle) }
+      /// Setlist|Sessions|Worship|Gathering|Anthems|Melodies|Journey|Voices|Moments|Reflections|Praise|Songs
+      public static var suggestNouns: String { String(localized: "ios.playlists.suggestNouns", bundle: L10nRuntime.bundle) }
       /// Setlists
       public static var title: String { String(localized: "ios.playlists.title", bundle: L10nRuntime.bundle) }
       /// Unarchive

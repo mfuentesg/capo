@@ -1,6 +1,7 @@
 import CapoDesign
 import Foundation
 import Testing
+import os
 
 @testable import CapoEditorUI
 
@@ -94,6 +95,20 @@ private let samplePage = """
     let result = await importer.importSong(from: " https://www.cifraclub.com/john-newton/amazing-grace/ ")
     guard case .success(let song) = result else { Issue.record("expected success: \(result)"); return }
     #expect(song.title == "Amazing Grace" && song.artist == "John Newton" && song.key == "G")
+  }
+
+  @Test func throttlesToTenImportsPerMinute() async {
+    let clock = OSAllocatedUnfairLock(initialState: Date(timeIntervalSince1970: 1000))
+    let importer = CifraClubImporter(
+      load: { url in (Data(samplePage.utf8), httpResponse(url, 200)) },
+      throttle: ImportThrottle(now: { clock.withLock { $0 } }))
+    let url = "https://www.cifraclub.com/john-newton/amazing-grace/"
+    for _ in 0..<10 {
+      guard case .success = await importer.importSong(from: url) else { Issue.record("limited early"); return }
+    }
+    #expect(await importer.importSong(from: url) == .failure(.rateLimited))
+    clock.withLock { $0 = $0.addingTimeInterval(61) }
+    guard case .success = await importer.importSong(from: url) else { Issue.record("window"); return }
   }
 
   @Test func rejectsBadInputBeforeFetching() async {

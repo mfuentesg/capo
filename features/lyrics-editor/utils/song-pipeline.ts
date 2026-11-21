@@ -2,7 +2,6 @@ import { ChordProParser } from "chordsheetjs"
 import { normalizeLyricsText } from "./lyrics-text"
 
 // Pure ChordPro -> segment pipeline extracted from rendered-song.tsx (no behavior change).
-// Also the source of truth for the iPad app golden fixtures (see scripts/generate-chordpro-fixtures).
 
 export const SECTION_FLAGS = [
   "attention",
